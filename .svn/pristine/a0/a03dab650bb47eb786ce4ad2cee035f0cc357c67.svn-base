@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.rakuten.dto">
+	<class name="TBL00011Dto" table="TBL00011">
+		<id name="commodityId" column="COMMODITY_ID" type="java.lang.String" length="6" />
+		<property name="categoryId" column="CATEGORY_ID" type="java.lang.String" length="6" />
+		<property name="chineseName" column="CHINESE_NAME" type="java.lang.String" length="60" />
+		<property name="japaneseName" column="JAPANESE_NAME" type="java.lang.String" length="60" />
+		<property name="source" column="SOURCE" type="java.lang.String" length="2" />
+		<property name="respPerson" column="RESP_PERSON" type="java.lang.String" length="5" />
+		<property name="delFlg" column="DEL_FLG" type="java.lang.String" length="1" />
+		<property name="createTime" column="CREATE_TIME" type="java.util.Date"/>
+		<property name="createUser" column="CREATE_USER" type="java.lang.String" length="20" />
+		<property name="updateTime" column="UPDATE_TIME" type="java.util.Date"/>
+		<property name="updateUser" column="UPDATE_USER" type="java.lang.String" length="20" />
+	</class>
+</hibernate-mapping>

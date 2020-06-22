@@ -1,0 +1,1341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+          "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.custom.i18n.resources" value="message" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<package name="action" extends="struts-default,json-default">
+		<action name="getJpstr" class="com.rakuten.common.action.getJpstrAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getBango" class="com.rakuten.common.action.getBangoAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getLastName" class="com.rakuten.common.action.getLastNameAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getLastSize" class="com.rakuten.common.action.getLastSizeAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="checkUrl" class="com.rakuten.common.action.checkUrlAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getSozaiJpstr" class="com.rakuten.common.action.getSozaiJpstrAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getJpstrAndSubid" class="com.rakuten.common.action.getJpstrAndSubidAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="countKokoku" class="com.rakuten.common.action.CountKokoku">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getPopUpDate" class="com.rakuten.common.action.PopDateAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="fileUpload" class="com.rakuten.common.action.FileUpLoadAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="testApi" class="test.TestApi">
+			<result name="input">test.jsp</result>
+			<result name="success">test.jsp</result>
+		</action>
+		<action name="A000101" class="com.rakuten.r0001.action.A000101Action">
+			<result name="input">V000101.jsp</result>
+			<result name="success">V000102.jsp</result>
+		</action>
+		<action name="A000102" class="com.rakuten.r0001.action.A000102Action">
+			<result name="input">login.jsp</result>
+			<result name="success">login.jsp</result>
+		</action>
+		<action name="A03010101" class="com.rakuten.r0301.action.A03010101Action">
+			<result name="input">V030101.jsp</result>
+			<result name="success">V030101.jsp</result>
+		</action>
+		<action name="A03010102" class="com.rakuten.r0301.action.A03010102Action">
+			<result name="input">V030101.jsp</result>
+			<result name="success">V030101.jsp</result>
+		</action>
+		<action name="A03010201" class="com.rakuten.r0301.action.A03010201Action">
+			<result name="input">V030101.jsp</result>
+			<result name="success">V030102.jsp</result>
+		</action>
+		<action name="A03010202" class="com.rakuten.r0301.action.A03010202Action">
+			<result name="input">V030102.jsp</result>
+			<result name="success" type="chain">A03010301</result>
+		</action>
+		<action name="A03010301" class="com.rakuten.r0301.action.A03010301Action">
+			<result name="success">V030103.jsp</result>
+		</action>
+		<action name="A03030101" class="com.rakuten.r0303.action.A03030101Action">
+			<result name="input">V030301.jsp</result>
+			<result name="success">V030301.jsp</result>
+		</action>
+		<action name="A03030102" class="com.rakuten.r0303.action.A03030102Action">
+			<result name="input">V030301.jsp</result>
+			<result name="success">V030301.jsp</result>
+		</action>
+		<action name="A04010101" class="com.rakuten.r0401.action.A04010101Action">
+			<result name="success">V040101.jsp</result>
+		</action>
+		<action name="A04010102" class="com.rakuten.r0401.action.A04010102Action">
+			<result name="success">V040101.jsp</result>
+			<result name="input">V040101.jsp</result>
+		</action>
+		<action name="A04010201" class="com.rakuten.r0402.action.A04010201Action">
+			<result name="success">V040201.jsp</result>
+		</action>
+		<action name="A04010202" class="com.rakuten.r0402.action.A04010202Action">
+			<result name="success">V040201.jsp</result>
+		</action>
+		<action name="A03020101" class="com.rakuten.r0302.action.A03020101Action">
+			<result name="success">V030201.jsp</result>
+		</action>
+		<action name="A03020102" class="com.rakuten.r0302.action.A03020102Action">
+			<result name="success">V030201.jsp</result>
+			<result name="input">V030201.jsp</result>
+		</action>
+		<action name="A03020103" class="com.rakuten.r0302.action.A03020103Action">
+			<result name="input">V030203.jsp</result>
+			<result name="success">V030204.jsp</result>
+		</action>
+		<action name="A03020104" class="com.rakuten.r0302.action.A03020104Action">
+			<result name="input">V030201.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A03020105" class="com.rakuten.r0302.action.A03020105Action">
+			<result name="input">V030201.jsp</result>
+			<result name="success">V030201.jsp</result>
+		</action>
+		<action name="A03020106" class="com.rakuten.r0302.action.A03020106Action">
+			<result name="input">V030201.jsp</result>
+			<result name="success">V030201.jsp</result>
+		</action>
+		<action name="A03020107" class="com.rakuten.r0302.action.A03020107Action">
+			<result name="input">V030201.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A03020201" class="com.rakuten.r0302.action.A03020201Action">
+			<result name="success">V030202.jsp</result>
+		</action>
+		<action name="A03020202" class="com.rakuten.r0302.action.A03020202Action">
+			<result name="success">V030203.jsp</result>
+		</action>
+		<action name="A03020301" class="com.rakuten.r0302.action.A03020301Action">
+			<result name="input">V030203.jsp</result>
+			<result name="success">Close.jsp</result>
+		</action>
+		<action name="A03020203" class="com.rakuten.r0302.action.A03020203Action">
+			<result name="input">V030202.jsp</result>
+			<result name="success">V030204.jsp</result>
+		</action>
+		<action name="A03020204" class="com.rakuten.r0302.action.A03020204Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A03020205" class="com.rakuten.r0302.action.A03020205Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A03020401" class="com.rakuten.r0302.action.A03020401Action">
+			<result name="input">V030401.jsp</result>
+			<result name="success">V030401.jsp</result>
+		</action>
+		<action name="A05010101" class="com.rakuten.r0501.action.A05010101Action">
+			<result name="success">V050101.jsp</result>
+		</action>
+		<action name="A05010102" class="com.rakuten.r0501.action.A05010102Action">
+			<result name="success">V050101.jsp</result>
+			<result name="success">V050101.jsp</result>
+		</action>
+		<action name="A05010103" class="com.rakuten.r0501.action.A05010103Action">
+			<result name="success">V050101.jsp</result>
+			<result name="success">V050101.jsp</result>
+		</action>
+		<action name="A05010104" class="com.rakuten.r0501.action.A05010104Action">
+			<result name="success">V050101.jsp</result>
+			<result name="success">V050101.jsp</result>
+		</action>
+		<action name="A05020101" class="com.rakuten.r0502.action.A05020101Action">
+			<result name="success">V050201.jsp</result>
+		</action>
+		<action name="A05020102" class="com.rakuten.r0502.action.A05020102Action">
+			<result name="success">V050201.jsp</result>
+		</action>
+		<action name="A05020103" class="com.rakuten.r0502.action.A05020103Action">
+			<result name="success">V050201.jsp</result>
+		</action>
+		<action name="A05020104" class="com.rakuten.r0502.action.A05020104Action">
+			<result name="success">V050201.jsp</result>
+		</action>
+		<action name="A05030101" class="com.rakuten.r0503.action.A05030101Action">
+			<result name="success">V050301.jsp</result>
+		</action>
+		<action name="A05030102" class="com.rakuten.r0503.action.A05030102Action">
+			<result name="success">V050301.jsp</result>
+		</action>
+		<action name="A05030103" class="com.rakuten.r0503.action.A05030103Action">
+			<result name="success">V050301.jsp</result>
+		</action>
+		<action name="A05030104" class="com.rakuten.r0503.action.A05030104Action">
+			<result name="success">V050301.jsp</result>
+		</action>
+		<action name="A05040101" class="com.rakuten.r0504.action.A05040101Action">
+			<result name="success">V050401.jsp</result>
+		</action>
+		<action name="A06010101" class="com.rakuten.r0601.action.A06010101Action">
+			<result name="success">V060101.jsp</result>
+		</action>
+		<action name="A06010102" class="com.rakuten.r0601.action.A06010102Action">
+			<result name="success">V060102.jsp</result>
+		</action>
+		<action name="A06010104" class="com.rakuten.r0601.action.A06010104Action">
+			<result name="success">V060104.jsp</result>
+		</action>
+		<action name="A06010108" class="com.rakuten.r0601.action.A06010107Action">
+			<result name="success">V060104.jsp</result>
+			<result name="input">V060104.jsp</result>
+		</action>
+		<action name="A06010109" class="com.rakuten.r0601.action.A06010109Action">
+			<result name="success">V060104.jsp</result>
+			<result name="input">V060104.jsp</result>
+		</action>
+		<action name="A06010113" class="com.rakuten.r0601.action.A06010113Action">
+			<result name="success">V060104.jsp</result>
+			<result name="input">V060104.jsp</result>
+		</action>
+		<action name="A06010106" class="com.rakuten.r0601.action.A06010106Action">
+			<result name="success">Close.jsp</result>
+		</action>
+		<action name="A06010110" class="com.rakuten.r0601.action.A06010110Action">
+			<result name="success">V060101.jsp</result>
+		</action>
+		<action name="A06010112" class="com.rakuten.r0601.action.A06010112Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A06010501" class="com.rakuten.r0601.action.A06010501Action">
+			<result name="success">V060105.jsp</result>
+			<result name="input">V060105.jsp</result>
+		</action>
+		<action name="A06010502" class="com.rakuten.r0601.action.A06010502Action">
+			<result name="success">V060105.jsp</result>
+			<result name="input">V060105.jsp</result>
+		</action>
+		<action name="A06010503" class="com.rakuten.r0601.action.A06010503Action">
+			<result name="success">V060105.jsp</result>
+			<result name="input">V060105.jsp</result>
+		</action>
+		<action name="A06010504" class="com.rakuten.r0601.action.A06010504Action">
+			<result name="success">V060105.jsp</result>
+			<result name="input">V060105.jsp</result>
+		</action>
+		<action name="A06010505" class="com.rakuten.r0601.action.A06010505Action">
+			<result name="success">V060105.jsp</result>
+			<result name="input">V060105.jsp</result>
+		</action>
+		<action name="A06010506" class="com.rakuten.r0601.action.A06010506Action">
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="input">V060105.jsp</result>
+		</action>
+		<action name="A06010111" class="com.rakuten.r0601.action.A06010111Action">
+			<result name="success">V060101.jsp</result>
+		</action>
+		<action name="A06010107" class="com.rakuten.r0601.action.A06010701Action">
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="input">V060101.jsp</result>
+		</action>
+		<action name="A06010103" class="com.rakuten.r0601.action.A06010103Action">
+			<result name="success">V060101.jsp</result>
+			<result name="input">V060101.jsp</result>
+		</action>
+		<action name="A06010105" class="com.rakuten.r0601.action.A06010105Action">
+			<result name="success">V060102.jsp</result>
+		</action>
+		<action name="A06010201" class="com.rakuten.r0601.action.A06010201Action">
+			<result name="success">V060102.jsp</result>
+			<result name="input">V060102.jsp</result>
+		</action>
+		<action name="A06010205" class="com.rakuten.r0601.action.A06010205Action">
+			<result name="success">V060102.jsp</result>
+			<result name="input">V060102.jsp</result>
+		</action>
+		<action name="A06010206" class="com.rakuten.r0601.action.A06010206Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A06010203" class="com.rakuten.r0601.action.A06010203Action">
+			<result name="success">V060102.jsp</result>
+		</action>
+		<action name="A06010202" class="com.rakuten.r0601.action.A06010202Action">
+			<result name="success">V060102.jsp</result>
+			<result name="input">V060102.jsp</result>
+		</action>
+		<action name="A06010204" class="com.rakuten.r0601.action.A06010204Action">
+			<result name="success">V060102.jsp</result>
+			<result name="input">V060102.jsp</result>
+		</action>
+
+		<action name="A06010402" class="com.rakuten.r0601.action.A06010402Action">
+			<result name="success">V060102.jsp</result>
+			<result name="input">V060102.jsp</result>
+		</action>
+		<action name="A06010401" class="com.rakuten.r0601.action.A06010401Action">
+			<result name="success">V060102.jsp</result>
+			<result name="input">V060102.jsp</result>
+		</action>
+		<action name="A06010403" class="com.rakuten.r0601.action.A06010403Action">
+			<result name="success">V060102.jsp</result>
+			<result name="input">V060102.jsp</result>
+		</action>
+		<action name="A06020101" class="com.rakuten.r0602.action.A06020101Action">
+			<result name="success">V060201.jsp</result>
+			<result name="input">V060201.jsp</result>
+		</action>
+		<action name="A06020102" class="com.rakuten.r0602.action.A06020102Action">
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="input">V060201.jsp</result>
+		</action>
+		<action name="A06020103" class="com.rakuten.r0602.action.A06020103Action">
+			<result name="input">V060201.jsp</result>
+			<result name="success">V060201.jsp</result>
+		</action>
+		<action name="A07010101" class="com.rakuten.r0701.action.A07010101Action">
+			<result name="input">V070101.jsp</result>
+			<result name="success">V070101.jsp</result>
+		</action>
+		<action name="A07020102" class="com.rakuten.r0702.action.A07020102Action">
+			<result name="input">V070201.jsp</result>
+			<result name="success">V070201.jsp</result>
+		</action>
+		<action name="A07020101" class="com.rakuten.r0702.action.A07020101Action">
+			<result name="input">V070201.jsp</result>
+			<result name="success">V070201.jsp</result>
+		</action>
+		<action name="A07010103" class="com.rakuten.r0701.action.A07010103Action">
+			<result name="input">V070201.jsp</result>
+			<result name="success">V070201.jsp</result>
+		</action>
+		<action name="A07020108" class="com.rakuten.r0702.action.A07020108Action">
+			<result name="input">V070201.jsp</result>
+			<result name="success">V070201.jsp</result>
+		</action>
+		<action name="A07020103" class="com.rakuten.r0702.action.A07020103Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A07020104" class="com.rakuten.r0702.action.A07020104Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A07020105" class="com.rakuten.r0702.action.A07020105Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A07020106" class="com.rakuten.r0702.action.A07020106Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A07020107" class="com.rakuten.r0702.action.A07020107Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A07030101" class="com.rakuten.r0703.action.A07030101Action">
+			<result name="input">V070301.jsp</result>
+			<result name="success">V070301.jsp</result>
+		</action>
+		<action name="A07030102" class="com.rakuten.r0703.action.A07030102Action">
+			<result name="input">V070301.jsp</result>
+			<result name="success">V070301.jsp</result>
+		</action>
+		<action name="A07030104" class="com.rakuten.r0703.action.A07030104Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A07010102" class="com.rakuten.r0701.action.A07010102Action">
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="input">V070101.jsp</result>
+		</action>
+		<action name="A08010101" class="com.rakuten.r0801.action.A08010101Action">
+			<result name="input">V080101.jsp</result>
+			<result name="success">V080101.jsp</result>
+		</action>
+		<action name="A08010102" class="com.rakuten.r0801.action.A08010102Action">
+			<result name="input">V080101.jsp</result>
+			<result name="success">V080101.jsp</result>
+		</action>
+		<action name="A08010103" class="com.rakuten.r0801.action.A08010103Action">
+			<result name="input">V080101.jsp</result>
+			<result name="success">V080101.jsp</result>
+		</action>
+		<action name="A08010104" class="com.rakuten.r0801.action.A08010104Action">
+			<result name="input">V080101.jsp</result>
+			<result name="success">V080101.jsp</result>
+		</action>
+		<action name="A08010201" class="com.rakuten.r0801.action.A08010201Action">
+			<result name="input">V080101.jsp</result>
+			<result name="success">V080201.jsp</result>
+		</action>
+		<action name="A08010202" class="com.rakuten.r0801.action.A08010202Action">
+			<result name="input">V080201.jsp</result>
+			<result name="success">V080201.jsp</result>
+		</action>
+		<action name="A08010203" class="com.rakuten.r0801.action.A08010203Action">
+			<result name="input">V080201.jsp</result>
+			<result name="success">V080201.jsp</result>
+		</action>
+		<action name="A08010204" class="com.rakuten.r0801.action.A08010204Action">
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="input">V080201.jsp</result>
+		</action>
+		<action name="A02010101" class="com.rakuten.r0201.action.A02010101Action">
+			<result name="success">V020101.jsp</result>
+			<result name="input">V020101.jsp</result>
+		</action>
+		<action name="A09010101" class="com.rakuten.r0901.action.A09010101Action">
+			<result name="input">V090101.jsp</result>
+			<result name="success">V090101.jsp</result>
+		</action>
+		<action name="A09010102" class="com.rakuten.r0901.action.A09010102Action">
+			<result name="input">V090101.jsp</result>
+			<result name="success">V090101.jsp</result>
+		</action>
+		<action name="A09010103" class="com.rakuten.r0901.action.A09010103Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A09010105" class="com.rakuten.r0901.action.A09010105Action">
+			<result name="input">V090101.jsp</result>
+			<result name="success">V090101.jsp</result>
+		</action>
+		<action name="A09010104" class="com.rakuten.r0901.action.A09010104Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A10010101" class="com.rakuten.r1001.action.A10010101Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success">V100101.jsp</result>
+		</action>
+		<action name="A10010102" class="com.rakuten.r1001.action.A10010102Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success">V100101.jsp</result>
+		</action>
+		<action name="A10010103" class="com.rakuten.r1001.action.A10010103Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success">V100101.jsp</result>
+		</action>
+		<action name="A10010104" class="com.rakuten.r1001.action.A10010104Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010101</param>
+			</result>
+		</action>
+		<action name="A10010108" class="com.rakuten.r1001.action.A10010108Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010101</param>
+			</result>
+		</action>
+		<action name="A10010109" class="com.rakuten.r1001.action.A10010109Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010101</param>
+			</result>
+		</action>
+		<action name="A10010110" class="com.rakuten.r1001.action.A10010110Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010101</param>
+			</result>
+		</action>
+		<action name="A10010111" class="com.rakuten.r1001.action.A10010111Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010101</param>
+			</result>
+		</action>
+		<action name="A10010112" class="com.rakuten.r1001.action.A10010112Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010101</param>
+			</result>
+		</action>
+		<action name="A10010105" class="com.rakuten.r1001.action.A10010105Action">
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="input">V100101.jsp</result>
+		</action>
+		<action name="A10010107" class="com.rakuten.r1001.action.A10010107Action">
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="input">V100101.jsp</result>
+		</action>
+		<action name="A10010106" class="com.rakuten.r1001.action.A10010106Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010101</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+				<param name="successFlg">${successFlg}</param>
+			</result>
+		</action>
+		<action name="A10010201" class="com.rakuten.r1001.action.A10010201Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success">V100102.jsp</result>
+		</action>
+		<action name="A10010202" class="com.rakuten.r1001.action.A10010202Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A10010204" class="com.rakuten.r1001.action.A10010204Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A10010205" class="com.rakuten.r1001.action.A10010205Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010203" class="com.rakuten.r1001.action.A10010203Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010206" class="com.rakuten.r1001.action.A10010206Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010207" class="com.rakuten.r1001.action.A10010207Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010208" class="com.rakuten.r1001.action.A10010208Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010209" class="com.rakuten.r1001.action.A10010209Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010210" class="com.rakuten.r1001.action.A10010210Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010211" class="com.rakuten.r1001.action.A10010211Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010212" class="com.rakuten.r1001.action.A10010212Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010213" class="com.rakuten.r1001.action.A10010213Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010214" class="com.rakuten.r1001.action.A10010214Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010215" class="com.rakuten.r1001.action.A10010215Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010216" class="com.rakuten.r1001.action.A10010216Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010217" class="com.rakuten.r1001.action.A10010217Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010218" class="com.rakuten.r1001.action.A10010218Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010219" class="com.rakuten.r1001.action.A10010219Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+			</result>
+		</action>
+		<action name="A10010220" class="com.rakuten.r1001.action.A10010220Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+				<param name="messageInfo">${messageInfo}</param>
+			</result>
+		</action>
+		<action name="A10010221" class="com.rakuten.r1001.action.A10010221Action">
+			<result name="input">V100102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010201</param>
+				<param name="orderNo">${orderNo}</param>
+				<param name="scrollx">${scrollx}</param>
+				<param name="scrolly">${scrolly}</param>
+				<param name="messageInfo">${messageInfo}</param>
+			</result>
+		</action>
+		<action name="A10010222" class="com.rakuten.r1001.action.A10010222Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A10010401" class="com.rakuten.r1001.action.A10010401Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success">V100104.jsp</result>
+		</action>
+		<action name="A10010402" class="com.rakuten.r1001.action.A10010402Action">
+			<result name="input">V100104.jsp</result>
+			<result name="success">Close.jsp</result>
+		</action>
+		<action name="A10010403" class="com.rakuten.r1001.action.A10010403Action">
+			<result name="input">V100104.jsp</result>
+			<result name="success">V100104.jsp</result>
+		</action>
+		<action name="A10010404" class="com.rakuten.r1001.action.A10010404Action">
+			<result name="input">V100104.jsp</result>
+			<result name="success">V100104.jsp</result>
+		</action>
+		<action name="A10010301" class="com.rakuten.r1001.action.A10010301Action">
+			<result name="input">V100103.jsp</result>
+			<result name="success">V100103.jsp</result>
+		</action>
+		<action name="A10010302" class="com.rakuten.r1001.action.A10010302Action">
+			<result name="input">V100103.jsp</result>
+			<result name="success">Close.jsp</result>
+		</action>
+		<action name="A10010303" class="com.rakuten.r1001.action.A10010303Action">
+			<result name="input">V100103.jsp</result>
+			<result name="success">V100103.jsp</result>
+		</action>
+		<action name="A10010304" class="com.rakuten.r1001.action.A10010304Action">
+			<result name="input">V100103.jsp</result>
+			<result name="success">V100103.jsp</result>
+		</action>
+		<action name="A10010305" class="com.rakuten.r1001.action.A10010305Action">
+			<result name="input">V100103.jsp</result>
+			<result name="success">V100103.jsp</result>
+		</action>
+		<action name="A10020101" class="com.rakuten.r1002.action.A10020101Action">
+			<result name="input">V100201.jsp</result>
+			<result name="success">V100201.jsp</result>
+		</action>
+		<action name="A10020102" class="com.rakuten.r1002.action.A10020102Action">
+			<result name="input">V100201.jsp</result>
+			<result name="success">V100201.jsp</result>
+		</action>
+		<action name="A10020103" class="com.rakuten.r1002.action.A10020103Action">
+			<result name="input">V100201.jsp</result>
+			<result name="success">V100201.jsp</result>
+		</action>
+		<action name="A10020104" class="com.rakuten.r1002.action.A10020104Action">
+			<result name="input">V100201.jsp</result>
+			<result name="success">V100201.jsp</result>
+		</action>
+		<action name="A10020105" class="com.rakuten.r1002.action.A10020105Action">
+			<result name="input">V100201.jsp</result>
+			<result name="success">V100201.jsp</result>
+		</action>
+		<action name="A11010101" class="com.rakuten.r1101.action.A11010101Action">
+			<result name="input">V110101.jsp</result>
+			<result name="success">V110101.jsp</result>
+		</action>
+		<action name="A11010102" class="com.rakuten.r1101.action.A11010102Action">
+			<result name="input">V110102.jsp</result>
+			<result name="success">V110102.jsp</result>
+		</action>
+		<action name="A11010103" class="com.rakuten.r1101.action.A11010103Action">
+			<result name="input">V110102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A11010102</param>
+				<param name="mode">${mode}</param>
+			</result>
+		</action>
+		<action name="A11010104" class="com.rakuten.r1101.action.A11010104Action">
+			<result name="input">V110102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A11010102</param>
+				<param name="mode">${mode}</param>
+			</result>
+		</action>
+		<action name="A11010105" class="com.rakuten.r1101.action.A11010105Action">
+			<result name="input">V110101.jsp</result>
+			<result name="success">V110101.jsp</result>
+		</action>
+		<action name="A11010106" class="com.rakuten.r1101.action.A11010106Action">
+			<result name="input">V110101.jsp</result>
+			<result name="success">V110101.jsp</result>
+		</action>
+		<action name="A12010101" class="com.rakuten.r1201.action.A12010101Action">
+			<result name="input">V120101.jsp</result>
+			<result name="success">V120101.jsp</result>
+		</action>
+		<action name="A12010102" class="com.rakuten.r1201.action.A12010102Action">
+			<result name="input">V120101.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A12010101</param>
+			</result>
+		</action>
+		<action name="A12020101" class="com.rakuten.r1202.action.A12020101Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020102" class="com.rakuten.r1202.action.A12020102Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020103" class="com.rakuten.r1202.action.A12020103Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020104" class="com.rakuten.r1202.action.A12020104Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020105" class="com.rakuten.r1202.action.A12020105Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020106" class="com.rakuten.r1202.action.A12020106Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020107" class="com.rakuten.r1202.action.A12020107Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020108" class="com.rakuten.r1202.action.A12020108Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020109" class="com.rakuten.r1202.action.A12020109Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020110" class="com.rakuten.r1202.action.A12020110Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020111" class="com.rakuten.r1202.action.A12020111Action">
+			<result name="input">V120201.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A12020116" class="com.rakuten.r1202.action.A12020116Action">
+			<result name="input">V120201.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A12020112" class="com.rakuten.r1202.action.A12020112Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020117" class="com.rakuten.r1202.action.A12020117Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020113" class="com.rakuten.r1202.action.A12020113Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020114" class="com.rakuten.r1202.action.A12020114Action">
+			<result name="input">V120201.jsp</result>
+			<result name="success">V120201.jsp</result>
+		</action>
+		<action name="A12020115" class="com.rakuten.r1202.action.A12020115Action">
+			<result name="input">V120201.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A13010101" class="com.rakuten.r1301.action.A13010101Action">
+			<result name="input">V130101.jsp</result>
+			<result name="success">V130101.jsp</result>
+		</action>
+		<action name="A13010102" class="com.rakuten.r1301.action.A13010102Action">
+			<result name="input">V130101.jsp</result>
+			<result name="success">V130101.jsp</result>
+		</action>
+		<action name="A13010103" class="com.rakuten.r1301.action.A13010103Action">
+			<result name="input">V130101.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A13010104" class="com.rakuten.r1301.action.A13010104Action">
+			<result name="input">V130101.jsp</result>
+			<result name="success">V130101.jsp</result>
+		</action>
+		<action name="A13010105" class="com.rakuten.r1301.action.A13010105Action">
+			<result name="input">V130101.jsp</result>
+			<result name="success">V130101.jsp</result>
+		</action>
+		<action name="A13010106" class="com.rakuten.r1301.action.A13010106Action">
+			<result name="input">V130101.jsp</result>
+			<result name="success">V130101.jsp</result>
+		</action>
+		<action name="A13010107" class="com.rakuten.r1301.action.A13010107Action">
+			<result name="input">V130101.jsp</result>
+			<result name="success">V130101.jsp</result>
+		</action>
+		<action name="A13010108" class="com.rakuten.r1301.action.A13010108Action">
+			<result name="input">V130101.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A13010110" class="com.rakuten.r1301.action.A13010110Action">
+			<result name="input">V130101.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A13010112" class="com.rakuten.r1301.action.A13010112Action">
+			<result name="input">V130101.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A13010109" class="com.rakuten.r1301.action.A13010109Action">
+			<result name="input">V130101.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	<action name="A13010111" class="com.rakuten.r1301.action.A13010111Action">
+			<result name="input">V130101.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	
+		<action name="A13010201" class="com.rakuten.r1301.action.A13010201Action">
+			<result name="input">V130101.jsp</result>
+			<result name="success">V130101.jsp</result>
+		</action>
+		<action name="A13010202" class="com.rakuten.r1301.action.A13010202Action">
+			<result name="input">V130101.jsp</result>
+			<result name="success">V130101.jsp</result>
+		</action>
+		<action name="A13020101" class="com.rakuten.r1302.action.A13020101Action">
+			<result name="input">V130201.jsp</result>
+			<result name="success">V130201.jsp</result>
+		</action>
+		<action name="A13020102" class="com.rakuten.r1302.action.A13020102Action">
+			<result name="input">V130201.jsp</result>
+			<result name="success">V130201.jsp</result>
+		</action>
+		<action name="A13020103" class="com.rakuten.r1302.action.A13020103Action">
+			<result name="input">V130201.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A13020107" class="com.rakuten.r1302.action.A13020107Action">
+			<result name="input">V130201.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A13020108" class="com.rakuten.r1302.action.A13020108Action">
+			<result name="input">V130201.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A13020109" class="com.rakuten.r1302.action.A13020109Action">
+			<result name="input">V130201.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A13020110" class="com.rakuten.r1302.action.A13020110Action">
+			<result name="input">V130201.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A13020111" class="com.rakuten.r1302.action.A13020111Action">
+			<result name="input">V130101.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A13010101</param>
+			</result>
+		</action>
+		<action name="A13020112" class="com.rakuten.r1302.action.A13020112Action">
+			<result name="input">V130201.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A13020113" class="com.rakuten.r1302.action.A13020113Action">
+			<result name="input">V130201.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A13020104" class="com.rakuten.r1302.action.A13020104Action">
+			<result name="input">V130201.jsp</result>
+			<result name="success">V130201.jsp</result>
+		</action>
+		<action name="A13020105" class="com.rakuten.r1302.action.A13020105Action">
+			<result name="input">V130201.jsp</result>
+			<result name="success">V130201.jsp</result>
+		</action>
+		<action name="A13020106" class="com.rakuten.r1302.action.A13020106Action">
+			<result name="input">V130201.jsp</result>
+			<result name="success">V130201.jsp</result>
+		</action>
+		<action name="A13020114" class="com.rakuten.r1302.action.A13020114Action">
+			<result name="input">V130201.jsp</result>
+			<result name="success">V130201.jsp</result>
+		</action>
+		<action name="A13030101" class="com.rakuten.r1303.action.A13030101Action">
+			<result name="input">V130301.jsp</result>
+			<result name="success">V130301.jsp</result>
+		</action>
+		<action name="A13030102" class="com.rakuten.r1303.action.A13030102Action">
+			<result name="input">V130301.jsp</result>
+			<result name="success">V130301.jsp</result>
+		</action>
+		<action name="A13040101" class="com.rakuten.r1304.action.A13040101Action">
+			<result name="input">V130401.jsp</result>
+			<result name="success">V130401.jsp</result>
+		</action>
+		<action name="A13040102" class="com.rakuten.r1304.action.A13040102Action">
+			<result name="input">V130401.jsp</result>
+			<result name="success">V130401.jsp</result>
+		</action>
+		<action name="A14010101" class="com.rakuten.r1401.action.A14010101Action">
+			<result name="input">V140101.jsp</result>
+			<result name="success">V140101.jsp</result>
+		</action>
+		<action name="A14010103" class="com.rakuten.r1401.action.A14010103Action">
+			<result name="input">V140101.jsp</result>
+			<result name="success">V140101.jsp</result>
+		</action>
+		<action name="A14010104" class="com.rakuten.r1401.action.A14010104Action">
+			<result name="input">V140101.jsp</result>
+			<result name="success">V140101.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A14010106" class="com.rakuten.r1401.action.A14010106Action">
+			<result name="input">V140101.jsp</result>
+			<result name="success">V140101.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A14010105" class="com.rakuten.r1401.action.A14010105Action">
+			<result name="input">V140101.jsp</result>
+			<result name="success">V140101.jsp</result>
+		</action>
+		<action name="A14010102" class="com.rakuten.r1401.action.A14010102Action">
+			<result name="input">V140101.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A15010101" class="com.rakuten.r1501.action.A15010101Action">
+			<result name="input">V150101.jsp</result>
+			<result name="success">V150101.jsp</result>
+		</action>
+		
+		<action name="A15010201" class="com.rakuten.r1501.action.A15010201Action">
+			<result name="input">V150102.jsp</result>
+			<result name="success">V150102.jsp</result>
+		</action>
+		<action name="A15010202" class="com.rakuten.r1501.action.A15010202Action">
+			<result name="input">V150102.jsp</result>
+			<result name="success">V150102.jsp</result>
+		</action>
+		<action name="A15010203" class="com.rakuten.r1501.action.A15010203Action">
+			<result name="input">V150102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A15010201</param>
+				<param name="accountId">${accountId}</param>
+			</result>
+		</action>
+		
+		<action name="A15010301" class="com.rakuten.r1501.action.A15010301Action">
+			<result name="input">V150103.jsp</result>
+			<result name="success">V150103.jsp</result>
+		</action>
+		<action name="A15010401" class="com.rakuten.r1501.action.A15010401Action">
+			<result name="input">V150104.jsp</result>
+			<result name="success">V150104.jsp</result>
+		</action>
+		<action name="A15010402" class="com.rakuten.r1501.action.A15010402Action">
+			<result name="input">V150104.jsp</result>
+			<result name="success">V150104.jsp</result>
+		</action>
+		<action name="A15010403" class="com.rakuten.r1501.action.A15010403Action">
+			<result name="input">V150104.jsp</result>
+			<result name="success">V150104.jsp</result>
+		</action>
+		<action name="A15010404" class="com.rakuten.r1501.action.A15010404Action">
+			<result name="input">V150104.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A15010405" class="com.rakuten.r1501.action.A15010405Action">
+			<result name="input">V150104.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A15010501" class="com.rakuten.r1501.action.A15010501Action">
+			<result name="input">V150105.jsp</result>
+			<result name="success">V150105.jsp</result>
+		</action>
+		<action name="A15030101" class="com.rakuten.r1503.action.A15030101Action">
+			<result name="input">V150301.jsp</result>
+			<result name="success">V150301.jsp</result>
+		</action>
+		<action name="A15030102" class="com.rakuten.r1503.action.A15030102Action">
+			<result name="input">V150301.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A15030101</param>
+			</result>
+		</action>
+		<action name="A15030103" class="com.rakuten.r1503.action.A15030103Action">
+			<result name="input">V150301.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A15030101</param>
+			</result>
+		</action>
+		<action name="A15040101" class="com.rakuten.r1504.action.A15040101Action">
+			<result name="input">V150401.jsp</result>
+			<result name="success">V150401.jsp</result>
+		</action>
+		<action name="A15050101" class="com.rakuten.r1505.action.A15050101Action">
+			<result name="input">V150501.jsp</result>
+			<result name="success">V150501.jsp</result>
+		</action>
+		<action name="A15050102" class="com.rakuten.r1505.action.A15050102Action">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="A15050103" class="com.rakuten.r1505.action.A15050103Action">
+			<result name="input">V150501.jsp</result>
+			<result name="success">V150501.jsp</result>
+		</action>
+		<action name="A15050104" class="com.rakuten.r1505.action.A15050104Action">
+			<result name="input">V150501.jsp</result>
+			<result name="success">V150501.jsp</result>
+		</action>
+		<action name="A15050105" class="com.rakuten.r1505.action.A15050105Action">
+			<result name="input">V150105.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="A16010101" class="com.rakuten.r1601.action.A16010101Action">
+			<result name="input">V160101.jsp</result>
+			<result name="success">V160101.jsp</result>
+		</action>
+		<action name="A16010102" class="com.rakuten.r1601.action.A16010102Action">
+			<result name="input">V160101.jsp</result>
+			<result name="success">V160101.jsp</result>
+		</action>
+		<action name="A16010103" class="com.rakuten.r1601.action.A16010103Action">
+			<result name="input">V160101.jsp</result>
+			<result name="success">V160101.jsp</result>
+		</action>
+		<action name="A16010104" class="com.rakuten.r1601.action.A16010104Action">
+			<result name="input">V160101.jsp</result>
+			<result name="success">V160101.jsp</result>
+		</action>
+		<action name="A16010105" class="com.rakuten.r1601.action.A16010105Action">
+			<result name="input">V160101.jsp</result>
+			<result name="success">V160101.jsp</result>
+		</action>
+		<action name="A16010106" class="com.rakuten.r1601.action.A16010106Action">
+			<result name="input">V160101.jsp</result>
+			<result name="success">V160101.jsp</result>
+		</action>
+		<action name="A16010107" class="com.rakuten.r1601.action.A16010107Action">
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="input">V160101.jsp</result>
+		</action>
+		<action name="A16010108" class="com.rakuten.r1601.action.A16010108Action">
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="input">V160101.jsp</result>
+		</action>
+		<action name="A17010101" class="com.rakuten.r1701.action.A17010101Action">
+			<result name="input">V170101.jsp</result>
+			<result name="success">V170101.jsp</result>
+		</action>
+		
+		<action name="A17010102" class="com.rakuten.r1701.action.A17010102Action">
+			<result name="input">V170101.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A17010101</param>
+			</result>
+		</action>
+		<action name="A17010201" class="com.rakuten.r1701.action.A17010201Action">
+			<result name="input">V170101.jsp</result>
+			<result name="success">V170102.jsp</result>
+		</action>
+		<action name="A17010202" class="com.rakuten.r1701.action.A17010202Action">
+			<result name="input">V170102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A17010201</param>
+				<param name="shumokuid">${shumokuid}</param>
+				
+			</result>
+		</action>
+		<action name="A17010203" class="com.rakuten.r1701.action.A17010203Action">
+			<result name="input">V170102.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A17010201</param>
+				<param name="shumokuid">${shumokuid}</param>
+				
+			</result>
+		</action>
+		<action name="checkShohinAri" class="com.rakuten.common.action.CheckShohinAriAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getJiaoyiFenleiList" class="com.rakuten.common.action.GetJiaoyiFenleiListAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="P01010101" class="com.rakuten.p0101.action.P01010101Action">
+			<result name="input">P010101.jsp</result>
+			<result name="success">P010101.jsp</result>
+		</action>
+		<action name="P01010102" class="com.rakuten.p0101.action.P01010102Action">
+			<result name="input">P010101.jsp</result>
+			<result name="success">P010101.jsp</result>
+		</action>
+		<action name="P01010103" class="com.rakuten.p0101.action.P01010103Action">
+			<result name="input">P010101.jsp</result>
+			<result name="success">Close.jsp</result>
+		</action>
+		<action name="P01020101" class="com.rakuten.p0102.action.P01020101Action">
+			<result name="input">P010201.jsp</result>
+			<result name="success">P010201.jsp</result>
+		</action>
+		<action name="getLogAction" class="com.rakuten.common.action.GetLogAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getOrderSts" class="com.rakuten.common.action.GetOrderStsAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="getOrderDetailSts" class="com.rakuten.common.action.GetOrderStsDetailAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+	<constant name="struts.multipart.maxSize" value="9000000000" />
+</struts>

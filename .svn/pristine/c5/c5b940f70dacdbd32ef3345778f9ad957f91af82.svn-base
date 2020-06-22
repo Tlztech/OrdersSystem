@@ -1,0 +1,252 @@
+﻿body {
+	font-family: "微锟斤拷锟脚猴拷,Verdana, 锟斤拷锟斤拷锟斤拷";
+	color: #1E5494; /*锟斤拷锟斤拷锟斤拷锟斤拷色*/
+	font-size: 11px;
+	font-weight: bolder;
+	margin-left: 4px;
+	margin-top: 0px;
+	margin-right: 0px;
+	PADDING-RIGHT: 0px;
+	PADDING-LEFT: 0px;
+	PADDING-BOTTOM: 0px;
+	PADDING-TOP: 0px;
+}
+.texthidden{
+   width:200px;
+   overflow:hidden;
+   text-overflow:ellipsis;
+   white-space:nowrap;
+   border:1px solid #ddd;}
+  .texthidden mouseover
+  {
+width:200px;
+    overflow:hidden;
+  }
+  
+  
+select {
+	font-size: 11px;
+}
+
+.table {
+	border: 1px solid #CAF2FF; /*锟竭匡拷锟斤拷色*/
+	background: #B8D3F1;
+}
+
+.td_bg {
+	background: #ffffff;
+}
+
+span {
+	FONT-SIZE: 12px;
+	color: red;
+}
+
+.tableText {
+	border: 0px;
+	font-size: 11px;
+}
+
+/* .ACT_btn {
+	background-color:#EAEAEA;
+	border-top:2px solid #FEFEFE;
+border-right:1px solid #BCBCBCborder-bottom:1px solid #BCBCBC;	border-left:2px solid #FEFEFE;
+	height:29px;
+	cursor:hand;
+	font-size: 14px;
+}*/
+.ACT_btn {
+	background: url(../act_btn.gif) no-repeat;
+	height: 26px;
+	width: 94px;
+	cursor: hand;
+	border: solid 0px #111;
+	font-size: 11px;
+}
+
+.bg_tr {
+	font-family: "微锟斤拷锟脚猴拷,Verdana, 锟斤拷锟斤拷锟斤拷";
+	color: #1E5494; /*锟斤拷锟斤拷锟斤拷锟斤拷色*/
+	font-size: 11px;
+	font-weight: bolder;
+	background: #E4F1FA; /*锟斤拷锟解背锟斤拷色*/
+	line-height: 22px;
+}
+
+td {
+	color: #1E5494;
+	font-size: 11px;
+	line-height: 18px;
+}
+
+.tdbg1 {
+	background: #F9F9F9;
+}
+
+.tdbg {
+	BACKGROUND: #ffffff;
+}
+
+.readonly {
+	background-color: #dddddd
+}
+
+.top_link {
+	text-decoration: none;
+	font-size: 14px;
+	color: #FFDED2;
+	height: 0;
+	filter: dropshadow(offX =       1, offY =       1, color =       BD3400);
+}
+
+A.top_link:link {
+	text-decoration: none;
+	font-size: 14px;
+	color: #FFDED2;
+	height: 0;
+	filter: dropshadow(offX =       1, offY =       1, color =       BD3400);
+}
+
+A.top_link:visited {
+	text-decoration: none;
+	font-size: 14px;
+	color: #FFDED2;
+	height: 0;
+	filter: dropshadow(offX =       1, offY =       1, color =       BD3400);
+}
+
+A.top_link:active {
+	text-decoration: underline;
+	font-size: 14px;
+	color: #fff;
+	height: 0;
+	filter: dropshadow(offX =       1, offY =       1, color =       BD3400);
+}
+
+A.top_link:hover {
+	text-decoration: underline;
+	font-size: 14px;
+	color: #fff;
+	height: 0;
+	filter: dropshadow(offX =       1, offY =       1, color =       BD3400);
+}
+
+.subbg {
+	width: 100%;
+	height: 26px;
+	background: url(Images/sub_bg.jpg);
+	background-repeat: repeat-x;
+}
+
+.topbar {
+	color: #ffffff
+}
+
+.topbar a:link,.topbar a:visited {
+	color: #ffffff;
+}
+
+.topbar a:hover {
+	background: #ccffcc;
+	display: block;
+	height: 26px;
+	padding-top: 6px;
+	color: #000000;
+	text-decoration: none
+}
+
+#table2 {
+	width: 100%;
+	height: 30px;
+	border-bottom: 1px solid #fff;
+	background-color: #6E4000;
+}
+
+.topBorder {
+	background: url(Images/admin_topbg1.jpg);
+	background-repeat: repeat-x;
+}
+
+.titledaohang {
+	FONT-SIZE: 12px;
+	FILTER: Glow(Color =       #EDD2C6, Strength =       1)
+		dropshadow(Color =       #EDD2C6, OffX =       1, OffY =       1,);
+	COLOR: #551C02;
+	font-weight: bolder;
+	FONT-FAMILY: '微锟斤拷锟脚猴拷,锟斤拷锟斤拷'
+}
+/*input{
+height:15px;padding-top:2px;border:1px solid #7F9DB9;color:#1E5494;
+}*/
+.Leftback {
+	background: #865802;
+}
+
+.leftframetable {
+	border: 1px solid #4C3500;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	background: #FDF6E6;
+}
+
+ /* input[type="button"] {
+	BORDER-RIGHT: #7b9ebd 1px solid;
+	PADDING-RIGHT: 4px;
+	BORDER-TOP: #7b9ebd 1px solid;
+	PADDING-LEFT: 4px;
+	FONT-SIZE: 12px;
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,
+		StartColorStr=#ffffff, EndColorStr=#cecfde );
+	BORDER-LEFT: #7b9ebd 1px solid;
+	CURSOR: hand;
+	COLOR: black;
+	PADDING-TOP: 1px;
+	PADDING-BOTTOM: 1px;
+	BORDER-BOTTOM: #7b9ebd 1px solid;
+	cursor: pointer;
+	FONT-SIZE: 11px;
+} */
+/* 
+input[type="submit"] {
+	BORDER-RIGHT: #7b9ebd 1px solid;
+	PADDING-RIGHT: 4px;
+	BORDER-TOP: #7b9ebd 1px solid;
+	PADDING-LEFT: 4px;
+	FONT-SIZE: 12px;
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,
+		StartColorStr=#ffffff, EndColorStr=#cecfde );
+	BORDER-LEFT: #7b9ebd 1px solid;
+	CURSOR: hand;
+	COLOR: black;
+	PADDING-TOP: 1px;
+	PADDING-BOTTOM: 1px;
+	BORDER-BOTTOM: #7b9ebd 1px solid;
+	cursor: pointer;
+	FONT-SIZE: 11px;
+}*/
+
+a {
+	cursor: pointer;
+}
+
+a:hover {
+	TEXT-DECORATION: underline
+}
+
+b {
+	FONT-SIZE: 12px;
+	color: #1E5494;
+}
+
+a:link {
+	color: #1E5494;
+} /* 未锟斤拷锟绞碉拷锟斤拷锟斤拷 */
+a:visited {
+	color: #1E5494;
+} /* 锟窖凤拷锟绞碉拷锟斤拷锟斤拷 */
+a:hover {
+	color: #1E5494;
+} /* 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟�*/
+a:active {
+	color: #1E5494;
+} /* 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟�*/
