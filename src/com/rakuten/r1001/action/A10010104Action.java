@@ -25,7 +25,7 @@ public class A10010104Action extends BaseAction {
 		}
 		a1001Common
 				.insertIntoRakutenOrderTbl(orderapibean.getRakutenBeanList());
-		common.setOrderListStatus(shop);
+		//common.setOrderListStatus(shop);
 
 	}
 

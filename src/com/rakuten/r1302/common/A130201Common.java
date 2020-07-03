@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -31,8 +33,12 @@ import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.opensymphony.xwork2.ActionContext;
+import com.rakuten.common.MessageFromRMS;
+import com.rakuten.order.Order;
+import com.rakuten.order.OrderShppingInfo;
 import com.rakuten.r1302.form.F130201;
 import com.rakuten.r1302.form.OrderList;
+import com.rakuten.shop.Shop;
 import com.rakuten.util.JdbcConnection;
 import com.rakuten.util.Utility;
 
@@ -129,7 +135,7 @@ public class A130201Common {
 		return f130201;
 	}
 
-	public List<String> setHaneizumiRakuten(List<String[]> orderNoList1) throws Exception {
+	public List<String> setHaneizumiRakuten_SourceVersion(List<String[]> orderNoList1) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		List<String> messageList = new ArrayList<String>();
@@ -292,6 +298,126 @@ public class A130201Common {
 				if (!Utility.isEmptyList(shorilist)) {
 					String sql = "UPDATE tbl00024 SET HANEISTS = '2' WHERE CHUMONBANGO = ?";
 					for (String orderNo : orderNoList) {
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, orderNo);
+						ps.execute();
+					}
+				}
+
+			}
+			if (Utility.isEmptyList(messageList)) {
+				messageList.add("正常终了");
+			}
+			conn.commit();
+			return messageList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		} finally {
+			conn.close();
+
+		}
+
+	}
+
+	public List<String> setHaneizumiRakuten(List<String[]> orderNoList1) throws Exception {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		List<String> messageList = new ArrayList<String>();
+		try {
+
+			String result = "";
+
+			conn = JdbcConnection.getConnection();
+
+			if (Utility.isEmptyList(orderNoList1)) {
+				messageList.add("没有单号需要反映");
+				return messageList;
+			}
+			for (String[] bango : orderNoList1) {
+				result = result + bango[0] + "&";
+			}
+			List<String[]> dataList = getDenpyoAndKaishaFast(orderNoList1, conn);
+			result = result.substring(0, result.length() - 1) + "%%";
+			for (String data[] : dataList) {
+				result = result + data[0] + "&";
+			}
+			result = result.substring(0, result.length() - 1) + "%%";
+			for (String data[] : dataList) {
+				result = result + data[1] + "&";
+			}
+			result = result.substring(0, result.length() - 1) + "%%";
+			for (String data[] : dataList) {
+				result = result + data[2] + "&";
+			}
+			result = result.substring(0, result.length() - 1).replace("&&", "&");
+
+			String[] orderNoList = result.split("%%")[0].split("&");
+			String[] expNoList = result.split("%%")[1].split("&");
+			String[] kaisha = result.split("%%")[2].split("&");
+			String[] shop = result.split("%%")[3].split("&");
+
+			if (orderNoList == null || orderNoList.length == 0) {
+				messageList.add("没有单号需要反映");
+				return messageList;
+			}
+			List<String> shopNameList = new ArrayList<String>();
+			for (String shopname : shop) {
+				boolean ariFlg = false;
+				for (String shopnameListname : shopNameList) {
+					if (shopname.equals(shopnameListname)) {
+						ariFlg = true;
+						break;
+					}
+				}
+				if (!ariFlg) {
+					shopNameList.add(shopname);
+				}
+			}
+
+			List<List<String[]>> shopbetsuOrderInfoList = new ArrayList<List<String[]>>();
+			for (int i = 0; i < shopNameList.size(); i++) {
+				shopbetsuOrderInfoList.add(new ArrayList<String[]>());
+				String shopname = shopNameList.get(i);
+				for (int j = 0; j < shop.length; j++) {
+					if (shopname.equals(shop[j])) {
+						shopbetsuOrderInfoList.get(i)
+								.add(new String[] { orderNoList[j], expNoList[j], kaisha[j], shop[j] });
+					}
+				}
+
+			}
+
+			for (List<String[]> shopbetsuOrderInfo : shopbetsuOrderInfoList) {
+
+				String shopname = shopbetsuOrderInfo.get(0)[3];				
+				Shop shop_UpdateOrderShipping = new Shop(shopname);
+				OrderShppingInfo orderShppingInfo = OrderShppingInfo.convertOrderShppingInfoFromPage(shopbetsuOrderInfo);
+				shop_UpdateOrderShipping.updateOrderShipping(orderShppingInfo);
+				List<MessageFromRMS> messageFromRMSList = shop_UpdateOrderShipping.getMessageFromRMS_GetOrder();
+				List<String> shorilist = new ArrayList<String>();
+				Set<String> updatedOrderNoSet = new HashSet<String>();
+				for (MessageFromRMS messageFromRMS : messageFromRMSList) {
+					if("INFO".equals(messageFromRMS.getMessageType())) {
+						
+					} else  {
+						messageList.add(messageFromRMS.getMessageCode() + messageFromRMS.getMessage() + messageFromRMS.getOrderNumber() == null ? "" : messageFromRMS.getOrderNumber());
+					}
+				}
+				messageFromRMSList = shop_UpdateOrderShipping.getMessageFromRMS_UpdateOrder();
+				for (MessageFromRMS messageFromRMS : messageFromRMSList) {
+					if("INFO".equals(messageFromRMS.getMessageType())) {
+						updatedOrderNoSet.add(messageFromRMS.getOrderNumber());
+					} else  {
+						messageList.add(messageFromRMS.getMessageCode() + messageFromRMS.getMessage() + messageFromRMS.getOrderNumber());
+					}
+				}
+				shorilist.addAll(updatedOrderNoSet);
+
+				if (!Utility.isEmptyList(shorilist)) {
+					String sql = "UPDATE tbl00024 SET HANEISTS = '2' WHERE CHUMONBANGO = ?";
+					for (String orderNo : shorilist) {
 						ps = conn.prepareStatement(sql);
 						ps.setString(1, orderNo);
 						ps.execute();

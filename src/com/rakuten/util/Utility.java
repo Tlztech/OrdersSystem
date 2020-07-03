@@ -2036,7 +2036,7 @@ public class Utility {
 	}
 
 	public static boolean isValidShop(String shop) {
-		if ("123mart".equals(shop) || "trend777".equals(shop) || "coverforefront".equals(shop)) {
+		if ("123mart".equals(shop) || "trend777".equals(shop) || "coverforefront".equals(shop) || "herz".equals(shop) || "epintl".equals(shop)) {
 			return true;
 		} else {
 			return false;

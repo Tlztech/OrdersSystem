@@ -614,7 +614,7 @@ select {
             <table align="center">
                 <tr height="80px">
                     <td align="center" colspan="2">注文情報を取得する<br/>
-                        <s:select list="#{ 'coverforefront':'coverforefront'}" name="f100101.shutokushop"/>
+                        <s:select list="#{ 'coverforefront':'coverforefront', 'herz':'herz', 'epintl':'epintl'}" name="f100101.shutokushop"/>
                     </td>
                 </tr>
                 
