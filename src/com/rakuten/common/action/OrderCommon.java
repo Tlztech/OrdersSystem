@@ -19,6 +19,7 @@ import javax.xml.datatype.DatatypeFactory;
 
 import org.apache.axis.encoding.Base64;
 
+import com.rakuten.common.MessageFromRMS;
 import com.rakuten.common.bean.CommonOrderBean;
 import com.rakuten.common.bean.CommonOrderDetailrBean;
 import com.rakuten.common.bean.HasouBean;
@@ -27,6 +28,7 @@ import com.rakuten.common.bean.OrderApiBean;
 import com.rakuten.common.bean.OrderInfoBean;
 import com.rakuten.common.bean.ShohinStsInfoBean;
 import com.rakuten.common.bean.ShouhinStsBean;
+import com.rakuten.order.Order;
 import com.rakuten.r1001.bean.RakutenCsvBean;
 import com.rakuten.r1001.bean.RakutenDetailCsvBean;
 import com.rakuten.r1001.common.A1001Common;
@@ -40,6 +42,7 @@ import com.rakuten.r1001.form.ShohinList;
 import com.rakuten.r1001.form.SoushinList;
 import com.rakuten.r1001.form.TuikaDetail;
 import com.rakuten.r1001.form.TuikaList;
+import com.rakuten.shop.Shop;
 import com.rakuten.util.JdbcConnection;
 import com.rakuten.util.Utility;
 
@@ -4610,7 +4613,7 @@ public class OrderCommon {
 		return okureList;
 	}
 
-	public OrderApiBean getOrderListByApi(String shop) throws Exception {
+	public OrderApiBean getOrderListByApi_SourceVersion(String shop) throws Exception {
 		List<RakutenCsvBean> rakutenBeanList = new ArrayList<RakutenCsvBean>();
 		List<String> messageList = new ArrayList<String>();
 
@@ -4675,6 +4678,35 @@ public class OrderCommon {
 
 		}
 
+		OrderApiBean orderApiBean = new OrderApiBean();
+		orderApiBean.setRakutenBeanList(rakutenBeanList);
+		orderApiBean.setMessageList(messageList);
+
+		return orderApiBean;
+	}
+	
+	public OrderApiBean getOrderListByApi(String shopName) throws Exception {
+		List<RakutenCsvBean> rakutenBeanList = new ArrayList<RakutenCsvBean>();
+		List<String> messageList = new ArrayList<String>();
+		
+		Shop shop = new Shop(shopName);
+		List<Integer> orderProgressList = new ArrayList<Integer>();
+		orderProgressList.add(300);
+		List<Order> orders = shop.getOrders(orderProgressList);
+		
+		for(MessageFromRMS message : shop.getMessageFromRMS_GetOrder()) {
+			if ("INFO".equals(message.getMessageType())) {
+				
+			} else {
+				messageList.add(message.getMessageCode() + message.getMessage() + message.getOrderNumber() == null ? "" : message.getOrderNumber());
+			}
+		}
+		
+		for (Order order : orders) {
+
+			rakutenBeanList.add(setOrder(order));
+		}
+		
 		OrderApiBean orderApiBean = new OrderApiBean();
 		orderApiBean.setRakutenBeanList(rakutenBeanList);
 		orderApiBean.setMessageList(messageList);
@@ -5003,6 +5035,179 @@ public class OrderCommon {
 			// ラッピング種類(リボン)
 			// detail.setRapingushuruiribon(item.get);
 		}
+		return bean;
+	}
+	
+	private RakutenCsvBean setOrder(Order order) throws Exception {
+		RakutenCsvBean bean = new RakutenCsvBean();
+		
+		// 受注番号
+		bean.setJuchubango(order.getOrderNumber());
+		
+		// 注文日時
+		SimpleDateFormat sdf_OrderDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdf_OrderDateWithZone = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		bean.setChumonnichiji(sdf_OrderDate.format(sdf_OrderDateWithZone.parse(order.getOrderDatetime())));
+		
+		// 決済方法
+		bean.setKesaihouhou(order.getSettlementModel().getSettlementMethod());
+		
+		// ポイント利用額
+		bean.setPointoriyogaku(Utility.strStringValue(order.getPointModel().getUsedPoint()));
+		
+		// あす楽希望フラグ 
+		bean.setAsurakukibou(Utility.strStringValue(order.getAsurakuFlag()));
+		
+		// 注文者名字
+		bean.setChumonshameiji(order.getOrdererModel().getFamilyName());
+		
+		// 注文者名称
+		bean.setChumonshanamae(order.getOrdererModel().getFirstName());
+		
+		// 注文者名字カナ
+		bean.setChumonshameijifurigana(order.getOrdererModel().getFamilyNameKana());
+		
+		// 注文者名称カナ
+		bean.setChumonshanamaefurigana(order.getOrdererModel().getFirstNameKana());
+		
+		// メールアドレス
+		bean.setMeruadoresu(order.getOrdererModel().getEmailAddress());
+		
+		// 注文者誕生日
+		bean.setChunonshatanjoubi(Utility.strStringValue(order.getOrdererModel().getBirthYear()) + "年" + Utility.strStringValue(order.getOrdererModel().getBirthMonth()) + "月" + Utility.strStringValue(order.getOrdererModel().getBirthDay()) + "日");
+		
+		// 注文者郵便番号１
+		bean.setChumonshayubinbango1(order.getOrdererModel().getZipCode1());
+		
+		// 注文者郵便番号２
+		bean.setChumonshayubinbango2(order.getOrdererModel().getZipCode2());
+		
+		// 注文者住所：都道府県
+		bean.setChumonshajushotodofuken(order.getOrdererModel().getPrefecture());
+		
+		// 注文者住所：都市区
+		bean.setChumonshajushotoshiku(order.getOrdererModel().getCity());
+		
+		// 注文者住所：町以降
+		bean.setChumonshajushochoijou(order.getOrdererModel().getSubAddress());
+		
+		// 注文者電話番号１
+		bean.setChumonshadenwabango1(order.getOrdererModel().getPhoneNumber1());
+		
+		// 注文者電話番号２
+		bean.setChumonshadenwabango2(order.getOrdererModel().getPhoneNumber2());
+		
+		// 注文者電話番号３
+		bean.setChumonshadenwabango3(order.getOrdererModel().getPhoneNumber3());
+		
+		// コメント
+		bean.setKomento(order.getRemarks());
+		
+		// メール差込文(お客様へのメッセージ)
+		bean.setMerusashikomibun(order.getMailPlugSentence());
+		
+		// 送付先名字
+		bean.setSofusakimeiji(order.getPackageModelList().get(0).getSenderModel().getFamilyName());
+		
+		// 送付先名前
+		bean.setSoufusakinamae(order.getPackageModelList().get(0).getSenderModel().getFirstName());
+		
+		// 送付先名字フリガナ
+		bean.setSoufusakimeijifurigana(order.getPackageModelList().get(0).getSenderModel().getFamilyNameKana());
+		
+		// 送付先名前フリガナ
+		bean.setSoufusakimeijinamaefurigana(order.getPackageModelList().get(0).getSenderModel().getFamilyNameKana());
+		
+		// 配送方法
+		bean.setHaisouhoho(order.getDeliveryModel().getDeliveryName());
+		
+		// 送付先郵便番号１
+		bean.setSoufusakiyubinbango1(order.getPackageModelList().get(0).getSenderModel().getZipCode1());
+		
+		// 送付先郵便番号２
+		bean.setSoufusakiyubinbango2(order.getPackageModelList().get(0).getSenderModel().getZipCode2());
+		
+		// 送付先電話番号１
+		bean.setSoufusakidenwabango1(order.getPackageModelList().get(0).getSenderModel().getPhoneNumber1());
+		
+		// 送付先電話番号２
+		bean.setSoufusakidenwabango2(order.getPackageModelList().get(0).getSenderModel().getPhoneNumber2());
+		
+		// 送付先電話番号３
+		bean.setSoufusakidenwabango3(order.getPackageModelList().get(0).getSenderModel().getPhoneNumber3());
+		
+		// 送付先住所：都道府県
+		bean.setSoufusakijushotodofuken(order.getPackageModelList().get(0).getSenderModel().getPrefecture());
+		
+		// 送付先住所：都市区
+		bean.setSoufusakijushotoshiku(order.getPackageModelList().get(0).getSenderModel().getCity());
+		
+		// 送付先住所：町以降
+		bean.setSoufusakijushochoijou(order.getPackageModelList().get(0).getSenderModel().getSubAddress());
+		
+		// 合計商品
+		bean.setGokei(Utility.strStringValue(order.getGoodsPrice()));
+		
+		// 合計税
+		bean.setShohizei(Utility.strStringValue(order.getGoodsTax()));
+		
+		// 合計送料
+		bean.setSoryou(Utility.strStringValue(order.getPostagePrice()));
+		
+		// 合計代引き料
+		bean.setDaibikiryou(Utility.strStringValue(order.getDeliveryPrice()));
+		
+		// 請求金額
+		bean.setSeikyukingaku(Utility.strStringValue(order.getRequestPrice()));
+		
+		// クーポン利用額
+		bean.setKuponriyougaku(Utility.strStringValue(order.getCouponAllTotalPrice()));
+		
+		List<RakutenDetailCsvBean> detailList = new ArrayList<RakutenDetailCsvBean>();
+		RakutenDetailCsvBean detail = null;
+		for (Order.PackageModel.ItemModel item : order.getPackageModelList().get(0).getItemModelList()) {
+			detail = new RakutenDetailCsvBean();
+			// 商品名
+			detail.setShouhinmei(item.getItemName());
+			
+			// 商品番号
+			detail.setShouhinbango(item.getManageNumber());
+			
+			// 単価
+			detail.setTanka(Utility.strStringValue(item.getPrice()));
+			
+			// 個数
+			detail.setKosu(Utility.strStringValue(item.getUnits()));
+			
+			// 送料込別
+			detail.setSouryoukomibetsu(item.getIncludePostageFlag() == 1 ? "込" : "別");
+			
+			// 税込別
+			detail.setZeikomibetsu(item.getIncludeTaxFlag() == 1 ? "込" : "別");
+			
+			// 代引手数料込別
+			detail.setDaibikitesuryoukomibetsu(item.getIncludeCashOnDeliveryPostageFlag() == 1 ? "込" : "別");
+			
+			// 項目・選択肢
+			detail.setKomokusentakushi(item.getSelectedChoice());
+			
+			// ポイント倍率
+			detail.setPointobairitsu(Utility.strStringValue(item.getPointRate()));
+			
+			// 納期情報
+			detail.setNokijouho(item.getDelvdateInfo());
+			
+			detailList.add(detail);
+		}
+		// 詳細リスト
+		bean.setShousaiList(detailList);
+		
+		// 同梱ステータス
+		bean.setDokonsutetasu("0");
+		
+		// 同梱ID
+		bean.setDokonId("0");
+		
 		return bean;
 	}
 

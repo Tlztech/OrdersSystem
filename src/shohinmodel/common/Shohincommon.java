@@ -1939,7 +1939,12 @@ public class Shohincommon {
 			return "SL308759_dwO0OKqw0WpoU1Qe";
 		} else if ("xandw".equals(shop)) {
 			return "SL385894_I0TJHpFkKKTUE8rZ";
-		}else {
+		} else if("herz".equals(shop)) {
+			return "SL373860_wsvGzhpPASKJBfZW";
+		} else if("epintl".equals(shop)) {
+			return "SL384100_KJmQRT9IWq2B7Ufy";
+		}
+		else {
 			return null;
 		}
 	}
@@ -1951,8 +1956,11 @@ public class Shohincommon {
 			return "SP308759_ciMfQ60q20mv6lqj";
 		}  else if ("xandw".equals(shop)) {
 			return "SP385894_kKJvsG9BMIIfQyL2";
-		}
-else {
+		} else if("herz".equals(shop)) {
+			return "SP373860_Sx9XVW18xqNKDRtu";
+		} else if("epintl".equals(shop)) {
+			return "SP384100_AOsYOLS5wpPy300f";
+		}else {
 			return null;
 		}
 	}

@@ -1001,6 +1001,10 @@ public class A1001Common {
 					ps.setString(++j, "楽天");
 					if (orderList.get(i).getJuchubango().startsWith("308759")) {
 						shop = "coverforefront";
+					} else if (orderList.get(i).getJuchubango().startsWith("373860")) {
+						shop = "herz";
+					} else if (orderList.get(i).getJuchubango().startsWith("384100")) {
+						shop = "epintl";
 					} else {
 						shop = orderList.get(i).getShousaiList().get(0).getShouhinURL();
 						shop = shop.replace("//", "");
