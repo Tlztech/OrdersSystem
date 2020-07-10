@@ -821,9 +821,9 @@ public class A13010103Action extends BaseAction {
 			}
 		}
 		String targetPdfPath = "C:\\temp\\" + dirName + "\\meisaisho.pdf";
-//		if (!okurijonomi) {
+		if (!okurijonomi) {
 			pdfUtil.generatePDF(targetPdfPath);
-//		}
+		}
 
 		orderList1 = getOrderList(orderList_temp);
 		if (!okurijonomi) {
@@ -1117,7 +1117,7 @@ public class A13010103Action extends BaseAction {
 		row = new ArrayList<String>();
 		row.add("消費税");
 		if (!Utility.isEmptyString(f100102.getGokeizei()) && Integer.valueOf(f100102.getGokeizei()) > 0) {
-			row.add(f100102.getGokeishouhin());
+			row.add(f100102.getGokeizei());
 		} else {
 			row.add("内税");
 		}
@@ -1132,8 +1132,6 @@ public class A13010103Action extends BaseAction {
 			row.add(f100102.getGokeidaibikiryou() + " 円 ");
 			sumList.add(row);
 		}
-		pdfData.put("sumtable", sumList);
-		List<List<String>> totalSumList = new ArrayList<List<String>>();
 		row = new ArrayList<String>();
 		row.add("総合計");
 		Long sogokei = 0l;
@@ -1149,11 +1147,11 @@ public class A13010103Action extends BaseAction {
 
 		sogokei = Long.valueOf(f100102.getGokeishouhin()) + shohizei + soryo + daibikiryo;
 		row.add(sogokei + " 円 ");
-		totalSumList.add(row);
+		sumList.add(row);
 		row = new ArrayList<String>();
 		row.add("ポイント利用額");
 		row.add(f100102.getPointriyou() + " 円 ");
-		totalSumList.add(row);
+		sumList.add(row);
 		row = new ArrayList<String>();
 		row.add("その他");
 		Long seikyu = Long.valueOf(f100102.getSeikyukingaku());
@@ -1161,12 +1159,12 @@ public class A13010103Action extends BaseAction {
 		Long sonota = 0l;
 		sonota = seikyu + point - sogokei;
 		row.add(sonota + " 円 ");
-		totalSumList.add(row);
+		sumList.add(row);
 		row = new ArrayList<String>();
 		row.add("請求金額");
-		row.add(f100102.getSeikyukingaku());
-		totalSumList.add(row);
-		pdfData.put("totalsumtable", totalSumList);
+		row.add(f100102.getSeikyukingaku() + " 円 ");
+		sumList.add(row);
+		pdfData.put("sumtable", sumList);
 		pdfData.put("barcode", order.getChumonbango());
 		return pdfData;
 	}
