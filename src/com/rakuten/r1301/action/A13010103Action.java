@@ -17,7 +17,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedOutputStream;
 import java.util.zip.ZipOutputStream;
@@ -34,6 +36,7 @@ import com.rakuten.r1001.form.F100102;
 import com.rakuten.r1001.form.ShohinList;
 import com.rakuten.r1301.form.F130101;
 import com.rakuten.r1301.form.OrderList;
+import com.rakuten.util.DetailTicketPdfUtil;
 import com.rakuten.util.JdbcConnection;
 import com.rakuten.util.Utility;
 
@@ -49,7 +52,7 @@ public class A13010103Action extends BaseAction {
 	List<OrderBean> orderList1 = null;
 	private boolean okurijonomi = false;
 
-	protected void exec() throws Exception {
+	protected void exec_SourceVersion() throws Exception {
 
 		outCsv(orderList1);
 		if (!okurijonomi) {
@@ -61,6 +64,21 @@ public class A13010103Action extends BaseAction {
 					"jquery-1.3.2.min.js");
 			Utility.copyFile(basePath + "/WEB-INF/classes/jquery-barcode-last.min.js", "c:/temp/" + dirName + "/",
 					"jquery-barcode-last.min.js");
+		}
+		fileName = "out_" + dirName + ".zip";
+		FileOutputStream fileOutputStream = new FileOutputStream(new File("c:/temp/" + fileName));
+		CheckedOutputStream cos = new CheckedOutputStream(fileOutputStream, new CRC32());
+		ZipOutputStream out = new ZipOutputStream(cos);
+		String basedir = "";
+		Utility.compress(new File("c:/temp/" + dirName), out, basedir);
+		out.close();
+	}
+	
+	protected void exec() throws Exception {
+
+		outCsv(orderList1);
+		if (!okurijonomi) {
+			setPrintzumi();
 		}
 		fileName = "out_" + dirName + ".zip";
 		FileOutputStream fileOutputStream = new FileOutputStream(new File("c:/temp/" + fileName));
@@ -395,7 +413,8 @@ public class A13010103Action extends BaseAction {
 				String name = orderBean.getSofusakimeiji() + orderBean.getSofusakinamae();
 				bufferedWriterYamatoMerubin.newLine();
 				bufferedWriterYamatoMerubin.write(",7,0,," + yotebi + ",,,," + denwabango + ",," + yunbinbango + ","
-						+ jusho1 + "," + jusho2 + ",,," + name + ",,"+"様"+",,"+Utility.getShopTel(shop, site)+",,3490114,埼玉県蓮田市馬込2-132,エルディムセブン1-203," + shop
+						+ jusho1 + "," + jusho2 + ",,," + name + ",," + "様" + ",," + Utility.getShopTel(shop, site)
+						+ ",,3490114,埼玉県蓮田市馬込2-132,エルディムセブン1-203," + shop
 						+ ",,,衣類,,,,,,,,0,,1,,05035675168,,01,0,,,,,0,,,,0,,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,ユーザーID,,,,0,,,0,,,0,,,");
 
 			}
@@ -548,7 +567,7 @@ public class A13010103Action extends BaseAction {
 
 	}
 
-	protected void isValidated() throws Exception {
+	protected void isValidated_SourceVersion() throws Exception {
 		String type = f130101.getOuttype();
 
 		if ("0".equals(type)) {
@@ -731,6 +750,116 @@ public class A13010103Action extends BaseAction {
 
 	}
 
+	protected void isValidated() throws Exception {
+		String type = f130101.getOuttype();
+
+		if ("0".equals(type)) {
+			boolean result = false;
+			for (OrderList order : f130101.getOrderList()) {
+				if (Utility.isEmptyString(order.getUnsokaisha())) {
+					addError("", order.getChumonbango() + "運送会社未設定！");
+				}
+				if (Utility.isEmptyString(order.getSize())) {
+					addError("", order.getChumonbango() + "サイズ未設定！");
+				}
+				if (order.isIschecked()) {
+					result = true;
+				}
+			}
+			if (!result) {
+				addError("", "注文を選択してください！");
+			}
+		}
+
+		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		dirName = df.format(new Date());
+		File dir = new File("c://temp/" + dirName);
+		dir.mkdirs();
+		List<OrderList> orderList_temp = null;
+
+		if ("1".equals(type)) {
+			orderList_temp = (List<OrderList>) getSessionAttribute("orderList");
+		} else {
+			orderList_temp = new ArrayList<OrderList>();
+			for (OrderList order : f130101.getOrderList()) {
+				if (order.isIschecked()) {
+					orderList_temp.add(order);
+				}
+			}
+		}
+		
+		DetailTicketPdfUtil pdfUtil = new DetailTicketPdfUtil();
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String templatePdfPath = request.getSession().getServletContext().getRealPath("/");
+		String file = "/WEB-INF/classes/template.pdf";
+		for (OrderList order : orderList_temp) {
+			Connection conn = null;
+			F100102 f100102 = null;
+			try {
+				conn = JdbcConnection.getConnection();
+				f100102 = getOrderInfo(order.getChumonbango(), conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+				conn.rollback();
+				throw e;
+			} finally {
+				conn.close();
+			}
+			List<ShohinList> shohinList;
+			while (true) {
+				shohinList = f100102.getShohinList();
+				if (shohinList.size() <= 4) {
+					Map<String, Object> pdfData = model(order, f100102);
+					pdfUtil.generateOnePageWithTemplate(templatePdfPath + file, pdfData);
+					break;
+				} else {
+					Map<String, Object> pdfData = model(order, f100102);
+					pdfUtil.generateOnePageWithTemplate(templatePdfPath + file, pdfData);
+					f100102.setShohinList(shohinList.subList(4, shohinList.size()));
+					shohinList = shohinList.subList(0, 4);
+				}
+			}
+		}
+		String targetPdfPath = "C:\\temp\\" + dirName + "\\meisaisho.pdf";
+//		if (!okurijonomi) {
+			pdfUtil.generatePDF(targetPdfPath);
+//		}
+
+		orderList1 = getOrderList(orderList_temp);
+		if (!okurijonomi) {
+			if (f130101.isCheckFlg()) {
+				List<String> printzumiList = new ArrayList<String>();
+				Connection conn = null;
+				try {
+					conn = JdbcConnection.getConnection();
+					String sql = "select chumonbango from tbl00025 where chumonbango = ?";
+					PreparedStatement ps = conn.prepareStatement(sql);
+
+					for (int i = 0; i < orderList1.size(); i++) {
+						String bango = orderList1.get(i).getJuchubango();
+						ps.setString(1, bango);
+						ResultSet rs = ps.executeQuery();
+						while (rs.next()) {
+							printzumiList.add(rs.getString("chumonbango"));
+						}
+					}
+					if (!Utility.isEmptyList(printzumiList)) {
+						for (String msg : printzumiList) {
+							addError(null, msg + "已经打印！请检查是否已经发送！");
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					conn.rollback();
+					throw e;
+				} finally {
+					conn.close();
+				}
+			}
+		}
+
+	}
+
 	@Override
 	protected void fieldCheck() throws Exception {
 		// TODO Auto-generated method stub
@@ -745,8 +874,7 @@ public class A13010103Action extends BaseAction {
 	}
 
 	/**
-	 * @param f130101
-	 *            the f130101 to set
+	 * @param f130101 the f130101 to set
 	 */
 	public void setF130101(F130101 f130101) {
 		this.f130101 = f130101;
@@ -917,6 +1045,130 @@ public class A13010103Action extends BaseAction {
 		html.append(shoriDiv);
 		return html.toString();
 
+	}
+
+	private Map<String, Object> model(OrderList order, F100102 f100102) {
+		Map<String, Object> pdfData = new HashMap<String, Object>();
+		String shopName;
+		// 店铺名
+		if ("coverforefront".equals(order.getTenpo())) {
+			shopName = "WhiteSweet";
+		} else {
+			shopName = order.getTenpo();
+		}
+		pdfData.put("title", "[" + shopName + "] お買い上げ明細書");
+		pdfData.put("buyeraddr", f100102.getChumonshajusho());
+		pdfData.put("buyername", f100102.getChumonshanamae() + " 様 ");
+		StringBuilder saleerAddr = new StringBuilder(shopName);
+		saleerAddr.append(System.lineSeparator());
+		saleerAddr.append(Utility.getShopUrl(order.getTenpo(), order.getSite()));
+		saleerAddr.append(System.lineSeparator());
+		saleerAddr.append(shopName);
+		saleerAddr.append(System.lineSeparator());
+		saleerAddr.append("〒").append(Utility.getShopPost(order.getTenpo(), order.getSite()));
+		saleerAddr.append(System.lineSeparator());
+		saleerAddr.append(Utility.getShopAddr(order.getTenpo(), order.getSite()));
+		saleerAddr.append(System.lineSeparator());
+		saleerAddr.append("TEL： ").append(Utility.getShopTel(order.getTenpo(), order.getSite()));
+		saleerAddr.append(System.lineSeparator());
+		saleerAddr.append("FAX：").append(Utility.getShopFax(order.getTenpo(), order.getSite()));
+		pdfData.put("saleeraddr", saleerAddr.toString());
+		StringBuilder content = new StringBuilder("明細内容に関してご不明な点は、下記のページアドレス（URL）を");
+		content.append(System.lineSeparator()).append("ご確認の上、当店「");
+		content.append(shopName);
+		content.append("」までお問合わせください。");
+		content.append(System.lineSeparator());
+		content.append("「").append(shopName).append("}」 :")
+				.append(Utility.getShopUrl(order.getTenpo(), order.getSite()));
+		pdfData.put("content", content.toString());
+		StringBuilder receiveAddr = new StringBuilder("■お届け先：");
+		receiveAddr.append(System.lineSeparator()).append(f100102.getSofusakijoho()
+				.replaceFirst("<br>", "　様" + System.lineSeparator()).replace("<br>", System.lineSeparator()));
+		pdfData.put("receiveaddr", receiveAddr.toString());
+		StringBuilder orderInfo = new StringBuilder("■ご注文日： ");
+		orderInfo.append(order.getChumonichiji().substring(0, 10));
+		orderInfo.append(System.lineSeparator()).append(System.lineSeparator());
+		orderInfo.append("■受注番号：").append(order.getChumonbango());
+		pdfData.put("orderinfo", orderInfo.toString());
+		pdfData.put("payway", "■お支払い方法：" + order.getOshiharaihoho());
+		List<ShohinList> shohinList = f100102.getShohinList();
+		List<List<String>> detailTableList = new ArrayList<List<String>>();
+		List<String> row = new ArrayList<String>();
+		row.add("商品名／商品番号／項目：選択肢");
+		row.add("個数");
+		row.add("単価");
+		row.add("小計");
+		detailTableList.add(row);
+		for (ShohinList shohin : shohinList) {
+			row = new ArrayList<String>();
+			row.add(shohin.getShouhinmei() + shohin.getShohinbango() + System.lineSeparator()
+					+ shohin.getKomokusentakushi().replace("<br>", " "));
+			row.add(shohin.getKosu());
+			row.add(shohin.getTankaku() + " 円 ");
+			row.add(shohin.getShoukei() + " 円 ");
+			detailTableList.add(row);
+		}
+		pdfData.put("detailtable", detailTableList);
+		List<List<String>> sumList = new ArrayList<List<String>>();
+		row = new ArrayList<String>();
+		row.add("合計");
+		row.add(f100102.getGokeishouhin() + " 円 ");
+		sumList.add(row);
+		row = new ArrayList<String>();
+		row.add("消費税");
+		if (!Utility.isEmptyString(f100102.getGokeizei()) && Integer.valueOf(f100102.getGokeizei()) > 0) {
+			row.add(f100102.getGokeishouhin());
+		} else {
+			row.add("内税");
+		}
+		sumList.add(row);
+		row = new ArrayList<String>();
+		row.add("送料");
+		row.add(f100102.getGokeisouryou() + " 円 ");
+		sumList.add(row);
+		if (!Utility.isEmptyString(f100102.getGokeidaibikiryou())) {
+			row = new ArrayList<String>();
+			row.add("代引き手数料");
+			row.add(f100102.getGokeidaibikiryou() + " 円 ");
+			sumList.add(row);
+		}
+		pdfData.put("sumtable", sumList);
+		List<List<String>> totalSumList = new ArrayList<List<String>>();
+		row = new ArrayList<String>();
+		row.add("総合計");
+		Long sogokei = 0l;
+		Long shohizei = 0l;
+		Long daibikiryo = 0l;
+		if (!Utility.isEmptyString(f100102.getGokeizei())) {
+			shohizei = Long.valueOf(f100102.getGokeizei());
+		}
+		Long soryo = Long.valueOf(f100102.getGokeisouryou());
+		if (!Utility.isEmptyString(f100102.getGokeidaibikiryou())) {
+			daibikiryo = Long.valueOf(f100102.getGokeidaibikiryou());
+		}
+
+		sogokei = Long.valueOf(f100102.getGokeishouhin()) + shohizei + soryo + daibikiryo;
+		row.add(sogokei + " 円 ");
+		totalSumList.add(row);
+		row = new ArrayList<String>();
+		row.add("ポイント利用額");
+		row.add(f100102.getPointriyou() + " 円 ");
+		totalSumList.add(row);
+		row = new ArrayList<String>();
+		row.add("その他");
+		Long seikyu = Long.valueOf(f100102.getSeikyukingaku());
+		Long point = Long.valueOf(f100102.getPointriyou());
+		Long sonota = 0l;
+		sonota = seikyu + point - sogokei;
+		row.add(sonota + " 円 ");
+		totalSumList.add(row);
+		row = new ArrayList<String>();
+		row.add("請求金額");
+		row.add(f100102.getSeikyukingaku());
+		totalSumList.add(row);
+		pdfData.put("totalsumtable", totalSumList);
+		pdfData.put("barcode", order.getChumonbango());
+		return pdfData;
 	}
 
 	public String getFileName() {
