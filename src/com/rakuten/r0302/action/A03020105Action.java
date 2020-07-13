@@ -96,7 +96,7 @@ public class A03020105Action extends BaseAction {
 							sql = "UPDATE TBL00012 SET COMM_DESCRIBE = ?,RE_PRICE = ?,UPDATE_TIME = ? , YOKONAME = ?, SHITAGANAME = ?, UPDATE_USER = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 							ps = conn.prepareStatement(sql);
 							ps.setString(1, detail.getDescribe());
-							if (shohinInfoBean.getShouhinbango().equals(
+							if (shohinInfoBean.getShouhinkanribango().equals(
 									"sjpj138")) {
 								detail.getDescribe();
 							}
@@ -203,7 +203,7 @@ public class A03020105Action extends BaseAction {
 
 				sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				ps = conn.prepareStatement(sql);
-				ps.setString(1, shohinInfoBean.getShouhinbango());
+				ps.setString(1, shohinInfoBean.getShouhinkanribango());
 				// TODO
 				ps.setString(2, "100001");
 				ps.setString(3, shohinInfoBean.getShouhinmei());

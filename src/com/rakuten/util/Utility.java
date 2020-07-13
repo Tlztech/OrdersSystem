@@ -1079,7 +1079,11 @@ public class Utility {
 		if (itemCatCsv != null) {
 			itemCatList = readCsvFile(itemCatCsv, true);
 		}
-		List<String[]> selectList = readCsvFile(selectCsv, true);
+//		List<String[]> selectList = readCsvFile(selectCsv, true);
+		List<String[]> selectList = null;
+		if (selectCsv != null) {
+			selectList = readCsvFile(selectCsv, true);
+		}
 
 		// 结果
 		List<ShohinBean> shohinList = new ArrayList<ShohinBean>();
@@ -1215,45 +1219,81 @@ public class Utility {
 			// 从selectCsv获取商品基本信息
 			shohinsentakushiBeanList = new ArrayList<ShohinsentakushiBean>();
 			ShohinsentakushiBean shohinsentakushiBean = null;
-			for (int k = 0; k < selectList.size(); k++) {
-				j = 0;
-				String shouhinkanribango = shohinInfoBean.getShouhinkanribango();
-				if (shouhinkanribango.equals(selectList.get(k)[1])) {
-					shohinsentakushiBean = new ShohinsentakushiBean();
-					shohinsentakushiBeanList.add(shohinsentakushiBean);
-					// 商品管理番号（商品URL）
-					shohinsentakushiBean.setShohinkanribango(selectList.get(k)[++j]);
-					// 選択肢タイプ
-					shohinsentakushiBean.setSentakutaipu(selectList.get(k)[++j]);
-					// Select/Checkbox用項目名
-					shohinsentakushiBean.setSelectcheckboxyoukomokumei(selectList.get(k)[++j]);
-					// Select/Checkbox用選択肢
-					shohinsentakushiBean.setSelectcheckboxyousentakushi(selectList.get(k)[++j]);
-					// 項目選択肢別在庫用横軸選択肢
-					shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi(selectList.get(k)[++j]);
-					// 項目選択肢別在庫用横軸選択肢子番号
-					shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango(
-							selectList.get(k)[++j].replace("－", "-"));
-					// 項目選択肢別在庫用縦軸選択肢
-					shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi(selectList.get(k)[++j]);
-					// 項目選択肢別在庫用縦軸選択肢子番号
-					shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango(
-							selectList.get(k)[++j].replace("－", "-"));
-					// 項目選択肢別在庫用取り寄せ可能表示
-					shohinsentakushiBean.setKomokusentakushibetuzaikototoriyosekanohyouji(selectList.get(k)[++j]);
-					// 項目選択肢別在庫用在庫数
-					shohinsentakushiBean.setKomokusentakushibetuzaikoyozaikosu(selectList.get(k)[++j]);
-					// 在庫戻しフラグ
-					shohinsentakushiBean.setZaikonodoshifuragu(selectList.get(k)[++j]);
-					// 在庫切れ時の注文受付
-					shohinsentakushiBean.setZaikokiretokinochumonuketuke(selectList.get(k)[++j]);
-					// 在庫あり時納期管理番号
-					shohinsentakushiBean.setZaikoaritokinoukikanribango(selectList.get(k)[++j]);
-					// 在庫切れ時納期管理番号
-					shohinsentakushiBean.setZaikokiretokinoukikanribango(selectList.get(k)[++j]);
+			
+			if (selectCsv != null) {
+				for (int k = 0; k < selectList.size(); k++) {
+					j = 0;
+					String shouhinkanribango = shohinInfoBean.getShouhinkanribango();
+					if (shouhinkanribango.equals(selectList.get(k)[1])) {
+						shohinsentakushiBean = new ShohinsentakushiBean();
+						shohinsentakushiBeanList.add(shohinsentakushiBean);
+						// 商品管理番号（商品URL）
+						shohinsentakushiBean.setShohinkanribango(selectList.get(k)[++j]);
+						// 選択肢タイプ
+						shohinsentakushiBean.setSentakutaipu(selectList.get(k)[++j]);
+						// Select/Checkbox用項目名
+						shohinsentakushiBean.setSelectcheckboxyoukomokumei(selectList.get(k)[++j]);
+						// Select/Checkbox用選択肢
+						shohinsentakushiBean.setSelectcheckboxyousentakushi(selectList.get(k)[++j]);
+						// 項目選択肢別在庫用横軸選択肢
+						shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi(selectList.get(k)[++j]);
+						// 項目選択肢別在庫用横軸選択肢子番号
+						shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango(
+								selectList.get(k)[++j].replace("－", "-"));
+						// 項目選択肢別在庫用縦軸選択肢
+						shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi(selectList.get(k)[++j]);
+						// 項目選択肢別在庫用縦軸選択肢子番号
+						shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango(
+								selectList.get(k)[++j].replace("－", "-"));
+						// 項目選択肢別在庫用取り寄せ可能表示
+						shohinsentakushiBean.setKomokusentakushibetuzaikototoriyosekanohyouji(selectList.get(k)[++j]);
+						// 項目選択肢別在庫用在庫数
+						shohinsentakushiBean.setKomokusentakushibetuzaikoyozaikosu(selectList.get(k)[++j]);
+						// 在庫戻しフラグ
+						shohinsentakushiBean.setZaikonodoshifuragu(selectList.get(k)[++j]);
+						// 在庫切れ時の注文受付
+						shohinsentakushiBean.setZaikokiretokinochumonuketuke(selectList.get(k)[++j]);
+						// 在庫あり時納期管理番号
+						shohinsentakushiBean.setZaikoaritokinoukikanribango(selectList.get(k)[++j]);
+						// 在庫切れ時納期管理番号
+						shohinsentakushiBean.setZaikokiretokinoukikanribango(selectList.get(k)[++j]);
+					}
 				}
+			}else {
+				String shouhinkanribango = shohinInfoBean.getShouhinkanribango();
 
+				shohinsentakushiBean = new ShohinsentakushiBean();
+				shohinsentakushiBeanList.add(shohinsentakushiBean);
+				// 商品管理番号（商品URL）
+				shohinsentakushiBean.setShohinkanribango(shouhinkanribango);
+				// 選択肢タイプ
+				shohinsentakushiBean.setSentakutaipu("i");
+				// Select/Checkbox用項目名
+				shohinsentakushiBean.setSelectcheckboxyoukomokumei("");
+				// Select/Checkbox用選択肢
+				shohinsentakushiBean.setSelectcheckboxyousentakushi("");
+				// 項目選択肢別在庫用横軸選択肢
+				shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi("仮横軸名称");
+				// 項目選択肢別在庫用横軸選択肢子番号
+				shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango("-0");
+				// 項目選択肢別在庫用縦軸選択肢
+				shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi("仮縦軸名称");
+				// 項目選択肢別在庫用縦軸選択肢子番号
+				shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango("-0");
+				// 項目選択肢別在庫用取り寄せ可能表示
+				shohinsentakushiBean.setKomokusentakushibetuzaikototoriyosekanohyouji("");
+				// 項目選択肢別在庫用在庫数
+				shohinsentakushiBean.setKomokusentakushibetuzaikoyozaikosu("0");
+				// 在庫戻しフラグ
+				shohinsentakushiBean.setZaikonodoshifuragu("0");
+				// 在庫切れ時の注文受付
+				shohinsentakushiBean.setZaikokiretokinochumonuketuke("1");
+				// 在庫あり時納期管理番号
+				shohinsentakushiBean.setZaikoaritokinoukikanribango("1");
+				// 在庫切れ時納期管理番号
+				shohinsentakushiBean.setZaikokiretokinoukikanribango("1");
 			}
+
 			if (itemCatCsv != null) {
 				// 从selectCsv获取商品基本信息
 				shohinkategoriBeanList = new ArrayList<ShohinkategoriBean>();
