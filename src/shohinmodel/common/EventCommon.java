@@ -192,7 +192,7 @@ public class EventCommon {
 				stockbean = new StockBean();
 				stockList.add(stockbean);
 				stockbean.setCommodity_id(rs.getString("commodity_id"));
-				stockbean.setDetail_no(rs.getString("detail_no"));
+				stockbean.setDetail_no(rs.getString("detail_no").replace("-0-0", ""));
 				stockbean.setStock_jp(rs.getInt("stock_jp"));
 				stockbean.setStock_jp_kano(rs.getInt("stock_jp"));
 				stockbean.setStock_sh(rs.getInt("stock_sh"));
@@ -762,7 +762,7 @@ public class EventCommon {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				String commodityId = rs.getString("COMMODITY_ID");
-				String detailNo = rs.getString("DETAIL_NO");
+				String detailNo = rs.getString("DETAIL_NO").replace("-0-0", "");
 				String stockJp = rs.getString("STOCK_JP");
 				String[] stockInfo = { commodityId + detailNo, stockJp };
 				stockList.add(stockInfo);

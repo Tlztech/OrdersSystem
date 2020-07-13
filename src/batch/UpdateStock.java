@@ -52,7 +52,7 @@ public class UpdateStock extends BaseAction {
 				stockbean = new StockBean();
 				stockList.add(stockbean);
 				stockbean.setCommodity_id(rs.getString("commodity_id"));
-				stockbean.setDetail_no(rs.getString("detail_no"));
+				stockbean.setDetail_no(rs.getString("detail_no").replace("-0-0", ""));
 				stockbean.setStock_jp(rs.getInt("stock_jp"));
 				stockbean.setStock_jp_kano(rs.getInt("stock_jp"));
 				stockbean.setStock_sh(rs.getInt("stock_sh"));

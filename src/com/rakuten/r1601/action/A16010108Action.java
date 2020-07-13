@@ -46,7 +46,7 @@ public class A16010108Action extends BaseAction {
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				String sellerCode = rs.getString("commodity_id");
-				String optionCode = rs.getString("detail_no");
+				String optionCode = rs.getString("detail_no").replace("-0-0", "");
 				String qty = "1".equals(rs.getString("del_flg")) ? "0" : "300";
 				String optionKind = "i";
 				shoriList.add(new String[] { "", sellerCode, optionCode, "", qty, optionKind });

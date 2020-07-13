@@ -44,7 +44,7 @@ public class GetCommodityByIdAp {
 				if (!Utility.isEmptyString(rs.getString("DETAIL_NO"))) {
 					detail = new CommodityDetail();
 					CommodityDetailList.add(detail);
-					detail.setDetailNo(rs.getString("DETAIL_NO"));
+					detail.setDetailNo(rs.getString("DETAIL_NO").replace("-0-0", ""));
 					detail.setDescribe(rs.getString("COMM_DESCRIBE"));
 					detail.setPicUrl(rs.getString("PIC_URL_T2"));
 					detail.setPriceIn(rs.getString("PRICE_IN"));

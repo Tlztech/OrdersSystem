@@ -227,7 +227,7 @@ public class A03020104Action extends BaseAction {
 				output.put(
 						"COMMODITY_ID",
 						rs.getString("COMMODITY_ID")
-								+ rs.getString("DETAIL_NO"));
+								+ rs.getString("DETAIL_NO").replace("-0-0", ""));
 				output.put("CATEGORY_NAME", rs.getString("CATEGORY_NAME"));
 				output.put("JAPANESE_NAME", rs.getString("JAPANESE_NAME"));
 				output.put("COMM_DESCRIBE", rs.getString("COMM_DESCRIBE"));
