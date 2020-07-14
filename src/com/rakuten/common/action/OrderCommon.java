@@ -5173,6 +5173,9 @@ public class OrderCommon {
 			// 商品番号
 			detail.setShouhinbango(item.getManageNumber());
 			
+			// 商品URL
+			detail.setShouhinURL("");
+			
 			// 単価
 			detail.setTanka(Utility.strStringValue(item.getPrice()));
 			
@@ -5189,7 +5192,7 @@ public class OrderCommon {
 			detail.setDaibikitesuryoukomibetsu(item.getIncludeCashOnDeliveryPostageFlag() == 1 ? "込" : "別");
 			
 			// 項目・選択肢
-			detail.setKomokusentakushi(item.getSelectedChoice());
+			detail.setKomokusentakushi(Utility.strStringValue(item.getSelectedChoice()));
 			
 			// ポイント倍率
 			detail.setPointobairitsu(Utility.strStringValue(item.getPointRate()));
