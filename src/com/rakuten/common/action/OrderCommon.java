@@ -5007,7 +5007,7 @@ public class OrderCommon {
 			// 商品番号
 			detail.setShouhinbango(item.getItemNumber());
 			// 商品URL
-			detail.setShouhinURL(item.getPageURL());
+			detail.setShouhinURL(Utility.strStringValue(item.getPageURL()));
 			// 単価
 			detail.setTanka(Utility.strStringValue(item.getPrice()));
 			// 個数
@@ -5019,7 +5019,7 @@ public class OrderCommon {
 			// 代引手数料込別
 			detail.setDaibikitesuryoukomibetsu(item.isIsIncludedCashOnDeliveryPostage() ? "込" : "別");
 			// 項目・選択肢
-			detail.setKomokusentakushi(item.getSelectedChoice());
+			detail.setKomokusentakushi(Utility.strStringValue(item.getSelectedChoice()));
 			// ポイント倍率
 			detail.setPointobairitsu(Utility.strStringValue(item.getPointRate()));
 			// ポイントタイプ
