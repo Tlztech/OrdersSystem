@@ -969,7 +969,7 @@ public class OrderCommon {
 			ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				stockList.add(new String[] { rs.getString("COMMODITY_ID") + rs.getString("DETAIL_NO"),
+				stockList.add(new String[] { rs.getString("COMMODITY_ID") + rs.getString("DETAIL_NO").replace("-0-0", ""),
 						rs.getString("STOCK_JP") });
 			}
 		} finally {
@@ -990,7 +990,7 @@ public class OrderCommon {
 			ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				stockList.add(new String[] { rs.getString("COMMODITY_ID") + rs.getString("DETAIL_NO"),
+				stockList.add(new String[] { rs.getString("COMMODITY_ID") + rs.getString("DETAIL_NO").replace("-0-0", ""),
 						rs.getString("STOCK_SH") });
 			}
 		} finally {
