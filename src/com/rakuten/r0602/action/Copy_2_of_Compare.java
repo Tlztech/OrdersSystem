@@ -234,7 +234,7 @@ public class Copy_2_of_Compare {
 			while (rs.next()) {
 				databaseArr.add(new String[] {
 						rs.getString("commodity_id")
-								+ rs.getString("detail_no"),
+								+ rs.getString("detail_no").replace("-0-0", ""),
 						rs.getString("stock_jp") });
 
 			}
