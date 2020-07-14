@@ -313,7 +313,7 @@ a {
             <tr>
                 <td class="td_bg">店舗別</td>
                 <td class="td_bg" colspan="3">
-                    <s:select list="#{'':'--','coverforefront':'coverforefront','WhiteSweet':'WhiteSweet'}" name="f130201.tenpo"/>
+                    <s:select list="#{'':'--','herz':'herz','epintl':'epintl'}" name="f130201.tenpo"/>
                 </td>
             </tr>
         </table>

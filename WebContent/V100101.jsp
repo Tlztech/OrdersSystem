@@ -323,7 +323,7 @@ select {
             <tr>
                 <td class="td_bg">店舗別：</td>
                 <td class="td_bg" >
-                    <s:select list="#{ '':'--','coverforefront':'coverforefront','WhiteSweet':'WhiteSweet','xandw':'xandw'}" name="f100101.tenpobetsu"/>
+                    <s:select list="#{ '':'--','herz':'herz','epintl':'epintl'}" name="f100101.tenpobetsu"/>
                 </td>
                 <td class="td_bg" >サイト：</td>
                 <td class="td_bg">

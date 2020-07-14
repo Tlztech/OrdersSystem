@@ -516,7 +516,7 @@ a {
             <tr>
                 <td class="td_bg">店舗別</td>
                 <td class="td_bg">
-                    <s:select list="#{'':'--','coverforefront':'coverforefront','WhiteSweet':'WhiteSweet','xandw':'xandw'}" name="f130101.tenpo"/>
+                    <s:select list="#{'':'--','herz':'herz','epintl':'epintl'}" name="f130101.tenpo"/>
                 </td>
                 <td class="td_bg" >コメント注意</td>
                 <td class="td_bg" >
