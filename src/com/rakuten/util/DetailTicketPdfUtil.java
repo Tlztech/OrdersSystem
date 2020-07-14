@@ -12,6 +12,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.AcroFields;
@@ -34,7 +35,7 @@ public class DetailTicketPdfUtil {
 	}
 	
 	public void generatePDF(String targetPdfPath) throws Exception {
-		Document document = new Document();
+		Document document = new Document(PageSize.A5);
         PdfCopy copy = new PdfCopy(document, new FileOutputStream(targetPdfPath));
         document.open();
         for (int k = 0; k < page.size(); k++) {
@@ -227,7 +228,7 @@ public class DetailTicketPdfUtil {
 	private Image getImageOfBarcode(PdfContentByte pcb, String value) {
 		Barcode128 barcode128 = new Barcode128();
 		barcode128.setCode(value);
-		barcode128.setBarHeight(22);
+		barcode128.setBarHeight(35);
 		barcode128.setBaseline(10);
 		barcode128.setStartStopText(false);
 		barcode128.setExtended(true);
