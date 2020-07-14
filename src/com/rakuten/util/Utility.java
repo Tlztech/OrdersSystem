@@ -608,7 +608,7 @@ public class Utility {
 		if (str.contains("-")) {
 			return str.substring(str.indexOf("-"));
 		} else {
-			return "";
+			return "-0-0";
 		}
 
 	}
