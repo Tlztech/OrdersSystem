@@ -63,13 +63,20 @@ public class A03020105Action extends BaseAction {
 				ps.setString(1, shohinInfoBean.getShouhinmei());
 				String pirurl = "";
 				try {
-					pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
-							+ shohinInfoBean.getShouhingazoUrl().substring(
-									shohinInfoBean.getShouhingazoUrl().indexOf(
-											"https://image.rakuten.co.jp/"),
-									shohinInfoBean.getShouhingazoUrl().indexOf(
-											" ")) + "?_ex=200x200&s=2&r=1")
-							.replace("https://image.rakuten.co.jp/", "");
+					if (shohinInfoBean.getShouhingazoUrl().indexOf(" ") != -1) {
+						pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+								+ shohinInfoBean.getShouhingazoUrl().substring(
+										shohinInfoBean.getShouhingazoUrl().indexOf(
+												"https://image.rakuten.co.jp/"),
+										shohinInfoBean.getShouhingazoUrl().indexOf(
+												" ")) + "?_ex=200x200&s=2&r=1")
+								.replace("https://image.rakuten.co.jp/", "");
+					}else {
+						pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+								+ shohinInfoBean.getShouhingazoUrl() + "?_ex=200x200&s=2&r=1")
+								.replace("https://image.rakuten.co.jp/", "");
+					}
+					
 				} catch (Exception e) {
 					System.out.println(shohinInfoBean.getShouhingazoUrl());
 				}
@@ -210,17 +217,26 @@ public class A03020105Action extends BaseAction {
 				ps.setString(4, shohinInfoBean.getShouhinmei());
 				ps.setString(5, "");
 				ps.setString(6, "");
-				String pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
-						+ shohinInfoBean
-								.getShouhingazoUrl()
-								.substring(
-										shohinInfoBean
-												.getShouhingazoUrl()
-												.indexOf(
-														"https://image.rakuten.co.jp/"),
-										shohinInfoBean.getShouhingazoUrl()
-												.indexOf(" ")) + "?_ex=200x200&s=2&r=1")
-						.replace("https://image.rakuten.co.jp/", "");
+				String pirurl = "";
+				if (shohinInfoBean.getShouhingazoUrl().indexOf(" ") != -1) {
+					pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+							+ shohinInfoBean
+									.getShouhingazoUrl()
+									.substring(
+											shohinInfoBean
+													.getShouhingazoUrl()
+													.indexOf(
+															"https://image.rakuten.co.jp/"),
+											shohinInfoBean.getShouhingazoUrl()
+													.indexOf(" ")) + "?_ex=200x200&s=2&r=1")
+							.replace("https://image.rakuten.co.jp/", "");
+				}else {
+					pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+							+ shohinInfoBean.getShouhingazoUrl()
+							+ "?_ex=200x200&s=2&r=1")
+							.replace("https://image.rakuten.co.jp/", "");
+				}
+				
 				ps.setString(7, "");
 				ps.setString(8, pirurl);
 				ps.setString(9, "");
