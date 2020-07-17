@@ -47,6 +47,7 @@ public class F130101 implements Serializable {
 	private String merubinkaisha = null;
 	private String ponpareCount = null;
 	private String qoo10Count = null;
+	private String otherCount = null;
 
 	/**
 	 * @return the inputJuchubango
@@ -477,4 +478,12 @@ public class F130101 implements Serializable {
 		this.qoo10Count = qoo10Count;
 	}
 
+	public String getOtherCount() {
+		return otherCount;
+	}
+
+	public void setOtherCount(String otherCount) {
+		this.otherCount = otherCount;
+	}
+	
 }

@@ -100,6 +100,14 @@ function popupDiv8() {
     $("#mask").show("slow");  
     div_obj.show("slow");  
 }
+function popupDiv9() {   
+    var div_obj = $("#pop-div9"); 
+	div_obj.css("top",($(window).height()-160)/2);
+	div_obj.css("left",($(window).width()-350)/2);
+    //添加并显示遮罩层   
+    $("#mask").show("slow");  
+    div_obj.show("slow");  
+}
 function hideDiv() {   
   $("#mask").hide();   
   $("#pop-div").hide(); 
@@ -109,6 +117,7 @@ function hideDiv() {
   $("#pop-div5").hide();
   $("#pop-div7").hide();
   $("#pop-div8").hide();
+  $("#pop-div9").hide();
 } 
 
 function showTodoke(index){
@@ -418,11 +427,12 @@ select {
                 <td align="right">
                     <input type="button" onclick="actionSubmit('A10010401')" value="新規"/>&nbsp;&nbsp;
                     <input type="button" onclick="popupDiv2();" value="注文情報を取得する"/>&nbsp;&nbsp;
-                    <input type="button" onclick="popupDiv7();" value="CSVから最新情報取得(Rakuten)"/>&nbsp;&nbsp;
-                    <input type="button" onclick="popupDiv8();" value="CSVから最新情報取得(qoo10)"/>&nbsp;&nbsp;
-                    <input type="button" onclick="popupDiv3();" value="CSVから最新情報取得(DENA)"/>&nbsp;&nbsp;
-                    <input type="button" onclick="popupDiv4();" value="CSVから最新情報取得(Yahoo)"/>&nbsp;&nbsp;
-                    <input type="button" onclick="popupDiv5();" value="CSVから最新情報取得(ポンパレ)"/>&nbsp;&nbsp;
+                    <input type="button" onclick="popupDiv7();" value="CSVから取得(Rakuten)"/>&nbsp;&nbsp;
+                    <input type="button" onclick="popupDiv8();" value="CSVから取得(qoo10)"/>&nbsp;&nbsp;
+                    <input type="button" onclick="popupDiv3();" value="CSVから取得(DENA)"/>&nbsp;&nbsp;
+                    <input type="button" onclick="popupDiv4();" value="CSVから取得(Yahoo)"/>&nbsp;&nbsp;
+                    <input type="button" onclick="popupDiv5();" value="CSVから取得(ポンパレ)"/>&nbsp;&nbsp;
+                    <input type="button" onclick="popupDiv9();" value="CSVから取得(代理発送)"/>&nbsp;&nbsp;
 <!--                     <input type="button" onclick="actionSubmit('A10010105');" value="発送可リスト生成"/>&nbsp;&nbsp; -->
 <!--                     <input type="button" onclick="popupDiv();" value="発送情報をシステムに反映"/>&nbsp;&nbsp; -->
                     
@@ -605,6 +615,21 @@ select {
                 <tr>
                     <td align="center"><input type="button" onclick="hideDiv();" value="戻る" /></td>
                     <td align="center"><input type="button" onclick="actionSubmit('A10010112')" value="確定" /></td>
+                </tr>
+            </table>
+            </div>
+        </div>
+        <div id='pop-div9' style="left:30%;width:350px;height:160px;" class="pop-box">   
+            <div class="pop-box-body" >
+            <table align="center">
+                <tr height="80px">
+                    <td align="center" colspan="2">代理発送CSV<br/>csvファイル選択：<s:file name="csvFile8"/></td>
+                </tr>
+            </table>
+            <table align="center" width="200px">
+                <tr>
+                    <td align="center"><input type="button" onclick="hideDiv();" value="戻る" /></td>
+                    <td align="center"><input type="button" onclick="actionSubmit('A10010113')" value="確定" /></td>
                 </tr>
             </table>
             </div>

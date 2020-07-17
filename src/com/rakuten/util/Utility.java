@@ -55,7 +55,7 @@ import com.rakuten.r1503.form.Type;
 public class Utility {
 	public static List<String[]> readCsvFile(File file, boolean jumpFlg) throws Exception {
 		ArrayList<String[]> csvList = new ArrayList<String[]>(); // 用来保存数据
-		CsvReader reader = new CsvReader(new FileInputStream(file), ',', Charset.forName("SJIS")); // 一般用这编码读就可以了
+		CsvReader reader = new CsvReader(new FileInputStream(file), ',', Charset.forName("utf-8")); // 一般用这编码读就可以了
 		if (jumpFlg) {
 			reader.readHeaders(); // 跳过表头 如果需要表头的话，不要写这句。
 		}

@@ -75,6 +75,7 @@ public class A130201Common {
 		int yafuokuCount = 0;
 		int ponpareCount = 0;
 		int qoo10Count = 0;
+		int otherCount = 0;
 		String tenposhubetsu = f130201.getTenposhubetsu();
 
 		List<OrderList> shoriList = new ArrayList<OrderList>();
@@ -91,6 +92,8 @@ public class A130201Common {
 				ponpareCount++;
 			}else if ("qoo10".equals(order.getSite())) {
 				qoo10Count++;
+			}else {
+				otherCount++;
 			}
 
 			if ("1".equals(tenposhubetsu)) {
@@ -123,6 +126,13 @@ public class A130201Common {
 					shoriList.add(order);
 				}
 			}
+			if ("7".equals(tenposhubetsu)) {
+				if (!"楽天".equals(order.getSite()) && !"Yahoo Shopping".equals(order.getSite()) 
+						&& !"DENA".equals(order.getSite()) && !"ヤフオク".equals(order.getSite()) 
+						&& !"ポンパレモール".equals(order.getSite()) && !"qoo10".equals(order.getSite())) {
+					shoriList.add(order);
+				}
+			}
 		}
 
 		f130201.setRakutenCount(String.valueOf(rakutenCount));
@@ -131,6 +141,7 @@ public class A130201Common {
 		f130201.setYafuokuCount(String.valueOf(yafuokuCount));
 		f130201.setPonpareCount(String.valueOf(ponpareCount));
 		f130201.setQoo10Count(String.valueOf(qoo10Count));
+		f130201.setOtherCount(String.valueOf(otherCount));
 		f130201.setOrderList(shoriList);
 		return f130201;
 	}
