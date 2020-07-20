@@ -55,7 +55,7 @@ import com.rakuten.r1503.form.Type;
 public class Utility {
 	public static List<String[]> readCsvFile(File file, boolean jumpFlg) throws Exception {
 		ArrayList<String[]> csvList = new ArrayList<String[]>(); // 用来保存数据
-		CsvReader reader = new CsvReader(new FileInputStream(file), ',', Charset.forName("utf-8")); // 一般用这编码读就可以了
+		CsvReader reader = new CsvReader(new FileInputStream(file), ',', Charset.forName("Shift-JIS")); // 一般用这编码读就可以了
 		if (jumpFlg) {
 			reader.readHeaders(); // 跳过表头 如果需要表头的话，不要写这句。
 		}
@@ -1238,13 +1238,27 @@ public class Utility {
 						// 項目選択肢別在庫用横軸選択肢
 						shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi(selectList.get(k)[++j]);
 						// 項目選択肢別在庫用横軸選択肢子番号
-						shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango(
-								selectList.get(k)[++j].replace("－", "-"));
+						String strXAxisNo = selectList.get(k)[++j];
+						if (strXAxisNo.length() > 0 && (strXAxisNo.replace("－", "-").indexOf("-") == -1)) {
+							strXAxisNo = "-" + strXAxisNo;
+						}
+						
 						// 項目選択肢別在庫用縦軸選択肢
 						shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi(selectList.get(k)[++j]);
 						// 項目選択肢別在庫用縦軸選択肢子番号
-						shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango(
-								selectList.get(k)[++j].replace("－", "-"));
+						String strYAxisNo = selectList.get(k)[++j];
+						if (strYAxisNo.length() > 0 && (strYAxisNo.replace("－", "-").indexOf("-") == -1)) {
+							strYAxisNo = "-" + strYAxisNo;
+						}
+						
+						if (strXAxisNo.length() == 0 && strYAxisNo.length() == 0) {
+							strXAxisNo = "-0";
+							strYAxisNo = "-0";
+						}
+						
+						shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango(strXAxisNo);
+						shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango(strYAxisNo);
+						
 						// 項目選択肢別在庫用取り寄せ可能表示
 						shohinsentakushiBean.setKomokusentakushibetuzaikototoriyosekanohyouji(selectList.get(k)[++j]);
 						// 項目選択肢別在庫用在庫数
