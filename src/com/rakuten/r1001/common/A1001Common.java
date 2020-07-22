@@ -2570,28 +2570,47 @@ public class A1001Common {
 						shouhinbango = shouhinbango.substring(0, shouhinbango.indexOf("-"));
 					}
 
-					sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					int count = 0;
+					sql = "SELECT COUNT(*) COUNT FROM TBL00011 WHERE COMMODITY_ID = ? AND CATEGORY_ID = ?";
 					ps = conn.prepareStatement(sql);
 					ps.setString(1, shouhinbango);
-					//
 					ps.setString(2, "100001");
-					ps.setString(3, shousai.getShouhinmei());
-					ps.setString(4, shousai.getShouhinmei());
-					ps.setString(5, "");
-					ps.setString(6, "");
-					ps.setString(7, "");
-					ps.setString(8, "");
-					ps.setString(9, "");
-					ps.setString(10, "0");
-					ps.setString(11, date);
-					ps.setString(12, "kyo");
-					ps.setString(13, date);
-					ps.setString(14, "kyo");
-					ps.setString(15, "00");
-					ps.execute();
-
+					rs = ps.executeQuery();
+					while (rs.next()) {
+						count = rs.getInt("COUNT");
+					}
+					if (count > 0) {
+						sql = "UPDATE TBL00011 SET UPDATE_TIME = ? , UPDATE_USER = ? WHERE COMMODITY_ID = ? AND CATEGORY_ID = ?";
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, date);
+						ps.setString(2, "updater");
+						ps.setString(3,shouhinbango);
+						ps.setString(4, "100001");
+						
+						ps.executeUpdate();
+					} else {
+						sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, shouhinbango);
+						//
+						ps.setString(2, "100001");
+						ps.setString(3, shousai.getShouhinmei());
+						ps.setString(4, shousai.getShouhinmei());
+						ps.setString(5, "");
+						ps.setString(6, "");
+						ps.setString(7, "");
+						ps.setString(8, "");
+						ps.setString(9, "");
+						ps.setString(10, "0");
+						ps.setString(11, date);
+						ps.setString(12, "kyo");
+						ps.setString(13, date);
+						ps.setString(14, "kyo");
+						ps.setString(15, "00");
+						ps.execute();
+					}
 					
-					int count = 0;
+					count = 0;
 					sql = "SELECT COUNT(*) COUNT FROM TBL00012 WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 					ps = conn.prepareStatement(sql);
 					ps.setString(1, shouhinbango);
