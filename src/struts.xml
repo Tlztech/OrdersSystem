@@ -527,6 +527,12 @@
 				<param name="actionName">A10010101</param>
 			</result>
 		</action>
+		<action name="A10010113" class="com.rakuten.r1001.action.A10010113Action">
+			<result name="input">V100101.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">A10010101</param>
+			</result>
+		</action>
 		<action name="A10010105" class="com.rakuten.r1001.action.A10010105Action">
 			<result type="stream">
 				<param name="contentType">application/octet-stream</param>

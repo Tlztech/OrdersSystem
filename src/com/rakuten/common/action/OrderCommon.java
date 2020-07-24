@@ -5171,7 +5171,11 @@ public class OrderCommon {
 			detail.setShouhinmei(item.getItemName());
 			
 			// 商品番号
-			detail.setShouhinbango(item.getManageNumber());
+			if (item.getItemNumber() != null) {
+				detail.setShouhinbango(item.getManageNumber() + item.getItemNumber());
+			}else {
+				detail.setShouhinbango(item.getManageNumber());
+			}
 			
 			// 商品URL
 			detail.setShouhinURL("");
