@@ -5,6 +5,7 @@ import com.rakuten.common.action.OrderCommon;
 import com.rakuten.common.bean.OrderApiBean;
 import com.rakuten.r1001.common.A1001Common;
 import com.rakuten.r1001.form.F100101;
+import com.rakuten.util.GetTokenFromYahoo;
 import com.rakuten.util.Utility;
 
 public class A10010104Action extends BaseAction {
@@ -12,20 +13,29 @@ public class A10010104Action extends BaseAction {
 	private F100101 f100101 = null;
 	private String shop = null;
 	private A1001Common a1001Common = new A1001Common();
+	private String platform = null;
 
 	protected void exec() throws Exception {
 		// a1001Common.insertIntoRakutenOrderTbl(a1001Common
 		// .getOrderListFromCsv(csvFile));
 		OrderCommon common = new OrderCommon();
 
-		OrderApiBean orderapibean = common.getOrderListByApi(shop);
-		if (!Utility.isEmptyList(orderapibean.getMessageList())) {
-			for (String msg : orderapibean.getMessageList())
-				addError(null, msg);
+		if ("Rakuten".equals(platform)) {
+			OrderApiBean orderapibean = common.getOrderListByApi(shop);
+			if (!Utility.isEmptyList(orderapibean.getMessageList())) {
+				for (String msg : orderapibean.getMessageList())
+					addError(null, msg);
+			}
+			a1001Common
+					.insertIntoRakutenOrderTbl(orderapibean.getRakutenBeanList());
+			//common.setOrderListStatus(shop);
+		} else if ("Yahoo".equals(platform)) {
+			
+			System.out.println(GetTokenFromYahoo.getToken());
+			System.out.println(GetTokenFromYahoo.getTokenExpiration());
+			System.out.println(platform);
+			
 		}
-		a1001Common
-				.insertIntoRakutenOrderTbl(orderapibean.getRakutenBeanList());
-		//common.setOrderListStatus(shop);
 
 	}
 
@@ -56,6 +66,14 @@ public class A10010104Action extends BaseAction {
 
 	public void setShop(String shop) {
 		this.shop = shop;
+	}
+
+	public String getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 
 }
