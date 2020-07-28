@@ -5,7 +5,6 @@ import com.rakuten.common.action.OrderCommon;
 import com.rakuten.common.bean.OrderApiBean;
 import com.rakuten.r1001.common.A1001Common;
 import com.rakuten.r1001.form.F100101;
-import com.rakuten.util.GetTokenFromYahoo;
 import com.rakuten.util.Utility;
 
 public class A10010104Action extends BaseAction {
@@ -31,9 +30,9 @@ public class A10010104Action extends BaseAction {
 			//common.setOrderListStatus(shop);
 		} else if ("Yahoo".equals(platform)) {
 			
-			System.out.println(GetTokenFromYahoo.getToken());
-			System.out.println(GetTokenFromYahoo.getTokenExpiration());
-			System.out.println(platform);
+//			System.out.println(GetTokenFromYahoo.getToken());
+//			System.out.println(GetTokenFromYahoo.getTokenExpiration());
+//			System.out.println(platform);
 			
 		}
 
