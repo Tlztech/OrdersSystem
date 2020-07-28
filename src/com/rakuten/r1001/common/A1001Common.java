@@ -2793,6 +2793,7 @@ public class A1001Common {
 		boolean chumonStsSearch7 = false;
 		boolean chumonStsSearch8 = false;
 		boolean chumonStsSearch9 = false;
+		boolean searchKeywordCondition = false;
 
 		if (f100101 != null) {
 			kikanStart = Utility.strTrim(f100101.getKikanStart());
@@ -2818,6 +2819,7 @@ public class A1001Common {
 			chumonStsSearch9 = f100101.isChumonStsSearch9();
 			oshiharaihoho = f100101.getOshiharaihoho();
 			site = f100101.getSite();
+			searchKeywordCondition = f100101.isSearchKeywordCondition();
 		}
 
 		Connection conn = null;
@@ -2919,6 +2921,10 @@ public class A1001Common {
 			sql += " AND left(REPLACE(CHUMONNICHIJI,'-',''),8)<= " + kikanEnd.replace("-", "");
 
 			sql += " ORDER BY str_to_date(T1.CHUMONNICHIJI,'%Y-%m-%d %H:%i:%s')";
+			
+			if (searchKeywordCondition) {
+				sql = sql.replace("common_order_detail_tbl", "(select * from common_order_detail_tbl group by JUCHUBANGO having count(*) =1)");
+			}
 
 			ps = conn.prepareStatement(sql);
 

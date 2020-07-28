@@ -316,6 +316,7 @@ select {
                 <td class="td_bg">
                     <s:textfield size="15" maxlength="150" name="f100101.keyword"/>&nbsp;&nbsp;
                     <s:radio list="#{ '0':'商品名&nbsp;&nbsp;&nbsp;','1':'商品番号&nbsp;&nbsp;&nbsp;', '2':'備考'}" name="f100101.kewordType"/>
+                    <s:checkbox name="f100101.searchKeywordCondition"/>商品のみを含め
                 </td>
             </tr>
             <tr>
