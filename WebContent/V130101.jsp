@@ -511,7 +511,7 @@ a {
                 </td>
                 <td class="td_bg" >配送方法</td>
                 <td class="td_bg" >
-                    <s:select list="#{'':'--','メール便':'メール便','宅配便':'宅配便'}" name="f130101.haisohoho"/>
+                    <s:select list="#{'':'--','DM便':'DM便','メール便':'メール便','宅配便':'宅配便'}" name="f130101.haisohoho"/>
                 </td>
                 <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A13010102')" value="検索" style="width:50px;height:25px"/></td>
             </tr>

@@ -436,8 +436,7 @@ public class A130101Common {
 						}
 					}
 
-					if ("代金引換".equals(rs.getString("OSHIHARAISTS")) || "後払い決済".equals(rs.getString("OSHIHARAISTS"))
-							|| fukaariflg) {
+					if ("代金引換".equals(rs.getString("OSHIHARAISTS")) || fukaariflg) {
 						Order.setUnsokaisha("1002");
 						sql = "update common_order_tbl set haisouhoho = ? where chumonbango = ?";
 						ps2 = conn.prepareStatement(sql);
@@ -531,6 +530,7 @@ public class A130101Common {
 								}else {
 									Order.setHaisohoho("宅配便");
 									ps2.setString(1, "宅配便");
+									kaisha = "1002";
 								}
 								
 								SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
