@@ -23,6 +23,9 @@ public class OrderList implements Serializable {
 	private String comento = null;
 	private String otodokeshiteibi = null;
 	private String biko = null;
+	private String todohuken = null;
+	private String size = null;
+	
 
 	/**
 	 * @return the haisokaisha
@@ -279,5 +282,20 @@ public class OrderList implements Serializable {
 	public void setSofusakidenwabango(String sofusakidenwabango) {
 		this.sofusakidenwabango = sofusakidenwabango;
 	}
+	
+	public String getTodohuken() {
+		return todohuken;
+	}
 
+	public void setTodohuken(String todohuken) {
+		this.todohuken = todohuken;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
 }

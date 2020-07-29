@@ -328,6 +328,7 @@ a {
                     <input type="button" style="height:30px" onclick="actionSubmit('A13020112')" value="下载雅虎未反应csv"/>
                     <input type="button" style="height:30px" onclick="actionSubmit('A13020113')" value="下载乐天未反应csv"/>
                     <input type="button" style="height:30px" onclick="actionSubmit('A13020114')" value="设置反应完毕"/>
+                    <input type="button" style="height:30px" onclick="actionSubmit('A13020115')" value="下载其他平台csv"/>
                 </td>
             </tr>
         </table>

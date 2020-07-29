@@ -48,7 +48,7 @@
 		<table cellspacing="1" cellpadding="2" width="90%" border="0">
             <tr class="bg_tr">
                 <td class="td_bg">商品编号：
-                    <s:textfield size="15" maxlength="20" name="f030301.shohinbango"/>&nbsp;&nbsp;&nbsp;
+                    <s:textfield size="15" maxlength="50" name="f030301.shohinbango"/>&nbsp;&nbsp;&nbsp;
                     <s:select list="#{'':'▼请选择','0':'上海仓库','1':'日本仓库'}" name="f030301.kuwei"/>&nbsp;&nbsp;&nbsp;
                     <s:select list="#{'':'▼请选择','0':'加','1':'减'}" name="f030301.jiajian"/>&nbsp;&nbsp;&nbsp;
                     <s:textfield size="4" maxlength="20" name="f030301.kosu"/>
