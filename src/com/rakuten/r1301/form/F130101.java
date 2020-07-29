@@ -36,6 +36,7 @@ public class F130101 implements Serializable {
 	private String tenpo = "";
 
 	private String shohinbango = "";
+	private boolean searchKeywordCondition = false;
 
 	private String inputJuchubango = null;
 	private String inputDenpyobango = null;
@@ -460,6 +461,14 @@ public class F130101 implements Serializable {
 
 	public void setShohinbango(String shohinbango) {
 		this.shohinbango = shohinbango;
+	}
+
+	public boolean isSearchKeywordCondition() {
+		return searchKeywordCondition;
+	}
+
+	public void setSearchKeywordCondition(boolean searchKeywordCondition) {
+		this.searchKeywordCondition = searchKeywordCondition;
 	}
 
 	public String getPonpareCount() {

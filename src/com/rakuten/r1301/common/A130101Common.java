@@ -334,9 +334,13 @@ public class A130101Common {
 			if (!Utility.isEmptyString(f130101.getShohinbango())) {
 				boolean ariFlg = false;
 				if (!Utility.isEmptyList(order.getShohinbangoList())) {
-					for (String shohinbango : order.getShohinbangoList()) {
-						if (shohinbango.startsWith(f130101.getShohinbango())) {
-							ariFlg = true;
+					if (f130101.isSearchKeywordCondition() && order.getShohinbangoList().size() > 1) {
+						
+					} else {
+						for (String shohinbango : order.getShohinbangoList()) {
+							if (shohinbango.startsWith(f130101.getShohinbango())) {
+								ariFlg = true;
+							}
 						}
 					}
 				}

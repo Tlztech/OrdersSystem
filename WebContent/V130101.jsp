@@ -539,6 +539,7 @@ a {
                 <td class="td_bg">商品番号</td>
                 <td class="td_bg">
                     <s:textfield size="15" maxlength="50" name="f130101.shohinbango"/>
+                    <s:checkbox name="f130101.searchKeywordCondition"/>商品のみを含め
                 </td>
                 <td class="td_bg"></td>
                 <td class="td_bg">
