@@ -14,29 +14,29 @@ public class A10010104Action extends BaseAction {
 	private A1001Common a1001Common = new A1001Common();
 	private String platform = null;
 
-	protected void exec() throws Exception {
-		// a1001Common.insertIntoRakutenOrderTbl(a1001Common
-		// .getOrderListFromCsv(csvFile));
-		OrderCommon common = new OrderCommon();
-
-		if ("Rakuten".equals(platform)) {
-			OrderApiBean orderapibean = common.getOrderListByApi(shop);
-			if (!Utility.isEmptyList(orderapibean.getMessageList())) {
-				for (String msg : orderapibean.getMessageList())
-					addError(null, msg);
+		protected void exec() throws Exception {
+			// a1001Common.insertIntoRakutenOrderTbl(a1001Common
+			// .getOrderListFromCsv(csvFile));
+			OrderCommon common = new OrderCommon();
+	
+			if ("Rakuten".equals(platform)) {
+				OrderApiBean orderapibean = common.getOrderListByApi(shop);
+				if (!Utility.isEmptyList(orderapibean.getMessageList())) {
+					for (String msg : orderapibean.getMessageList())
+						addError(null, msg);
+				}
+				a1001Common
+						.insertIntoRakutenOrderTbl(orderapibean.getRakutenBeanList());
+				//common.setOrderListStatus(shop);
+			} else if ("Yahoo".equals(platform)) {
+				
+	//			System.out.println(GetTokenFromYahoo.getToken());
+	//			System.out.println(GetTokenFromYahoo.getTokenExpiration());
+	//			System.out.println(platform);
+				
 			}
-			a1001Common
-					.insertIntoRakutenOrderTbl(orderapibean.getRakutenBeanList());
-			//common.setOrderListStatus(shop);
-		} else if ("Yahoo".equals(platform)) {
-			
-//			System.out.println(GetTokenFromYahoo.getToken());
-//			System.out.println(GetTokenFromYahoo.getTokenExpiration());
-//			System.out.println(platform);
-			
+	
 		}
-
-	}
 
 	protected void init() {
 		setTitle("V100101:注文一覧");
