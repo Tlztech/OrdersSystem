@@ -14,6 +14,7 @@ public class F100101 implements Serializable {
 	private String kikanEnd = null;
 	private String keyword = null;
 	private String kewordType = null;
+	private boolean searchKeywordCondition = false;
 	private String chumonbango = null;
 	private String chumonEmail = null;
 	private String tenpobetsu = null;
@@ -495,6 +496,14 @@ public class F100101 implements Serializable {
 	 */
 	public void setKewordType(String kewordType) {
 		this.kewordType = kewordType;
+	}
+
+	public boolean isSearchKeywordCondition() {
+		return searchKeywordCondition;
+	}
+
+	public void setSearchKeywordCondition(boolean searchKeywordCondition) {
+		this.searchKeywordCondition = searchKeywordCondition;
 	}
 
 	/**

@@ -334,9 +334,13 @@ public class A130101Common {
 			if (!Utility.isEmptyString(f130101.getShohinbango())) {
 				boolean ariFlg = false;
 				if (!Utility.isEmptyList(order.getShohinbangoList())) {
-					for (String shohinbango : order.getShohinbangoList()) {
-						if (shohinbango.startsWith(f130101.getShohinbango())) {
-							ariFlg = true;
+					if (f130101.isSearchKeywordCondition() && order.getShohinbangoList().size() > 1) {
+						
+					} else {
+						for (String shohinbango : order.getShohinbangoList()) {
+							if (shohinbango.startsWith(f130101.getShohinbango())) {
+								ariFlg = true;
+							}
 						}
 					}
 				}
@@ -436,8 +440,7 @@ public class A130101Common {
 						}
 					}
 
-					if ("代金引換".equals(rs.getString("OSHIHARAISTS")) || "後払い決済".equals(rs.getString("OSHIHARAISTS"))
-							|| fukaariflg) {
+					if ("代金引換".equals(rs.getString("OSHIHARAISTS")) || fukaariflg) {
 						Order.setUnsokaisha("1002");
 						sql = "update common_order_tbl set haisouhoho = ? where chumonbango = ?";
 						ps2 = conn.prepareStatement(sql);
@@ -456,16 +459,22 @@ public class A130101Common {
 						if (rs2.next()) {
 							Order.setSize(rs2.getString("thissize"));
 							Order.setUnsokaisha(rs2.getString("kaisha"));
-							sql = "update common_order_tbl set haisouhoho = ? where chumonbango = ?";
+							sql = "update common_order_tbl set haisouhoho = ?, UPDATE_TIME = ? where chumonbango = ?";
 							ps2 = conn.prepareStatement(sql);
-							if ("1001".equals(rs2.getString("kaisha"))) {
+							if (Double.valueOf(rs2.getString("thissize")) < 0.3) {
+								Order.setHaisohoho("DM便");
+								ps2.setString(1, "DM便");
+							}else if(Double.valueOf(rs2.getString("thissize")) >= 0.3 && Double.valueOf(rs2.getString("thissize")) < 1.0) {
 								Order.setHaisohoho("メール便");
 								ps2.setString(1, "メール便");
-							} else {
+							}else {
 								Order.setHaisohoho("宅配便");
 								ps2.setString(1, "宅配便");
 							}
-							ps2.setString(2, Order.getChumonbango());
+							SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							String date = format.format(new Date());
+							ps2.setString(2, date);
+							ps2.setString(3, Order.getChumonbango());
 							ps2.execute();
 
 						} else {
@@ -513,16 +522,25 @@ public class A130101Common {
 							if (!Utility.isEmptyString(size)) {
 								String kaisha = Utility.getBestSoryo(rs.getString("SOUFUSAKIJUSHOTODOFUKEN"), size,
 										soryoMap);
-								sql = "update common_order_tbl set haisouhoho = ? where chumonbango = ?";
+								sql = "update common_order_tbl set haisouhoho = ?, UPDATE_TIME = ? where chumonbango = ?";
 								ps2 = conn.prepareStatement(sql);
-								if ("1001".equals(kaisha)) {
+								
+								if (Double.valueOf(size) < 0.3) {
+									Order.setHaisohoho("DM便");
+									ps2.setString(1, "DM便");
+								}else if(Double.valueOf(size) >= 0.3 && Double.valueOf(size) < 1.0) {
 									Order.setHaisohoho("メール便");
 									ps2.setString(1, "メール便");
-								} else {
+								}else {
 									Order.setHaisohoho("宅配便");
 									ps2.setString(1, "宅配便");
+									kaisha = "1002";
 								}
-								ps2.setString(2, Order.getChumonbango());
+								
+								SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+								String date = format.format(new Date());
+								ps2.setString(2, date);
+								ps2.setString(3, Order.getChumonbango());
 								ps2.execute();
 								Order.setUnsokaisha(kaisha);
 							}

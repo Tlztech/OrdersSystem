@@ -671,6 +671,7 @@ public class A130201Common {
 							+ "]");
 					Order.setSofusakidenwabango(rs.getString("SOFUSAKIDENWABANGO1")
 							+ rs.getString("SOFUSAKIDENWABANGO2") + rs.getString("SOFUSAKIDENWABANGO3"));
+					Order.setTodohuken(rs.getString("SOUFUSAKIJUSHOTODOFUKEN"));
 
 					sql = "SELECT * FROM hassou_tbl WHERE JUCHUBANGO = ?";
 
@@ -682,6 +683,15 @@ public class A130201Common {
 						Order.setHaisokaisha(rs2.getString("UNSOKAISHA"));
 					}
 
+					sql = "SELECT * FROM kaisha_size_tbl WHERE JUCHUBANGO = ?";
+
+					ps = conn.prepareStatement(sql);
+					ps.setString(1, juchubango);
+					ResultSet rs3 = ps.executeQuery();
+					while (rs3.next()) {
+						Order.setSize(rs3.getString("thissize"));
+					}
+					
 					break;
 				}
 			}

@@ -107,15 +107,17 @@ function checkHasokano(){
 
 function setInfoVal(infoVal){
 	
+	var Regx = /^[A-Za-z]*$/;
+	
 	// 是快递单号
-	if((infoVal.charAt(0) == 3 || infoVal.charAt(0) == 4 || infoVal.charAt(0) == 7) && infoVal.length<15){
+	if((infoVal.charAt(0) == 3 || infoVal.charAt(0) == 4 || infoVal.charAt(0) == 7 || infoVal.charAt(0) == 5) && infoVal.length<15){
 		document.getElementsByName("f130101.inputDenpyobango")[0].value=infoVal;
 		
 	    if(checkHasokano()){
 			actionSubmit('A13010104');
 		}
 	
-	}else if((infoVal.charAt(0) == 1 && infoVal.length != 13) || infoVal.charAt(0) == 2 || infoVal.charAt(0) == 3 || infoVal.charAt(0) == 'O'|| infoVal.charAt(0) == 'P' || infoVal.charAt(0) == 'Y'){
+	}else if((infoVal.charAt(0) == 1 && infoVal.length != 13) || infoVal.charAt(0) == 2 || infoVal.charAt(0) == 3 || infoVal.charAt(0) == 'O'|| infoVal.charAt(0) == 'P' || infoVal.charAt(0) == 'Y' || Regx.test(infoVal.charAt(0)) ){
 		clearInfo();
 		// 订单号
 		document.getElementsByName("f130101.inputJuchubango")[0].value=infoVal;
@@ -509,7 +511,7 @@ a {
                 </td>
                 <td class="td_bg" >配送方法</td>
                 <td class="td_bg" >
-                    <s:select list="#{'':'--','メール便':'メール便','宅配便':'宅配便'}" name="f130101.haisohoho"/>
+                    <s:select list="#{'':'--','DM便':'DM便','メール便':'メール便','宅配便':'宅配便'}" name="f130101.haisohoho"/>
                 </td>
                 <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A13010102')" value="検索" style="width:50px;height:25px"/></td>
             </tr>
@@ -537,6 +539,7 @@ a {
                 <td class="td_bg">商品番号</td>
                 <td class="td_bg">
                     <s:textfield size="15" maxlength="50" name="f130101.shohinbango"/>
+                    <s:checkbox name="f130101.searchKeywordCondition"/>商品のみを含め
                 </td>
                 <td class="td_bg"></td>
                 <td class="td_bg">
