@@ -363,6 +363,7 @@ public class A130101Common {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		PreparedStatement ps2 = null;
+		PreparedStatement ps3 = null;
 		try {
 			List<OrderList> orderList = new ArrayList<OrderList>();
 			OrderList Order = null;
@@ -450,6 +451,13 @@ public class A130101Common {
 
 						ps2.setString(2, Order.getChumonbango());
 						ps2.execute();
+						
+						sql = "update kaisha_size_tbl set kaisha = ? where juchubango = ?";
+						ps3 = conn.prepareStatement(sql);
+
+						ps3.setString(1, "1002");
+						ps3.setString(2, Order.getChumonbango());
+						ps3.execute();
 
 					} else {
 						sql = "select * from kaisha_size_tbl where juchubango = ?";
@@ -470,6 +478,13 @@ public class A130101Common {
 							}else {
 								Order.setHaisohoho("宅配便");
 								ps2.setString(1, "宅配便");
+								
+								sql = "update kaisha_size_tbl set kaisha = ? where juchubango = ?";
+								ps3 = conn.prepareStatement(sql);
+
+								ps3.setString(1, "1002");
+								ps3.setString(2, Order.getChumonbango());
+								ps3.execute();
 							}
 							SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 							String date = format.format(new Date());
@@ -535,6 +550,18 @@ public class A130101Common {
 									Order.setHaisohoho("宅配便");
 									ps2.setString(1, "宅配便");
 									kaisha = "1002";
+									
+									sql = "delete from kaisha_size_tbl where juchubango = ?";
+									ps = conn.prepareStatement(sql);
+									ps.setString(1, Order.getChumonbango());
+									ps.execute();
+									
+									sql = "insert into kaisha_size_tbl values(?,?,?)";
+									ps3 = conn.prepareStatement(sql);
+									ps3.setString(1, Order.getChumonbango());
+									ps3.setString(2, "1002");
+									ps3.setString(3, size);
+									ps3.execute();
 								}
 								
 								SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
