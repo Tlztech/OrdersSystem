@@ -244,7 +244,7 @@ public class A13010103Action extends BaseAction {
 		}
 	}
 
-	private void outCsv(List<OrderBean> orderList) throws IOException, ParseException {
+	private void outCsv_SourceVersion(List<OrderBean> orderList) throws IOException, ParseException {
 		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 		DateFormat df2 = new SimpleDateFormat("yyyy/MM/dd");
 		fileNameMerubin = "Merubin_" + df.format(new Date()) + ".csv";
@@ -430,6 +430,211 @@ public class A13010103Action extends BaseAction {
 		if (bufferedWriterSagawa != null) {
 			bufferedWriterSagawa.flush();
 			bufferedWriterSagawa.close();
+		}
+	}
+	
+	private void outCsv(List<OrderBean> orderList) throws IOException, ParseException {
+		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		DateFormat df2 = new SimpleDateFormat("yyyy/MM/dd");
+//		fileNameMerubin = "Merubin_" + df.format(new Date()) + ".csv";
+//		fileNameSagawaTakubin = "Takkyubin_Sagawa" + df.format(new Date()) + ".csv";
+//		fileNameYamatoTakubin = "Takkyubin_Yamato" + df.format(new Date()) + ".csv";
+		fileName = "Post_" + df.format(new Date()) + ".csv";
+
+//		File file1 = new File("c://temp/" + dirName + "/" + fileNameMerubin);
+//		file1.createNewFile();
+//		File file2 = new File("c://temp/" + dirName + "/" + fileNameSagawaTakubin);
+//		file2.createNewFile();
+//		File file3 = new File("c://temp/" + dirName + "/" + fileNameYamatoTakubin);
+//		file2.createNewFile();
+		File file = new File("c://temp/" + dirName + "/" + fileName);
+		file.createNewFile();
+//		BufferedWriter bufferedWriterYamato = null;
+//		BufferedWriter bufferedWriterYamatoMerubin = null;
+//		BufferedWriter bufferedWriterSagawa = null;
+		BufferedWriter bufferedWriter = null;
+
+//		bufferedWriterSagawa = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file2), "shift-jis"));
+//
+//		bufferedWriterYamato = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file3), "shift-jis"));
+//
+//		bufferedWriterYamato.write(
+//				"お客様管理番号,送り状種別,クール区分,伝票番号,出荷予定日,お届け予定（指定）日,配達時間帯,お届け先コード,お届け先電話番号,お届け先電話番号枝番,お届け先郵便番号,お届け先住所,お届け先住所（アパートマンション名）,お届け先会社・部門名１,お届け先会社・部門名２,お届け先名,お届け先名略称カナ,敬称,ご依頼主コード,ご依頼主電話番号,ご依頼主電話番号枝番,ご依頼主郵便番号,ご依頼主住所,ご依頼主住所（アパートマンション名）,ご依頼主名,ご依頼主略称カナ,品名コード１,品名１,品名コード２,品名２,荷扱い１,荷扱い２,記事,コレクト代金引換額（税込）,コレクト内消費税額等,営業所止置き,営業所コード,発行枚数,個数口枠の印字,ご請求先顧客コード,ご請求先分類コード,運賃管理番号,注文時カード払いデータ登録,注文時カード払い加盟店番号,注文時カード払い申込受付番号１,注文時カード払い申込受付番号２,注文時カード払い申込受付番号３,お届け予定ｅメール利用区分,お届け予定ｅメールe-mailアドレス,入力機種,お届け予定eメールメッセージ,お届け完了ｅメール利用区分,お届け完了ｅメールe-mailアドレス,お届け完了eメールメッセージ,クロネコ収納代行利用区分,収納代行決済ＱＲコード印刷,収納代行請求金額(税込),収納代行内消費税額等,収納代行請求先郵便番号,収納代行請求先住所,収納代行請求先住所（アパートマンション名）,収納代行請求先会社・部門名１,収納代行請求先会社・部門名２,収納代行請求先名(漢字),収納代行請求先名(カナ),収納代行問合せ先名(漢字),収納代行問合せ先郵便番号,収納代行問合せ先住所,収納代行問合せ先住所（アパートマンション名）,収納代行問合せ先電話番号,収納代行管理番号,収納代行品名,収納代行備考");
+//
+//		bufferedWriterYamatoMerubin = new BufferedWriter(
+//				new OutputStreamWriter(new FileOutputStream(file1), "shift-jis"));
+//		bufferedWriterYamatoMerubin.write(
+//				"お客様管理番号,送り状種類,クール区分,伝票番号,出荷予定日,お届け予定（指定）日,配達時間帯,お届け先コード,お届け先電話番号,お届け先電話番号枝番,お届け先郵便番号,お届け先住所,お届け先住所（アパートマンション名）,お届け先会社・部門名１,お届け先会社・部門名２,お届け先名,お届け先名略称カナ,敬称,ご依頼主コード,ご依頼主電話番号,ご依頼主電話番号枝番,ご依頼主郵便番号,ご依頼主住所,ご依頼主住所（アパートマンション名）,ご依頼主名,ご依頼主略称カナ,品名コード１,品名１,品名コード２,品名２,荷扱い１,荷扱い２,記事,コレクト代金引換額（税込）,コレクト内消費税額等,営業所止置き,営業所コード,発行枚数,個数口枠の印字,ご請求先顧客コード,ご請求先分類コード,運賃管理番号,クロネコwebコレクトデータ登録,クロネコwebコレクト加盟店番号,クロネコwebコレクト申込受付番号１,クロネコwebコレクト申込受付番号２,クロネコwebコレクト申込受付番号３,お届け予定ｅメール利用区分,お届け予定ｅメールe-mailアドレス,入力機種,お届け予定eメールメッセージ,お届け完了eメール利用区分,お届け完了ｅメールe-mailアドレス,お届け完了ｅメールメッセージ,クロネコ収納代行利用区分,収納代行決済ＱＲコード印刷,収納代行請求金額(税込),収納代行内消費税額等,収納代行請求先郵便番号,収納代行請求先住所,収納代行請求先住所（アパートマンション名）,収納代行請求先会社・部門名１,収納代行請求先会社・部門名２,収納代行請求先名(漢字),収納代行請求先名(カナ),収納代行問合せ先名(漢字),収納代行問合せ先郵便番号,収納代行問合せ先住所,収納代行問合せ先住所（アパートマンション名）,収納代行問合せ先電話番号,収納代行管理番号,収納代行品名,収納代行備考,複数口くくりキー,検索キータイトル１,検索キー１,検索キータイトル２,検索キー２,検索キータイトル３,検索キー３,検索キータイトル４,検索キー４,検索キータイトル５,検索キー５,予備,予備,投函予定メール利用区分,投函予定メールe-mailアドレス,投函予定メールメッセージ,投函完了メール（お届け先宛）利用区分,投函完了メール（お届け先宛）e-mailアドレス,投函完了メール（お届け先宛）メールメッセージ,投函完了メール（ご依頼主宛）利用区分,投函完了メール（ご依頼主宛）e-mailアドレス,投函完了メール（ご依頼主宛）メールメッセージ,連携管理番号,通知メールアドレス");
+
+		// bufferedWriterSagawa
+		// .write("住所録コード,お届け先電話番号,お届け先郵便番号,お届け先住所１,お届け先住所２,お届け先住所３,お届け先名称１,お届け先名称２,お客様管理ナンバー,お客様コード,部署・担当者（荷送人）,荷送人電話番号,ご依頼主電話番号,ご依頼主郵便番号,ご依頼主住所１,ご依頼主住所２,ご依頼主名称１,ご依頼主名称２,荷姿コード,品名１,品名２,品名３,品名４,品名５,出荷個数,便種（スピードで選択）,便種（商品）,配達日,配達指定時間帯,配達指定時間（時分）,代引金額,消費税,保険金額,指定シール①,指定シール②,指定シール③,営業店止め,営業店コード,元着区分");
+		
+		bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "shift-jis"));
+		bufferedWriter.write("出荷予定日,お届け予定（指定）日,配達時間帯,お届け先電話番号,お届け先電話番号枝番,お届け先郵便番号,お届け先住所,お届け先住所（アパートマンション名）,お届け先会社・部門名１,お届け先会社・部門名２,お届け先名,お届け先名略称カナ,敬称,ご依頼主電話番号,ご依頼主電話番号枝番,ご依頼主郵便番号,ご依頼主住所,ご依頼主住所（アパートマンション名）,ご依頼主名,ご依頼主略称カナ,品名１");
+
+		for (int i = 0; i < orderList.size(); i++) {
+			OrderBean orderBean = orderList.get(i);
+			String shop = orderBean.getTenpobetsu();
+			if ("coverforefront".equals(shop)) {
+				shop = "whiteSweet";
+			}
+			String site = orderBean.getSite();
+			String shohinmei = orderBean.getDetailList().get(0).getShouhinmei();
+			if (shohinmei.length() > 25) {
+				shohinmei = shohinmei.substring(0, 25);
+			}
+			if ("宅配便".equals(orderBean.getHaisouhoho()) || "宅急便".equals(orderBean.getHaisouhoho())) {
+				if ("1002".equals(orderBean.getUnsokaisha())) {
+					// 出荷予定日
+					// String yotebi = df2.format(new Date());
+					// お届け先電話番号
+					String denwabango = orderBean.getSofusakidenwabango1() + "-" + orderBean.getSofusakidenwabango2()
+							+ "-" + orderBean.getSofusakidenwabango3();
+					// お届け先郵便番号
+					String yunbinbango = orderBean.getSofusakiyubinbango1() + "-" + orderBean.getSofusakiyubinbango2();
+					// お届け先住所
+					String jusho1 = "";
+					// お届け先住所（アパートマンション名）
+					String jusho2 = "";
+
+					jusho1 = orderBean.getSofusakijusho1() + orderBean.getSofusakijusho2();
+
+					jusho2 = orderBean.getSofusakijusho3();
+
+					// お届け先名
+					String name = orderBean.getSofusakimeiji() + orderBean.getSofusakinamae() + "　様";
+
+					String peidari = "";
+					String zhidingrishi = "";
+
+					if (!Utility.isEmptyString(orderBean.getOtodokebishitei())) {
+						peidari = orderBean.getOtodokebishitei().replace("-", "");
+					}
+
+					if (!Utility.isEmptyString(orderBean.getOtodokejikandai())) {
+						zhidingrishi = orderBean.getOtodokejikandai();
+					}
+
+					String daiyingjinge = "";
+					if ("代金引換".equals(orderBean.getKesaihoho())) {
+						daiyingjinge = orderBean.getGokeikingaku();
+					}
+					if (i != 0) {
+						bufferedWriter.newLine();
+					}
+//					bufferedWriterSagawa.write("," + denwabango + "," + yunbinbango + "," + jusho1 + "," + jusho2 + ",,"
+//							+ name + ",,,,,," + Utility.getShopTel(shop, site) + ",,,,,,,,,,,," + "1," + "0," + "0,"
+//							+ peidari + "," + zhidingrishi + ",," + daiyingjinge + ",,,,,,,,");
+					bufferedWriter.write(",,,"+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,"+"様"+","+Utility.getShopTel(shop, site)+",,,,,,,,");
+				} else if ("1001".equals(orderBean.getUnsokaisha())) {
+					String yamatoType = "";
+
+					if (orderBean.getKesaihoho().contains("代")) {
+						yamatoType = "2";
+					} else {
+						yamatoType = "0";
+					}
+
+					// 出荷予定日
+					String yotebi = df2.format(new Date());
+					// お届け先電話番号
+					String denwabango = orderBean.getSofusakidenwabango1() + "-" + orderBean.getSofusakidenwabango2()
+							+ "-" + orderBean.getSofusakidenwabango3();
+					// お届け先郵便番号
+					String yunbinbango = orderBean.getSofusakiyubinbango1() + "-" + orderBean.getSofusakiyubinbango2();
+					// お届け先住所
+					String jusho1 = "";
+					// お届け先住所（アパートマンション名）
+					String jusho2 = "";
+
+					String sofusakijusho = orderBean.getSofusakijusho1() + orderBean.getSofusakijusho2()
+							+ orderBean.getSofusakijusho3();
+					jusho1 = sofusakijusho;
+
+					String peidari = "";
+					String zhidingrishi = "";
+					String daiyingjinge = "";
+					if (orderBean.getKesaihoho().contains("代")) {
+						daiyingjinge = orderBean.getGokeikingaku();
+					}
+					if (!Utility.isEmptyString(orderBean.getOtodokebishitei())) {
+						peidari = Utility.formatData(orderBean.getOtodokebishitei().replace("-", ""));
+					}
+
+					if (!Utility.isEmptyString(orderBean.getOtodokejikandai())) {
+						zhidingrishi = orderBean.getOtodokejikandai();
+
+						if ("01".equals(zhidingrishi)) {
+							zhidingrishi = "0812";
+						} else if ("12".equals(zhidingrishi)) {
+							zhidingrishi = "1214";
+						} else if ("14".equals(zhidingrishi)) {
+							zhidingrishi = "1416";
+						} else if ("16".equals(zhidingrishi)) {
+							zhidingrishi = "1618";
+						} else if ("04".equals(zhidingrishi)) {
+							zhidingrishi = "1820";
+						}
+
+					}
+
+					// お届け先名
+					String name = orderBean.getSofusakimeiji() + orderBean.getSofusakinamae();
+//					bufferedWriterYamato.newLine();
+//					bufferedWriterYamato.write("," + yamatoType + ",,," + yotebi + "," + peidari + "," + zhidingrishi
+//							+ "," + "," + denwabango + ",," + yunbinbango + "," + jusho1 + "," + jusho2 + ",,," + name
+//							+ ",,,," + Utility.getShopTel(shop, site) + ",,3490114,埼玉県蓮田市馬込2-132エルディムセブン1-203,," + shop
+//							+ ",,," + shohinmei + ",,,,," + "," + daiyingjinge + ","
+//							+ ",,,,2,0486272559,,01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
+					bufferedWriter.newLine();
+					bufferedWriter.write(yotebi+","+peidari+","+zhidingrishi+","+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,様,"+Utility.getShopTel(shop, site)+",,3490114,埼玉県蓮田市馬込2-132エルディムセブン1-203,,"+shop+",,"+shohinmei+",");
+
+				}
+			} else {
+
+				// 出荷予定日
+				String yotebi = df2.format(new Date());
+				// お届け先電話番号
+				String denwabango = orderBean.getSofusakidenwabango1() + "-" + orderBean.getSofusakidenwabango2() + "-"
+						+ orderBean.getSofusakidenwabango3();
+				// お届け先郵便番号
+				String yunbinbango = orderBean.getSofusakiyubinbango1() + "-" + orderBean.getSofusakiyubinbango2();
+				// お届け先住所
+				String jusho1 = "";
+				// お届け先住所（アパートマンション名）
+				String jusho2 = "";
+
+				String sofusakijusho = orderBean.getSofusakijusho1() + orderBean.getSofusakijusho2()
+						+ orderBean.getSofusakijusho3();
+				jusho1 = sofusakijusho;
+
+				// お届け先名
+				String name = orderBean.getSofusakimeiji() + orderBean.getSofusakinamae();
+//				bufferedWriterYamatoMerubin.newLine();
+//				bufferedWriterYamatoMerubin.write(",7,0,," + yotebi + ",,,," + denwabango + ",," + yunbinbango + ","
+//						+ jusho1 + "," + jusho2 + ",,," + name + ",," + "様" + ",," + Utility.getShopTel(shop, site)
+//						+ ",,3490114,埼玉県蓮田市馬込2-132,エルディムセブン1-203," + shop
+//						+ ",,,衣類,,,,,,,,0,,1,,05035675168,,01,0,,,,,0,,,,0,,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,ユーザーID,,,,0,,,0,,,0,,,");
+				bufferedWriter.newLine();
+				bufferedWriter.write(yotebi+",,,"+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,様,"+Utility.getShopTel(shop, site)+",,3490114,埼玉県蓮田市馬込2-132,エルディムセブン1-203,"+shop+",,衣類,");
+
+			}
+		}
+//		if (bufferedWriterYamato != null) {
+//			bufferedWriterYamato.flush();
+//			bufferedWriterYamato.close();
+//		}
+//		if (bufferedWriterYamatoMerubin != null) {
+//			bufferedWriterYamatoMerubin.flush();
+//			bufferedWriterYamatoMerubin.close();
+//		}
+//		if (bufferedWriterSagawa != null) {
+//			bufferedWriterSagawa.flush();
+//			bufferedWriterSagawa.close();
+//		}
+		if (bufferedWriter != null) {
+			bufferedWriter.flush();
+			bufferedWriter.close();
 		}
 	}
 
