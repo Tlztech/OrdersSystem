@@ -1007,7 +1007,7 @@ public class A1001Common {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		otherCsvBean.setHasoyakusokubi(sdf.format(now));
 		// コメント
-		otherCsvBean.setKomento("");
+		otherCsvBean.setKomento(orderInfo.get(0)[15]);
 		
 		// 注文日時
 		SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -2382,136 +2382,155 @@ public class A1001Common {
 			for (int i = 0; i < orderList.size(); i++) {
 				int j = 0;
 				try {
-
-					j = 0;
-					sql = "INSERT INTO common_order_tbl VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					
+					int count = 0;
+					sql = "SELECT COUNT(*) COUNT FROM common_order_tbl WHERE CHUMONBANGO = ?";
 					ps = conn.prepareStatement(sql);
-					ps.setString(++j, orderList.get(i).getJuchubango());
-					ps.setString(++j, orderList.get(i).getChumonnichiji());
-					ps.setString(++j, "0");// 未入金
-					ps.setString(++j, "2");
-					ps.setString(++j, "0");
-					ps.setString(++j, "0");
-					ps.setString(++j, "0");
-					ps.setString(++j, "0");
-					ps.setString(++j, "0");
-					ps.setString(++j, orderList.get(i).getPlatform());
-					ps.setString(++j, orderList.get(i).getShopname());
-					ps.setString(++j, "");
-					String kesaihoho = orderList.get(i).getKesaihouhou();
-					ps.setString(++j, kesaihoho);
-					ps.setString(++j, "");
-					ps.setString(++j, "");
-					ps.setString(++j, "");
-					ps.setString(++j, "");
-					ps.setString(++j, "");
-					ps.setString(++j, Utility.isEmptyString(orderList.get(i).getPointoriyogaku()) ? "0"
-							: orderList.get(i).getPointoriyogaku());
-
-					// あす楽希望
-					ps.setString(++j, "0");
-					// 注文者名字
-					ps.setString(++j, orderList.get(i).getChumonshameiji());
-					// 注文者名前
-					ps.setString(++j, orderList.get(i).getChumonshanamae());
-					// 注文者名字フリガナ
-					ps.setString(++j, orderList.get(i).getChumonshameijifurigana());
-					// 注文者名前フリガナ
-					ps.setString(++j, orderList.get(i).getChumonshanamaefurigana());
-					// メールアドレス
-					ps.setString(++j, orderList.get(i).getMeruadoresu());
-					// 注文者誕生日
-					ps.setString(++j, orderList.get(i).getChumonshatanjoubi());
-					// 注文者郵便番号１
-					ps.setString(++j, orderList.get(i).getChumonshayubinbango1());
-					// 注文者郵便番号２
-					ps.setString(++j, orderList.get(i).getChumonshayubinbango2());
-					// 注文者住所：都道府県
-					ps.setString(++j, orderList.get(i).getChumonshajushotodofuken());
-					// 注文者住所：都市区
-					ps.setString(++j, orderList.get(i).getChumonshajushotoshiku());
-					// 注文者住所：町以降
-					ps.setString(++j, "");
-					// 注文者電話番号１
-					ps.setString(++j, orderList.get(i).getChumonshadenwabango1());
-					// 注文者電話番号２
-					ps.setString(++j, orderList.get(i).getChumonshadenwabango2());
-					// 注文者電話番号３
-					ps.setString(++j, orderList.get(i).getChumonshadenwabango3());
-					// コメント
-					ps.setString(++j, orderList.get(i).getKomento());
-					// メール差込文(お客様へのメッセージ)
-					ps.setString(++j, "");
-
-					// 送付先名字
-					ps.setString(++j, orderList.get(i).getSofusakimeiji());
-					// 送付先名前
-					ps.setString(++j, orderList.get(i).getSoufusakinamae());
-					// 送付先名字フリガナ
-					ps.setString(++j, orderList.get(i).getSoufusakimeijifurigana());
-					// 送付先名前フリガナ
-					ps.setString(++j, orderList.get(i).getSoufusakimeijinamaefurigana());
-					// 配送方法
-					int soryo = 0;
-					if (!Utility.isEmptyString(orderList.get(i).getSoryou())) {
-						soryo = Integer.valueOf(orderList.get(i).getSoryou());
+					ps.setString(1, orderList.get(i).getJuchubango());
+					rs = ps.executeQuery();
+					while (rs.next()) {
+						count = rs.getInt("COUNT");
 					}
-					if (soryo > 180 || orderList.get(i).getKesaihouhou().contains("代")
-							|| Integer.valueOf(orderList.get(i).getGokei()) > 5480) {
-						ps.setString(++j, "宅配便");
+					if (count > 0) {
+						sql = "UPDATE common_order_tbl SET BIKO = ?, UPDATE_TIME = ? , UPDATE_USER = ? WHERE CHUMONBANGO = ?";
+						ps = conn.prepareStatement(sql);
+						ps.setString(1,orderList.get(i).getKomento());
+						ps.setString(2, date);
+						ps.setString(3, "updater");
+						ps.executeUpdate();
 					} else {
-						ps.setString(++j, "メール便");
+						j = 0;
+						sql = "INSERT INTO common_order_tbl VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+						ps = conn.prepareStatement(sql);
+						ps.setString(++j, orderList.get(i).getJuchubango());
+						ps.setString(++j, orderList.get(i).getChumonnichiji());
+						ps.setString(++j, "0");// 未入金
+						ps.setString(++j, "2");
+						ps.setString(++j, "0");
+						ps.setString(++j, "0");
+						ps.setString(++j, "0");
+						ps.setString(++j, "0");
+						ps.setString(++j, "0");
+						ps.setString(++j, orderList.get(i).getPlatform());
+						ps.setString(++j, orderList.get(i).getShopname());
+						ps.setString(++j, orderList.get(i).getKomento());
+						String kesaihoho = orderList.get(i).getKesaihouhou();
+						ps.setString(++j, kesaihoho);
+						ps.setString(++j, "");
+						ps.setString(++j, "");
+						ps.setString(++j, "");
+						ps.setString(++j, "");
+						ps.setString(++j, "");
+						ps.setString(++j, Utility.isEmptyString(orderList.get(i).getPointoriyogaku()) ? "0"
+								: orderList.get(i).getPointoriyogaku());
+
+						// あす楽希望
+						ps.setString(++j, "0");
+						// 注文者名字
+						ps.setString(++j, orderList.get(i).getChumonshameiji());
+						// 注文者名前
+						ps.setString(++j, orderList.get(i).getChumonshanamae());
+						// 注文者名字フリガナ
+						ps.setString(++j, orderList.get(i).getChumonshameijifurigana());
+						// 注文者名前フリガナ
+						ps.setString(++j, orderList.get(i).getChumonshanamaefurigana());
+						// メールアドレス
+						ps.setString(++j, orderList.get(i).getMeruadoresu());
+						// 注文者誕生日
+						ps.setString(++j, orderList.get(i).getChumonshatanjoubi());
+						// 注文者郵便番号１
+						ps.setString(++j, orderList.get(i).getChumonshayubinbango1());
+						// 注文者郵便番号２
+						ps.setString(++j, orderList.get(i).getChumonshayubinbango2());
+						// 注文者住所：都道府県
+						ps.setString(++j, orderList.get(i).getChumonshajushotodofuken());
+						// 注文者住所：都市区
+						ps.setString(++j, orderList.get(i).getChumonshajushotoshiku());
+						// 注文者住所：町以降
+						ps.setString(++j, "");
+						// 注文者電話番号１
+						ps.setString(++j, orderList.get(i).getChumonshadenwabango1());
+						// 注文者電話番号２
+						ps.setString(++j, orderList.get(i).getChumonshadenwabango2());
+						// 注文者電話番号３
+						ps.setString(++j, orderList.get(i).getChumonshadenwabango3());
+						// コメント
+						ps.setString(++j, orderList.get(i).getKomento());
+						// メール差込文(お客様へのメッセージ)
+						ps.setString(++j, "");
+
+						// 送付先名字
+						ps.setString(++j, orderList.get(i).getSofusakimeiji());
+						// 送付先名前
+						ps.setString(++j, orderList.get(i).getSoufusakinamae());
+						// 送付先名字フリガナ
+						ps.setString(++j, orderList.get(i).getSoufusakimeijifurigana());
+						// 送付先名前フリガナ
+						ps.setString(++j, orderList.get(i).getSoufusakimeijinamaefurigana());
+						// 配送方法
+						int soryo = 0;
+						if (!Utility.isEmptyString(orderList.get(i).getSoryou())) {
+							soryo = Integer.valueOf(orderList.get(i).getSoryou());
+						}
+						if (soryo > 180 || orderList.get(i).getKesaihouhou().contains("代")
+								|| Integer.valueOf(orderList.get(i).getGokei()) > 5480) {
+							ps.setString(++j, "宅配便");
+						} else {
+							ps.setString(++j, "メール便");
+						}
+						// 送付先郵便番号１
+						ps.setString(++j, orderList.get(i).getSoufusakiyubinbango1());
+						// 送付先郵便番号２
+						ps.setString(++j, orderList.get(i).getSoufusakiyubinbango2());
+						ps.setString(++j, orderList.get(i).getSoufusakidenwabango1());
+						ps.setString(++j, orderList.get(i).getSoufusakidenwabango2());
+						ps.setString(++j, orderList.get(i).getSoufusakidenwabango3());
+						// 送付先住所：都道府県
+						ps.setString(++j, orderList.get(i).getSoufusakijushotodofuken());
+						// 送付先住所：都市区
+						ps.setString(++j, orderList.get(i).getSoufusakijushotoshiku());
+						// 送付先住所：町以降
+						ps.setString(++j, orderList.get(i).getSoufusakijusho3());
+
+						String gokeishouhin = "0";
+						String gokeizei = "0";
+						String gokeisouryou = "0";
+						String gokeidaibikiryou = "0";
+						String seikyukingaku = "0";
+
+						gokeishouhin = orderList.get(i).getGokei();
+						gokeizei = Utility.isEmptyString(orderList.get(i).getShohizei()) ? "0"
+								: orderList.get(i).getShohizei();
+
+						gokeisouryou = Utility.isEmptyString(orderList.get(i).getSoryou()) ? "0"
+								: orderList.get(i).getSoryou();
+
+						gokeidaibikiryou = Utility.isEmptyString(orderList.get(i).getDaibikiryou()) ? "0"
+								: orderList.get(i).getDaibikiryou();
+
+						seikyukingaku = orderList.get(i).getSeikyukingaku();
+						ps.setString(++j, gokeishouhin);
+						ps.setString(++j, gokeizei);
+						ps.setString(++j, gokeisouryou);
+						ps.setString(++j, gokeidaibikiryou);
+						ps.setString(++j, seikyukingaku);
+
+						// 同梱ID
+						ps.setString(++j, "0");
+						// 同梱親FLG
+						ps.setString(++j, "0");
+
+						ps.setString(++j, "0");
+						ps.setString(++j, date);
+						ps.setString(++j, "kyo");
+						ps.setString(++j, date);
+						ps.setString(++j, "kyo");
+						ps.setString(++j, "");
+						ps.setString(++j, "0");
+						ps.executeUpdate();
 					}
-					// 送付先郵便番号１
-					ps.setString(++j, orderList.get(i).getSoufusakiyubinbango1());
-					// 送付先郵便番号２
-					ps.setString(++j, orderList.get(i).getSoufusakiyubinbango2());
-					ps.setString(++j, orderList.get(i).getSoufusakidenwabango1());
-					ps.setString(++j, orderList.get(i).getSoufusakidenwabango2());
-					ps.setString(++j, orderList.get(i).getSoufusakidenwabango3());
-					// 送付先住所：都道府県
-					ps.setString(++j, orderList.get(i).getSoufusakijushotodofuken());
-					// 送付先住所：都市区
-					ps.setString(++j, orderList.get(i).getSoufusakijushotoshiku());
-					// 送付先住所：町以降
-					ps.setString(++j, orderList.get(i).getSoufusakijusho3());
 
-					String gokeishouhin = "0";
-					String gokeizei = "0";
-					String gokeisouryou = "0";
-					String gokeidaibikiryou = "0";
-					String seikyukingaku = "0";
-
-					gokeishouhin = orderList.get(i).getGokei();
-					gokeizei = Utility.isEmptyString(orderList.get(i).getShohizei()) ? "0"
-							: orderList.get(i).getShohizei();
-
-					gokeisouryou = Utility.isEmptyString(orderList.get(i).getSoryou()) ? "0"
-							: orderList.get(i).getSoryou();
-
-					gokeidaibikiryou = Utility.isEmptyString(orderList.get(i).getDaibikiryou()) ? "0"
-							: orderList.get(i).getDaibikiryou();
-
-					seikyukingaku = orderList.get(i).getSeikyukingaku();
-					ps.setString(++j, gokeishouhin);
-					ps.setString(++j, gokeizei);
-					ps.setString(++j, gokeisouryou);
-					ps.setString(++j, gokeidaibikiryou);
-					ps.setString(++j, seikyukingaku);
-
-					// 同梱ID
-					ps.setString(++j, "0");
-					// 同梱親FLG
-					ps.setString(++j, "0");
-
-					ps.setString(++j, "0");
-					ps.setString(++j, date);
-					ps.setString(++j, "kyo");
-					ps.setString(++j, date);
-					ps.setString(++j, "kyo");
-					ps.setString(++j, "");
-					ps.setString(++j, "0");
-					ps.executeUpdate();
+					
 
 				} catch (MySQLIntegrityConstraintViolationException e) {
 					System.out.println(orderList.get(i).getJuchubango() + "已存在，不再添加");
@@ -2683,15 +2702,34 @@ public class A1001Common {
 					}
 				}
 
-				sql = "INSERT INTO TBL00027 VALUES(?,?,?,?,?,?)";
+				int count027 = 0;
+				sql = "SELECT COUNT(*) COUNT FROM TBL00027 WHERE CHUMONBANGO = ?";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, orderList.get(i).getJuchubango());
-				ps.setString(2, orderList.get(i).getHasoyakusokubi().split(" ")[0].replace("/", "-"));
-				ps.setString(3, Utility.getDateTime());
-				ps.setString(4, Utility.getUser());
-				ps.setString(5, Utility.getDateTime());
-				ps.setString(6, Utility.getUser());
-				ps.execute();
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					count027 = rs.getInt("COUNT");
+				}
+				if (count027 > 0) {
+					sql = "UPDATE TBL00027 SET UPDATE_TIME = ? , UPDATE_USER = ? WHERE CHUMONBANGO = ?";
+					ps = conn.prepareStatement(sql);
+					ps.setString(1, date);
+					ps.setString(2, "updater");
+					ps.setString(3,orderList.get(i).getJuchubango());
+					ps.executeUpdate();
+				} else {
+					sql = "INSERT INTO TBL00027 VALUES(?,?,?,?,?,?)";
+					ps = conn.prepareStatement(sql);
+					ps.setString(1, orderList.get(i).getJuchubango());
+					ps.setString(2, orderList.get(i).getHasoyakusokubi().split(" ")[0].replace("/", "-"));
+					ps.setString(3, Utility.getDateTime());
+					ps.setString(4, Utility.getUser());
+					ps.setString(5, Utility.getDateTime());
+					ps.setString(6, Utility.getUser());
+					ps.execute();
+				}
+				
+				
 			}
 
 			// commit
@@ -2702,6 +2740,7 @@ public class A1001Common {
 			conn.rollback();
 			throw e;
 		} finally {
+			ps.close();
 			conn.close();
 		}
 	}

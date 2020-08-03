@@ -1923,6 +1923,10 @@ public class Utility {
 			shopPost = "050-35675168";
 		} else if ("xandw".equals(shop)) {
 			shopPost = "03-6821-1372";
+		} else if ("herz".equals(shop)) {
+			shopPost = "050-33902972";
+		} else if ("epintl".equals(shop)) {
+			shopPost = "050-35587157";
 		} else {
 			shopPost = "050-35675168";
 		}
@@ -1943,6 +1947,12 @@ public class Utility {
 			shopPost = "050-35675168";
 		} else if ("xandw".equals(shop)) {
 			shopPost = "03-6821-1372";
+		} else if ("herz".equals(shop)) {
+			shopPost = "050-33902972";
+		} else if ("epintl".equals(shop)) {
+			shopPost = "050-35587157";
+		} else {
+			shopPost = "050-35675168";
 		}
 
 		return shopPost;

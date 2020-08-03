@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -433,7 +434,7 @@ public class A13010103Action extends BaseAction {
 		}
 	}
 	
-	private void outCsv(List<OrderBean> orderList) throws IOException, ParseException {
+	private void outCsv(List<OrderBean> orderList) throws Exception {
 		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 		DateFormat df2 = new SimpleDateFormat("yyyy/MM/dd");
 //		fileNameMerubin = "Merubin_" + df.format(new Date()) + ".csv";
@@ -453,6 +454,8 @@ public class A13010103Action extends BaseAction {
 //		BufferedWriter bufferedWriterYamatoMerubin = null;
 //		BufferedWriter bufferedWriterSagawa = null;
 		BufferedWriter bufferedWriter = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
 
 //		bufferedWriterSagawa = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file2), "shift-jis"));
 //
@@ -472,169 +475,197 @@ public class A13010103Action extends BaseAction {
 		bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "shift-jis"));
 		bufferedWriter.write("出荷予定日,お届け予定（指定）日,配達時間帯,お届け先電話番号,お届け先電話番号枝番,お届け先郵便番号,お届け先住所,お届け先住所（アパートマンション名）,お届け先会社・部門名１,お届け先会社・部門名２,お届け先名,お届け先名略称カナ,敬称,ご依頼主電話番号,ご依頼主電話番号枝番,ご依頼主郵便番号,ご依頼主住所,ご依頼主住所（アパートマンション名）,ご依頼主名,ご依頼主略称カナ,品名１");
 
-		for (int i = 0; i < orderList.size(); i++) {
-			OrderBean orderBean = orderList.get(i);
-			String shop = orderBean.getTenpobetsu();
-			if ("coverforefront".equals(shop)) {
-				shop = "whiteSweet";
-			}
-			String site = orderBean.getSite();
-			String shohinmei = orderBean.getDetailList().get(0).getShouhinmei();
-			if (shohinmei.length() > 25) {
-				shohinmei = shohinmei.substring(0, 25);
-			}
-			if ("宅配便".equals(orderBean.getHaisouhoho()) || "宅急便".equals(orderBean.getHaisouhoho())) {
-				if ("1002".equals(orderBean.getUnsokaisha())) {
-					// 出荷予定日
-					// String yotebi = df2.format(new Date());
-					// お届け先電話番号
-					String denwabango = orderBean.getSofusakidenwabango1() + "-" + orderBean.getSofusakidenwabango2()
-							+ "-" + orderBean.getSofusakidenwabango3();
-					// お届け先郵便番号
-					String yunbinbango = orderBean.getSofusakiyubinbango1() + "-" + orderBean.getSofusakiyubinbango2();
-					// お届け先住所
-					String jusho1 = "";
-					// お届け先住所（アパートマンション名）
-					String jusho2 = "";
+		try {
+			conn = JdbcConnection.getConnection();
+			String sql = "SELECT * FROM common_order_tbl T1 WHERE T1.CHUMONBANGO = ? ";
+			
+			for (int i = 0; i < orderList.size(); i++) {
+				OrderBean orderBean = orderList.get(i);
+				String shop = orderBean.getTenpobetsu();
+				if ("coverforefront".equals(shop)) {
+					shop = "whiteSweet";
+				}
+				String site = orderBean.getSite();
+				String tenpodenwabango = "";
+				if (!"楽天".equals(site) && !"Yahoo Shopping".equals(site) 
+						&& !"DENA".equals(site) && !"ヤフオク".equals(site) 
+						&& !"ポンパレモール".equals(site) && !"qoo10".equals(site)) {
+					
+	
+					ps = conn.prepareStatement(sql);
+					ps.setString(1, orderBean.getJuchubango());
+					ResultSet rs = ps.executeQuery();
 
-					jusho1 = orderBean.getSofusakijusho1() + orderBean.getSofusakijusho2();
-
-					jusho2 = orderBean.getSofusakijusho3();
-
-					// お届け先名
-					String name = orderBean.getSofusakimeiji() + orderBean.getSofusakinamae() + "　様";
-
-					String peidari = "";
-					String zhidingrishi = "";
-
-					if (!Utility.isEmptyString(orderBean.getOtodokebishitei())) {
-						peidari = orderBean.getOtodokebishitei().replace("-", "");
+					while (rs.next()) {
+						tenpodenwabango = rs.getString("T1.BIKO");
 					}
-
-					if (!Utility.isEmptyString(orderBean.getOtodokejikandai())) {
-						zhidingrishi = orderBean.getOtodokejikandai();
-					}
-
-					String daiyingjinge = "";
-					if ("代金引換".equals(orderBean.getKesaihoho())) {
-						daiyingjinge = orderBean.getGokeikingaku();
-					}
-					if (i != 0) {
+				} else {
+					tenpodenwabango = Utility.getShopTel(shop, site);
+				}
+	
+				String shohinmei = orderBean.getDetailList().get(0).getShouhinmei();
+				if (shohinmei.length() > 25) {
+					shohinmei = shohinmei.substring(0, 25);
+				}
+				if ("宅配便".equals(orderBean.getHaisouhoho()) || "宅急便".equals(orderBean.getHaisouhoho())) {
+					if ("1002".equals(orderBean.getUnsokaisha())) {
+						// 出荷予定日
+						// String yotebi = df2.format(new Date());
+						// お届け先電話番号
+						String denwabango = orderBean.getSofusakidenwabango1() + "-" + orderBean.getSofusakidenwabango2()
+								+ "-" + orderBean.getSofusakidenwabango3();
+						// お届け先郵便番号
+						String yunbinbango = orderBean.getSofusakiyubinbango1() + "-" + orderBean.getSofusakiyubinbango2();
+						// お届け先住所
+						String jusho1 = "";
+						// お届け先住所（アパートマンション名）
+						String jusho2 = "";
+	
+						jusho1 = orderBean.getSofusakijusho1() + orderBean.getSofusakijusho2();
+	
+						jusho2 = orderBean.getSofusakijusho3();
+	
+						// お届け先名
+						String name = orderBean.getSofusakimeiji() + orderBean.getSofusakinamae() + "　様";
+	
+						String peidari = "";
+						String zhidingrishi = "";
+	
+						if (!Utility.isEmptyString(orderBean.getOtodokebishitei())) {
+							peidari = orderBean.getOtodokebishitei().replace("-", "");
+						}
+	
+						if (!Utility.isEmptyString(orderBean.getOtodokejikandai())) {
+							zhidingrishi = orderBean.getOtodokejikandai();
+						}
+	
+						String daiyingjinge = "";
+						if ("代金引換".equals(orderBean.getKesaihoho())) {
+							daiyingjinge = orderBean.getGokeikingaku();
+						}
+						if (i != 0) {
+							bufferedWriter.newLine();
+						}
+	//					bufferedWriterSagawa.write("," + denwabango + "," + yunbinbango + "," + jusho1 + "," + jusho2 + ",,"
+	//							+ name + ",,,,,," + Utility.getShopTel(shop, site) + ",,,,,,,,,,,," + "1," + "0," + "0,"
+	//							+ peidari + "," + zhidingrishi + ",," + daiyingjinge + ",,,,,,,,");
+						bufferedWriter.write(",,,"+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,"+"様"+","+tenpodenwabango+",,,,,,,,");
+					} else if ("1001".equals(orderBean.getUnsokaisha())) {
+						String yamatoType = "";
+	
+						if (orderBean.getKesaihoho().contains("代")) {
+							yamatoType = "2";
+						} else {
+							yamatoType = "0";
+						}
+	
+						// 出荷予定日
+						String yotebi = df2.format(new Date());
+						// お届け先電話番号
+						String denwabango = orderBean.getSofusakidenwabango1() + "-" + orderBean.getSofusakidenwabango2()
+								+ "-" + orderBean.getSofusakidenwabango3();
+						// お届け先郵便番号
+						String yunbinbango = orderBean.getSofusakiyubinbango1() + "-" + orderBean.getSofusakiyubinbango2();
+						// お届け先住所
+						String jusho1 = "";
+						// お届け先住所（アパートマンション名）
+						String jusho2 = "";
+	
+						String sofusakijusho = orderBean.getSofusakijusho1() + orderBean.getSofusakijusho2()
+								+ orderBean.getSofusakijusho3();
+						jusho1 = sofusakijusho;
+	
+						String peidari = "";
+						String zhidingrishi = "";
+						String daiyingjinge = "";
+						if (orderBean.getKesaihoho().contains("代")) {
+							daiyingjinge = orderBean.getGokeikingaku();
+						}
+						if (!Utility.isEmptyString(orderBean.getOtodokebishitei())) {
+							peidari = Utility.formatData(orderBean.getOtodokebishitei().replace("-", ""));
+						}
+	
+						if (!Utility.isEmptyString(orderBean.getOtodokejikandai())) {
+							zhidingrishi = orderBean.getOtodokejikandai();
+	
+							if ("01".equals(zhidingrishi)) {
+								zhidingrishi = "0812";
+							} else if ("12".equals(zhidingrishi)) {
+								zhidingrishi = "1214";
+							} else if ("14".equals(zhidingrishi)) {
+								zhidingrishi = "1416";
+							} else if ("16".equals(zhidingrishi)) {
+								zhidingrishi = "1618";
+							} else if ("04".equals(zhidingrishi)) {
+								zhidingrishi = "1820";
+							}
+	
+						}
+	
+						// お届け先名
+						String name = orderBean.getSofusakimeiji() + orderBean.getSofusakinamae();
+	//					bufferedWriterYamato.newLine();
+	//					bufferedWriterYamato.write("," + yamatoType + ",,," + yotebi + "," + peidari + "," + zhidingrishi
+	//							+ "," + "," + denwabango + ",," + yunbinbango + "," + jusho1 + "," + jusho2 + ",,," + name
+	//							+ ",,,," + Utility.getShopTel(shop, site) + ",,3490114,埼玉県蓮田市馬込2-132エルディムセブン1-203,," + shop
+	//							+ ",,," + shohinmei + ",,,,," + "," + daiyingjinge + ","
+	//							+ ",,,,2,0486272559,,01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
 						bufferedWriter.newLine();
+						bufferedWriter.write(yotebi+","+peidari+","+zhidingrishi+","+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,様,"+tenpodenwabango+",,3490114,埼玉県蓮田市馬込2-132エルディムセブン1-203,,"+shop+",,"+shohinmei+",");
+	
 					}
-//					bufferedWriterSagawa.write("," + denwabango + "," + yunbinbango + "," + jusho1 + "," + jusho2 + ",,"
-//							+ name + ",,,,,," + Utility.getShopTel(shop, site) + ",,,,,,,,,,,," + "1," + "0," + "0,"
-//							+ peidari + "," + zhidingrishi + ",," + daiyingjinge + ",,,,,,,,");
-					bufferedWriter.write(",,,"+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,"+"様"+","+Utility.getShopTel(shop, site)+",,,,,,,,");
-				} else if ("1001".equals(orderBean.getUnsokaisha())) {
-					String yamatoType = "";
-
-					if (orderBean.getKesaihoho().contains("代")) {
-						yamatoType = "2";
-					} else {
-						yamatoType = "0";
-					}
-
+				} else {
+	
 					// 出荷予定日
 					String yotebi = df2.format(new Date());
 					// お届け先電話番号
-					String denwabango = orderBean.getSofusakidenwabango1() + "-" + orderBean.getSofusakidenwabango2()
-							+ "-" + orderBean.getSofusakidenwabango3();
+					String denwabango = orderBean.getSofusakidenwabango1() + "-" + orderBean.getSofusakidenwabango2() + "-"
+							+ orderBean.getSofusakidenwabango3();
 					// お届け先郵便番号
 					String yunbinbango = orderBean.getSofusakiyubinbango1() + "-" + orderBean.getSofusakiyubinbango2();
 					// お届け先住所
 					String jusho1 = "";
 					// お届け先住所（アパートマンション名）
 					String jusho2 = "";
-
+	
 					String sofusakijusho = orderBean.getSofusakijusho1() + orderBean.getSofusakijusho2()
 							+ orderBean.getSofusakijusho3();
 					jusho1 = sofusakijusho;
-
-					String peidari = "";
-					String zhidingrishi = "";
-					String daiyingjinge = "";
-					if (orderBean.getKesaihoho().contains("代")) {
-						daiyingjinge = orderBean.getGokeikingaku();
-					}
-					if (!Utility.isEmptyString(orderBean.getOtodokebishitei())) {
-						peidari = Utility.formatData(orderBean.getOtodokebishitei().replace("-", ""));
-					}
-
-					if (!Utility.isEmptyString(orderBean.getOtodokejikandai())) {
-						zhidingrishi = orderBean.getOtodokejikandai();
-
-						if ("01".equals(zhidingrishi)) {
-							zhidingrishi = "0812";
-						} else if ("12".equals(zhidingrishi)) {
-							zhidingrishi = "1214";
-						} else if ("14".equals(zhidingrishi)) {
-							zhidingrishi = "1416";
-						} else if ("16".equals(zhidingrishi)) {
-							zhidingrishi = "1618";
-						} else if ("04".equals(zhidingrishi)) {
-							zhidingrishi = "1820";
-						}
-
-					}
-
+	
 					// お届け先名
 					String name = orderBean.getSofusakimeiji() + orderBean.getSofusakinamae();
-//					bufferedWriterYamato.newLine();
-//					bufferedWriterYamato.write("," + yamatoType + ",,," + yotebi + "," + peidari + "," + zhidingrishi
-//							+ "," + "," + denwabango + ",," + yunbinbango + "," + jusho1 + "," + jusho2 + ",,," + name
-//							+ ",,,," + Utility.getShopTel(shop, site) + ",,3490114,埼玉県蓮田市馬込2-132エルディムセブン1-203,," + shop
-//							+ ",,," + shohinmei + ",,,,," + "," + daiyingjinge + ","
-//							+ ",,,,2,0486272559,,01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
+	//				bufferedWriterYamatoMerubin.newLine();
+	//				bufferedWriterYamatoMerubin.write(",7,0,," + yotebi + ",,,," + denwabango + ",," + yunbinbango + ","
+	//						+ jusho1 + "," + jusho2 + ",,," + name + ",," + "様" + ",," + Utility.getShopTel(shop, site)
+	//						+ ",,3490114,埼玉県蓮田市馬込2-132,エルディムセブン1-203," + shop
+	//						+ ",,,衣類,,,,,,,,0,,1,,05035675168,,01,0,,,,,0,,,,0,,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,ユーザーID,,,,0,,,0,,,0,,,");
 					bufferedWriter.newLine();
-					bufferedWriter.write(yotebi+","+peidari+","+zhidingrishi+","+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,様,"+Utility.getShopTel(shop, site)+",,3490114,埼玉県蓮田市馬込2-132エルディムセブン1-203,,"+shop+",,"+shohinmei+",");
-
+					bufferedWriter.write(yotebi+",,,"+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,様,"+tenpodenwabango+",,3490114,埼玉県蓮田市馬込2-132,エルディムセブン1-203,"+shop+",,衣類,");
+	
 				}
-			} else {
-
-				// 出荷予定日
-				String yotebi = df2.format(new Date());
-				// お届け先電話番号
-				String denwabango = orderBean.getSofusakidenwabango1() + "-" + orderBean.getSofusakidenwabango2() + "-"
-						+ orderBean.getSofusakidenwabango3();
-				// お届け先郵便番号
-				String yunbinbango = orderBean.getSofusakiyubinbango1() + "-" + orderBean.getSofusakiyubinbango2();
-				// お届け先住所
-				String jusho1 = "";
-				// お届け先住所（アパートマンション名）
-				String jusho2 = "";
-
-				String sofusakijusho = orderBean.getSofusakijusho1() + orderBean.getSofusakijusho2()
-						+ orderBean.getSofusakijusho3();
-				jusho1 = sofusakijusho;
-
-				// お届け先名
-				String name = orderBean.getSofusakimeiji() + orderBean.getSofusakinamae();
-//				bufferedWriterYamatoMerubin.newLine();
-//				bufferedWriterYamatoMerubin.write(",7,0,," + yotebi + ",,,," + denwabango + ",," + yunbinbango + ","
-//						+ jusho1 + "," + jusho2 + ",,," + name + ",," + "様" + ",," + Utility.getShopTel(shop, site)
-//						+ ",,3490114,埼玉県蓮田市馬込2-132,エルディムセブン1-203," + shop
-//						+ ",,,衣類,,,,,,,,0,,1,,05035675168,,01,0,,,,,0,,,,0,,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,ユーザーID,,,,0,,,0,,,0,,,");
-				bufferedWriter.newLine();
-				bufferedWriter.write(yotebi+",,,"+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,様,"+Utility.getShopTel(shop, site)+",,3490114,埼玉県蓮田市馬込2-132,エルディムセブン1-203,"+shop+",,衣類,");
-
 			}
-		}
-//		if (bufferedWriterYamato != null) {
-//			bufferedWriterYamato.flush();
-//			bufferedWriterYamato.close();
-//		}
-//		if (bufferedWriterYamatoMerubin != null) {
-//			bufferedWriterYamatoMerubin.flush();
-//			bufferedWriterYamatoMerubin.close();
-//		}
-//		if (bufferedWriterSagawa != null) {
-//			bufferedWriterSagawa.flush();
-//			bufferedWriterSagawa.close();
-//		}
-		if (bufferedWriter != null) {
-			bufferedWriter.flush();
-			bufferedWriter.close();
+	//		if (bufferedWriterYamato != null) {
+	//			bufferedWriterYamato.flush();
+	//			bufferedWriterYamato.close();
+	//		}
+	//		if (bufferedWriterYamatoMerubin != null) {
+	//			bufferedWriterYamatoMerubin.flush();
+	//			bufferedWriterYamatoMerubin.close();
+	//		}
+	//		if (bufferedWriterSagawa != null) {
+	//			bufferedWriterSagawa.flush();
+	//			bufferedWriterSagawa.close();
+	//		}
+			if (bufferedWriter != null) {
+				bufferedWriter.flush();
+				bufferedWriter.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		} finally {
+			conn.close();
 		}
 	}
 
@@ -1252,126 +1283,161 @@ public class A13010103Action extends BaseAction {
 
 	}
 
-	private Map<String, Object> model(OrderList order, F100102 f100102) {
+	private Map<String, Object> model(OrderList order, F100102 f100102) throws Exception {
+		Connection conn = null;
+		PreparedStatement ps = null;
+
 		Map<String, Object> pdfData = new HashMap<String, Object>();
 		String shopName;
-		// 店铺名
-		if ("coverforefront".equals(order.getTenpo())) {
-			shopName = "WhiteSweet";
-		} else {
-			shopName = order.getTenpo();
-		}
-		pdfData.put("title", "[" + shopName + "] お買い上げ明細書");
-		pdfData.put("buyeraddr", f100102.getChumonshajusho());
-		pdfData.put("buyername", f100102.getChumonshanamae() + " 様 ");
-		StringBuilder saleerAddr = new StringBuilder(shopName);
-		saleerAddr.append(System.lineSeparator());
-		saleerAddr.append(Utility.getShopUrl(order.getTenpo(), order.getSite()));
-		saleerAddr.append(System.lineSeparator());
-		saleerAddr.append(shopName);
-		saleerAddr.append(System.lineSeparator());
-		saleerAddr.append("〒").append(Utility.getShopPost(order.getTenpo(), order.getSite()));
-		saleerAddr.append(System.lineSeparator());
-		saleerAddr.append(Utility.getShopAddr(order.getTenpo(), order.getSite()));
-		saleerAddr.append(System.lineSeparator());
-		saleerAddr.append("TEL： ").append(Utility.getShopTel(order.getTenpo(), order.getSite()));
-		saleerAddr.append(System.lineSeparator());
-		saleerAddr.append("FAX：").append(Utility.getShopFax(order.getTenpo(), order.getSite()));
-		pdfData.put("saleeraddr", saleerAddr.toString());
-		StringBuilder content = new StringBuilder("明細内容に関してご不明な点は、下記のページアドレス（URL）を");
-		content.append(System.lineSeparator()).append("ご確認の上、当店「");
-		content.append(shopName);
-		content.append("」までお問合わせください。");
-		content.append(System.lineSeparator());
-		content.append("「").append(shopName).append("}」 :")
-				.append(Utility.getShopUrl(order.getTenpo(), order.getSite()));
-		pdfData.put("content", content.toString());
-		StringBuilder receiveAddr = new StringBuilder("■お届け先：");
-		receiveAddr.append(System.lineSeparator()).append(f100102.getSofusakijoho()
-				.replaceFirst("<br>", "　様" + System.lineSeparator()).replace("<br>", System.lineSeparator()));
-		pdfData.put("receiveaddr", receiveAddr.toString());
-		StringBuilder orderInfo = new StringBuilder("■ご注文日： ");
-		orderInfo.append(order.getChumonichiji().substring(0, 10));
-		orderInfo.append(System.lineSeparator()).append(System.lineSeparator());
-		orderInfo.append("■受注番号：").append(order.getChumonbango());
-		pdfData.put("orderinfo", orderInfo.toString());
-		pdfData.put("payway", "■お支払い方法：" + order.getOshiharaihoho());
-		List<ShohinList> shohinList = f100102.getShohinList();
-		List<List<String>> detailTableList = new ArrayList<List<String>>();
-		List<String> row = new ArrayList<String>();
-		row.add("商品名／商品番号／項目：選択肢");
-		row.add("個数");
-		row.add("単価");
-		row.add("小計");
-		detailTableList.add(row);
-		for (ShohinList shohin : shohinList) {
-			row = new ArrayList<String>();
-			row.add(shohin.getShouhinmei() + shohin.getShohinbango() + System.lineSeparator()
-					+ shohin.getKomokusentakushi().replace("<br>", " "));
-			row.add(shohin.getKosu());
-			row.add(shohin.getTankaku() + " 円 ");
-			row.add(shohin.getShoukei() + " 円 ");
-			detailTableList.add(row);
-		}
-		pdfData.put("detailtable", detailTableList);
-		List<List<String>> sumList = new ArrayList<List<String>>();
-		row = new ArrayList<String>();
-		row.add("合計");
-		row.add(f100102.getGokeishouhin() + " 円 ");
-		sumList.add(row);
-		row = new ArrayList<String>();
-		row.add("消費税");
-		if (!Utility.isEmptyString(f100102.getGokeizei()) && Integer.valueOf(f100102.getGokeizei()) > 0) {
-			row.add(f100102.getGokeizei());
-		} else {
-			row.add("内税");
-		}
-		sumList.add(row);
-		row = new ArrayList<String>();
-		row.add("送料");
-		row.add(f100102.getGokeisouryou() + " 円 ");
-		sumList.add(row);
-		if (!Utility.isEmptyString(f100102.getGokeidaibikiryou())) {
-			row = new ArrayList<String>();
-			row.add("代引き手数料");
-			row.add(f100102.getGokeidaibikiryou() + " 円 ");
-			sumList.add(row);
-		}
-		row = new ArrayList<String>();
-		row.add("総合計");
-		Long sogokei = 0l;
-		Long shohizei = 0l;
-		Long daibikiryo = 0l;
-		if (!Utility.isEmptyString(f100102.getGokeizei())) {
-			shohizei = Long.valueOf(f100102.getGokeizei());
-		}
-		Long soryo = Long.valueOf(f100102.getGokeisouryou());
-		if (!Utility.isEmptyString(f100102.getGokeidaibikiryou())) {
-			daibikiryo = Long.valueOf(f100102.getGokeidaibikiryou());
-		}
+		try {
+			
+			// 店铺名
+			if ("coverforefront".equals(order.getTenpo())) {
+				shopName = "WhiteSweet";
+			} else {
+				shopName = order.getTenpo();
+			}
+			pdfData.put("title", "[" + shopName + "] お買い上げ明細書");
+			pdfData.put("buyeraddr", f100102.getChumonshajusho());
+			pdfData.put("buyername", f100102.getChumonshanamae() + " 様 ");
+			StringBuilder saleerAddr = new StringBuilder(shopName);
+			saleerAddr.append(System.lineSeparator());
+			saleerAddr.append(Utility.getShopUrl(order.getTenpo(), order.getSite()));
+			saleerAddr.append(System.lineSeparator());
+			saleerAddr.append(shopName);
+			saleerAddr.append(System.lineSeparator());
+			saleerAddr.append("〒").append(Utility.getShopPost(order.getTenpo(), order.getSite()));
+			saleerAddr.append(System.lineSeparator());
+			
+			
+			conn = JdbcConnection.getConnection();
+			String sql = "SELECT * FROM common_order_tbl T1 WHERE T1.CHUMONBANGO = ? ";
+				
+			String site = order.getSite();
+			String tenpodenwabango = "";
+			if (!"楽天".equals(site) && !"Yahoo Shopping".equals(site) 
+					&& !"DENA".equals(site) && !"ヤフオク".equals(site) 
+					&& !"ポンパレモール".equals(site) && !"qoo10".equals(site)) {
+				
 
-		sogokei = Long.valueOf(f100102.getGokeishouhin()) + shohizei + soryo + daibikiryo;
-		row.add(sogokei + " 円 ");
-		sumList.add(row);
-		row = new ArrayList<String>();
-		row.add("ポイント利用額");
-		row.add(f100102.getPointriyou() + " 円 ");
-		sumList.add(row);
-		row = new ArrayList<String>();
-		row.add("その他");
-		Long seikyu = Long.valueOf(f100102.getSeikyukingaku());
-		Long point = Long.valueOf(f100102.getPointriyou());
-		Long sonota = 0l;
-		sonota = seikyu + point - sogokei;
-		row.add(sonota + " 円 ");
-		sumList.add(row);
-		row = new ArrayList<String>();
-		row.add("請求金額");
-		row.add(f100102.getSeikyukingaku() + " 円 ");
-		sumList.add(row);
-		pdfData.put("sumtable", sumList);
-		pdfData.put("barcode", order.getChumonbango());
-		return pdfData;
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, order.getChumonbango());
+				ResultSet rs = ps.executeQuery();
+
+				while (rs.next()) {
+					tenpodenwabango = rs.getString("T1.BIKO");
+				}
+			} else {
+				tenpodenwabango = Utility.getShopTel(order.getTenpo(), order.getSite());
+			}
+			
+			saleerAddr.append(Utility.getShopAddr(order.getTenpo(), order.getSite()));
+			saleerAddr.append(System.lineSeparator());
+			saleerAddr.append("TEL： ").append(tenpodenwabango);
+			saleerAddr.append(System.lineSeparator());
+			saleerAddr.append("FAX：").append(tenpodenwabango);
+			pdfData.put("saleeraddr", saleerAddr.toString());
+			StringBuilder content = new StringBuilder("明細内容に関してご不明な点は、下記のページアドレス（URL）を");
+			content.append(System.lineSeparator()).append("ご確認の上、当店「");
+			content.append(shopName);
+			content.append("」までお問合わせください。");
+			content.append(System.lineSeparator());
+			content.append("「").append(shopName).append("}」 :")
+					.append(Utility.getShopUrl(order.getTenpo(), order.getSite()));
+			pdfData.put("content", content.toString());
+			StringBuilder receiveAddr = new StringBuilder("■お届け先：");
+			receiveAddr.append(System.lineSeparator()).append(f100102.getSofusakijoho()
+					.replaceFirst("<br>", "　様" + System.lineSeparator()).replace("<br>", System.lineSeparator()));
+			pdfData.put("receiveaddr", receiveAddr.toString());
+			StringBuilder orderInfo = new StringBuilder("■ご注文日： ");
+			orderInfo.append(order.getChumonichiji().substring(0, 10));
+			orderInfo.append(System.lineSeparator()).append(System.lineSeparator());
+			orderInfo.append("■受注番号：").append(order.getChumonbango());
+			pdfData.put("orderinfo", orderInfo.toString());
+			pdfData.put("payway", "■お支払い方法：" + order.getOshiharaihoho());
+			List<ShohinList> shohinList = f100102.getShohinList();
+			List<List<String>> detailTableList = new ArrayList<List<String>>();
+			List<String> row = new ArrayList<String>();
+			row.add("商品名／商品番号／項目：選択肢");
+			row.add("個数");
+			row.add("単価");
+			row.add("小計");
+			detailTableList.add(row);
+			for (ShohinList shohin : shohinList) {
+				row = new ArrayList<String>();
+				row.add(shohin.getShouhinmei() + shohin.getShohinbango() + System.lineSeparator()
+						+ shohin.getKomokusentakushi().replace("<br>", " "));
+				row.add(shohin.getKosu());
+				row.add(shohin.getTankaku() + " 円 ");
+				row.add(shohin.getShoukei() + " 円 ");
+				detailTableList.add(row);
+			}
+			pdfData.put("detailtable", detailTableList);
+			List<List<String>> sumList = new ArrayList<List<String>>();
+			row = new ArrayList<String>();
+			row.add("合計");
+			row.add(f100102.getGokeishouhin() + " 円 ");
+			sumList.add(row);
+			row = new ArrayList<String>();
+			row.add("消費税");
+			if (!Utility.isEmptyString(f100102.getGokeizei()) && Integer.valueOf(f100102.getGokeizei()) > 0) {
+				row.add(f100102.getGokeizei());
+			} else {
+				row.add("内税");
+			}
+			sumList.add(row);
+			row = new ArrayList<String>();
+			row.add("送料");
+			row.add(f100102.getGokeisouryou() + " 円 ");
+			sumList.add(row);
+			if (!Utility.isEmptyString(f100102.getGokeidaibikiryou())) {
+				row = new ArrayList<String>();
+				row.add("代引き手数料");
+				row.add(f100102.getGokeidaibikiryou() + " 円 ");
+				sumList.add(row);
+			}
+			row = new ArrayList<String>();
+			row.add("総合計");
+			Long sogokei = 0l;
+			Long shohizei = 0l;
+			Long daibikiryo = 0l;
+			if (!Utility.isEmptyString(f100102.getGokeizei())) {
+				shohizei = Long.valueOf(f100102.getGokeizei());
+			}
+			Long soryo = Long.valueOf(f100102.getGokeisouryou());
+			if (!Utility.isEmptyString(f100102.getGokeidaibikiryou())) {
+				daibikiryo = Long.valueOf(f100102.getGokeidaibikiryou());
+			}
+	
+			sogokei = Long.valueOf(f100102.getGokeishouhin()) + shohizei + soryo + daibikiryo;
+			row.add(sogokei + " 円 ");
+			sumList.add(row);
+			row = new ArrayList<String>();
+			row.add("ポイント利用額");
+			row.add(f100102.getPointriyou() + " 円 ");
+			sumList.add(row);
+			row = new ArrayList<String>();
+			row.add("その他");
+			Long seikyu = Long.valueOf(f100102.getSeikyukingaku());
+			Long point = Long.valueOf(f100102.getPointriyou());
+			Long sonota = 0l;
+			sonota = seikyu + point - sogokei;
+			row.add(sonota + " 円 ");
+			sumList.add(row);
+			row = new ArrayList<String>();
+			row.add("請求金額");
+			row.add(f100102.getSeikyukingaku() + " 円 ");
+			sumList.add(row);
+			pdfData.put("sumtable", sumList);
+			pdfData.put("barcode", order.getChumonbango());
+			return pdfData;
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		} finally {
+			conn.close();
+		}
 	}
 
 	public String getFileName() {
