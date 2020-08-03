@@ -57,7 +57,15 @@ function openWin1() {
 		$("#categoryId").val(cateId);
 	}
 
-
+	function isNumber(val){
+	    var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+	    //var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+	    if(regPos.test(val)){
+	        return true;
+	    }else{
+	        return false;
+	    }
+	}
 	
 
 	function check() {
@@ -94,13 +102,18 @@ function openWin1() {
 		
 		var commId11 = document.getElementsByName("f030202.commodityId")[0].value;
 		var size11 = document.getElementsByName("f030202.source")[0].value;
-		$.post("A03020205", {data1:commId11,data2:size11}, function(result) {
-			if("1" == result){
-			    alert("成功");
-			}else{
-				alert("失败");
-			}
-	    }, "json");
+		if (isNumber(size11)){
+			$.post("A03020205", {data1:commId11,data2:size11}, function(result) {
+				if("1" == result){
+				    alert("成功");
+				}else{
+					alert("失败");
+				}
+		    }, "json");
+		}else{
+			alert("尺寸输入不正确");
+		}
+		
 	}
 </script>
 <style type="text/css">

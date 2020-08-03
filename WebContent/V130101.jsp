@@ -348,11 +348,26 @@ function checkBiko(){
 	
 		
 	}
+	
+function isNumber(val){
+    var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+    //var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+    if(regPos.test(val)){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 function updateSize(bango,size1,thisIdx){
-  $.post("A13010111", {orderNo:bango,thisSize:size1}, function(result) {
-		document.getElementsByName("f130101.orderList["+thisIdx+"].unsokaisha")[0].value=result;
-		alert("成功しました！");
-	},"json");
+	if(isNumber(size1)){
+		$.post("A13010111", {orderNo:bango,thisSize:size1}, function(result) {
+			document.getElementsByName("f130101.orderList["+thisIdx+"].unsokaisha")[0].value=result;
+			alert("成功しました！");
+		},"json");
+	}else{
+		alert("尺寸输入不正确，请重新输入！");
+	}
 }
 
 function updateKaisha(bango,idx){

@@ -465,33 +465,38 @@ public class A130101Common {
 						ps.setString(1, rs.getString("CHUMONBANGO"));
 						rs2 = ps.executeQuery();
 						if (rs2.next()) {
-							Order.setSize(rs2.getString("thissize"));
-							Order.setUnsokaisha(rs2.getString("kaisha"));
-							sql = "update common_order_tbl set haisouhoho = ?, UPDATE_TIME = ? where chumonbango = ?";
-							ps2 = conn.prepareStatement(sql);
-							if (Double.valueOf(rs2.getString("thissize")) < 0.3) {
-								Order.setHaisohoho("DM便");
-								ps2.setString(1, "DM便");
-							}else if(Double.valueOf(rs2.getString("thissize")) >= 0.3 && Double.valueOf(rs2.getString("thissize")) < 1.0) {
-								Order.setHaisohoho("メール便");
-								ps2.setString(1, "メール便");
+							Boolean bResult = rs2.getString("thissize").matches("^[-\\+]?[.\\d]*$");
+							if(bResult) {
+								Order.setSize(rs2.getString("thissize"));
+								Order.setUnsokaisha(rs2.getString("kaisha"));
+								sql = "update common_order_tbl set haisouhoho = ?, UPDATE_TIME = ? where chumonbango = ?";
+								ps2 = conn.prepareStatement(sql);
+								if (Double.valueOf(rs2.getString("thissize")) < 0.3) {
+									Order.setHaisohoho("DM便");
+									ps2.setString(1, "DM便");
+								}else if(Double.valueOf(rs2.getString("thissize")) >= 0.3 && Double.valueOf(rs2.getString("thissize")) < 1.0) {
+									Order.setHaisohoho("メール便");
+									ps2.setString(1, "メール便");
+								}else {
+									Order.setHaisohoho("宅配便");
+									ps2.setString(1, "宅配便");
+									
+									sql = "update kaisha_size_tbl set kaisha = ? where juchubango = ?";
+									ps3 = conn.prepareStatement(sql);
+
+									ps3.setString(1, "1002");
+									ps3.setString(2, Order.getChumonbango());
+									ps3.execute();
+								}
+								SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+								String date = format.format(new Date());
+								ps2.setString(2, date);
+								ps2.setString(3, Order.getChumonbango());
+								ps2.execute();
 							}else {
-								Order.setHaisohoho("宅配便");
-								ps2.setString(1, "宅配便");
-								
-								sql = "update kaisha_size_tbl set kaisha = ? where juchubango = ?";
-								ps3 = conn.prepareStatement(sql);
-
-								ps3.setString(1, "1002");
-								ps3.setString(2, Order.getChumonbango());
-								ps3.execute();
+								Order.setSize("0");
+								break;
 							}
-							SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-							String date = format.format(new Date());
-							ps2.setString(2, date);
-							ps2.setString(3, Order.getChumonbango());
-							ps2.execute();
-
 						} else {
 							sql = "select shouhinbango,kosu from common_order_detail_tbl where juchubango = ?";
 							ps = conn.prepareStatement(sql);
@@ -590,9 +595,7 @@ public class A130101Common {
 
 			conn.commit();
 			return orderList;
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			conn.rollback();
 			throw e;

@@ -2,6 +2,8 @@ package com.rakuten.r0302.action;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.util.JdbcConnection;
@@ -18,10 +20,13 @@ public class A03020205Action extends BaseAction {
 		PreparedStatement ps = null;
 		try {
 			conn = JdbcConnection.getConnection();
-			String sql = "UPDATE tbl00011 SET SOURCE = ? WHERE commodity_id = ?";
+			String sql = "UPDATE tbl00011 SET SOURCE = ?, UPDATE_TIME = ? WHERE commodity_id = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, data2);
-			ps.setString(2, data1);
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String date = format.format(new Date());
+			ps.setString(2, date);
+			ps.setString(3, data1);
 			ps.execute();
 
 			conn.commit();
