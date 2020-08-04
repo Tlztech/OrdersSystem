@@ -510,7 +510,7 @@ public class A13010103Action extends BaseAction {
 				if ("宅配便".equals(orderBean.getHaisouhoho()) || "宅急便".equals(orderBean.getHaisouhoho())) {
 					if ("1002".equals(orderBean.getUnsokaisha())) {
 						// 出荷予定日
-						// String yotebi = df2.format(new Date());
+						 String yotebi = df2.format(new Date());
 						// お届け先電話番号
 						String denwabango = orderBean.getSofusakidenwabango1() + "-" + orderBean.getSofusakidenwabango2()
 								+ "-" + orderBean.getSofusakidenwabango3();
@@ -526,7 +526,7 @@ public class A13010103Action extends BaseAction {
 						jusho2 = orderBean.getSofusakijusho3();
 	
 						// お届け先名
-						String name = orderBean.getSofusakimeiji() + orderBean.getSofusakinamae() + "　様";
+						String name = orderBean.getSofusakimeiji() + orderBean.getSofusakinamae();
 	
 						String peidari = "";
 						String zhidingrishi = "";
@@ -543,13 +543,9 @@ public class A13010103Action extends BaseAction {
 						if ("代金引換".equals(orderBean.getKesaihoho())) {
 							daiyingjinge = orderBean.getGokeikingaku();
 						}
-						if (i != 0) {
-							bufferedWriter.newLine();
-						}
-	//					bufferedWriterSagawa.write("," + denwabango + "," + yunbinbango + "," + jusho1 + "," + jusho2 + ",,"
-	//							+ name + ",,,,,," + Utility.getShopTel(shop, site) + ",,,,,,,,,,,," + "1," + "0," + "0,"
-	//							+ peidari + "," + zhidingrishi + ",," + daiyingjinge + ",,,,,,,,");
-						bufferedWriter.write(",,,"+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,"+"様"+","+tenpodenwabango+",,,,,,,,");
+						
+						bufferedWriter.newLine();
+						bufferedWriter.write(yotebi+","+peidari+","+zhidingrishi+","+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,"+"様"+","+tenpodenwabango+",,3490114,埼玉県蓮田市馬込2-132エルディムセブン1-203,,"+shop+",,"+shohinmei+",");
 					} else if ("1001".equals(orderBean.getUnsokaisha())) {
 						String yamatoType = "";
 	
