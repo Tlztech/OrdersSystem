@@ -45,6 +45,9 @@ public class A13020114Action extends BaseAction {
 			List<String> yahooOrderList = new ArrayList<String>();
 			List<String> denaOrderList = new ArrayList<String>();
 			List<String> yahuoku = new ArrayList<String>();
+			List<String> ponpaOrderList = new ArrayList<String>();
+			List<String> qoo10OrderList = new ArrayList<String>();
+			List<String> otherOrderList = new ArrayList<String>();
 
 			for (OrderList order : orderList) {
 				if ("˜SÌì".equals(order.getSite())) {
@@ -55,6 +58,12 @@ public class A13020114Action extends BaseAction {
 					denaOrderList.add(order.getChumonbango());
 				} else if ("¥ä¥Õ¥ª¥¯".equals(order.getSite())) {
 					yahuoku.add(order.getChumonbango());
+				}else if ("¥Ý¥ó¥Ñ¥ì¥â©`¥ë".equals(order.getSite())) {
+					ponpaOrderList.add(order.getChumonbango());
+				}else if("qoo10".equals(order.getSite())) {
+					qoo10OrderList.add(order.getChumonbango());
+				}else {
+					otherOrderList.add(order.getChumonbango());
 				}
 				shoriList2.add(new String[] { order.getChumonbango(), order.getHaisokaisha(), order.getDenpyobango() });
 			}
@@ -69,6 +78,15 @@ public class A13020114Action extends BaseAction {
 				a130201Common.setHaneizumi(shoriList);
 			} else if ("4".equals(tenpobetsu)) {
 				shoriList = yahuoku;
+				a130201Common.setHaneizumi(shoriList);
+			}else if ("5".equals(tenpobetsu)) {
+				shoriList = ponpaOrderList;
+				a130201Common.setHaneizumi(shoriList);
+			}else if ("6".equals(tenpobetsu)) {
+				shoriList = qoo10OrderList;
+				a130201Common.setHaneizumi(shoriList);
+			}else if ("7".equals(tenpobetsu)) {
+				shoriList = otherOrderList;
 				a130201Common.setHaneizumi(shoriList);
 			}
 

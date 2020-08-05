@@ -476,11 +476,12 @@ public class A130201Common {
 		PreparedStatement ps = null;
 		try {
 			conn = JdbcConnection.getConnection();
-			String sql = "UPDATE tbl00024 SET HANEISTS = '2' WHERE CHUMONBANGO = ?";
+			String sql = "UPDATE tbl00024 SET HANEISTS = '2',UPDATE_TIME = ? WHERE CHUMONBANGO = ?";
 
 			for (String orderNo : orderNoList) {
 				ps = conn.prepareStatement(sql);
-				ps.setString(1, orderNo);
+				ps.setString(1, Utility.getDateTime());
+				ps.setString(2, orderNo);
 				ps.execute();
 			}
 			conn.commit();
