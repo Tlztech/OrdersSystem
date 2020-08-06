@@ -466,7 +466,7 @@ public class A130101Common {
 						rs2 = ps.executeQuery();
 						if (rs2.next()) {
 							Boolean bResult = rs2.getString("thissize").matches("^[-\\+]?[.\\d]*$");
-							if(bResult) {
+							if(!rs2.getString("thissize").isEmpty() && bResult) {
 								Order.setSize(rs2.getString("thissize"));
 								Order.setUnsokaisha(rs2.getString("kaisha"));
 								sql = "update common_order_tbl set haisouhoho = ?, UPDATE_TIME = ? where chumonbango = ?";
@@ -488,9 +488,8 @@ public class A130101Common {
 									ps3.setString(2, Order.getChumonbango());
 									ps3.execute();
 								}
-								SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-								String date = format.format(new Date());
-								ps2.setString(2, date);
+
+								ps2.setString(2, Utility.getDateTime());
 								ps2.setString(3, Order.getChumonbango());
 								ps2.execute();
 							}else {
@@ -534,9 +533,7 @@ public class A130101Common {
 									break;
 								}
 							}
-							if (!Utility.isEmptyString(size) && Double.valueOf(size) > 2) {
-								size = "2";
-							}
+
 							Order.setSize(size);
 
 							if (!Utility.isEmptyString(size)) {
@@ -569,9 +566,7 @@ public class A130101Common {
 									ps3.execute();
 								}
 								
-								SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-								String date = format.format(new Date());
-								ps2.setString(2, date);
+								ps2.setString(2, Utility.getDateTime());
 								ps2.setString(3, Order.getChumonbango());
 								ps2.execute();
 								Order.setUnsokaisha(kaisha);
