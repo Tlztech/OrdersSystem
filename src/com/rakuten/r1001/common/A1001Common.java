@@ -2397,6 +2397,7 @@ public class A1001Common {
 						ps.setString(1,orderList.get(i).getKomento());
 						ps.setString(2, date);
 						ps.setString(3, "updater");
+						ps.setString(4, orderList.get(i).getJuchubango());
 						ps.executeUpdate();
 					} else {
 						j = 0;
