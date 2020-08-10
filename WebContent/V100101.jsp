@@ -342,11 +342,11 @@ select {
             <tr>
                 <td class="td_bg">店舗別：</td>
                 <td class="td_bg" >
-                    <s:select list="#{ '':'--','herz':'herz','epintl':'epintl','ken':'ken'}" name="f100101.tenpobetsu"/>
+                    <s:select list="#{ '':'--','herz':'herz','epintl':'epintl'}" name="f100101.tenpobetsu"/>
                 </td>
                 <td class="td_bg" >サイト：</td>
                 <td class="td_bg">
-                    <s:select list="#{ '':'--','楽天':'楽天','Yahoo Shopping':'Yahoo Shopping','ヤフオク':'ヤフオク','DENA':'DENA','ポンパレモール':'ポンパレモール','qoo10':'qoo10'}" name="f100101.site"/>
+                    <s:select list="#{ '':'--','楽天':'楽天','Yahoo Shopping':'Yahoo Shopping','ヤフオク':'ヤフオク','DENA':'DENA','ポンパレモール':'ポンパレモール','qoo10':'qoo10','ken':'ken'}" name="f100101.site"/>
                 </td>
             <tr>
                 <td class="td_bg">電話番号：</td>
