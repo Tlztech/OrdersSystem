@@ -1620,6 +1620,391 @@ public class A1001Common {
 		}
 	}
 
+	public void insertIntoYahooOrderTbl(List<RakutenCsvBean> orderList) throws Exception {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		String sql = null;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String date = format.format(new Date());
+		try {
+			conn = JdbcConnection.getConnection();
+			for (int i = 0; i < orderList.size(); i++) {
+
+				int j = 0;
+				boolean donkonFlg = false;
+				boolean donkonOyaFlg = false;
+				try {
+					if (!"0".equals(orderList.get(i).getDokonId())) {
+						donkonFlg = true;
+						if ("1".equals(orderList.get(i).getDokonsutetasu())) {
+							donkonOyaFlg = true;
+						}
+					}
+
+					j = 0;
+					sql = "INSERT INTO common_order_tbl VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					ps = conn.prepareStatement(sql);
+					ps.setString(++j, orderList.get(i).getJuchubango());
+					ps.setString(++j, orderList.get(i).getChumonnichiji());
+					ps.setString(++j, "0");// 未入金
+					if (donkonFlg && !donkonOyaFlg) {
+						ps.setString(++j, "7");
+					} else {
+						ps.setString(++j, "2");
+					}
+					ps.setString(++j, "0");
+					ps.setString(++j, "0");
+					ps.setString(++j, "0");
+					ps.setString(++j, "0");
+					ps.setString(++j, "0");
+					ps.setString(++j, "Yahoo Shopping");
+					if (orderList.get(i).getJuchubango().startsWith("kirakiraichiba")) {
+						shop = "kirakiraichiba";
+					} else {
+						shop = "";
+					}
+					
+					ps.setString(++j, shop);
+					ps.setString(++j, "");
+					if ("代金引換".equals(orderList.get(i).getHaisouhoho())) {
+						if (Long.valueOf(
+								orderList.get(i).getPointoriyogaku()) >= (Long.valueOf(orderList.get(i).getGokei()))) {
+							ps.setString(++j, "銀行振込");
+						}else {
+							ps.setString(++j, orderList.get(i).getKesaihouhou());
+						}
+					} else {
+						ps.setString(++j, orderList.get(i).getKesaihouhou());
+					}
+					ps.setString(++j, "");
+					ps.setString(++j, "");
+					ps.setString(++j, "");
+					ps.setString(++j, "");
+					ps.setString(++j, "");
+					ps.setString(++j, Utility.isEmptyString(orderList.get(i).getPointoriyogaku()) ? "0"
+							: orderList.get(i).getPointoriyogaku());
+
+					// あす楽希望
+					ps.setString(++j, orderList.get(i).getAsurakukibou());
+					// 注文者名字
+					ps.setString(++j, orderList.get(i).getChumonshameiji());
+					// 注文者名前
+					ps.setString(++j, orderList.get(i).getChumonshanamae());
+					// 注文者名字フリガナ
+					ps.setString(++j, orderList.get(i).getChumonshameijifurigana());
+					// 注文者名前フリガナ
+					ps.setString(++j, orderList.get(i).getChumonshanamaefurigana());
+					// メールアドレス
+					ps.setString(++j, orderList.get(i).getMeruadoresu());
+					// 注文者誕生日
+					ps.setString(++j, orderList.get(i).getChunonshatanjoubi());
+					// 注文者郵便番号１
+					ps.setString(++j, orderList.get(i).getChumonshayubinbango1());
+					// 注文者郵便番号２
+					ps.setString(++j, orderList.get(i).getChumonshayubinbango2());
+					// 注文者住所：都道府県
+					ps.setString(++j, orderList.get(i).getChumonshajushotodofuken());
+					// 注文者住所：都市区
+					ps.setString(++j, orderList.get(i).getChumonshajushotoshiku());
+					// 注文者住所：町以降
+					ps.setString(++j, orderList.get(i).getChumonshajushochoijou());
+					// 注文者電話番号１
+					ps.setString(++j, orderList.get(i).getChumonshadenwabango1());
+					// 注文者電話番号２
+					ps.setString(++j, orderList.get(i).getChumonshadenwabango2());
+					// 注文者電話番号３
+					ps.setString(++j, orderList.get(i).getChumonshadenwabango3());
+					// コメント
+					ps.setString(++j, orderList.get(i).getKomento());
+					// メール差込文(お客様へのメッセージ)
+					ps.setString(++j, orderList.get(i).getMerusashikomibun());
+
+					// 送付先名字
+					ps.setString(++j, orderList.get(i).getSofusakimeiji());
+					// 送付先名前
+					ps.setString(++j, orderList.get(i).getSoufusakinamae());
+					// 送付先名字フリガナ
+					ps.setString(++j, orderList.get(i).getSoufusakimeijifurigana());
+					// 送付先名前フリガナ
+					ps.setString(++j, orderList.get(i).getSoufusakimeijinamaefurigana());
+					// 配送方法
+					ps.setString(++j, orderList.get(i).getHaisouhoho());
+					// 送付先郵便番号１
+					ps.setString(++j, orderList.get(i).getSoufusakiyubinbango1());
+					// 送付先郵便番号２
+					ps.setString(++j, orderList.get(i).getSoufusakiyubinbango2());
+					ps.setString(++j, orderList.get(i).getSoufusakidenwabango1());
+					ps.setString(++j, orderList.get(i).getSoufusakidenwabango2());
+					ps.setString(++j, orderList.get(i).getSoufusakidenwabango3());
+					// 送付先住所：都道府県
+					ps.setString(++j, orderList.get(i).getSoufusakijushotodofuken());
+					// 送付先住所：都市区
+					ps.setString(++j, orderList.get(i).getSoufusakijushotoshiku());
+					// 送付先住所：町以降
+					ps.setString(++j, orderList.get(i).getSoufusakijushochoijou());
+
+					String gokeishouhin = "0";
+					String gokeizei = "0";
+					String gokeisouryou = "0";
+					String gokeidaibikiryou = "0";
+					String seikyukingaku = "0";
+
+					if (!donkonFlg) {
+						gokeishouhin = orderList.get(i).getGokei();
+						gokeizei = Utility.isEmptyString(orderList.get(i).getShohizei()) ? "0"
+								: orderList.get(i).getShohizei();
+
+						gokeisouryou = Utility.isEmptyString(orderList.get(i).getSoryou()) ? "0"
+								: orderList.get(i).getSoryou();
+
+						gokeidaibikiryou = Utility.isEmptyString(orderList.get(i).getDaibikiryou()) ? "0"
+								: orderList.get(i).getDaibikiryou();
+
+						seikyukingaku = orderList.get(i).getSeikyukingaku();
+					} else {
+						if (donkonOyaFlg) {
+							String donkonId = orderList.get(i).getDokonId();
+							for (RakutenCsvBean bean : orderList) {
+								if (donkonId.equals(bean.getDokonId())) {
+									if (!Utility.isEmptyString(bean.getDokongokeikingaku())) {
+										gokeishouhin = String.valueOf(Integer.valueOf(bean.getDokongokeikingaku())
+												+ Integer.valueOf(gokeishouhin));
+									}
+								}
+							}
+						}
+						gokeizei = Utility.isEmptyString(orderList.get(i).getDokonshohizeigokei()) ? "0"
+								: orderList.get(i).getDokonshohizeigokei();
+
+						gokeisouryou = Utility.isEmptyString(orderList.get(i).getDokonsoryougokei()) ? "0"
+								: orderList.get(i).getDokonsoryougokei();
+
+						gokeidaibikiryou = Utility.isEmptyString(orderList.get(i).getDokondaibikiryougokei()) ? "0"
+								: orderList.get(i).getDokondaibikiryougokei();
+
+						seikyukingaku = Utility.isEmptyString(orderList.get(i).getDokonseikyukingaku()) ? "0"
+								: orderList.get(i).getDokonseikyukingaku();
+					}
+					if ("代金引換".equals(orderList.get(i).getHaisouhoho())) {
+						if (Long.valueOf(
+								orderList.get(i).getPointoriyogaku()) >= (Long.valueOf(orderList.get(i).getGokei()))) {
+							gokeisouryou = "0";
+							gokeidaibikiryou = "0";
+						}
+					}
+					ps.setString(++j, gokeishouhin);
+					ps.setString(++j, gokeizei);
+					ps.setString(++j, gokeisouryou);
+					ps.setString(++j, gokeidaibikiryou);
+					ps.setString(++j, seikyukingaku);
+
+					// 同梱ID
+					ps.setString(++j, orderList.get(i).getDokonId());
+					// 同梱親FLG
+					ps.setString(++j, donkonOyaFlg ? "1" : "0");
+
+					ps.setString(++j, "0");
+					ps.setString(++j, date);
+					ps.setString(++j, "kyo");
+					ps.setString(++j, date);
+					ps.setString(++j, "kyo");
+
+					// 発送者へのコメント
+					ps.setString(++j, "");
+					// その他利用額
+					ps.setString(++j, orderList.get(i).getKuponriyougaku());
+
+					ps.executeUpdate();
+
+				} catch (MySQLIntegrityConstraintViolationException e) {
+					System.out.println(orderList.get(i).getJuchubango() + "已存在，不再添加");
+					continue;
+				}
+
+				// for (int k = 0; k < orderList.get(i).getShousaiList().size();
+				// k++) {
+				// RakutenDetailCsvBean shousai = orderList.get(i)
+				// .getShousaiList().get(k);
+				// j = 0;
+				// sql =
+				// "INSERT INTO rakuten_order_detail_tbl
+				// VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+				// ps = conn.prepareStatement(sql);
+				//
+				// ps.setString(++j, orderList.get(i).getJuchubango());
+				// // 商品ID
+				// ps.setString(++j, shousai.getShouhinId());
+				// // 商品名
+				// ps.setString(++j, shousai.getShouhinmei());
+				// // 商品番号
+				// ps.setString(++j, shousai.getShouhinbango());
+				// // 商品URL
+				// ps.setString(++j, shousai.getShouhinURL());
+				// // 単価
+				// ps.setString(++j, shousai.getTanka());
+				// // 個数
+				// ps.setString(++j, shousai.getKosu());
+				// // 送料込別
+				// ps.setString(++j, shousai.getSouryoukomibetsu());
+				// // 税込別
+				// ps.setString(++j, shousai.getZeikomibetsu());
+				// // 代引手数料込別
+				// ps.setString(++j, shousai.getDaibikitesuryoukomibetsu());
+				// // 項目・選択肢
+				// ps.setString(++j, shousai.getKomokusentakushi());
+				// // ポイント倍率
+				// ps.setString(++j, shousai.getPointobairitsu());
+				// // ポイントタイプ
+				// ps.setString(++j, shousai.getPointotaipu());
+				// // レコードナンバー
+				// ps.setString(++j, shousai.getRekodananba());
+				// // 納期情報
+				// ps.setString(++j, shousai.getNokijouho());
+				// // 在庫タイプ
+				// ps.setString(++j, shousai.getZaikotaipu());
+				// // ラッピング種類(包装紙)
+				// ps.setString(++j, shousai.getRapingushuruihousou());
+				// // ラッピング種類(リボン)
+				// ps.setString(++j, shousai.getRapingushuruiribon());
+				//
+				// ps.executeUpdate();
+				// }
+				int noukiday = 2;
+				if (!donkonFlg) {
+
+					for (int k = 0; k < orderList.get(i).getShousaiList().size(); k++) {
+
+						RakutenDetailCsvBean shousai = orderList.get(i).getShousaiList().get(k);
+
+						shousai.setShouhinbango(shousai.getShouhinbango().replace("10000001", "xbx008"));
+
+						shousai.setShouhinbango(shousai.getShouhinbango().replace("lu-001", "xbx030"));
+
+						j = 0;
+						sql = "INSERT INTO common_order_detail_tbl VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+						ps = conn.prepareStatement(sql);
+
+						ps.setString(++j, Utility.getShoribango());
+
+						ps.setString(++j, orderList.get(i).getJuchubango());
+						// 商品名
+						ps.setString(++j, shousai.getShouhinmei());
+						String bango = shousai.getShouhinbango();
+						if (bango.startsWith("sale")) {
+							bango = bango.replace("sale", "");
+						}
+
+						// 商品番号
+						ps.setString(++j, bango);
+						// 商品URL
+						ps.setString(++j, shousai.getShouhinURL());
+						// 単価
+						ps.setString(++j, shousai.getTanka());
+						// 個数
+						ps.setString(++j, shousai.getKosu());
+						// 送料込別
+						ps.setString(++j, shousai.getSouryoukomibetsu());
+						// 税込別
+						ps.setString(++j, shousai.getZeikomibetsu());
+						// 代引手数料込別
+						ps.setString(++j, shousai.getDaibikitesuryoukomibetsu());
+						// 項目選択肢
+						ps.setString(++j, shousai.getKomokusentakushi());
+
+						// ponint bairitu
+						ps.setString(++j, shousai.getPointobairitsu());
+						// nouki
+						ps.setString(++j, shousai.getNokijouho());
+
+						ps.executeUpdate();
+
+						if (Utility.getNoukiDay(shousai.getNokijouho()) > noukiday) {
+							noukiday = Utility.getNoukiDay(shousai.getNokijouho());
+						}
+
+					}
+				} else if (donkonFlg && donkonOyaFlg) {
+					List<RakutenDetailCsvBean> shousaiDonkonList = new ArrayList<RakutenDetailCsvBean>();
+					String donkonId = orderList.get(i).getDokonId();
+					for (int m = 0; m < orderList.size(); m++) {
+						if (donkonId.equals(orderList.get(m).getDokonId())) {
+							shousaiDonkonList.addAll(orderList.get(m).getShousaiList());
+						}
+					}
+
+					for (int k = 0; k < shousaiDonkonList.size(); k++) {
+						RakutenDetailCsvBean shousai = shousaiDonkonList.get(k);
+						j = 0;
+						sql = "INSERT INTO common_order_detail_tbl VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+						ps = conn.prepareStatement(sql);
+						ps.setString(++j, Utility.getShoribango());
+
+						ps.setString(++j, orderList.get(i).getJuchubango());
+						// 商品名
+						ps.setString(++j, shousai.getShouhinmei());
+						// 商品番号
+						ps.setString(++j, shousai.getShouhinbango());
+						// 商品URL
+						ps.setString(++j, shousai.getShouhinURL());
+						// 単価
+						ps.setString(++j, shousai.getTanka());
+						// 個数
+						ps.setString(++j, shousai.getKosu());
+						// 送料込別
+						ps.setString(++j, shousai.getSouryoukomibetsu());
+						// 税込別
+						ps.setString(++j, shousai.getZeikomibetsu());
+						// 代引手数料込別
+						ps.setString(++j, shousai.getDaibikitesuryoukomibetsu());
+						// 項目選択肢
+						ps.setString(++j, shousai.getKomokusentakushi());
+
+						// ponint bairitu
+						ps.setString(++j, shousai.getPointobairitsu());
+						// nouki
+						ps.setString(++j, shousai.getNokijouho());
+
+						if (Utility.getNoukiDay(shousai.getNokijouho()) > noukiday) {
+							noukiday = Utility.getNoukiDay(shousai.getNokijouho());
+						}
+
+						ps.executeUpdate();
+					}
+				}
+				String dateStr = "";
+				if (noukiday != 20) {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Calendar calendar = Calendar.getInstance();
+					calendar.add(Calendar.DATE, noukiday);
+					dateStr = sdf.format(calendar.getTime());
+				} else {
+					dateStr = "2019-02-21";
+				}
+				sql = "INSERT INTO TBL00027 VALUES(?,?,?,?,?,?)";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, orderList.get(i).getJuchubango());
+				ps.setString(2, dateStr);
+				ps.setString(3, Utility.getDateTime());
+				ps.setString(4, Utility.getUser());
+				ps.setString(5, Utility.getDateTime());
+				ps.setString(6, Utility.getUser());
+				ps.execute();
+			}
+
+			// commit
+			conn.commit();
+
+		} catch (
+
+		Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		} finally {
+			conn.close();
+		}
+	}
+	
 	public void insertIntoPonpareOrderTbl(List<PonpareCsvBean> orderList) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;

@@ -33,9 +33,14 @@ public class A10010104Action extends BaseAction {
 	//			System.out.println(GetTokenFromYahoo.getToken());
 	//			System.out.println(GetTokenFromYahoo.getTokenExpiration());
 	//			System.out.println(platform);
-				
+				OrderApiBean orderapibean = common.getYahooOrderListByApi(shop);
+				if (!Utility.isEmptyList(orderapibean.getMessageList())) {
+					for (String msg : orderapibean.getMessageList())
+						addError(null, msg);
+				}
+				a1001Common
+						.insertIntoYahooOrderTbl(orderapibean.getRakutenBeanList());
 			}
-	
 		}
 
 	protected void init() {
