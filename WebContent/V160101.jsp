@@ -73,23 +73,32 @@ function init(){
 		<table>
 		    <tr>
 		        <td>
-		        货号：<s:textfield name="f160101.shohinbango"/><s:select list="#{'coverforefront':'coverforefront','xandw':'xandw'}" name="f160101.shop"/>
-		        <input type="button" value="同步库存" onclick="actionSubmit('A16010102')">
+		        货号：<s:textfield style="width:200px;height:22px" name="f160101.shohinbango"/>
+		        <s:select list="#{'coverforefront':'coverforefront','xandw':'xandw'}" style="width:120px;height:30px" name="f160101.shop"/>
+		        <input type="button" style="width:100px;height:30px" value="同步库存" onclick="actionSubmit('A16010102')">
 		        </td>
 		    </tr>
 		    <tr>
 		        <td>
-		        订单编号：<s:textfield name="f160101.chumonbango"/>
-		        <input type="button" value="删除" onclick="actionSubmit('A16010103')">
+		        订单编号：<s:textfield style="width:300px;height:22px" name="f160101.chumonbango"/>
+		        <input type="button" style="width:100px;height:30px" value="单一订单删除" onclick="actionSubmit('A16010103')">
+		        </td>
+		    </tr>
+		    <tr>
+		        <td>
+		        订单编号CSV：<input type="file" name="inputPath" />
+		        <input type="button" style="width:100px;height:30px" value="订单一括删除" onclick="actionSubmit('A16010109')">
 		        </td>
 		    </tr>
 		</table>
-        <s:select list="#{'coverforefront':'coverforefront','xandw':'xandw'}" name="shop2"/>
-        <input type="button" value="下载商品" onclick="doAction('A16010104')">
-        <input type="button" value="改网页" onclick="doAction('A16010105')">
-        <input type="button" value="处理订单" onclick="doAction('A16010106')"><br/>
-        <input type="file" name="inputPath" /><input type="button" value="获取最新在库情报" onclick="actionSubmit('A16010107')">
-        </br><input type="button" value="qoo10在库情报" onclick="actionSubmit('A16010108')">
+		<br/>
+        <s:select list="#{'coverforefront':'coverforefront','xandw':'xandw'}" style="width:120px;height:30px" name="shop2"/>
+        <input type="button" style="width:100px;height:30px" value="下载商品" onclick="doAction('A16010104')">
+        <input type="button" style="width:100px;height:30px" value="改网页" onclick="doAction('A16010105')">
+        <input type="button" style="width:100px;height:30px" value="处理订单" onclick="doAction('A16010106')"><br/>
+        <br/>
+        <input type="file" name="inputPath" /><input type="button" style="width:130px;height:30px" value="获取最新在库情报" onclick="actionSubmit('A16010107')">
+        <input type="button" style="width:130px;height:30px" value="qoo10在库情报" onclick="actionSubmit('A16010108')">
 		</div>
 		<s:hidden name="viewId" value="V160101"/>
 		<s:hidden name="searchMode"/>
