@@ -2914,207 +2914,205 @@ public class A1001Common {
 						ps.setString(++j, "");
 						ps.setString(++j, "0");
 						ps.executeUpdate();
-					}
+						
+						for (int k = 0; k < orderList.get(i).getShousaiList().size(); k++) {
+							OtherDetailCsvBean shousai = orderList.get(i).getShousaiList().get(k);
 
+							String shouhinbango = shousai.getShouhinbango();
+//							sql = "SELECT COUNT(COMMODITY_ID) COUNT FROM TBL00012 WHERE CONCAT(COMMODITY_ID,DETAIL_NO) = ?";
+//							ps = conn.prepareStatement(sql);
+//							ps.setString(1, shouhinbango.substring(0, shouhinbango.length() - 2));
+//							ResultSet rs999 = ps.executeQuery();
+//							while (rs999.next()) {
+//								if (rs999.getInt("count") > 0) {
+//									shouhinbango = shouhinbango.substring(0, shouhinbango.length() - 2);
+//								}
+//							}
 					
+							sql = "INSERT INTO common_order_detail_tbl VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+							ps = conn.prepareStatement(sql);
+
+							j = 0;
+							ps.setString(++j, Utility.getShoribango());
+
+							ps.setString(++j, orderList.get(i).getJuchubango());
+							// 商品名
+							ps.setString(++j, shousai.getShouhinmei());
+							// 商品番号
+							ps.setString(++j, shouhinbango);
+							// 商品URL
+							ps.setString(++j, "");
+							// 単価
+							ps.setString(++j, "1");
+							// 個数
+							ps.setString(++j, shousai.getKosu());
+							// 送料込別
+							ps.setString(++j, shousai.getSouryoukomibetsu());
+							// 税込別
+							ps.setString(++j, shousai.getZeikomibetsu());
+							// 代引手数料込別
+							ps.setString(++j, "0");
+							// 項目選択肢
+							ps.setString(++j, shousai.getKomokusentakushi());
+
+							// ponint bairitu
+							ps.setString(++j, "0");
+
+							// nouki
+							ps.setString(++j, "");
+
+							ps.executeUpdate();
+							
+							if (shouhinbango.indexOf("-") != -1) {
+								shouhinbango = shouhinbango.substring(0, shouhinbango.indexOf("-"));
+							}
+
+							count = 0;
+							sql = "SELECT COUNT(*) COUNT FROM TBL00011 WHERE COMMODITY_ID = ? AND CATEGORY_ID = ?";
+							ps = conn.prepareStatement(sql);
+							ps.setString(1, shouhinbango);
+							ps.setString(2, "100001");
+							rs = ps.executeQuery();
+							while (rs.next()) {
+								count = rs.getInt("COUNT");
+							}
+							if (count > 0) {
+								sql = "UPDATE TBL00011 SET UPDATE_TIME = ? , UPDATE_USER = ? WHERE COMMODITY_ID = ? AND CATEGORY_ID = ?";
+								ps = conn.prepareStatement(sql);
+								ps.setString(1, date);
+								ps.setString(2, "updater");
+								ps.setString(3,shouhinbango);
+								ps.setString(4, "100001");
+								
+								ps.executeUpdate();
+							} else {
+								sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+								ps = conn.prepareStatement(sql);
+								ps.setString(1, shouhinbango);
+								//
+								ps.setString(2, "100001");
+								ps.setString(3, shousai.getShouhinmei());
+								ps.setString(4, shousai.getShouhinmei());
+								ps.setString(5, "");
+								ps.setString(6, "");
+								ps.setString(7, "");
+								ps.setString(8, "");
+								ps.setString(9, "");
+								ps.setString(10, "0");
+								ps.setString(11, date);
+								ps.setString(12, "kyo");
+								ps.setString(13, date);
+								ps.setString(14, "kyo");
+								ps.setString(15, "00");
+								ps.execute();
+							}
+							
+							count = 0;
+							sql = "SELECT COUNT(*) COUNT FROM TBL00012 WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+							ps = conn.prepareStatement(sql);
+							ps.setString(1, shouhinbango);
+							String detailNo = "-0-0";
+							if (shousai.getShouhinbango().indexOf("-") != -1) {
+								detailNo = shousai.getShouhinbango().substring(shousai.getShouhinbango().indexOf("-"));
+							}
+							ps.setString(2, detailNo);
+							rs = ps.executeQuery();
+							while (rs.next()) {
+								count = rs.getInt("COUNT");
+							}
+							if (count > 0) {
+								sql = "UPDATE TBL00012 SET UPDATE_TIME = ? , UPDATE_USER = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+								ps = conn.prepareStatement(sql);
+								ps.setString(1, date);
+								ps.setString(2, "updater");
+								ps.setString(3,shouhinbango);
+								ps.setString(4, detailNo);
+								
+								ps.executeUpdate();
+							} else {
+								sql = SqlUtility.getSql("SQLR0001012");
+								ps = conn.prepareStatement(sql);
+								ps.setString(1,	shouhinbango);
+								ps.setString(2, detailNo);
+								ps.setString(3, "仮横軸名称\n" + "仮縦軸名称");
+								ps.setString(4, "");
+								ps.setString(5, null);
+								ps.setString(6, "1");
+								ps.setString(7, "0");
+								ps.setString(8, "0");
+								ps.setString(9, "0");
+								ps.setString(10, null);
+								ps.setString(11, null);
+								ps.setString(12, "");
+								ps.setString(13, "0");
+								ps.setString(14, date);
+								ps.setString(15, "kyo");
+								ps.setString(16, null);
+								ps.setString(17, null);
+								ps.setString(18, "仮横軸名称");
+								ps.setString(19, "仮縦軸名称");
+								ps.execute();
+							}
+							
+							
+							String maxBarcode = null;
+							sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
+							ps = conn.prepareStatement(sql);
+							ps.setString(1, shouhinbango + detailNo);
+							rs = ps.executeQuery();
+							
+							count = 0;
+							while (rs.next()) {
+								count = rs.getInt("COUNT");
+							}
+							if (count == 0) {
+								sql = "SELECT MAX(BARCODE)+1 MAX_BARCODE FROM TBL00016";
+								ps = conn.prepareStatement(sql);
+								rs = ps.executeQuery();
+								while (rs.next()) {
+									maxBarcode = rs.getString("MAX_BARCODE");
+								}
+
+								sql = "INSERT INTO TBL00016 VALUES(?,?)";
+								ps = conn.prepareStatement(sql);
+								ps.setString(1, shouhinbango + detailNo);
+								ps.setString(2, maxBarcode);
+								ps.execute();
+							}
+						}
+
+						int count027 = 0;
+						sql = "SELECT COUNT(*) COUNT FROM TBL00027 WHERE CHUMONBANGO = ?";
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, orderList.get(i).getJuchubango());
+						rs = ps.executeQuery();
+						while (rs.next()) {
+							count027 = rs.getInt("COUNT");
+						}
+						if (count027 > 0) {
+							sql = "UPDATE TBL00027 SET UPDATE_TIME = ? , UPDATE_USER = ? WHERE CHUMONBANGO = ?";
+							ps = conn.prepareStatement(sql);
+							ps.setString(1, date);
+							ps.setString(2, "updater");
+							ps.setString(3,orderList.get(i).getJuchubango());
+							ps.executeUpdate();
+						} else {
+							sql = "INSERT INTO TBL00027 VALUES(?,?,?,?,?,?)";
+							ps = conn.prepareStatement(sql);
+							ps.setString(1, orderList.get(i).getJuchubango());
+							ps.setString(2, orderList.get(i).getHasoyakusokubi().split(" ")[0].replace("/", "-"));
+							ps.setString(3, Utility.getDateTime());
+							ps.setString(4, Utility.getUser());
+							ps.setString(5, Utility.getDateTime());
+							ps.setString(6, Utility.getUser());
+							ps.execute();
+						}
+					}
 
 				} catch (MySQLIntegrityConstraintViolationException e) {
 					System.out.println(orderList.get(i).getJuchubango() + "已存在，不再添加");
 					continue;
 				}
-
-				for (int k = 0; k < orderList.get(i).getShousaiList().size(); k++) {
-					OtherDetailCsvBean shousai = orderList.get(i).getShousaiList().get(k);
-
-					String shouhinbango = shousai.getShouhinbango();
-//					sql = "SELECT COUNT(COMMODITY_ID) COUNT FROM TBL00012 WHERE CONCAT(COMMODITY_ID,DETAIL_NO) = ?";
-//					ps = conn.prepareStatement(sql);
-//					ps.setString(1, shouhinbango.substring(0, shouhinbango.length() - 2));
-//					ResultSet rs999 = ps.executeQuery();
-//					while (rs999.next()) {
-//						if (rs999.getInt("count") > 0) {
-//							shouhinbango = shouhinbango.substring(0, shouhinbango.length() - 2);
-//						}
-//					}
-			
-					sql = "INSERT INTO common_order_detail_tbl VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);";
-					ps = conn.prepareStatement(sql);
-
-					j = 0;
-					ps.setString(++j, Utility.getShoribango());
-
-					ps.setString(++j, orderList.get(i).getJuchubango());
-					// 商品名
-					ps.setString(++j, shousai.getShouhinmei());
-					// 商品番号
-					ps.setString(++j, shouhinbango);
-					// 商品URL
-					ps.setString(++j, "");
-					// 単価
-					ps.setString(++j, "1");
-					// 個数
-					ps.setString(++j, shousai.getKosu());
-					// 送料込別
-					ps.setString(++j, shousai.getSouryoukomibetsu());
-					// 税込別
-					ps.setString(++j, shousai.getZeikomibetsu());
-					// 代引手数料込別
-					ps.setString(++j, "0");
-					// 項目選択肢
-					ps.setString(++j, shousai.getKomokusentakushi());
-
-					// ponint bairitu
-					ps.setString(++j, "0");
-
-					// nouki
-					ps.setString(++j, "");
-
-					ps.executeUpdate();
-					
-					if (shouhinbango.indexOf("-") != -1) {
-						shouhinbango = shouhinbango.substring(0, shouhinbango.indexOf("-"));
-					}
-
-					int count = 0;
-					sql = "SELECT COUNT(*) COUNT FROM TBL00011 WHERE COMMODITY_ID = ? AND CATEGORY_ID = ?";
-					ps = conn.prepareStatement(sql);
-					ps.setString(1, shouhinbango);
-					ps.setString(2, "100001");
-					rs = ps.executeQuery();
-					while (rs.next()) {
-						count = rs.getInt("COUNT");
-					}
-					if (count > 0) {
-						sql = "UPDATE TBL00011 SET UPDATE_TIME = ? , UPDATE_USER = ? WHERE COMMODITY_ID = ? AND CATEGORY_ID = ?";
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, date);
-						ps.setString(2, "updater");
-						ps.setString(3,shouhinbango);
-						ps.setString(4, "100001");
-						
-						ps.executeUpdate();
-					} else {
-						sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, shouhinbango);
-						//
-						ps.setString(2, "100001");
-						ps.setString(3, shousai.getShouhinmei());
-						ps.setString(4, shousai.getShouhinmei());
-						ps.setString(5, "");
-						ps.setString(6, "");
-						ps.setString(7, "");
-						ps.setString(8, "");
-						ps.setString(9, "");
-						ps.setString(10, "0");
-						ps.setString(11, date);
-						ps.setString(12, "kyo");
-						ps.setString(13, date);
-						ps.setString(14, "kyo");
-						ps.setString(15, "00");
-						ps.execute();
-					}
-					
-					count = 0;
-					sql = "SELECT COUNT(*) COUNT FROM TBL00012 WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
-					ps = conn.prepareStatement(sql);
-					ps.setString(1, shouhinbango);
-					String detailNo = "-0-0";
-					if (shousai.getShouhinbango().indexOf("-") != -1) {
-						detailNo = shousai.getShouhinbango().substring(shousai.getShouhinbango().indexOf("-"));
-					}
-					ps.setString(2, detailNo);
-					rs = ps.executeQuery();
-					while (rs.next()) {
-						count = rs.getInt("COUNT");
-					}
-					if (count > 0) {
-						sql = "UPDATE TBL00012 SET UPDATE_TIME = ? , UPDATE_USER = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, date);
-						ps.setString(2, "updater");
-						ps.setString(3,shouhinbango);
-						ps.setString(4, detailNo);
-						
-						ps.executeUpdate();
-					} else {
-						sql = SqlUtility.getSql("SQLR0001012");
-						ps = conn.prepareStatement(sql);
-						ps.setString(1,	shouhinbango);
-						ps.setString(2, detailNo);
-						ps.setString(3, "仮横軸名称\n" + "仮縦軸名称");
-						ps.setString(4, "");
-						ps.setString(5, null);
-						ps.setString(6, "1");
-						ps.setString(7, "0");
-						ps.setString(8, "0");
-						ps.setString(9, "0");
-						ps.setString(10, null);
-						ps.setString(11, null);
-						ps.setString(12, "");
-						ps.setString(13, "0");
-						ps.setString(14, date);
-						ps.setString(15, "kyo");
-						ps.setString(16, null);
-						ps.setString(17, null);
-						ps.setString(18, "仮横軸名称");
-						ps.setString(19, "仮縦軸名称");
-						ps.execute();
-					}
-					
-					
-					String maxBarcode = null;
-					sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
-					ps = conn.prepareStatement(sql);
-					ps.setString(1, shouhinbango + detailNo);
-					rs = ps.executeQuery();
-					count = 0;
-					while (rs.next()) {
-						count = rs.getInt("COUNT");
-					}
-					if (count == 0) {
-						sql = "SELECT MAX(BARCODE)+1 MAX_BARCODE FROM TBL00016";
-						ps = conn.prepareStatement(sql);
-						rs = ps.executeQuery();
-						while (rs.next()) {
-							maxBarcode = rs.getString("MAX_BARCODE");
-						}
-
-						sql = "INSERT INTO TBL00016 VALUES(?,?)";
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, shouhinbango + detailNo);
-						ps.setString(2, maxBarcode);
-						ps.execute();
-					}
-				}
-
-				int count027 = 0;
-				sql = "SELECT COUNT(*) COUNT FROM TBL00027 WHERE CHUMONBANGO = ?";
-				ps = conn.prepareStatement(sql);
-				ps.setString(1, orderList.get(i).getJuchubango());
-				rs = ps.executeQuery();
-				while (rs.next()) {
-					count027 = rs.getInt("COUNT");
-				}
-				if (count027 > 0) {
-					sql = "UPDATE TBL00027 SET UPDATE_TIME = ? , UPDATE_USER = ? WHERE CHUMONBANGO = ?";
-					ps = conn.prepareStatement(sql);
-					ps.setString(1, date);
-					ps.setString(2, "updater");
-					ps.setString(3,orderList.get(i).getJuchubango());
-					ps.executeUpdate();
-				} else {
-					sql = "INSERT INTO TBL00027 VALUES(?,?,?,?,?,?)";
-					ps = conn.prepareStatement(sql);
-					ps.setString(1, orderList.get(i).getJuchubango());
-					ps.setString(2, orderList.get(i).getHasoyakusokubi().split(" ")[0].replace("/", "-"));
-					ps.setString(3, Utility.getDateTime());
-					ps.setString(4, Utility.getUser());
-					ps.setString(5, Utility.getDateTime());
-					ps.setString(6, Utility.getUser());
-					ps.execute();
-				}
-				
 				
 			}
 

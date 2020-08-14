@@ -1319,6 +1319,10 @@
 				
 			</result>
 		</action>
+		<action name="A18010101" class="com.rakuten.r1801.action.A18010101Action">
+			<result name="input">V180101.jsp</result>
+			<result name="success">V180101.jsp</result>
+		</action>
 		<action name="checkShohinAri" class="com.rakuten.common.action.CheckShohinAriAction">
 			<result type="json">
 				<param name="root">result</param>
