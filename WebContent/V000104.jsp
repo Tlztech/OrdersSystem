@@ -371,6 +371,19 @@ eval("submenu" + sid + ".style.display=\"none\";");
                     </table>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                    <table id="submenu2" cellSpacing=0 cellPadding=0 width="100%"
+                        border=0>
+                        <tbody>
+                            <tr>
+                                <td width="2%"><img src="Images/closed.gif"></td>
+                                <td height=23><a href="A18010101" target=main>店铺管理</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </td>
+                </tr>
             </tbody>
         </table>
         </td>
