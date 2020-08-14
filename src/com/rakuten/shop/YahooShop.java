@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.rakuten.common.MessageFromYahoo;
+import com.rakuten.order.OrderShppingInfo;
 import com.rakuten.order.YahooOrder;
 import com.rakuten.util.GetTokenFromYahoo;
 import com.rakuten.util.XmlUtils;
@@ -21,29 +22,35 @@ public class YahooShop {
 	
 	private final static String URL_GETORDERLIST = "https://circus.shopping.yahooapis.jp/ShoppingWebService/V1/orderList";
 	private final static String URL_GETORDERINFO = "https://circus.shopping.yahooapis.jp/ShoppingWebService/V1/orderInfo";
+	private final static String URL_ORDERCHANGE = "https://circus.shopping.yahooapis.jp/ShoppingWebService/V1/orderChange";
+	private final static String URL_ORDERSHIPSTATUSCHANGE = "https://circus.shopping.yahooapis.jp/ShoppingWebService/V1/orderShipStatusChange";
 	private final static int DATE_INTERVAL = -62;
 	
 	private String shopName;
+	private String sellerId;
 	private List<YahooOrder> orders = new ArrayList<YahooOrder>();
 	private List<String> orderNoList;
-	private MessageFromYahoo messageFromYahoo;
+	private List<MessageFromYahoo> messageFromYahooList_GetOrder = new ArrayList<MessageFromYahoo>();
+	private List<MessageFromYahoo> messageFromYahooList_UpdateOrder = new ArrayList<MessageFromYahoo>();
 	
 	public YahooShop(String shopName) {
 		this.shopName = shopName;
 	}
 
-	public List<YahooOrder> getOrders(int orderStatus, int payStatus, int shipStatus) throws Exception{
+	public List<YahooOrder> getOrders(int orderStatus, int payStatus, int shipStatus, boolean isSeen) throws Exception{
 		
-		searchOrder(orderStatus, payStatus, shipStatus);
+		messageFromYahooList_GetOrder.clear();
+		orders.clear();
+		searchOrder(orderStatus, payStatus, shipStatus, isSeen);
 		if((null == orderNoList) || (orderNoList.size() == 0)) {
-			orders.clear();
+			
 		} else {
 			getOrder();
 		}
 		return orders;
 	}
 	
-	private void searchOrder(int orderStatus, int payStatus, int shipStatus) throws Exception{
+	private void searchOrder(int orderStatus, int payStatus, int shipStatus,boolean isSeen) throws Exception{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		Calendar date = Calendar.getInstance();
 		String endDay = sdf.format(date.getTime());
@@ -61,6 +68,9 @@ public class YahooShop {
 		getXml.append("<OrderTimeTo>");
 		getXml.append(endDay);
 		getXml.append("</OrderTimeTo>");
+		getXml.append("<IsSeen>");
+		getXml.append(isSeen);
+		getXml.append("</IsSeen>");
 		getXml.append("<OrderStatus>");
 		getXml.append(orderStatus);
 		getXml.append("</OrderStatus>");
@@ -74,7 +84,7 @@ public class YahooShop {
 		getXml.append("<Field>OrderId</Field>");
 		getXml.append("</Search>");
 		getXml.append("<SellerId>");
-		getXml.append("kirakiraichiba");
+		getXml.append(getSellerId());
 		getXml.append("</SellerId>");
 		getXml.append("</Req>");
 		
@@ -85,12 +95,12 @@ public class YahooShop {
 		Map<String, Object> searchMap = (Map<String, Object>)xmlMap.get("Search");
 		if (null == searchMap) {
 			if (xmlMap.get("Message") != null && xmlMap.get("Code") != null) {
-				messageFromYahoo = new MessageFromYahoo();
+				MessageFromYahoo messageFromYahoo = new MessageFromYahoo();
 				messageFromYahoo.setCode((String)xmlMap.get("Code"));
 				messageFromYahoo.setMessage((String)xmlMap.get("Message"));
+				messageFromYahooList_GetOrder.add(messageFromYahoo);
 			}
 		} else {
-			messageFromYahoo = null;
 			List<Object> orderInfoList = (List<Object>)searchMap.get("OrderInfo");
 			if (null == orderInfoList || 0 == orderInfoList.size()) {
 				
@@ -118,7 +128,7 @@ public class YahooShop {
 			getXml.append("</Field>");
 			getXml.append("</Target>");
 			getXml.append("<SellerId>");
-			getXml.append("kirakiraichiba");
+			getXml.append(getSellerId());
 			getXml.append("</SellerId>");
 			getXml.append("</Req>");
 			
@@ -129,12 +139,13 @@ public class YahooShop {
 			Map<String, Object> resultMap = (Map<String, Object>)xmlMap.get("Result");
 			if (null == resultMap) {
 				if (xmlMap.get("Message") != null && xmlMap.get("Code") != null) {
-					messageFromYahoo = new MessageFromYahoo();
+					MessageFromYahoo messageFromYahoo = new MessageFromYahoo();
 					messageFromYahoo.setCode((String)xmlMap.get("Code"));
 					messageFromYahoo.setMessage((String)xmlMap.get("Message"));
+					messageFromYahoo.setOrderId(orderNo);
+					messageFromYahooList_GetOrder.add(messageFromYahoo);
 				}
 			} else {
-				messageFromYahoo = null;
 				Map<String, Object> orderInfo = (Map<String, Object>)resultMap.get("OrderInfo");
 				if (null == orderInfo) {
 					
@@ -219,6 +230,98 @@ public class YahooShop {
 		}
 	}
 	
+	public List<String> updateOrderShipping(OrderShppingInfo orderShppingInfo) throws Exception {
+		
+		messageFromYahooList_UpdateOrder.clear();
+		List<String> updatedOrderNoList = new ArrayList<String>();
+		List<String> orderNoList = orderShppingInfo.getOrderNoList();
+		Map<String, String[]> orderShppingInfoMap =  orderShppingInfo.getOrderShppingInfo();
+		if((null == orderNoList) || (orderNoList.size() == 0)) {
+
+		} else {
+			String[] strArr;
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			Calendar date = Calendar.getInstance();
+			String shippingDate = sdf.format(date.getTime());
+			StringBuilder updateXml;
+			for(String orderNo : orderNoList) {
+				strArr = orderShppingInfoMap.get(orderNo);
+				updateXml = new StringBuilder();
+				updateXml.append("<Req>");
+				updateXml.append("<Target>");
+				updateXml.append("<OrderId>");
+				updateXml.append(orderNo);
+				updateXml.append("</OrderId>");
+				updateXml.append("<IsPointFix>");
+				updateXml.append(true);
+				updateXml.append("</IsPointFix>");
+				updateXml.append("</Target>");
+				updateXml.append("<Order>");
+				updateXml.append("<Ship>");
+				updateXml.append("<ShipStatus>");
+				updateXml.append(3);
+				updateXml.append("</ShipStatus>");
+				updateXml.append("<ShipCompanyCode>");
+				updateXml.append(strArr[1]);
+				updateXml.append("</ShipCompanyCode>");
+				updateXml.append("<ShipInvoiceNumber1>");
+				updateXml.append(strArr[0]);
+				updateXml.append("</ShipInvoiceNumber1>");
+				updateXml.append("<ShipDate>");
+				updateXml.append(shippingDate);
+				updateXml.append("</ShipDate>");
+				updateXml.append("</Ship>");
+				updateXml.append("</Order>");
+				updateXml.append("<SellerId>");
+				updateXml.append(getSellerId());
+				updateXml.append("</SellerId>");
+				updateXml.append("</Req>");
+				
+				URL url = new URL(URL_ORDERSHIPSTATUSCHANGE);
+				try {
+					String xml_GetOrderResult = getXml(shopName, url, updateXml.toString());
+					Map<String, Object> xmlMap = XmlUtils.Dom2Map(xml_GetOrderResult);
+					
+					Map<String, Object> resultMap = (Map<String, Object>)xmlMap.get("Result");
+					if (null == resultMap) {
+						if (xmlMap.get("Message") != null && xmlMap.get("Code") != null) {
+							MessageFromYahoo messageFromYahoo = new MessageFromYahoo();
+							messageFromYahoo.setCode((String)xmlMap.get("Code"));
+							messageFromYahoo.setMessage((String)xmlMap.get("Message"));
+							messageFromYahoo.setOrderId(orderNo);
+							messageFromYahooList_UpdateOrder.add(messageFromYahoo);
+						}
+					} else {
+						updatedOrderNoList.add(orderNo);
+						updateXml = new StringBuilder();
+						updateXml.append("<Req>");
+						updateXml.append("<Target>");
+						updateXml.append("<OrderId>");
+						updateXml.append(orderNo);
+						updateXml.append("</OrderId>");
+						updateXml.append("</Target>");
+						updateXml.append("<Order>");
+						updateXml.append("<StoreStatus>");
+						updateXml.append(5);
+						updateXml.append("</StoreStatus>");
+						updateXml.append("</Order>");
+						updateXml.append("<SellerId>");
+						updateXml.append(getSellerId());
+						updateXml.append("</SellerId>");
+						updateXml.append("</Req>");
+						
+						url = new URL(URL_ORDERCHANGE);
+						getXml(shopName, url, updateXml.toString());
+						
+					}
+				} catch(Exception e) {
+					
+				}
+			}
+		}
+		return updatedOrderNoList;
+	}
+	
 	private String getXml(String shopName, URL url, String getXml) throws IOException {
 		
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -249,8 +352,18 @@ public class YahooShop {
 		return sb1.toString();
 	}
 
-	public MessageFromYahoo getMessageFromYahoo() {
-		return messageFromYahoo;
+	public List<MessageFromYahoo> getMessageFromYahooList_GetOrder() {
+		return messageFromYahooList_GetOrder;
 	}
 	
+	public List<MessageFromYahoo> getMessageFromYahooList_UpdateOrder() {
+		return messageFromYahooList_UpdateOrder;
+	}
+
+	private String getSellerId() {
+		if (null == sellerId) {
+			sellerId = "kirakiraichiba";
+		}
+		return sellerId;
+	}
 }

@@ -4722,13 +4722,14 @@ public class OrderCommon {
 		List<String> messageList = new ArrayList<String>();
 		
 		YahooShop shop = new YahooShop(shopName);
-		List<YahooOrder> orders = shop.getOrders(2,1,1);
+		List<YahooOrder> orders = shop.getOrders(2,1,1,true);
 		
-		MessageFromYahoo message = shop.getMessageFromYahoo();
-		if(message == null) {
+		List<MessageFromYahoo> messageFromYahooList = shop.getMessageFromYahooList_GetOrder();
+		if(Utility.isEmptyList(messageFromYahooList)) {
 			
 		} else {
-			messageList.add(message.getCode()+ message.getMessage());
+			for(MessageFromYahoo messageFromYahoo : messageFromYahooList)
+			messageList.add(messageFromYahoo.getCode()+ messageFromYahoo.getMessage() + messageFromYahoo.getOrderId() == null ? "" : messageFromYahoo.getOrderId());
 		}
 		
 		for (YahooOrder order : orders) {

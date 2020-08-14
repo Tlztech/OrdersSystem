@@ -43,9 +43,12 @@ public class Shop {
 	}
 	
 	public List<Order> getOrders(List<Integer> orderProgressList) throws Exception{
+		
+		messageFromRMSList_GetOrder.clear();
+		orders.clear();
 		searchOrder(orderProgressList);
 		if((null == orderNoList) || (orderNoList.size() == 0)) {
-			orders.clear();
+			
 		} else {
 			getOrder();
 		}
@@ -53,6 +56,8 @@ public class Shop {
 	}
 	
 	public List<Order> updateOrderShipping(OrderShppingInfo orderShppingInfo) throws Exception {
+		
+		messageFromRMSList_UpdateOrder.clear();
 		List<Order> updatedOrderList = new ArrayList<Order>();
 		List<String> orderNoList = orderShppingInfo.getOrderNoList();
 		Map<String, String[]> orderShppingInfoMap =  orderShppingInfo.getOrderShppingInfo();
@@ -219,14 +224,12 @@ public class Shop {
 	
 	private void convertGetOrderMessageModel(List<Map<String,String>> messageModelList) {
 		ObjectMapper objectMapper = new ObjectMapper();
-		messageFromRMSList_GetOrder.clear();
 		for(Map<String,String> messageModel:messageModelList)
 			messageFromRMSList_GetOrder.add(objectMapper.convertValue(messageModel, MessageFromRMS.class));
 	}
 	
 	private void convertUpdateOrderMessageModel(List<Map<String,String>> messageModelList) {
 		ObjectMapper objectMapper = new ObjectMapper();
-		messageFromRMSList_UpdateOrder.clear();
 		for(Map<String,String> messageModel:messageModelList)
 			messageFromRMSList_UpdateOrder.add(objectMapper.convertValue(messageModel, MessageFromRMS.class));
 	}

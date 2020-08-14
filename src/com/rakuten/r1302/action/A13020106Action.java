@@ -21,6 +21,7 @@ public class A13020106Action extends BaseAction {
 		String outtype = f130201.getOuttype();
 		A130201Common a130201Common = new A130201Common();
 		List<String[]> rakutenOrderList = new ArrayList<String[]>();
+		List<String[]> yahooOrderList = new ArrayList<String[]>();
 		List<String> shoriList = new ArrayList<String>();
 		List<String[]> shoriList2 = new ArrayList<String[]>();
 		List<String> msgList = null;
@@ -29,6 +30,9 @@ public class A13020106Action extends BaseAction {
 				if (order.isIschecked()) {
 					if ("˜SÌì".equals(order.getSite())) {
 						rakutenOrderList.add(new String[] {
+								order.getChumonbango(), order.getTenpo() });
+					} else if ("Yahoo Shopping".equals(order.getSite())) {
+						yahooOrderList.add(new String[] {
 								order.getChumonbango(), order.getTenpo() });
 					} else {
 						shoriList.add(order.getChumonbango());
@@ -43,6 +47,11 @@ public class A13020106Action extends BaseAction {
 				for (String msg : msgList) {
 					addError(null, msg);
 				}
+			} else if (!Utility.isEmptyList(yahooOrderList)) {
+				msgList = a130201Common.setHaneizumiYahoo(yahooOrderList);
+				for (String msg : msgList) {
+					addError(null, msg);
+				}
 			} else {
 				a130201Common.setHaneizumi(shoriList);
 			}
@@ -50,7 +59,7 @@ public class A13020106Action extends BaseAction {
 		} else if ("1".equals(outtype)) {
 			List<OrderList> orderList = (List<OrderList>) getSessionAttribute("heneimachiList");
 
-			List<String> yahooOrderList = new ArrayList<String>();
+//			List<String> yahooOrderList = new ArrayList<String>();
 			List<String> denaOrderList = new ArrayList<String>();
 			List<String> yahuoku = new ArrayList<String>();
 
@@ -59,7 +68,8 @@ public class A13020106Action extends BaseAction {
 					rakutenOrderList.add(new String[] { order.getChumonbango(),
 							order.getTenpo() });
 				} else if ("Yahoo Shopping".equals(order.getSite())) {
-					yahooOrderList.add(order.getChumonbango());
+					yahooOrderList.add(new String[] { order.getChumonbango(),
+							order.getTenpo() });
 				} else if ("DENA".equals(order.getSite())) {
 					denaOrderList.add(order.getChumonbango());
 				} else if ("¥ä¥Õ¥ª¥¯".equals(order.getSite())) {
@@ -74,8 +84,10 @@ public class A13020106Action extends BaseAction {
 					addError(null, msg);
 				}
 			} else if ("2".equals(tenpobetsu)) {
-				shoriList = yahooOrderList;
-				a130201Common.setHaneizumi(shoriList);
+				msgList = a130201Common.setHaneizumiYahoo(rakutenOrderList);
+				for (String msg : msgList) {
+					addError(null, msg);
+				}
 			} else if ("3".equals(tenpobetsu)) {
 				shoriList = denaOrderList;
 				a130201Common.setHaneizumi(shoriList);
