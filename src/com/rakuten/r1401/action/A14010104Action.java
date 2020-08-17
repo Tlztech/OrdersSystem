@@ -59,7 +59,7 @@ public class A14010104Action extends BaseAction {
 		StockBean stockbean = null;
 		try {
 			conn = JdbcConnection.getConnection();
-			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id";
+			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.commodity_id = 'chy1474'";
 
 			ps = conn.prepareStatement(sql);
 
@@ -157,20 +157,20 @@ public class A14010104Action extends BaseAction {
 	protected void exec() throws Exception {
 		shop = Utility.getShopNameById(shop);
 		List<StockBean> stockListDB = getStockFromDB(shop);
-//		List<String[]> dataList = new ArrayList<String[]>();
-//		for (StockBean stock : stockListDB) {
-//			dataList.add(new String[] { stock.getCommodity_id(), stock.getDetail_no(), stock.getDetail_name_yoko(),
-//					stock.getDetail_name_shitaga(), String.valueOf(stock.getStock_jp()),
-//					String.valueOf(stock.getStock_jp_kano()), String.valueOf(stock.getStock_unsochu()),
-//					String.valueOf(stock.getStock_unsochu_kano()), String.valueOf(stock.getStock_sh()),
-//					String.valueOf(stock.getStock_sh_kano()), String.valueOf(stock.getStock_nyukachu()),
-//					String.valueOf(stock.getStock_nyukachu_kano()), stock.getJinhuoshang(),
-//					stock.isNyukafukaFlg() ? "1" : "0" });
-//		}
-//		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-//		fileName = df.format(new Date()) + ".csv";
-//
-//		Utility.writeCsvFile3(dataList, "c:/temp/" + fileName);
+		List<String[]> dataList = new ArrayList<String[]>();
+		for (StockBean stock : stockListDB) {
+			dataList.add(new String[] { stock.getCommodity_id(), stock.getDetail_no(), stock.getDetail_name_yoko(),
+					stock.getDetail_name_shitaga(), String.valueOf(stock.getStock_jp()),
+					String.valueOf(stock.getStock_jp_kano()), String.valueOf(stock.getStock_unsochu()),
+					String.valueOf(stock.getStock_unsochu_kano()), String.valueOf(stock.getStock_sh()),
+					String.valueOf(stock.getStock_sh_kano()), String.valueOf(stock.getStock_nyukachu()),
+					String.valueOf(stock.getStock_nyukachu_kano()), stock.getJinhuoshang(),
+					stock.isNyukafukaFlg() ? "1" : "0" });
+		}
+		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		fileName = df.format(new Date()) + ".csv";
+
+		Utility.writeCsvFile3(dataList, "c:/temp/" + fileName);
 		Inventoryapi locator = new InventoryapiLocator();
 		InventoryapiPort port = null;
 
@@ -237,7 +237,12 @@ public class A14010104Action extends BaseAction {
 
 			item.setInventoryBackFlag(0);
 
-			item.setInventoryType(3);
+			//item.setInventoryType(3);
+			if(stockbean.getDetail_no().contains("-")) {
+				item.setInventoryType(3);
+			} else {
+				item.setInventoryType(2);
+			}
 
 			item.setInventoryUpdateMode(1);
 

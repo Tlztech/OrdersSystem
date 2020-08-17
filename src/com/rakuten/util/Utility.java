@@ -1636,6 +1636,8 @@ public class Utility {
 			name = "coverforefront";
 		}else if ("385894".equals(id)) {
 			name = "xandw";
+		} else if ("373860".equals(id)) {
+			name = "herz";
 		}
 		return name;
 	}

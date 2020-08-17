@@ -171,6 +171,7 @@ a {
 
 <option value="308759">coverforefront</option>
 <option value="385894">xandw</option>
+<option value="373860">herz</option>
 <option value="1">123mart</option>
 </select>
 <input type="button" onclick="actionSubmit('A14010102')" value="下载最新预警列表"><br/><br/><br/><br/>
