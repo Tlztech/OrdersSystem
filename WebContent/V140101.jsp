@@ -163,6 +163,10 @@ a {
 <div id='mask' class="mask" style="width:100%;height:100%;"></div>
 <s:form name="form1" theme="simple" method="post" enctype="multipart/form-data">
 <br/><br/>
+<select name="site">
+<option value="yahoo">YAHOO</option>
+<option value="rakuten">rakuten</option>
+</select>
 <select name="shop">
 
 <option value="308759">coverforefront</option>

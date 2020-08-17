@@ -45,6 +45,7 @@ public class A14010104Action extends BaseAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String site = null;
 	private String shop = null;
 	private String logKey = null;
 	private String fileName = null;
@@ -215,7 +216,8 @@ public class A14010104Action extends BaseAction {
 			int nokiId = 0;
 			if (stockbean.getStock_jp_kano() > 0) {
 				stock = stockbean.getStock_jp_kano();
-				nokiId = Utility.getNokiId(shop, 1);
+				//nokiId = Utility.getNokiId(shop, 1);
+				nokiId = 1;
 			} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
 				if (stockbean.getStock_unsochu_kano() > 0) {
 					stock = stock + stockbean.getStock_unsochu_kano();
@@ -223,10 +225,12 @@ public class A14010104Action extends BaseAction {
 				if (stockbean.getStock_sh_kano() > 0) {
 					stock = stock + stockbean.getStock_sh_kano();
 				}
-				nokiId = Utility.getNokiId(shop, 3);
+				//nokiId = Utility.getNokiId(shop, 3);
+				nokiId = 2;
 			} else {
 				stock = 0;
-				nokiId = Utility.getJinhuoshangNoki(stockbean.getJinhuoshang());
+				//nokiId = Utility.getJinhuoshangNoki(stockbean.getJinhuoshang());
+				nokiId = 3;
 
 			}
 			item.setInventory(stock);
@@ -249,7 +253,8 @@ public class A14010104Action extends BaseAction {
 
 			item.setLackDeliveryDeleteFlag(false);
 
-			item.setLackDeliveryId(Utility.getJinhuoshangNoki(stockbean.getJinhuoshang()));
+			//item.setLackDeliveryId(Utility.getJinhuoshangNoki(stockbean.getJinhuoshang()));
+			item.setLackDeliveryId(3);
 
 			item.setNokoriThreshold(0);
 
@@ -262,9 +267,10 @@ public class A14010104Action extends BaseAction {
 			if (stockbean.isNyukafukaFlg()) {
 				item.setOrderSalesFlag(1);
 //				item.setLackDeliveryDeleteFlag(true);
-				item.setLackDeliveryId(7);
+//				item.setLackDeliveryId(7);
 			} else {
 				item.setOrderSalesFlag(2);
+				item.setLackDeliveryId(2);
 			}
 			if (!Utility.isEmptyString(tongyici)) {
 				itemurl = tongyici;
@@ -395,6 +401,14 @@ public class A14010104Action extends BaseAction {
 	protected void fieldCheck() throws Exception {
 		// TODO Auto-generated method stub
 
+	}
+
+	public String getSite() {
+		return site;
+	}
+
+	public void setSite(String site) {
+		this.site = site;
 	}
 
 	public String getShop() {
