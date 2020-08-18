@@ -1287,11 +1287,11 @@ public class Utility {
 				// Select/Checkbox用選択肢
 				shohinsentakushiBean.setSelectcheckboxyousentakushi("");
 				// 項目選択肢別在庫用横軸選択肢
-				shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi("仮横軸名称");
+				shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi("");
 				// 項目選択肢別在庫用横軸選択肢子番号
 				shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango("-0");
 				// 項目選択肢別在庫用縦軸選択肢
-				shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi("仮縦軸名称");
+				shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi("");
 				// 項目選択肢別在庫用縦軸選択肢子番号
 				shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango("-0");
 				// 項目選択肢別在庫用取り寄せ可能表示

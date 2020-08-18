@@ -3034,7 +3034,7 @@ public class A1001Common {
 								ps = conn.prepareStatement(sql);
 								ps.setString(1,	shouhinbango);
 								ps.setString(2, detailNo);
-								ps.setString(3, "仮横軸名称\n" + "仮縦軸名称");
+								ps.setString(3, "");
 								ps.setString(4, "");
 								ps.setString(5, null);
 								ps.setString(6, "1");
@@ -3049,8 +3049,8 @@ public class A1001Common {
 								ps.setString(15, "kyo");
 								ps.setString(16, null);
 								ps.setString(17, null);
-								ps.setString(18, "仮横軸名称");
-								ps.setString(19, "仮縦軸名称");
+								ps.setString(18, "");
+								ps.setString(19, "");
 								ps.execute();
 							}
 							
