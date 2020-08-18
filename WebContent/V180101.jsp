@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -158,14 +159,23 @@ function hideDiv2() {
             <tr class="bg_tr">
                 <td class="td_bg" width="80px">平台：</td>
                 <td class="td_bg">
-                    <s:select list="#{'':'全部','123mart':'123mart','3eshop':'3eshop','citycat':'citycat','trend777':'trend777'}" name="f180101.PlatformSelect"/>
+                    <select id="f180101.PlatformSelect" name="f180101.PlatformSelect">
+                    	<option value="0">请选择</option>
+                        <c:forEach items="${f180101.siteList}" var="site" >  
+                              <option value="${site}"> ${site} </option>  
+                        </c:forEach>  
+                    </select> 
                 </td>
                 <td class="td_bg" width="80px">店铺：</td>
                 <td class="td_bg">
-                    <s:select list="#{'':'全部','123mart':'123mart','3eshop':'3eshop','citycat':'citycat','trend777':'trend777'}" name="f180101.ShopSelect"/>
-                    
+                	<select id="f180101.ShopSelect" name="f180101.ShopSelect">
+                    	<option value="0">请选择</option>
+                        <c:forEach items="${f180101.shopList}" var="shopID" >  
+                              <option value="${shopID}"> ${shopID} </option>  
+                        </c:forEach>  
+                    </select> 
                 </td>
-                <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A18010101')" value="查找" style="width:80px;height:25px"/></td>
+                <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A18010102')" value="查找" style="width:80px;height:25px"/></td>
             </tr>
 		</table>
 		<div style="width:811px;height:20px;margin-top: 10px;">
@@ -174,35 +184,34 @@ function hideDiv2() {
 		</div>	
         
         <div id="div1">
-        <s:actionerror name="err" cssStyle="color:red;font-size:13"/>
         <h3>店铺</h3>
 		<table cellspacing="1" cellpadding="2" width="90%" border="0">
             <tr class="bg_tr">
                 <td class="td_bg" width="80px">平台：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="20" name="f180101.Platform"/>
+                    <s:textfield size="20" maxlength="50" name="f180101.platform"/>
                 </td>
                 <td class="td_bg" width="80px">店铺ID：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="20" name="f180101.ShopId"/>
+                    <s:textfield size="20" maxlength="50" name="f180101.shopId"/>
                 </td>
                 <td class="td_bg" width="80px">店铺名：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="20" name="f180101.ShopName"/>
+                    <s:textfield size="20" maxlength="250" name="f180101.shopName"/>
                 </td>
             </tr>
             <tr class="bg_tr">
             	<td class="td_bg" width="80px">店铺番号：</td>
                 <td class="td_bg" width="180px">
-                    <s:textfield size="20" maxlength="20" name="f180101.ShopNumber" placeholder="注：订单前六位"/>
+                    <s:textfield size="20" maxlength="20" name="f180101.shopNumber" placeholder="注：订单前六位"/>
                 </td>
                 <td class="td_bg" width="80px">电话番号：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="20" name="f180101.PhoneNumber"/>
+                    <s:textfield size="20" maxlength="20" name="f180101.phoneNumber"/>
                 </td>
                 <td class="td_bg" width="80px">FAX：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="20" name="f180101.Fax"/>
+                    <s:textfield size="20" maxlength="20" name="f180101.fax"/>
                 </td>
             </tr>
            
@@ -210,18 +219,17 @@ function hideDiv2() {
   		
 		</div>
 		<div id="div1">
-        <s:actionerror name="err" cssStyle="color:red;font-size:13"/>
 		<table cellspacing="1" cellpadding="2" width="90%" border="0">
   		 	<tr class="bg_tr">
                 <td class="td_bg" width="80px">店铺URL：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="20" name="f180101.ShopUrl" style="width:450px;"/>
+                    <s:textfield size="20" maxlength="300" name="f180101.shopUrl" style="width:450px;"/>
                 </td>
             </tr>
             <tr class="bg_tr">
                 <td class="td_bg" width="80px">店铺地址：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="20" name="f180101.ShopAddress" style="width:450px;"/>
+                    <s:textfield size="20" maxlength="300" name="f180101.shopAddress" style="width:450px;"/>
                 </td>
             </tr>
         </table>
@@ -231,19 +239,18 @@ function hideDiv2() {
         </div>
 		
 		<div id="div1">
-        <s:actionerror name="err" cssStyle="color:red;font-size:13"/>
         <h3>乐天信息</h3>
 		<table cellspacing="1" cellpadding="2" width="90%" border="0">
             <tr class="bg_tr">
                 <td class="td_bg" width="80px">ServiceKey：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="40" name="f180101.ServiceKey" style="width:700px"/>
+                    <s:textfield size="20" maxlength="200" name="f180101.serviceKey" style="width:700px"/>
                 </td>
             </tr>
             <tr class="bg_tr">
                 <td class="td_bg" width="80px">LicenseKey：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="40" name="f180101.LicenseKey" style="width:700px"/>
+                    <s:textfield size="20" maxlength="200" name="f180101.licenseKey" style="width:700px"/>
                 </td>
             </tr>
 		</table>
@@ -253,49 +260,32 @@ function hideDiv2() {
 		</div>
 		
 		<div id="div1">
-        <s:actionerror name="err" cssStyle="color:red;font-size:13"/>
         <h3>Yahoo信息</h3>
 		<table cellspacing="1" cellpadding="2" width="90%" border="0">
 			<tr class="bg_tr">
                 <td class="td_bg" width="80px">ApplicationID：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="40" name="f180101.ApplicationID" style="width:700px"/>
+                    <s:textfield size="20" maxlength="100" name="f180101.applicationID" style="width:700px"/>
                 </td>
             </tr>
 			<tr class="bg_tr">
                 <td class="td_bg" width="80px">AccessToken：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="40" name="f180101.AccessToken" style="width:700px" readonly="true"/>
+                    <s:textfield size="20" maxlength="5000" name="f180101.accessToken" style="width:700px" readonly="true"/>
                 </td>
             </tr>
             <tr class="bg_tr">
                 <td class="td_bg" width="80px">RefreshToken：</td>
                 <td class="td_bg">
-                    <s:textfield size="20" maxlength="40" name="f180101.RefreshToken" style="width:700px" readonly="true"/>
+                    <s:textfield size="20" maxlength="200" name="f180101.refreshToken" style="width:700px" readonly="true"/>
                 </td>
             </tr>
             <tr class="bg_tr">
 	            <td class="td_bg" width="80px">登录时日：</td>
                 <td class="td_bg" width="180px">
-                    <s:textfield size="20" maxlength="20" name="f180101.LoginTime" readonly="true"/>
+                    <s:textfield size="20" maxlength="50" name="f180101.loginTime" readonly="true"/>
                 </td>
             </tr>
-            <!--  
-            <tr class="bg_tr">
-                <td class="td_bg" width="80px">平台：</td>
-                <td class="td_bg">
-                    <s:textfield size="20" maxlength="20" name="f180101.commodityId"/>
-                </td>
-                <td class="td_bg" width="80px">店铺ID：</td>
-                <td class="td_bg">
-                    <s:textfield size="20" maxlength="20" id="categoryName" name="f180101.categoryName" cssClass="readonly" readOnly="true"/>&nbsp;&nbsp;<input type="button" onclick="openWin1()" value="参照"/>
-                </td>
-                <td class="td_bg" width="80px">店铺名：</td>
-                <td class="td_bg">
-                    <s:textfield size="20" maxlength="20" id="categoryName" name="f180101.categoryName" cssClass="readonly" readOnly="true"/>&nbsp;&nbsp;<input type="button" onclick="openWin1()" value="参照"/>
-                </td>
-            </tr>
-            -->
 		</table>
 		<div style="width:811px;height:20px;margin-top: 10px;">
             <hr>
@@ -303,12 +293,11 @@ function hideDiv2() {
 		</div>
 		
 		<div id="div1">
-        <s:actionerror name="err" cssStyle="color:red;font-size:13"/>
 		<table cellspacing="1" cellpadding="2" width="90%" border="0">
             <tr class="bg_tr">
-                <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A18010101')" value="追加" style="width:100px;height:45px"/></td>
-                <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A18010101')" value="更新" style="width:100px;height:45px"/></td>
-                <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A18010101')" value="删除" style="width:100px;height:45px"/></td>
+                <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A18010103')" value="追加" style="width:100px;height:45px"/></td>
+                <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A18010104')" value="更新" style="width:100px;height:45px"/></td>
+                <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A18010105')" value="删除" style="width:100px;height:45px"/></td>
             </tr>
             
 		</table>

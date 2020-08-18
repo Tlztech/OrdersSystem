@@ -7,45 +7,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.rakuten.common.action.BaseAction;
-import com.rakuten.r1801.form.AlbumList;
 import com.rakuten.r1801.form.F180101;
 import com.rakuten.util.JdbcConnection;
 
 public class A18010101Action extends BaseAction {
 
 	private static final long serialVersionUID = 1L;
-	F180101 f180101 = null;
-
+	private F180101 f180101 = new F180101();
+	
 	protected void exec() throws Exception {
-		f180101 = new F180101();
-		List<AlbumList> albumList = new ArrayList<AlbumList>();
-//		f180101.setAlbumList(albumList);
 
 		Connection conn = null;
 		PreparedStatement ps = null;
-		String sql = null;
 		ResultSet rs = null;
+		String sql = null;
+
 		try {
 			conn = JdbcConnection.getConnection();
-			sql = "SELECT * FROM TBL00032 WHERE 1=1";
+			
+			sql = "select site from shop where DELETE_FLG is null group by site ";
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
+			List<String> siteList = new ArrayList<String>();
+			
 			while (rs.next()) {
-				AlbumList album = new AlbumList();
-				albumList.add(album);
-
-				album.setShumokuId(rs.getString("SHUMOKUID"));
-				album.setName(rs.getString("SHUMOKUMEI"));
-
+				siteList.add(rs.getString("site"));
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			conn.rollback();
-			throw e;
-		} finally {
-			conn.close();
-		}
+			f180101.setSiteList(siteList);
+			
+			sql = "select shop_id from shop where DELETE_FLG is null group by shop_id";
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			List<String> shopList = new ArrayList<String>();
+			
+			while (rs.next()) {
+				shopList.add(rs.getString("shop_id"));
+			}
+			
+			f180101.setShopList(shopList);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				conn.rollback();
+				throw e;
+			} finally {
+				conn.close();
+			}
+
 	}
 
 	protected void init() {
