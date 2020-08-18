@@ -436,7 +436,8 @@ select {
                 <td>検索結果：<s:label name="f100101.resultCount" />件<s:hidden name="f100101.resultCount" /></td>
                 <td align="right">
                     <input type="button" onclick="actionSubmit('A10010401')" value="新規"/>&nbsp;&nbsp;
-                    <input type="button" onclick="popupDiv2();" value="注文情報を取得する"/>&nbsp;&nbsp;
+                    <input type="button" onclick="popupDiv2();" value="楽天注文取得"/>&nbsp;&nbsp;
+                    <input type="button" onclick="popupDivGetOrderInfoYahoo();" value="Yahoo注文取得"/>&nbsp;&nbsp;
                     <input type="button" onclick="popupDiv7();" value="CSVから取得(Rakuten)"/>&nbsp;&nbsp;
                     <input type="button" onclick="popupDiv8();" value="CSVから取得(qoo10)"/>&nbsp;&nbsp;
                     <input type="button" onclick="popupDiv3();" value="CSVから取得(DENA)"/>&nbsp;&nbsp;
@@ -445,7 +446,6 @@ select {
                     <input type="button" onclick="popupDiv9();" value="CSVから取得(代理発送)"/>&nbsp;&nbsp;
 <!--                     <input type="button" onclick="actionSubmit('A10010105');" value="発送可リスト生成"/>&nbsp;&nbsp; -->
 <!--                     <input type="button" onclick="popupDiv();" value="発送情報をシステムに反映"/>&nbsp;&nbsp; -->
-                    <input type="button" onclick="popupDivGetOrderInfoYahoo();" value="注文情報を取得する(Yahoo)"/>&nbsp;&nbsp; -->
                 </td>
             </tr>
         </table>‘
