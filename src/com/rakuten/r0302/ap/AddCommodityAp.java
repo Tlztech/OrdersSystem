@@ -53,9 +53,9 @@ public class AddCommodityAp {
 			ps.setString(9, input.getRemarks());
 			ps.setString(10, "0");
 			ps.setString(11, date);
-			ps.setString(12, "123mart");
+			ps.setString(12, Utility.getUser());
 			ps.setString(13, date);
-			ps.setString(14, "123mart");
+			ps.setString(14, Utility.getUser());
 			ps.setString(15, "00");
 			ps.execute();
 
@@ -79,9 +79,9 @@ public class AddCommodityAp {
 					ps.setString(12, "");
 					ps.setString(13, detail.isDelFlg() ? "1" : "0");
 					ps.setString(14, date);
-					ps.setString(15, "123mart");
+					ps.setString(15, Utility.getUser());
 					ps.setString(16, date);
-					ps.setString(17, "123mart");
+					ps.setString(17, Utility.getUser());
 					ps.setString(18, detail.getYokoname());
 					ps.setString(19, detail.getShitaganame());
 					ps.execute();

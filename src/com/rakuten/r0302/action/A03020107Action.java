@@ -140,7 +140,7 @@ public class A03020107Action extends BaseAction {
 				while (rs.next()) {
 					output = new HashMap<String, String>();
 					output.put("COMMODITY_ID", rs.getString("COMMODITY_ID")
-							+ rs.getString("DETAIL_NO").replace("-0-0", ""));
+							+ rs.getString("DETAIL_NO"));
 					output.put("CATEGORY_NAME", rs.getString("CATEGORY_NAME"));
 					output.put("JAPANESE_NAME", rs.getString("JAPANESE_NAME"));
 					output.put("COMM_DESCRIBE", rs.getString("COMM_DESCRIBE"));
@@ -314,7 +314,7 @@ public class A03020107Action extends BaseAction {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				String commodityId = rs.getString("COMMODITY_ID");
-				String detailNo = rs.getString("DETAIL_NO").replace("-0-0", "");
+				String detailNo = rs.getString("DETAIL_NO");
 				String stockJp = rs.getString("STOCK_JP");
 				String[] stockInfo = { commodityId + detailNo, stockJp };
 				stockList.add(stockInfo);
