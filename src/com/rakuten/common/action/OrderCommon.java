@@ -4701,7 +4701,7 @@ public class OrderCommon {
 			if ("INFO".equals(message.getMessageType())) {
 				
 			} else {
-				messageList.add(message.getMessageCode() + message.getMessage() + message.getOrderNumber() == null ? "" : message.getOrderNumber());
+				messageList.add(message.getMessageCode() + message.getMessage() + (message.getOrderNumber() == null ? "" : message.getOrderNumber()));
 			}
 		}
 		
@@ -4728,8 +4728,9 @@ public class OrderCommon {
 		if(Utility.isEmptyList(messageFromYahooList)) {
 			
 		} else {
-			for(MessageFromYahoo messageFromYahoo : messageFromYahooList)
-			messageList.add(messageFromYahoo.getCode()+ messageFromYahoo.getMessage() + messageFromYahoo.getOrderId() == null ? "" : messageFromYahoo.getOrderId());
+			for(MessageFromYahoo messageFromYahoo : messageFromYahooList) {
+				messageList.add(messageFromYahoo.getCode()+ messageFromYahoo.getMessage() + (messageFromYahoo.getOrderId() == null ? "" : messageFromYahoo.getOrderId()));
+			}
 		}
 		
 		for (YahooOrder order : orders) {

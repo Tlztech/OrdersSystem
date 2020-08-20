@@ -99,7 +99,8 @@ public class Utility {
 		reader.close();
 
 		return csvList;
-	}	
+	}
+
 	public static List<String[]> readCsvFile5(File file, boolean jumpFlg) throws Exception {
 		ArrayList<String[]> csvList = new ArrayList<String[]>(); // 用来保存数据
 		CsvReader reader = new CsvReader(new FileInputStream(file), '\t', Charset.forName("UTF-16")); // 一般用这编码读就可以了
@@ -1219,7 +1220,7 @@ public class Utility {
 			// 从selectCsv获取商品基本信息
 			shohinsentakushiBeanList = new ArrayList<ShohinsentakushiBean>();
 			ShohinsentakushiBean shohinsentakushiBean = null;
-			
+
 			if (selectCsv != null) {
 				for (int k = 0; k < selectList.size(); k++) {
 					j = 0;
@@ -1242,7 +1243,7 @@ public class Utility {
 						if (strXAxisNo.length() > 0 && (strXAxisNo.replace("－", "-").indexOf("-") == -1)) {
 							strXAxisNo = "-" + strXAxisNo;
 						}
-						
+
 						// 項目選択肢別在庫用縦軸選択肢
 						shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi(selectList.get(k)[++j]);
 						// 項目選択肢別在庫用縦軸選択肢子番号
@@ -1250,15 +1251,15 @@ public class Utility {
 						if (strYAxisNo.length() > 0 && (strYAxisNo.replace("－", "-").indexOf("-") == -1)) {
 							strYAxisNo = "-" + strYAxisNo;
 						}
-						
+
 						if (strXAxisNo.length() == 0 && strYAxisNo.length() == 0) {
 							strXAxisNo = "-0";
 							strYAxisNo = "-0";
 						}
-						
+
 						shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango(strXAxisNo);
 						shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango(strYAxisNo);
-						
+
 						// 項目選択肢別在庫用取り寄せ可能表示
 						shohinsentakushiBean.setKomokusentakushibetuzaikototoriyosekanohyouji(selectList.get(k)[++j]);
 						// 項目選択肢別在庫用在庫数
@@ -1273,7 +1274,7 @@ public class Utility {
 						shohinsentakushiBean.setZaikokiretokinoukikanribango(selectList.get(k)[++j]);
 					}
 				}
-			}else {
+			} else {
 				String shouhinkanribango = shohinInfoBean.getShouhinkanribango();
 
 				shohinsentakushiBean = new ShohinsentakushiBean();
@@ -1630,15 +1631,39 @@ public class Utility {
 
 	public static String getShopNameById(String id) {
 		String name = "";
-		if ("306685".equals(id)) {
-			name = "trend777";
-		} else if ("308759".equals(id)) {
-			name = "coverforefront";
-		}else if ("385894".equals(id)) {
-			name = "xandw";
-		} else if ("373860".equals(id)) {
-			name = "herz";
+		Connection conn = null;
+		Map<String, String> shopMap = new HashMap<String, String>();
+		try {
+			conn = com.rakuten.util.JdbcConnection.getConnection();
+			PreparedStatement ps = null;
+			String sql= "SELECT SHOP_ID, SHOP_NO FROM rakuten.shop";
+			ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				shopMap.put(rs.getString("SHOP_NO"), rs.getString("SHOP_ID"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+
+		name = (shopMap.get(id) !=null) ? shopMap.get(id):name;
+//		if ("306685".equals(id)) {
+//			name = "trend777";
+//		} else if ("308759".equals(id)) {
+//			name = "coverforefront";
+//		} else if ("385894".equals(id)) {
+//			name = "xandw";
+//		} else if ("373860".equals(id)) {
+//			name = "herz";
+//		}
 		return name;
 	}
 
@@ -2102,7 +2127,8 @@ public class Utility {
 	}
 
 	public static boolean isValidShop(String shop) {
-		if ("123mart".equals(shop) || "trend777".equals(shop) || "coverforefront".equals(shop) || "herz".equals(shop) || "epintl".equals(shop)) {
+		if ("123mart".equals(shop) || "trend777".equals(shop) || "coverforefront".equals(shop) || "herz".equals(shop)
+				|| "epintl".equals(shop)) {
 			return true;
 		} else {
 			return false;
@@ -2156,7 +2182,7 @@ public class Utility {
 			} else if (7 == type) {
 				id = 1;
 			}
-		}else if ("xandw".equals(shop)) {
+		} else if ("xandw".equals(shop)) {
 			if (1 == type) {
 				id = 3;
 			} else if (3 == type) {

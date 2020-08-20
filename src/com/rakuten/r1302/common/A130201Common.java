@@ -415,7 +415,7 @@ public class A130201Common {
 					if("INFO".equals(messageFromRMS.getMessageType())) {
 						
 					} else  {
-						messageList.add(messageFromRMS.getMessageCode() + messageFromRMS.getMessage() + messageFromRMS.getOrderNumber() == null ? "" : messageFromRMS.getOrderNumber());
+						messageList.add(messageFromRMS.getMessageCode() + messageFromRMS.getMessage() + (messageFromRMS.getOrderNumber() == null ? "" : messageFromRMS.getOrderNumber()));
 					}
 				}
 				messageFromRMSList = shop_UpdateOrderShipping.getMessageFromRMS_UpdateOrder();
@@ -532,7 +532,7 @@ public class A130201Common {
 				List<String> shorilist = new ArrayList<String>();
 				
 				for (MessageFromYahoo messageFromYahoo : messageFromYahooList) {
-					messageList.add(messageFromYahoo.getCode() + messageFromYahoo.getMessage() + messageFromYahoo.getOrderId() == null ? "" : messageFromYahoo.getOrderId());
+					messageList.add(messageFromYahoo.getCode() + messageFromYahoo.getMessage() + (messageFromYahoo.getOrderId() == null ? "" : messageFromYahoo.getOrderId()));
 				}
 				
 				shorilist.addAll(updatedOrderNoList);

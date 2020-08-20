@@ -8,7 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.rakuten.common.action.OrderCommon;
@@ -1234,6 +1236,14 @@ public class A1001Common {
 		String date = format.format(new Date());
 		try {
 			conn = JdbcConnection.getConnection();
+			sql = "SELECT SHOP_ID, SHOP_NO FROM rakuten.shop";
+			ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			Map<String, String> shopMap = new HashMap<String, String>();
+			while (rs.next()) {
+				shopMap.put(rs.getString("SHOP_NO"), rs.getString("SHOP_ID"));
+			}
+			
 			for (int i = 0; i < orderList.size(); i++) {
 
 				int j = 0;
@@ -1264,13 +1274,17 @@ public class A1001Common {
 					ps.setString(++j, "0");
 					ps.setString(++j, "0");
 					ps.setString(++j, "楽天");
-					if (orderList.get(i).getJuchubango().startsWith("308759")) {
-						shop = "coverforefront";
-					} else if (orderList.get(i).getJuchubango().startsWith("373860")) {
-						shop = "herz";
-					} else if (orderList.get(i).getJuchubango().startsWith("384100")) {
-						shop = "epintl";
+					shop = shopMap.get(orderList.get(i).getJuchubango().substring(0, 6));
+					if (shop != null) {
+						
 					} else {
+//					if (orderList.get(i).getJuchubango().startsWith("308759")) {
+//						shop = "coverforefront";
+//					} else if (orderList.get(i).getJuchubango().startsWith("373860")) {
+//						shop = "herz";
+//					} else if (orderList.get(i).getJuchubango().startsWith("384100")) {
+//						shop = "epintl";
+//					} else {
 						shop = orderList.get(i).getShousaiList().get(0).getShouhinURL();
 						shop = shop.replace("//", "");
 						shop = shop.substring(shop.indexOf("/") + 1);

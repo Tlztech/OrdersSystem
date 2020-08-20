@@ -14,16 +14,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.rpc.ServiceException;
 
 import org.apache.axis.encoding.Base64;
 
+import com.rakuten.common.MessageFromYahoo;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.common.action.OrderCommon;
 import com.rakuten.common.bean.OrderInfoBean;
 import com.rakuten.common.bean.ShouhinStsBean;
+import com.rakuten.shop.YahooShop;
 import com.rakuten.util.JdbcConnection;
 import com.rakuten.util.Utility;
 
@@ -59,7 +63,7 @@ public class A14010104Action extends BaseAction {
 		StockBean stockbean = null;
 		try {
 			conn = JdbcConnection.getConnection();
-			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.commodity_id = 'chy1474'";
+			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id";
 
 			ps = conn.prepareStatement(sql);
 
@@ -171,114 +175,40 @@ public class A14010104Action extends BaseAction {
 		fileName = df.format(new Date()) + ".csv";
 
 		Utility.writeCsvFile3(dataList, "c:/temp/" + fileName);
-		Inventoryapi locator = new InventoryapiLocator();
-		InventoryapiPort port = null;
+		if ("楽天".equals(site)) {
+			Inventoryapi locator = new InventoryapiLocator();
+			InventoryapiPort port = null;
 
-		try {
-			port = locator.getinventoryapiPort();
-		} catch (ServiceException e) {
-			throw e;
-		}
-		Shohincommon common = new Shohincommon();
-		String serviceSecret = common.getServiceSecret(shop);
-		String licenseKey = common.getLicenseKey(shop);
-		String author = "ESA " + Base64.encode((serviceSecret + ":" + licenseKey).getBytes());
-		
-		ExternalUserAuthModel auth = new ExternalUserAuthModel();
-		auth.setAuthKey(author);
-		auth.setShopUrl(shop);
-		auth.setUserName("dongtze");
-
-		UpdateRequestExternalModel model = new UpdateRequestExternalModel();
-		List<UpdateRequestExternalItem> updateList = new ArrayList<UpdateRequestExternalItem>();
-		UpdateRequestExternalItem item = null;
-		EventCommon eventCommon = new EventCommon();
-		List<String> exceptListTrend = eventCommon.getTodayList("trend777");
-		exceptListTrend.addAll(eventCommon.getTommorowList("trend777"));
-
-		List<String> exceptListCover = eventCommon.getTodayList("coverforefront");
-		exceptListCover.addAll(eventCommon.getTommorowList("coverforefront"));
-
-		for (StockBean stockbean : stockListDB) {
-			String tongyici = "";
-			boolean hanbaikano = false;
-
-			String itemurl = stockbean.getCommodity_id();
-
-			item = new UpdateRequestExternalItem();
-			updateList.add(item);
-
-			item.setHChoiceName(stockbean.getDetail_name_yoko());
-
-			item.setVChoiceName(stockbean.getDetail_name_shitaga());
-
-			int stock = 0;
-			int nokiId = 0;
-			if (stockbean.getStock_jp_kano() > 0) {
-				stock = stockbean.getStock_jp_kano();
-				//nokiId = Utility.getNokiId(shop, 1);
-				nokiId = 1;
-			} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
-				if (stockbean.getStock_unsochu_kano() > 0) {
-					stock = stock + stockbean.getStock_unsochu_kano();
-				}
-				if (stockbean.getStock_sh_kano() > 0) {
-					stock = stock + stockbean.getStock_sh_kano();
-				}
-				//nokiId = Utility.getNokiId(shop, 3);
-				nokiId = 2;
-			} else {
-				stock = 0;
-				//nokiId = Utility.getJinhuoshangNoki(stockbean.getJinhuoshang());
-				nokiId = 3;
-
+			try {
+				port = locator.getinventoryapiPort();
+			} catch (ServiceException e) {
+				throw e;
 			}
-			item.setInventory(stock);
+			Shohincommon common = new Shohincommon();
+			String serviceSecret = common.getServiceSecret(shop);
+			String licenseKey = common.getLicenseKey(shop);
+			String author = "ESA " + Base64.encode((serviceSecret + ":" + licenseKey).getBytes());
 
-			item.setInventoryBackFlag(0);
+			ExternalUserAuthModel auth = new ExternalUserAuthModel();
+			auth.setAuthKey(author);
+			auth.setShopUrl(shop);
+			auth.setUserName("dongtze");
 
-			//item.setInventoryType(3);
-			if(stockbean.getDetail_no().contains("-")) {
-				item.setInventoryType(3);
-			} else {
-				item.setInventoryType(2);
-			}
+			UpdateRequestExternalModel model = new UpdateRequestExternalModel();
+			List<UpdateRequestExternalItem> updateList = new ArrayList<UpdateRequestExternalItem>();
+			UpdateRequestExternalItem item = null;
+			EventCommon eventCommon = new EventCommon();
+			List<String> exceptListTrend = eventCommon.getTodayList("trend777");
+			exceptListTrend.addAll(eventCommon.getTommorowList("trend777"));
 
-			item.setInventoryUpdateMode(1);
+			List<String> exceptListCover = eventCommon.getTodayList("coverforefront");
+			exceptListCover.addAll(eventCommon.getTommorowList("coverforefront"));
 
-			if ("trend777".equals(shop) || "coverforefront".equals(shop)) {
-				itemurl = getSaleItemURL(shop, itemurl);
-				if (itemurl.contains("copy")) {
-					tongyici = itemurl;
-				}
-				itemurl = itemurl.replace("copy", "");
-			}
+			for (StockBean stockbean : stockListDB) {
+				String tongyici = "";
+				boolean hanbaikano = false;
 
-			item.setItemUrl(itemurl);
-
-			item.setLackDeliveryDeleteFlag(false);
-
-			//item.setLackDeliveryId(Utility.getJinhuoshangNoki(stockbean.getJinhuoshang()));
-			item.setLackDeliveryId(3);
-
-			item.setNokoriThreshold(0);
-
-			item.setNormalDeliveryDeleteFlag(false);
-
-			item.setNormalDeliveryId(nokiId);
-
-			item.setOrderFlag(0);
-
-			if (stockbean.isNyukafukaFlg()) {
-				item.setOrderSalesFlag(1);
-//				item.setLackDeliveryDeleteFlag(true);
-//				item.setLackDeliveryId(7);
-			} else {
-				item.setOrderSalesFlag(2);
-				item.setLackDeliveryId(2);
-			}
-			if (!Utility.isEmptyString(tongyici)) {
-				itemurl = tongyici;
+				String itemurl = stockbean.getCommodity_id();
 
 				item = new UpdateRequestExternalItem();
 				updateList.add(item);
@@ -287,11 +217,12 @@ public class A14010104Action extends BaseAction {
 
 				item.setVChoiceName(stockbean.getDetail_name_shitaga());
 
-				stock = 0;
-				nokiId = 0;
+				int stock = 0;
+				int nokiId = 0;
 				if (stockbean.getStock_jp_kano() > 0) {
 					stock = stockbean.getStock_jp_kano();
-					nokiId = Utility.getNokiId(shop, 1);
+					// nokiId = Utility.getNokiId(shop, 1);
+					nokiId = 1;
 				} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
 					if (stockbean.getStock_unsochu_kano() > 0) {
 						stock = stock + stockbean.getStock_unsochu_kano();
@@ -299,25 +230,41 @@ public class A14010104Action extends BaseAction {
 					if (stockbean.getStock_sh_kano() > 0) {
 						stock = stock + stockbean.getStock_sh_kano();
 					}
-					nokiId = Utility.getNokiId(shop, 3);
+					// nokiId = Utility.getNokiId(shop, 3);
+					nokiId = 2;
 				} else {
 					stock = 0;
-					nokiId = Utility.getJinhuoshangNoki(stockbean.getJinhuoshang());
+					// nokiId = Utility.getJinhuoshangNoki(stockbean.getJinhuoshang());
+					nokiId = 3;
 
 				}
 				item.setInventory(stock);
 
 				item.setInventoryBackFlag(0);
 
-				item.setInventoryType(3);
+				// item.setInventoryType(3);
+				if (stockbean.getDetail_no().contains("-")) {
+					item.setInventoryType(3);
+				} else {
+					item.setInventoryType(2);
+				}
 
 				item.setInventoryUpdateMode(1);
+
+				if ("trend777".equals(shop) || "coverforefront".equals(shop)) {
+					itemurl = getSaleItemURL(shop, itemurl);
+					if (itemurl.contains("copy")) {
+						tongyici = itemurl;
+					}
+					itemurl = itemurl.replace("copy", "");
+				}
 
 				item.setItemUrl(itemurl);
 
 				item.setLackDeliveryDeleteFlag(false);
 
-				item.setLackDeliveryId(Utility.getJinhuoshangNoki(stockbean.getJinhuoshang()));
+				// item.setLackDeliveryId(Utility.getJinhuoshangNoki(stockbean.getJinhuoshang()));
+				item.setLackDeliveryId(3);
 
 				item.setNokoriThreshold(0);
 
@@ -329,76 +276,176 @@ public class A14010104Action extends BaseAction {
 
 				if (stockbean.isNyukafukaFlg()) {
 					item.setOrderSalesFlag(1);
-//					item.setLackDeliveryDeleteFlag(true);
-					item.setLackDeliveryId(7);
+//				item.setLackDeliveryDeleteFlag(true);
+//				item.setLackDeliveryId(7);
 				} else {
 					item.setOrderSalesFlag(2);
+					item.setLackDeliveryId(2);
 				}
-			}
-			// item.setRestTypeFlag(1);
-		}
+				if (!Utility.isEmptyString(tongyici)) {
+					itemurl = tongyici;
 
-		List<UpdateResponseExternalItem[]> messageList = new ArrayList<UpdateResponseExternalItem[]>();
-		List<UpdateRequestExternalItem> shoriList = updateList;
-		while (true) {
-			if (shoriList.size() > 400) {
-				System.out.println("残り" + updateList.size());
-				Utility.addLog("残り" + updateList.size(), logKey);
-				shoriList = updateList.subList(400, updateList.size());
-				updateList = updateList.subList(0, 400);
-				UpdateRequestExternalItem[] updateArr = new UpdateRequestExternalItem[updateList.size()];
-				model.setUpdateRequestExternalItem(updateList.toArray(updateArr));
-				UpdateResponseExternalModel result = null;
-				try {
-					result = port.updateInventoryExternal(auth, model);
-				} catch (Exception e) {
+					item = new UpdateRequestExternalItem();
+					updateList.add(item);
+
+					item.setHChoiceName(stockbean.getDetail_name_yoko());
+
+					item.setVChoiceName(stockbean.getDetail_name_shitaga());
+
+					stock = 0;
+					nokiId = 0;
+					if (stockbean.getStock_jp_kano() > 0) {
+						stock = stockbean.getStock_jp_kano();
+						nokiId = Utility.getNokiId(shop, 1);
+					} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
+						if (stockbean.getStock_unsochu_kano() > 0) {
+							stock = stock + stockbean.getStock_unsochu_kano();
+						}
+						if (stockbean.getStock_sh_kano() > 0) {
+							stock = stock + stockbean.getStock_sh_kano();
+						}
+						nokiId = Utility.getNokiId(shop, 3);
+					} else {
+						stock = 0;
+						nokiId = Utility.getJinhuoshangNoki(stockbean.getJinhuoshang());
+
+					}
+					item.setInventory(stock);
+
+					item.setInventoryBackFlag(0);
+
+					item.setInventoryType(3);
+
+					item.setInventoryUpdateMode(1);
+
+					item.setItemUrl(itemurl);
+
+					item.setLackDeliveryDeleteFlag(false);
+
+					item.setLackDeliveryId(Utility.getJinhuoshangNoki(stockbean.getJinhuoshang()));
+
+					item.setNokoriThreshold(0);
+
+					item.setNormalDeliveryDeleteFlag(false);
+
+					item.setNormalDeliveryId(nokiId);
+
+					item.setOrderFlag(0);
+
+					if (stockbean.isNyukafukaFlg()) {
+						item.setOrderSalesFlag(1);
+//					item.setLackDeliveryDeleteFlag(true);
+						item.setLackDeliveryId(7);
+					} else {
+						item.setOrderSalesFlag(2);
+					}
+				}
+				// item.setRestTypeFlag(1);
+			}
+
+			List<UpdateResponseExternalItem[]> messageList = new ArrayList<UpdateResponseExternalItem[]>();
+			List<UpdateRequestExternalItem> shoriList = updateList;
+			while (true) {
+				if (shoriList.size() > 400) {
+					System.out.println("残り" + updateList.size());
+					Utility.addLog("残り" + updateList.size(), logKey);
+					shoriList = updateList.subList(400, updateList.size());
+					updateList = updateList.subList(0, 400);
+					UpdateRequestExternalItem[] updateArr = new UpdateRequestExternalItem[updateList.size()];
+					model.setUpdateRequestExternalItem(updateList.toArray(updateArr));
+					UpdateResponseExternalModel result = null;
 					try {
 						result = port.updateInventoryExternal(auth, model);
-					} catch (Exception e1) {
-						result = port.updateInventoryExternal(auth, model);
+					} catch (Exception e) {
+						try {
+							result = port.updateInventoryExternal(auth, model);
+						} catch (Exception e1) {
+							result = port.updateInventoryExternal(auth, model);
+						}
 					}
+					if (result.getUpdateResponseExternalItem() != null
+							&& result.getUpdateResponseExternalItem().length > 0) {
+						messageList.addAll(Collections.singletonList(result.getUpdateResponseExternalItem()));
+						for (UpdateResponseExternalItem res : result.getUpdateResponseExternalItem()) {
+							System.out.println(res.getItemErrCode() + " " + res.getItemUrl() + " "
+									+ res.getHChoiceName() + res.getVChoiceName() + " " + res.getItemErrMessage());
+							Utility.addLog(res.getItemErrCode() + " " + res.getItemUrl() + " " + res.getHChoiceName()
+									+ res.getVChoiceName() + " " + res.getItemErrMessage(), logKey);
+						}
+					}
+
+					updateList = shoriList;
+				} else {
+					System.out.println("残り" + updateList.size());
+					Utility.addLog("残り" + updateList.size(), logKey);
+					UpdateRequestExternalItem[] updateArr = new UpdateRequestExternalItem[updateList.size()];
+					model.setUpdateRequestExternalItem(updateList.toArray(updateArr));
+					UpdateResponseExternalModel result = port.updateInventoryExternal(auth, model);
+					if (result.getUpdateResponseExternalItem() != null
+							&& result.getUpdateResponseExternalItem().length > 0) {
+						messageList.addAll(Collections.singletonList(result.getUpdateResponseExternalItem()));
+						for (UpdateResponseExternalItem res : result.getUpdateResponseExternalItem()) {
+							System.out.println(res.getItemErrCode() + " " + res.getItemUrl() + " "
+									+ res.getHChoiceName() + res.getVChoiceName() + " " + res.getItemErrMessage());
+							Utility.addLog(res.getItemErrCode() + " " + res.getItemUrl() + " " + res.getHChoiceName()
+									+ res.getVChoiceName() + " " + res.getItemErrMessage(), logKey);
+						}
+					}
+					break;
 				}
-				if (result.getUpdateResponseExternalItem() != null
-						&& result.getUpdateResponseExternalItem().length > 0) {
-					messageList.addAll(Collections.singletonList(result.getUpdateResponseExternalItem()));
-					for (UpdateResponseExternalItem res : result.getUpdateResponseExternalItem()) {
-						System.out.println(res.getItemErrCode() + " " + res.getItemUrl() + " " + res.getHChoiceName()
-								+ res.getVChoiceName() + " " + res.getItemErrMessage());
-						Utility.addLog(res.getItemErrCode() + " " + res.getItemUrl() + " " + res.getHChoiceName()
-								+ res.getVChoiceName() + " " + res.getItemErrMessage(), logKey);
+			}
+
+			System.out.println("処理完了");
+			List<String> errMsgList = new ArrayList<String>();
+			for (UpdateResponseExternalItem[] messageArr : messageList) {
+				for (UpdateResponseExternalItem message : messageArr) {
+					errMsgList.add(message.getItemErrCode() + " " + message.getItemUrl() + " "
+							+ message.getHChoiceName() + message.getVChoiceName() + " " + message.getItemErrMessage());
+				}
+			}
+			for (String msg : errMsgList) {
+				addActionError(msg);
+			}
+		} else if ("yahoo".equals(site)){
+			StringBuilder item_code = new StringBuilder();
+			StringBuilder quantity = new StringBuilder();
+			for (StockBean stockbean : stockListDB) {
+
+				String itemurl = stockbean.getCommodity_id();
+				int stock = 0;
+				if (stockbean.getStock_jp_kano() > 0) {
+					stock = stockbean.getStock_jp_kano();
+				} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
+					if (stockbean.getStock_unsochu_kano() > 0) {
+						stock = stock + stockbean.getStock_unsochu_kano();
 					}
+					if (stockbean.getStock_sh_kano() > 0) {
+						stock = stock + stockbean.getStock_sh_kano();
+					}
+				} else {
+					stock = 0;
 				}
 
-				updateList = shoriList;
-			} else {
-				System.out.println("残り" + updateList.size());
-				Utility.addLog("残り" + updateList.size(), logKey);
-				UpdateRequestExternalItem[] updateArr = new UpdateRequestExternalItem[updateList.size()];
-				model.setUpdateRequestExternalItem(updateList.toArray(updateArr));
-				UpdateResponseExternalModel result = port.updateInventoryExternal(auth, model);
-				if (result.getUpdateResponseExternalItem() != null
-						&& result.getUpdateResponseExternalItem().length > 0) {
-					messageList.addAll(Collections.singletonList(result.getUpdateResponseExternalItem()));
-					for (UpdateResponseExternalItem res : result.getUpdateResponseExternalItem()) {
-						System.out.println(res.getItemErrCode() + " " + res.getItemUrl() + " " + res.getHChoiceName()
-								+ res.getVChoiceName() + " " + res.getItemErrMessage());
-						Utility.addLog(res.getItemErrCode() + " " + res.getItemUrl() + " " + res.getHChoiceName()
-								+ res.getVChoiceName() + " " + res.getItemErrMessage(), logKey);
-					}
+				if (0 == item_code.length()) {
+					item_code.append(itemurl);
+					quantity.append(stock);
+				} else {
+					quantity.append(",").append(stock);
 				}
-				break;
 			}
-		}
-		System.out.println("処理完了");
-		List<String> errMsgList = new ArrayList<String>();
-		for (UpdateResponseExternalItem[] messageArr : messageList) {
-			for (UpdateResponseExternalItem message : messageArr) {
-				errMsgList.add(message.getItemErrCode() + " " + message.getItemUrl() + " " + message.getHChoiceName()
-						+ message.getVChoiceName() + " " + message.getItemErrMessage());
+			YahooShop yahooShop = new YahooShop(shop);
+			yahooShop.updateOrderStock(item_code.toString(), quantity.toString());
+			
+			System.out.println("処理完了");
+			List<String> errMsgList = new ArrayList<String>();
+			List<MessageFromYahoo> messageList = yahooShop.getMessageFromYahooList_UpdateOrder();
+			for (MessageFromYahoo message : messageList) {
+				System.out.println(message.getCode() + " " + message.getMessage());
+				errMsgList.add(message.getCode() + " " + message.getMessage());
 			}
-		}
-		for (String msg : errMsgList) {
-			addActionError(msg);
+			for (String msg : errMsgList) {
+				addActionError(msg);
+			}
 		}
 	}
 
