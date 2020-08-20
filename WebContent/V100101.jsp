@@ -313,13 +313,13 @@ select {
 	Map<String, String> yahooMap = new HashMap<String, String>();
 	try {
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql= "SELECT SITE, SHOP_ID FROM rakuten.shop where SITE IN ('yahoo', '楽天')";
+		String sql= "SELECT SITE, SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo Shopping', '楽天')";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
 			if ("楽天".equals(rs.getString("SITE"))) {
 				rakutenMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
-			} else if ("yahoo".equals(rs.getString("SITE"))) {
+			} else if ("Yahoo Shopping".equals(rs.getString("SITE"))) {
 				yahooMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 			}
 		}

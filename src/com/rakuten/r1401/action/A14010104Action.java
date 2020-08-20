@@ -406,7 +406,7 @@ public class A14010104Action extends BaseAction {
 			for (String msg : errMsgList) {
 				addActionError(msg);
 			}
-		} else if ("yahoo".equals(site)){
+		} else if ("Yahoo Shopping".equals(site)){
 			StringBuilder item_code = new StringBuilder();
 			StringBuilder quantity = new StringBuilder();
 			for (StockBean stockbean : stockListDB) {

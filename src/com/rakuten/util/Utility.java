@@ -1632,15 +1632,15 @@ public class Utility {
 	public static String getShopNameById(String id) {
 		String name = "";
 		Connection conn = null;
-		Map<String, String> shopMap = new HashMap<String, String>();
 		try {
 			conn = com.rakuten.util.JdbcConnection.getConnection();
 			PreparedStatement ps = null;
-			String sql= "SELECT SHOP_ID, SHOP_NO FROM rakuten.shop";
+			String sql= "SELECT SHOP_ID FROM rakuten.shop where SHOP_NO = ?";
 			ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				shopMap.put(rs.getString("SHOP_NO"), rs.getString("SHOP_ID"));
+				name = rs.getString("SHOP_ID");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1654,7 +1654,7 @@ public class Utility {
 			}
 		}
 
-		name = (shopMap.get(id) !=null) ? shopMap.get(id):name;
+		name = (name ==null) ? "":name;
 //		if ("306685".equals(id)) {
 //			name = "trend777";
 //		} else if ("308759".equals(id)) {
@@ -1896,93 +1896,226 @@ public class Utility {
 
 	public static String getShopUrl(String shop, String site) {
 		String shopUrl = "";
-		if ("楽天".equals(site)) {
-			if ("3eshop".equals(shop)) {
-				shopUrl = "http://www.rakuten.co.jp/3eshop";
-			} else if ("citycat".equals(shop)) {
-				shopUrl = "http://www.rakuten.co.jp/citycat";
-			} else if ("trend777".equals(shop)) {
-				shopUrl = "http://www.rakuten.co.jp/trend777";
-			} else if ("coverforefront".equals(shop)) {
-				shopUrl = "http://www.rakuten.co.jp/coverforefront";
+		Connection conn = null;
+		try {
+			conn = com.rakuten.util.JdbcConnection.getConnection();
+			PreparedStatement ps = null;
+			String sql= "SELECT SHOP_URL FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, site);
+			ps.setString(2, shop);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				shopUrl = rs.getString("SHOP_URL");
 			}
-		} else if ("DENA".equals(site)) {
-			if ("123mart".equals(shop)) {
-				shopUrl = "http://www.dena-ec.com/user/31948291";
-			}
-		} else if ("Yahoo Shopping".equals(site)) {
-			if ("WhiteSweet".equals(shop)) {
-				shopUrl = "http://store.shopping.yahoo.co.jp/coverforefront/";
-			}
-		} else if ("qoo10".equals(site)) {
-			if ("xandw".equals(shop)) {
-				shopUrl = "https://www.qoo10.jp/shop/xandw";
+			
+			shopUrl = shopUrl == null ? "" :shopUrl;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
+//		if ("楽天".equals(site)) {
+//			if ("3eshop".equals(shop)) {
+//				shopUrl = "http://www.rakuten.co.jp/3eshop";
+//			} else if ("citycat".equals(shop)) {
+//				shopUrl = "http://www.rakuten.co.jp/citycat";
+//			} else if ("trend777".equals(shop)) {
+//				shopUrl = "http://www.rakuten.co.jp/trend777";
+//			} else if ("coverforefront".equals(shop)) {
+//				shopUrl = "http://www.rakuten.co.jp/coverforefront";
+//			}
+//		} else if ("DENA".equals(site)) {
+//			if ("123mart".equals(shop)) {
+//				shopUrl = "http://www.dena-ec.com/user/31948291";
+//			}
+//		} else if ("Yahoo Shopping".equals(site)) {
+//			if ("WhiteSweet".equals(shop)) {
+//				shopUrl = "http://store.shopping.yahoo.co.jp/coverforefront/";
+//			}
+//		} else if ("qoo10".equals(site)) {
+//			if ("xandw".equals(shop)) {
+//				shopUrl = "https://www.qoo10.jp/shop/xandw";
+//			}
+//		}
 
 		return shopUrl;
 
 	}
 
 	public static String getShopPost(String shop, String site) {
-		String shopPost = "349-0114";
+//		String shopPost = "349-0114";
+		String shopPost = "";
+		Connection conn = null;
+		try {
+			conn = com.rakuten.util.JdbcConnection.getConnection();
+			PreparedStatement ps = null;
+			String sql= "SELECT SHOP_POST FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, site);
+			ps.setString(2, shop);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				shopPost = rs.getString("SHOP_POST");
+			}
+			
+			shopPost = shopPost == null ? "" :shopPost;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 		return shopPost;
 
 	}
 
 	public static String getShopAddr(String shop, String site) {
-		String shopPost = "埼玉県蓮田市馬込2-132エルディムセブン 1-203";
+//		String shopAddr = "埼玉県蓮田市馬込2-132エルディムセブン 1-203";
+		String shopAddr = "";
+		Connection conn = null;
+		try {
+			conn = com.rakuten.util.JdbcConnection.getConnection();
+			PreparedStatement ps = null;
+			String sql= "SELECT SHOP_ADDRESS FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, site);
+			ps.setString(2, shop);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				shopAddr = rs.getString("SHOP_ADDRESS");
+			}
+			
+			shopAddr = shopAddr == null ? "" :shopAddr;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
-		return shopPost;
+		return shopAddr;
 
 	}
 
 	public static String getShopTel(String shop, String site) {
-		String shopPost = "";
-		if ("3eshop".equals(shop)) {
-			shopPost = "050-37043022";
-		} else if ("citycat".equals(shop)) {
-			shopPost = "050-37043022";
-		} else if ("trend777".equals(shop)) {
-			shopPost = "050-36962972";
-		} else if ("coverforefront".equals(shop)) {
-			shopPost = "050-35675168";
-		} else if ("xandw".equals(shop)) {
-			shopPost = "03-6821-1372";
-		} else if ("herz".equals(shop)) {
-			shopPost = "050-33902972";
-		} else if ("epintl".equals(shop)) {
-			shopPost = "050-35587157";
-		} else {
-			shopPost = "050-35675168";
+		String shopTel = "";
+		Connection conn = null;
+		try {
+			conn = com.rakuten.util.JdbcConnection.getConnection();
+			PreparedStatement ps = null;
+			String sql= "SELECT SHOP_TEL FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, site);
+			ps.setString(2, shop);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				shopTel = rs.getString("SHOP_TEL");
+			}
+			
+			shopTel = shopTel == null ? "" :shopTel;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
-		return shopPost;
+//		if ("3eshop".equals(shop)) {
+//			shopTel = "050-37043022";
+//		} else if ("citycat".equals(shop)) {
+//			shopTel = "050-37043022";
+//		} else if ("trend777".equals(shop)) {
+//			shopTel = "050-36962972";
+//		} else if ("coverforefront".equals(shop)) {
+//			shopTel = "050-35675168";
+//		} else if ("xandw".equals(shop)) {
+//			shopTel = "03-6821-1372";
+//		} else if ("herz".equals(shop)) {
+//			shopTel = "050-33902972";
+//		} else if ("epintl".equals(shop)) {
+//			shopTel = "050-35587157";
+//		} else {
+//			shopTel = "050-35675168";
+//		}
+
+		return shopTel;
 
 	}
 
 	public static String getShopFax(String shop, String site) {
-		String shopPost = "";
-		if ("3eshop".equals(shop)) {
-			shopPost = "050-37043022 ";
-		} else if ("citycat".equals(shop)) {
-			shopPost = "050-37043022";
-		} else if ("trend777".equals(shop)) {
-			shopPost = "050-36962972";
-		} else if ("coverforefront".equals(shop)) {
-			shopPost = "050-35675168";
-		} else if ("xandw".equals(shop)) {
-			shopPost = "03-6821-1372";
-		} else if ("herz".equals(shop)) {
-			shopPost = "050-33902972";
-		} else if ("epintl".equals(shop)) {
-			shopPost = "050-35587157";
-		} else {
-			shopPost = "050-35675168";
+		String shopFax = "";
+		Connection conn = null;
+		try {
+			conn = com.rakuten.util.JdbcConnection.getConnection();
+			PreparedStatement ps = null;
+			String sql= "SELECT SHOP_FAX FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, site);
+			ps.setString(2, shop);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				shopFax = rs.getString("SHOP_FAX");
+			}
+			
+			shopFax = shopFax == null ? "" :shopFax;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+//		if ("3eshop".equals(shop)) {
+//			shopFax = "050-37043022 ";
+//		} else if ("citycat".equals(shop)) {
+//			shopFax = "050-37043022";
+//		} else if ("trend777".equals(shop)) {
+//			shopFax = "050-36962972";
+//		} else if ("coverforefront".equals(shop)) {
+//			shopFax = "050-35675168";
+//		} else if ("xandw".equals(shop)) {
+//			shopFax = "03-6821-1372";
+//		} else if ("herz".equals(shop)) {
+//			shopFax = "050-33902972";
+//		} else if ("epintl".equals(shop)) {
+//			shopFax = "050-35587157";
+//		} else {
+//			shopFax = "050-35675168";
+//		}
 
-		return shopPost;
+		return shopFax;
 
 	}
 
@@ -2127,12 +2260,42 @@ public class Utility {
 	}
 
 	public static boolean isValidShop(String shop) {
-		if ("123mart".equals(shop) || "trend777".equals(shop) || "coverforefront".equals(shop) || "herz".equals(shop)
-				|| "epintl".equals(shop)) {
+		Connection conn = null;
+		int count = 0;
+		try {
+			conn = com.rakuten.util.JdbcConnection.getConnection();
+			PreparedStatement ps = null;
+			String sql= "SELECT count(*) COUNT FROM rakuten.shop where SHOP_ID = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, shop);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				count = rs.getInt("COUNT");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (count > 0) {
 			return true;
 		} else {
 			return false;
 		}
+		
+//		if ("123mart".equals(shop) || "trend777".equals(shop) || "coverforefront".equals(shop) || "herz".equals(shop)
+//				|| "epintl".equals(shop)) {
+//			return true;
+//		} else {
+//			return false;
+//		}
 	}
 
 	public static String getFenleiNameConn(String code, Connection conn) throws Exception {
