@@ -1,14 +1,22 @@
 package com.rakuten.r1601.form;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class F160101 implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private String site = null;
 	private String shop = null;
 	private String shohinbango = null;
 	private String chumonbango = null;
+
+	public String getSite() {
+		return site;
+	}
+
+	public void setSite(String site) {
+		this.site = site;
+	}
 
 	public String getShop() {
 		return shop;

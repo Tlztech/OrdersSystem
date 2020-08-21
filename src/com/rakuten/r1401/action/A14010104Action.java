@@ -439,12 +439,16 @@ public class A14010104Action extends BaseAction {
 			System.out.println("処理完了");
 			List<String> errMsgList = new ArrayList<String>();
 			List<MessageFromYahoo> messageList = yahooShop.getMessageFromYahooList_UpdateOrder();
-			for (MessageFromYahoo message : messageList) {
-				System.out.println(message.getCode() + " " + message.getMessage());
-				errMsgList.add(message.getCode() + " " + message.getMessage());
-			}
-			for (String msg : errMsgList) {
-				addActionError(msg);
+			if (Utility.isEmptyList(messageList)) {
+				addError(null, "操作成功");
+			} else {
+				for (MessageFromYahoo message : messageList) {
+					System.out.println(message.getCode() + " " + message.getMessage());
+					errMsgList.add(message.getCode() + " " + message.getMessage());
+				}
+				for (String msg : errMsgList) {
+					addActionError(msg);
+				}
 			}
 		}
 	}

@@ -203,7 +203,7 @@ a {
 			<%
 				for (int i = 0; i < siteList.size(); i++) {
 			%>
-			<option label=<%=siteList.get(i)%> value=<%=shopList.get(i)%> />
+			<option label=<%=siteList.get(i)%> value=<%=siteList.get(i)%> />
 			<%
 				}
 			%>

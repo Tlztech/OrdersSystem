@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.HashMap"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -63,7 +66,37 @@ function init(){
 </style>
 </head>
 <body onload="init()">
-    <s:form name="form1" theme="simple" enctype="multipart/form-data">
+	<%
+		Connection conn = null;
+	Map<String, String> shopMap = new HashMap<String, String>();
+	try {
+		conn = com.rakuten.util.JdbcConnection.getConnection();
+		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo Shopping', '楽天')";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			shopMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
+		}
+
+		request.setAttribute("shopmap", shopMap);
+		
+		Map<String, String> rakutenShopMap = new HashMap<String, String>();
+		sql = "SELECT SHOP_ID FROM rakuten.shop where SITE = '楽天'";
+		ps = conn.prepareStatement(sql);
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			rakutenShopMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
+		}
+		
+		request.setAttribute("rakutenshopmap", rakutenShopMap);
+
+	} catch (Exception e) {
+		out.println(e);
+	} finally {
+		conn.close();
+	}
+	%>
+	<s:form name="form1" theme="simple" enctype="multipart/form-data">
         <div style="width:900px;margin-top: 5px;margin-left: 10px">
         <b><s:label name="title"/></b>
         <hr>
@@ -73,8 +106,9 @@ function init(){
 		<table>
 		    <tr>
 		        <td>
-		        货号：<s:textfield style="width:200px;height:22px" name="f160101.shohinbango"/>
-		        <s:select list="#{'coverforefront':'coverforefront','xandw':'xandw'}" style="width:120px;height:30px" name="f160101.shop"/>
+		        货号：<s:textfield style="width:100px;height:22px" name="f160101.shohinbango"/>
+		        <s:select list="#{'楽天':'楽天','Yahoo Shopping':'Yahoo Shopping'}" style="width:120px;height:30px" name="f160101.site"/>
+		        <s:select list="#request.shopmap" style="width:120px;height:30px" name="f160101.shop"/>
 		        <input type="button" style="width:100px;height:30px" value="同步库存" onclick="actionSubmit('A16010102')">
 		        </td>
 		    </tr>
@@ -92,7 +126,7 @@ function init(){
 		    </tr>
 		</table>
 		<br/>
-        <s:select list="#{'coverforefront':'coverforefront','xandw':'xandw'}" style="width:120px;height:30px" name="shop2"/>
+        <s:select list="#request.rakutenshopmap" style="width:120px;height:30px" name="shop2"/>
         <input type="button" style="width:100px;height:30px" value="下载商品" onclick="doAction('A16010104')">
         <input type="button" style="width:100px;height:30px" value="改网页" onclick="doAction('A16010105')">
         <input type="button" style="width:100px;height:30px" value="处理订单" onclick="doAction('A16010106')"><br/>
