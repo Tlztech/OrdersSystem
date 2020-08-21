@@ -1933,36 +1933,57 @@ public class Shohincommon {
 	}
 
 	public String getLicenseKey(String shop) {
-		if ("trend777".equals(shop)) {
-			return "SL306685_SgpPqimoNd8eJ7xd";
-		} else if ("coverforefront".equals(shop)) {
-			return "SL308759_dwO0OKqw0WpoU1Qe";
-		} else if ("xandw".equals(shop)) {
-			return "SL385894_I0TJHpFkKKTUE8rZ";
-		} else if("herz".equals(shop)) {
-			return "SL373860_wsvGzhpPASKJBfZW";
-		} else if("epintl".equals(shop)) {
-			return "SL384100_KJmQRT9IWq2B7Ufy";
+		String licenseKey = null;
+		Connection conn = null;
+		try {
+			conn = com.rakuten.util.JdbcConnection.getConnection();
+			PreparedStatement ps = null;
+			String sql= "SELECT LICENSE_KEY FROM rakuten.shop where SITE = '楽天' AND SHOP_ID = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, shop);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				licenseKey = rs.getString("LICENSE_KEY");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		else {
-			return null;
-		}
+		return licenseKey;
 	}
 
 	public String getServiceSecret(String shop) {
-		if ("trend777".equals(shop)) {
-			return "SP306685_TxVVl5qWQeMh6bPK";
-		} else if ("coverforefront".equals(shop)) {
-			return "SP308759_ciMfQ60q20mv6lqj";
-		}  else if ("xandw".equals(shop)) {
-			return "SP385894_kKJvsG9BMIIfQyL2";
-		} else if("herz".equals(shop)) {
-			return "SP373860_Sx9XVW18xqNKDRtu";
-		} else if("epintl".equals(shop)) {
-			return "SP384100_AOsYOLS5wpPy300f";
-		}else {
-			return null;
+		String serviceSecret = null;
+		Connection conn = null;
+		try {
+			conn = com.rakuten.util.JdbcConnection.getConnection();
+			PreparedStatement ps = null;
+			String sql= "SELECT SERVICE_KEY FROM rakuten.shop where SITE = '楽天' AND SHOP_ID = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, shop);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				serviceSecret = rs.getString("SERVICE_KEY");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+		return serviceSecret;
 	}
 
 	public String getShohinXmlFromDB(String shop, String shohinbango) throws Exception {
