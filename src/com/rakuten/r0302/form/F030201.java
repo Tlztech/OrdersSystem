@@ -28,6 +28,7 @@ public class F030201 implements Serializable {
 	private String hid_stockShStart = null;
 	private String cateName = null;
 	private String ptype = null;
+	private String site = null;
 
 	public String getCateName() {
 		return cateName;
@@ -314,6 +315,14 @@ public class F030201 implements Serializable {
 
 	public void setPtype(String ptype) {
 		this.ptype = ptype;
+	}
+	
+	public String getSite() {
+		return site;
+	}
+
+	public void setSite(String site) {
+		this.site = site;
 	}
 
 }

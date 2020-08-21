@@ -30,8 +30,18 @@ public class A03020105Action extends BaseAction {
 	private static final long serialVersionUID = 1L;
 
 	protected void exec() throws Exception {
-		List<ShohinBean> shohinList = Utility.getShohinFromCsv(itemCsv,
-				itemCatCsv, selectCsv);
+		
+		List<ShohinBean> shohinList = new ArrayList<ShohinBean>();
+		if("楽天".equals(f030201.getSite())) {
+			shohinList = Utility.getShohinFromCsv(itemCsv,
+					itemCatCsv, selectCsv);
+		}else if("Yahoo Shopping".equals(f030201.getSite())){
+			shohinList = Utility.getShohinFromYahooCsv(itemCsv,
+					itemCatCsv, selectCsv);
+		}else {
+			shohinList = Utility.getShohinFromCsv(itemCsv,
+					itemCatCsv, selectCsv);
+		}
 		GetCommodityAllAp getCommodityAllAp = new GetCommodityAllAp();
 		List<GetCommodityApOutput> commodityList = getCommodityAllAp.execute();
 		List<ShohinBean> insertList = getInsertList(shohinList, commodityList);
