@@ -154,7 +154,7 @@ public class A14010106Action extends BaseAction {
 
 	@Override
 	protected void exec() throws Exception {
-		shop = Utility.getShopNameById(shop);
+//		shop = Utility.getShopNameById(shop);
 		List<StockBean> stockListDB = getStockFromDB(shop);
 		List<String[]> dataList = new ArrayList<String[]>();
 		for (StockBean stock : stockListDB) {

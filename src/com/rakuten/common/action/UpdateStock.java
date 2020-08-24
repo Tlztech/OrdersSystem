@@ -109,7 +109,8 @@ public class UpdateStock {
 					int nokiId = 0;
 					if (stockbean.getStock_jp_kano() > 0) {
 						stock = stockbean.getStock_jp_kano();
-						nokiId = Utility.getNokiId(shop, 1);
+//						nokiId = Utility.getNokiId(shop, 1);
+						nokiId = 1;
 					} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
 						if (stockbean.getStock_unsochu_kano() > 0) {
 							stock = stock + stockbean.getStock_unsochu_kano();
@@ -117,17 +118,24 @@ public class UpdateStock {
 						if (stockbean.getStock_sh_kano() > 0) {
 							stock = stock + stockbean.getStock_sh_kano();
 						}
-						nokiId = Utility.getNokiId(shop, 3);
+//						nokiId = Utility.getNokiId(shop, 3);
+						nokiId = 2;
 					} else {
 						stock = 0;
-						nokiId = Utility.getJinhuoshangNoki(stockbean.getJinhuoshang());
-
+//						nokiId = Utility.getJinhuoshangNoki(stockbean.getJinhuoshang());
+						nokiId = 3;
 					}
 					item.setInventory(stock);
 
 					item.setInventoryBackFlag(0);
 
-					item.setInventoryType(3);
+//					item.setInventoryType(3);
+					if (stockbean.getDetail_no().contains("-")) {
+						item.setInventoryType(3);
+					} else {
+						item.setInventoryType(2);
+					}
+
 
 					item.setInventoryUpdateMode(1);
 
@@ -143,7 +151,8 @@ public class UpdateStock {
 
 					item.setLackDeliveryDeleteFlag(false);
 
-					item.setLackDeliveryId(Utility.getJinhuoshangNoki(stockbean.getJinhuoshang()));
+//					item.setLackDeliveryId(Utility.getJinhuoshangNoki(stockbean.getJinhuoshang()));
+					item.setLackDeliveryId(3);
 
 					item.setNokoriThreshold(0);
 
@@ -156,7 +165,7 @@ public class UpdateStock {
 					if (stockbean.isNyukafukaFlg()) {
 						item.setOrderSalesFlag(1);
 //						item.setLackDeliveryDeleteFlag(true);
-						item.setLackDeliveryId(7);
+//						item.setLackDeliveryId(7);
 					} else {
 						item.setOrderSalesFlag(2);
 					}

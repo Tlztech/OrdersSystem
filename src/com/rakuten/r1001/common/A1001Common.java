@@ -1243,6 +1243,8 @@ public class A1001Common {
 			while (rs.next()) {
 				shopMap.put(rs.getString("SHOP_NO"), rs.getString("SHOP_ID"));
 			}
+			rs.close();
+			ps.close();
 			
 			for (int i = 0; i < orderList.size(); i++) {
 
@@ -1444,10 +1446,15 @@ public class A1001Common {
 					ps.setString(++j, orderList.get(i).getKuponriyougaku());
 
 					ps.executeUpdate();
+					ps.close();
 
 				} catch (MySQLIntegrityConstraintViolationException e) {
 					System.out.println(orderList.get(i).getJuchubango() + "已存在，不再添加");
 					continue;
+				} finally {
+					if (ps != null && !ps.isClosed()) {
+						ps.close();
+					}
 				}
 
 				// for (int k = 0; k < orderList.get(i).getShousaiList().size();
@@ -1546,11 +1553,44 @@ public class A1001Common {
 						ps.setString(++j, shousai.getNokijouho());
 
 						ps.executeUpdate();
+						
+						ps.close();
 
 						if (Utility.getNoukiDay(shousai.getNokijouho()) > noukiday) {
 							noukiday = Utility.getNoukiDay(shousai.getNokijouho());
 						}
-
+						
+						String commodityId;
+						String detailNo;
+						if (-1 == bango.indexOf("-")) {
+							commodityId = bango;
+							detailNo = "-0-0";
+						} else {
+							commodityId = bango.substring(0, bango.indexOf("-"));
+							detailNo = bango.substring(bango.indexOf("-") + 1);
+						}
+						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, commodityId);
+						ps.setString(2, detailNo);
+						rs = ps.executeQuery();
+						int count = 0;
+						while (rs.next()) {
+							count = rs.getInt("COUNT");
+						}
+						rs.close();
+						ps.close();
+						if (0 == count) {
+							sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`) VALUES (?, ?, TRUE);";
+							
+						} else {
+							sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+						}
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, commodityId);
+						ps.setString(2, detailNo);
+						ps.executeUpdate();
+						ps.close();
 					}
 				} else if (donkonFlg && donkonOyaFlg) {
 					List<RakutenDetailCsvBean> shousaiDonkonList = new ArrayList<RakutenDetailCsvBean>();
@@ -1598,6 +1638,39 @@ public class A1001Common {
 						}
 
 						ps.executeUpdate();
+						
+						String bango = shousai.getShouhinbango();
+						String commodityId;
+						String detailNo;
+						if (-1 == bango.indexOf("-")) {
+							commodityId = bango;
+							detailNo = "-0-0";
+						} else {
+							commodityId = bango.substring(0, bango.indexOf("-"));
+							detailNo = bango.substring(bango.indexOf("-") + 1);
+						}
+						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, commodityId);
+						ps.setString(2, detailNo);
+						rs = ps.executeQuery();
+						int count = 0;
+						while (rs.next()) {
+							count = rs.getInt("COUNT");
+						}
+						rs.close();
+						ps.close();
+						if (0 == count) {
+							sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`) VALUES (?, ?, TRUE);";
+							
+						} else {
+							sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+						}
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, commodityId);
+						ps.setString(2, detailNo);
+						ps.executeUpdate();
+						ps.close();
 					}
 				}
 				String dateStr = "";
@@ -1637,6 +1710,7 @@ public class A1001Common {
 	public void insertIntoYahooOrderTbl(List<RakutenCsvBean> orderList) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String sql = null;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = format.format(new Date());
@@ -1672,11 +1746,12 @@ public class A1001Common {
 					ps.setString(++j, "0");
 					ps.setString(++j, "0");
 					ps.setString(++j, "Yahoo Shopping");
-					if (orderList.get(i).getJuchubango().startsWith("kirakiraichiba")) {
-						shop = "kirakiraichiba";
-					} else {
-						shop = "";
-					}
+//					if (orderList.get(i).getJuchubango().startsWith("kirakiraichiba")) {
+//						shop = "kirakiraichiba";
+//					} else {
+//						shop = "";
+//					}
+					shop = orderList.get(i).getJuchubango().substring(0, orderList.get(i).getJuchubango().indexOf("-"));
 					
 					ps.setString(++j, shop);
 					ps.setString(++j, "");
@@ -1935,6 +2010,38 @@ public class A1001Common {
 						if (Utility.getNoukiDay(shousai.getNokijouho()) > noukiday) {
 							noukiday = Utility.getNoukiDay(shousai.getNokijouho());
 						}
+						
+						String commodityId;
+						String detailNo;
+						if (-1 == bango.indexOf("-")) {
+							commodityId = bango;
+							detailNo = "-0-0";
+						} else {
+							commodityId = bango.substring(0, bango.indexOf("-"));
+							detailNo = bango.substring(bango.indexOf("-") + 1);
+						}
+						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, commodityId);
+						ps.setString(2, detailNo);
+						rs = ps.executeQuery();
+						int count = 0;
+						while (rs.next()) {
+							count = rs.getInt("COUNT");
+						}
+						rs.close();
+						ps.close();
+						if (0 == count) {
+							sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`) VALUES (?, ?, TRUE);";
+							
+						} else {
+							sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+						}
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, commodityId);
+						ps.setString(2, detailNo);
+						ps.executeUpdate();
+						ps.close();
 
 					}
 				} else if (donkonFlg && donkonOyaFlg) {
@@ -1983,6 +2090,39 @@ public class A1001Common {
 						}
 
 						ps.executeUpdate();
+						
+						String bango = shousai.getShouhinbango();
+						String commodityId;
+						String detailNo;
+						if (-1 == bango.indexOf("-")) {
+							commodityId = bango;
+							detailNo = "-0-0";
+						} else {
+							commodityId = bango.substring(0, bango.indexOf("-"));
+							detailNo = bango.substring(bango.indexOf("-") + 1);
+						}
+						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, commodityId);
+						ps.setString(2, detailNo);
+						rs = ps.executeQuery();
+						int count = 0;
+						while (rs.next()) {
+							count = rs.getInt("COUNT");
+						}
+						rs.close();
+						ps.close();
+						if (0 == count) {
+							sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`) VALUES (?, ?, TRUE);";
+							
+						} else {
+							sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+						}
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, commodityId);
+						ps.setString(2, detailNo);
+						ps.executeUpdate();
+						ps.close();
 					}
 				}
 				String dateStr = "";

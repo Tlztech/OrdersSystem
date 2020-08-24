@@ -9,6 +9,7 @@ import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class A14010104Action extends BaseAction {
 		StockBean stockbean = null;
 		try {
 			conn = JdbcConnection.getConnection();
-			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id";
+			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE";
 
 			ps = conn.prepareStatement(sql);
 
@@ -159,9 +160,10 @@ public class A14010104Action extends BaseAction {
 
 	@Override
 	protected void exec() throws Exception {
-		shop = Utility.getShopNameById(shop);
+//		shop = Utility.getShopNameById(shop);
 		List<StockBean> stockListDB = getStockFromDB(shop);
 		List<String[]> dataList = new ArrayList<String[]>();
+		Map<String, String> itemNoMapForUpdateStock = new HashMap<String, String>();
 		for (StockBean stock : stockListDB) {
 			dataList.add(new String[] { stock.getCommodity_id(), stock.getDetail_no(), stock.getDetail_name_yoko(),
 					stock.getDetail_name_shitaga(), String.valueOf(stock.getStock_jp()),
@@ -209,6 +211,7 @@ public class A14010104Action extends BaseAction {
 				boolean hanbaikano = false;
 
 				String itemurl = stockbean.getCommodity_id();
+				itemNoMapForUpdateStock.put(itemurl, itemurl);
 
 				item = new UpdateRequestExternalItem();
 				updateList.add(item);
@@ -401,17 +404,21 @@ public class A14010104Action extends BaseAction {
 				for (UpdateResponseExternalItem message : messageArr) {
 					errMsgList.add(message.getItemErrCode() + " " + message.getItemUrl() + " "
 							+ message.getHChoiceName() + message.getVChoiceName() + " " + message.getItemErrMessage());
+					itemNoMapForUpdateStock.remove(message.getItemUrl());
 				}
 			}
 			for (String msg : errMsgList) {
 				addActionError(msg);
 			}
+			
+			updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
 		} else if ("Yahoo Shopping".equals(site)){
 			StringBuilder item_code = new StringBuilder();
 			StringBuilder quantity = new StringBuilder();
 			for (StockBean stockbean : stockListDB) {
 
 				String itemurl = stockbean.getCommodity_id();
+				itemNoMapForUpdateStock.put(itemurl, itemurl);
 				int stock = 0;
 				if (stockbean.getStock_jp_kano() > 0) {
 					stock = stockbean.getStock_jp_kano();
@@ -440,6 +447,7 @@ public class A14010104Action extends BaseAction {
 			List<String> errMsgList = new ArrayList<String>();
 			List<MessageFromYahoo> messageList = yahooShop.getMessageFromYahooList_UpdateOrder();
 			if (Utility.isEmptyList(messageList)) {
+				updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
 				addError(null, "操作成功");
 			} else {
 				for (MessageFromYahoo message : messageList) {
@@ -451,8 +459,37 @@ public class A14010104Action extends BaseAction {
 				}
 			}
 		}
+		
+		
 	}
 
+	private void updateQuantityFlg(List<String> itemNoList) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = JdbcConnection.getConnection();
+			String sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=FALSE WHERE `COMMODITY_ID`=?;";
+			ps = conn.prepareStatement(sql);
+			for (String itemNo : itemNoList) {
+				ps.setString(1, itemNo);
+				ps.addBatch();
+			}
+			ps.executeBatch();
+			ps.close();
+			conn.commit();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	@Override
 	protected void fieldCheck() throws Exception {
 		// TODO Auto-generated method stub

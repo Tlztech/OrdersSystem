@@ -146,7 +146,7 @@ public class YahooShop {
 				getXml.append("</OrderId>");
 				getXml.append("<Field>");
 				getXml.append(
-						"OrderTime,PayMethodName,UsePoint,BillLastName,BillFirstName,BillLastNameKana,BillFirstNameKana,BillMailAddress,BillZipCode,BillPrefecture,BillCity,BillAddress1,BillAddress2,BillPhoneNumber,BuyerComments,ShipLastName,ShipFirstName,ShipLastNameKana,ShipFirstNameKana,ShipMethodName,ShipZipCode,ShipPhoneNumber,ShipPrefecture,ShipCity,ShipAddress1,ShipAddress2,SettleAmount,ItemTaxRatio,ShipCharge,PayCharge,TotalPrice,TotalCouponDiscount,Title,ItemId,UnitPrice,Quantity");
+						"OrderTime,PayMethodName,UsePoint,BillLastName,BillFirstName,BillLastNameKana,BillFirstNameKana,BillMailAddress,BillZipCode,BillPrefecture,BillCity,BillAddress1,BillAddress2,BillPhoneNumber,BuyerComments,ShipLastName,ShipFirstName,ShipLastNameKana,ShipFirstNameKana,ShipMethodName,ShipZipCode,ShipPhoneNumber,ShipPrefecture,ShipCity,ShipAddress1,ShipAddress2,SettleAmount,ItemTaxRatio,ShipCharge,PayCharge,TotalPrice,TotalCouponDiscount,Title,ItemId,SubCode,UnitPrice,Quantity");
 				getXml.append("</Field>");
 				getXml.append("</Target>");
 				getXml.append("<SellerId>");
@@ -233,11 +233,13 @@ public class YahooShop {
 								itemMapList = new ArrayList<Map<String, Object>>();
 								itemMapList.add((Map<String, Object>) orderInfo.get("Item"));
 							}
+							String subCode;
 							for (Map<String, Object> itemMap : itemMapList) {
 								YahooOrder.Item item = order.new Item();
 								item.setItemTaxRatio(Integer.parseInt((String) itemMap.get("ItemTaxRatio")));
 								item.setTitle((String) itemMap.get("Title"));
-								item.setItemId((String) itemMap.get("ItemId"));
+								subCode = (String) itemMap.get("SubCode");
+								item.setItemId((subCode == null || "".equals(subCode) ? (String) itemMap.get("ItemId") : subCode));
 								item.setUnitPrice(Integer.parseInt((String) itemMap.get("UnitPrice")));
 								item.setQuantity(Integer.parseInt((String) itemMap.get("Quantity")));
 								itemList.add(item);
