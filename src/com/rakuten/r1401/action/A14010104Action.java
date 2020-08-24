@@ -416,10 +416,12 @@ public class A14010104Action extends BaseAction {
 		} else if ("Yahoo".equals(site)){
 			StringBuilder item_code = new StringBuilder();
 			StringBuilder quantity = new StringBuilder();
+			String subCode;
 			for (StockBean stockbean : stockListDB) {
 
 				String itemurl = stockbean.getCommodity_id();
 				itemNoMapForUpdateStock.put(itemurl, itemurl);
+				String detailNo = stockbean.getDetail_no();
 				int stock = 0;
 				if (stockbean.getStock_jp_kano() > 0) {
 					stock = stockbean.getStock_jp_kano();
@@ -434,10 +436,12 @@ public class A14010104Action extends BaseAction {
 					stock = 0;
 				}
 
+				subCode = ((null == detailNo || "".equals(detailNo)) ? "" : (":" + itemurl + detailNo));
 				if (0 == item_code.length()) {
-					item_code.append(itemurl);
+					item_code.append(itemurl).append(subCode);
 					quantity.append(stock);
 				} else {
+					item_code.append(",").append(itemurl).append(subCode);
 					quantity.append(",").append(stock);
 				}
 			}
