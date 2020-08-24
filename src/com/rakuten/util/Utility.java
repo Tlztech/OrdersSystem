@@ -1833,7 +1833,7 @@ public class Utility {
 				soryo = "540";
 			} else if ("DENA".equals(site)) {
 				soryo = "540";
-			} else if ("Yahoo Shopping".equals(site)) {
+			} else if ("Yahoo".equals(site)) {
 				soryo = "540";
 			}
 		}
@@ -2207,7 +2207,7 @@ public class Utility {
 //			if ("123mart".equals(shop)) {
 //				shopUrl = "http://www.dena-ec.com/user/31948291";
 //			}
-//		} else if ("Yahoo Shopping".equals(site)) {
+//		} else if ("Yahoo".equals(site)) {
 //			if ("WhiteSweet".equals(shop)) {
 //				shopUrl = "http://store.shopping.yahoo.co.jp/coverforefront/";
 //			}

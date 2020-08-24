@@ -366,7 +366,7 @@ public class A10010105Action extends BaseAction {
 						.getShouhinbango())) {
 					rakutencitycatHasouList.add(order);
 				}
-			} else if ("Yahoo Shopping".equals(site)) {
+			} else if ("Yahoo".equals(site)) {
 				yahooshoppingHasouList.add(order);
 			} else if ("ヤフオク".equals(site)) {
 				yafuokuHasouList.add(order);

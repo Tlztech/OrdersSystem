@@ -52,7 +52,7 @@ public class A13020114Action extends BaseAction {
 			for (OrderList order : orderList) {
 				if ("˜SÌì".equals(order.getSite())) {
 					rakutenOrderList.add(order.getChumonbango());
-				} else if ("Yahoo Shopping".equals(order.getSite())) {
+				} else if ("Yahoo".equals(order.getSite())) {
 					yahooOrderList.add(order.getChumonbango());
 				} else if ("DENA".equals(order.getSite())) {
 					denaOrderList.add(order.getChumonbango());

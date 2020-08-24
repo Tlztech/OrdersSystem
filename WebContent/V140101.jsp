@@ -179,7 +179,7 @@ a {
 		PreparedStatement ps = conn.prepareStatement(sql_site);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
-			siteList.add(rs.getString("SITE"));
+			siteList.add(rs.getString("SITE").replace(" ", "+"));
 		}
 		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop";
 		ps = conn.prepareStatement(sql);
@@ -203,7 +203,7 @@ a {
 			<%
 				for (int i = 0; i < siteList.size(); i++) {
 			%>
-			<option label=<%=siteList.get(i)%> value=<%=siteList.get(i)%> />
+			<option value=<%=siteList.get(i)%>><%=siteList.get(i)%></option>
 			<%
 				}
 			%>

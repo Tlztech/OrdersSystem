@@ -311,13 +311,13 @@ select {
 	Map<String, String> yahooMap = new HashMap<String, String>();
 	try {
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql= "SELECT SITE, SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo Shopping', '楽天')";
+		String sql= "SELECT SITE, SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo', '楽天')";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
 			if ("楽天".equals(rs.getString("SITE"))) {
 				rakutenMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
-			} else if ("Yahoo Shopping".equals(rs.getString("SITE"))) {
+			} else if ("Yahoo".equals(rs.getString("SITE"))) {
 				yahooMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 			}
 		}
@@ -378,7 +378,7 @@ select {
 							name="f100101.tenpobetsu" /></td>
 					<td class="td_bg">サイト：</td>
 					<td class="td_bg"><s:select
-							list="#{ '':'--','楽天':'楽天','Yahoo Shopping':'Yahoo Shopping','ヤフオク':'ヤフオク','DENA':'DENA','ポンパレモール':'ポンパレモール','qoo10':'qoo10','ken':'ken'}"
+							list="#{ '':'--','楽天':'楽天','Yahoo':'Yahoo','ヤフオク':'ヤフオク','DENA':'DENA','ポンパレモール':'ポンパレモール','qoo10':'qoo10','ken':'ken'}"
 							name="f100101.site" /></td>
 				<tr>
 					<td class="td_bg">電話番号：</td>

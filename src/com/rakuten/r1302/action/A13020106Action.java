@@ -31,7 +31,7 @@ public class A13020106Action extends BaseAction {
 					if ("˜SÌì".equals(order.getSite())) {
 						rakutenOrderList.add(new String[] {
 								order.getChumonbango(), order.getTenpo() });
-					} else if ("Yahoo Shopping".equals(order.getSite())) {
+					} else if ("Yahoo".equals(order.getSite())) {
 						yahooOrderList.add(new String[] {
 								order.getChumonbango(), order.getTenpo() });
 					} else {
@@ -67,7 +67,7 @@ public class A13020106Action extends BaseAction {
 				if ("˜SÌì".equals(order.getSite())) {
 					rakutenOrderList.add(new String[] { order.getChumonbango(),
 							order.getTenpo() });
-				} else if ("Yahoo Shopping".equals(order.getSite())) {
+				} else if ("Yahoo".equals(order.getSite())) {
 					yahooOrderList.add(new String[] { order.getChumonbango(),
 							order.getTenpo() });
 				} else if ("DENA".equals(order.getSite())) {

@@ -35,7 +35,7 @@ public class A03020105Action extends BaseAction {
 		if("楽天".equals(f030201.getSite())) {
 			shohinList = Utility.getShohinFromCsv(itemCsv,
 					itemCatCsv, selectCsv);
-		}else if("Yahoo Shopping".equals(f030201.getSite())){
+		}else if("Yahoo".equals(f030201.getSite())){
 			shohinList = Utility.getShohinFromYahooCsv(itemCsv,
 					itemCatCsv, selectCsv);
 		}else {

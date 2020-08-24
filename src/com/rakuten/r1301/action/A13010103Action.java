@@ -487,7 +487,7 @@ public class A13010103Action extends BaseAction {
 				}
 				String site = orderBean.getSite();
 				String tenpodenwabango = "";
-				if (!"楽天".equals(site) && !"Yahoo Shopping".equals(site) 
+				if (!"楽天".equals(site) && !"Yahoo".equals(site) 
 						&& !"DENA".equals(site) && !"ヤフオク".equals(site) 
 						&& !"ポンパレモール".equals(site) && !"qoo10".equals(site)) {
 					
@@ -1311,7 +1311,7 @@ public class A13010103Action extends BaseAction {
 				
 			String site = order.getSite();
 			String tenpodenwabango = "";
-			if (!"楽天".equals(site) && !"Yahoo Shopping".equals(site) 
+			if (!"楽天".equals(site) && !"Yahoo".equals(site) 
 					&& !"DENA".equals(site) && !"ヤフオク".equals(site) 
 					&& !"ポンパレモール".equals(site) && !"qoo10".equals(site)) {
 				

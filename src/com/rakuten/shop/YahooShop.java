@@ -448,7 +448,7 @@ public class YahooShop {
 	private String getSellerId() throws Exception {
 		if (null == sellerId) {
 			Connection conn = JdbcConnection.getConnection();
-			String sql = "SELECT YAHOO_APP_ID, ACCESS_TOKEN, REFRESH_TOKEN, UPDATE_TIME FROM rakuten.shop WHERE SITE = 'Yahoo Shopping' AND SHOP_ID = ?";
+			String sql = "SELECT YAHOO_APP_ID, ACCESS_TOKEN, REFRESH_TOKEN, UPDATE_TIME FROM rakuten.shop WHERE SITE = 'Yahoo' AND SHOP_ID = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, shopName);
 			ResultSet rs = ps.executeQuery();

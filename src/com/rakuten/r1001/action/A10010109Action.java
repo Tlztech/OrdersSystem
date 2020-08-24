@@ -74,7 +74,7 @@ public class A10010109Action extends BaseAction {
 					ps.setString(++j, "0");
 					ps.setString(++j, "0");
 					ps.setString(++j, "0");
-					ps.setString(++j, "Yahoo Shopping");
+					ps.setString(++j, "Yahoo");
 					ps.setString(++j, "WhiteSweet");
 					ps.setString(++j, "");
 					ps.setString(++j, payMethodName);

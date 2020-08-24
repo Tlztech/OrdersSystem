@@ -168,7 +168,7 @@ public class A130101Common {
 		for (OrderList order : orderList) {
 			if ("楽天".equals(order.getSite())) {
 				rakutenCount++;
-			} else if ("Yahoo Shopping".equals(order.getSite())) {
+			} else if ("Yahoo".equals(order.getSite())) {
 				yahooShoppingCount++;
 			} else if ("DENA".equals(order.getSite())) {
 				denaCount++;
@@ -188,7 +188,7 @@ public class A130101Common {
 				}
 			}
 			if ("2".equals(tenposhubetsu)) {
-				if ("Yahoo Shopping".equals(order.getSite())) {
+				if ("Yahoo".equals(order.getSite())) {
 					shoriList.add(order);
 				}
 			}
@@ -213,7 +213,7 @@ public class A130101Common {
 				}
 			}
 			if ("7".equals(tenposhubetsu)) {
-				if (!"楽天".equals(order.getSite()) && !"Yahoo Shopping".equals(order.getSite()) 
+				if (!"楽天".equals(order.getSite()) && !"Yahoo".equals(order.getSite()) 
 						&& !"DENA".equals(order.getSite()) && !"ヤフオク".equals(order.getSite()) 
 						&& !"ポンパレモール".equals(order.getSite()) && !"qoo10".equals(order.getSite())) {
 					shoriList.add(order);

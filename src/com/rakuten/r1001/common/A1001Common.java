@@ -1745,7 +1745,7 @@ public class A1001Common {
 					ps.setString(++j, "0");
 					ps.setString(++j, "0");
 					ps.setString(++j, "0");
-					ps.setString(++j, "Yahoo Shopping");
+					ps.setString(++j, "Yahoo");
 //					if (orderList.get(i).getJuchubango().startsWith("kirakiraichiba")) {
 //						shop = "kirakiraichiba";
 //					} else {

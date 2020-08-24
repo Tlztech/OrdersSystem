@@ -412,7 +412,7 @@ public class A14010104Action extends BaseAction {
 			}
 			
 			updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
-		} else if ("Yahoo Shopping".equals(site)){
+		} else if ("Yahoo+Shopping".equals(site)){
 			StringBuilder item_code = new StringBuilder();
 			StringBuilder quantity = new StringBuilder();
 			for (StockBean stockbean : stockListDB) {

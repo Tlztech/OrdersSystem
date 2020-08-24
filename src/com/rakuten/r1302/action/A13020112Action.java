@@ -32,7 +32,7 @@ public class A13020112Action extends BaseAction {
 		shoriList2.add(new String[] { "OrderId",  "ShipMethod", "ShipInvoiceNumber1", "ShipUrl",
 				"StoreStatus","ShipStatus" });
 		for (OrderList order : orderList) {
-			if ("Yahoo Shopping".equals(order.getSite())) {
+			if ("Yahoo".equals(order.getSite())) {
 				String shipUrl = "";
 				if ("1001".equals(order.getHaisokaisha())) {
 					shipUrl = "https://toi.kuronekoyamato.co.jp/cgi-bin/tneko";

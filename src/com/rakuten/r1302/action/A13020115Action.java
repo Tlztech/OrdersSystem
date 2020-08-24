@@ -33,7 +33,7 @@ public class A13020115Action extends BaseAction {
 		List<String[]> shoriList2 = new ArrayList<String[]>();
 		shoriList2.add(new String[] { "注文番号", "住所（県）", "配送会社", "配送方法", "追跡番号", "サイズ" });
 		for (OrderList order : orderList) {
-			if (!"楽天".equals(order.getSite()) && !"Yahoo Shopping".equals(order.getSite()) 
+			if (!"楽天".equals(order.getSite()) && !"Yahoo".equals(order.getSite()) 
 					&& !"DENA".equals(order.getSite()) && !"ヤフオク".equals(order.getSite()) 
 					&& !"ポンパレモール".equals(order.getSite()) && !"qoo10".equals(order.getSite())) {
 				

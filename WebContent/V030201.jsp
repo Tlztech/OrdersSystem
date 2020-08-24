@@ -264,7 +264,7 @@ function hideDiv2() {
             <div class="pop-box-body" >
             <table>
                 <tr height="50px">
-                    <td>平台：<s:select	list="#{'楽天':'楽天','Yahoo Shopping':'Yahoo Shopping'}"	name="f030201.site" /></td>
+                    <td>平台：<s:select	list="#{'楽天':'楽天','Yahoo':'Yahoo'}"	name="f030201.site" /></td>
                 </tr>
             </table>
             <table>

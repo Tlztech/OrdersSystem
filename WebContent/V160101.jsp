@@ -71,7 +71,7 @@ function init(){
 	Map<String, String> shopMap = new HashMap<String, String>();
 	try {
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo Shopping', '楽天')";
+		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo', '楽天')";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
@@ -107,7 +107,7 @@ function init(){
 		    <tr>
 		        <td>
 		        货号：<s:textfield style="width:100px;height:22px" name="f160101.shohinbango"/>
-		        <s:select list="#{'楽天':'楽天','Yahoo Shopping':'Yahoo Shopping'}" style="width:120px;height:30px" name="f160101.site"/>
+		        <s:select list="#{'楽天':'楽天','Yahoo':'Yahoo'}" style="width:120px;height:30px" name="f160101.site"/>
 		        <s:select list="#request.shopmap" style="width:120px;height:30px" name="f160101.shop"/>
 		        <input type="button" style="width:100px;height:30px" value="同步库存" onclick="actionSubmit('A16010102')">
 		        </td>

@@ -114,7 +114,7 @@ public class A16010102Action extends BaseAction {
 					addError(null, msg);
 				}
 			}
-		} else if ("Yahoo Shopping".equals(f160101.getSite())) {
+		} else if ("Yahoo".equals(f160101.getSite())) {
 			List<StockBean> stockListDB = getStockFromDB(f160101.getShop());
 			StringBuilder item_code = new StringBuilder();
 			StringBuilder quantity = new StringBuilder();
