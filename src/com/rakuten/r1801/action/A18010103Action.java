@@ -36,7 +36,7 @@ public class A18010103Action extends BaseAction {
 			if (count > 0) {
 				addError(null, "平台和店铺已经存在，请做更新处理");
 			} else {
-				sql = "INSERT INTO SHOP VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				sql = "INSERT INTO SHOP VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, f180101.getPlatform());
 				ps.setString(2, f180101.getShopId());
@@ -45,18 +45,19 @@ public class A18010103Action extends BaseAction {
 				ps.setString(5, f180101.getPhoneNumber());
 				ps.setString(6, f180101.getFax());
 				ps.setString(7, f180101.getShopUrl());
-				ps.setString(8, f180101.getShopAddress());
-				ps.setString(9, f180101.getServiceKey());
-				ps.setString(10, f180101.getLicenseKey());
-				ps.setString(11, f180101.getApplicationID());
-				ps.setString(12, null);
+				ps.setString(8, f180101.getPost());
+				ps.setString(9, f180101.getShopAddress());
+				ps.setString(10, f180101.getServiceKey());
+				ps.setString(11, f180101.getLicenseKey());
+				ps.setString(12, f180101.getApplicationID());
 				ps.setString(13, null);
 				ps.setString(14, null);
-				ps.setString(15, Utility.getDateTime());
-				ps.setString(16, Utility.getUser());
-				ps.setString(17, null);
+				ps.setString(15, null);
+				ps.setString(16, Utility.getDateTime());
+				ps.setString(17, Utility.getUser());
 				ps.setString(18, null);
 				ps.setString(19, null);
+				ps.setString(20, null);
 				ps.execute();
 				
 				conn.commit();
@@ -68,6 +69,7 @@ public class A18010103Action extends BaseAction {
 				f180101.setPhoneNumber(null);;
 				f180101.setFax(null);
 				f180101.setShopUrl(null);
+				f180101.setPost(null);
 				f180101.setShopAddress(null);
 				f180101.setServiceKey(null);
 				f180101.setLicenseKey(null);

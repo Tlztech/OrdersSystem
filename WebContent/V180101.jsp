@@ -225,6 +225,10 @@ function hideDiv2() {
                 <td class="td_bg">
                     <s:textfield size="20" maxlength="300" name="f180101.shopUrl" style="width:450px;"/>
                 </td>
+                <td class="td_bg" width="95px">郵便番号：</td>
+                <td class="td_bg">
+                    <s:textfield size="20" maxlength="8" name="f180101.shopPost"/>
+                </td>
             </tr>
             <tr class="bg_tr">
                 <td class="td_bg" width="80px">店铺地址：</td>
@@ -311,23 +315,6 @@ function hideDiv2() {
 		<s:hidden name="mode"/>
 		<s:hidden name="shoriMode"/>
 		<s:hidden name="rowIndex"/>
-		
-		<s:hidden name="f180101.hid_PlatformSelect"/>
-		<s:hidden name="f180101.hid_ShopSelect"/>
-		<s:hidden name="f180101.hid_Platform"/>
-		<s:hidden name="f180101.hid_ShopId"/>
-		<s:hidden name="f180101.hid_ShopName"/>
-		<s:hidden name="f180101.hid_ShopNumber"/>
-		<s:hidden name="f180101.hid_PhoneNumber"/>
-		<s:hidden name="f180101.hid_Fax"/>
-		<s:hidden name="f180101.hid_ShopUrl"/>
-		<s:hidden name="f180101.hid_ShopAddress"/>
-		<s:hidden name="f180101.hid_ServiceKey"/>
-		<s:hidden name="f180101.hid_LicenseKey"/>
-		<s:hidden name="f180101.hid_ApplicationID"/>
-		<s:hidden name="f180101.hid_AccessToken"/>
-		<s:hidden name="f180101.hid_RefreshToken"/>
-		<s:hidden name="f180101.hid_LoginTime"/>
 		
 	</s:form>
 </body>
