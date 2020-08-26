@@ -12,6 +12,7 @@ public class F180101 implements Serializable {
 	private String phoneNumber = null;
 	private String fax = null;
 	private String shopUrl = null;
+	private String shopPost = null;
 	private String shopAddress = null;
 	private String serviceKey = null;
 	private String licenseKey = null;
@@ -79,6 +80,14 @@ public class F180101 implements Serializable {
 
 	public void setShopUrl(String shopUrl) {
 		this.shopUrl = shopUrl;
+	}
+	
+	public String getPost() {
+		return shopPost;
+	}
+
+	public void setPost(String shopPost) {
+		this.shopPost = shopPost;
 	}
 	
 	public String getShopAddress() {
