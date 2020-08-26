@@ -124,6 +124,18 @@ function init(){
 		        <input type="button" style="width:100px;height:30px" value="订单一括删除" onclick="actionSubmit('A16010109')">
 		        </td>
 		    </tr>
+		    <tr>
+		        <td>
+		        商品编号：<s:textfield style="width:300px;height:22px" name="itemno"/>
+		        <input type="button" style="width:100px;height:30px" value="单一商品删除" onclick="actionSubmit('A16010110')">
+		        </td>
+		    </tr>
+		    <tr>
+		        <td>
+		        商品编号CSV：<input type="file" name="inputCommodityFilePath" />
+		        <input type="button" style="width:100px;height:30px" value="商品一括删除" onclick="actionSubmit('A16010111')">
+		        </td>
+		    </tr>
 		</table>
 		<br/>
         <s:select list="#request.rakutenshopmap" style="width:120px;height:30px" name="shop2"/>

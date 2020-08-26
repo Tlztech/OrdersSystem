@@ -1288,6 +1288,14 @@
 			</result>
 			<result name="input">V160101.jsp</result>
 		</action>
+		<action name="A16010110" class="com.rakuten.r1601.action.A16010110Action">
+			<result name="input">V160101.jsp</result>
+			<result name="success">V160101.jsp</result>
+		</action>
+		<action name="A16010111" class="com.rakuten.r1601.action.A16010111Action">
+			<result name="input">V160101.jsp</result>
+			<result name="success">V160101.jsp</result>
+		</action>
 		<action name="A17010101" class="com.rakuten.r1701.action.A17010101Action">
 			<result name="input">V170101.jsp</result>
 			<result name="success">V170101.jsp</result>
