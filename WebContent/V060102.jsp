@@ -289,7 +289,7 @@ function hideDiv() {
             <tr class="bg_tr" >
                 <td width="70px" align="center">商品编号</td>
                 <td width="150px" class="td_bg" >
-                    <s:textfield name="f060102.commodityIdInput" cssErrorStyle="background:red;" onkeydown="keyboardEvent(event);" size="18" maxlength="20"/>
+                    <s:textfield name="f060102.commodityIdInput" cssErrorStyle="background:red;" onkeydown="keyboardEvent(event);" size="18" maxlength="22"/>
                 </td>
                 <td width="50px" align="center">数量</td>
                 <td width="60px" class="td_bg" >

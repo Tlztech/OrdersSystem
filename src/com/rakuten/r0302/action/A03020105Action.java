@@ -413,7 +413,7 @@ public class A03020105Action extends BaseAction {
 				shohinbango = shohinbango.replace("sale", "");
 			}
 			for (int j = 0; j < commodityList.size(); j++) {
-				if (shohinbango.equals(commodityList.get(j).getCommodityId())) {
+				if (shohinbango.toUpperCase().equals(commodityList.get(j).getCommodityId().toUpperCase())) {
 					ariFlg = true;
 					break;
 				}
