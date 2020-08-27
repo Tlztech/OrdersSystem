@@ -1581,7 +1581,7 @@ public class A1001Common {
 						rs.close();
 						ps.close();
 						if (0 == count) {
-							sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`) VALUES (?, ?, TRUE);";
+							sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`, RE_PRICE, STOCK_SH, STOCK_JP, STOCK_HANDUP, DEL_FLG) VALUES (?, ?, TRUE, ?, 0, 0, 0, 0);";
 							
 						} else {
 							sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
@@ -1589,6 +1589,9 @@ public class A1001Common {
 						ps = conn.prepareStatement(sql);
 						ps.setString(1, commodityId);
 						ps.setString(2, detailNo);
+						if (0 == count) {
+							ps.setString(3, shousai.getTanka());
+						}
 						ps.executeUpdate();
 						ps.close();
 					}
