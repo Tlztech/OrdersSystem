@@ -39,7 +39,7 @@ public class YahooShop {
 	private String clientId;
 	private String accessToken;
 	private String refreshToken;
-	private Timestamp updateTime;
+	private Timestamp loginTime;
 	private List<YahooOrder> orders = new ArrayList<YahooOrder>();
 	private List<String> orderNoList;
 	private List<MessageFromYahoo> messageFromYahooList_GetOrder = new ArrayList<MessageFromYahoo>();
@@ -448,7 +448,7 @@ public class YahooShop {
 	private String getSellerId() throws Exception {
 		if (null == sellerId) {
 			Connection conn = JdbcConnection.getConnection();
-			String sql = "SELECT YAHOO_APP_ID, ACCESS_TOKEN, REFRESH_TOKEN, UPDATE_TIME FROM rakuten.shop WHERE SITE = 'Yahoo' AND SHOP_ID = ?";
+			String sql = "SELECT YAHOO_APP_ID, ACCESS_TOKEN, REFRESH_TOKEN, LOGIN_TIME FROM rakuten.shop WHERE SITE = 'Yahoo' AND SHOP_ID = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, shopName);
 			ResultSet rs = ps.executeQuery();
@@ -456,7 +456,7 @@ public class YahooShop {
 				clientId = rs.getString("YAHOO_APP_ID");
 				accessToken = rs.getString("ACCESS_TOKEN");
 				refreshToken = rs.getString("REFRESH_TOKEN");
-				updateTime = rs.getTimestamp("UPDATE_TIME");
+				loginTime = rs.getTimestamp("LOGIN_TIME");
 			}
 			conn.close();
 
@@ -480,18 +480,23 @@ public class YahooShop {
 	}
 
 	private Timestamp getUpdateTime() throws Exception {
-		if (null == updateTime) {
+		if (null == loginTime) {
 			getSellerId();
 		}
-		return updateTime;
+		return loginTime;
 	}
 
 	private boolean tokenIsValid(int interval) throws Exception {
 		Calendar date = Calendar.getInstance();
 		date.add(Calendar.HOUR, interval);
 		Calendar dateDB = Calendar.getInstance();
-		dateDB.setTime(getUpdateTime());
-		return date.compareTo(dateDB) < 0;
+		getUpdateTime();
+		if(null == loginTime) {
+			return false;
+		} else {
+			dateDB.setTime(getUpdateTime());
+			return date.compareTo(dateDB) < 0;
+		}
 	}
 
 	private String getAccessToken() throws Exception {
