@@ -34,7 +34,7 @@ public class A18010104Action extends BaseAction {
 				count = rs.getInt("COUNT");
 			}
 			if (count > 0) {
-				sql = "UPDATE SHOP SET SHOP_NAME = ?, SHOP_NO = ?, SHOP_TEL = ?, SHOP_FAX = ?, SHOP_URL = ?, SHOP_ADDRESS = ?, SERVICE_KEY = ?, LICENSE_KEY = ?, UPDATE_TIME = ?, UPDATE_USER = ? WHERE SITE = ? and SHOP_ID = ?";
+				sql = "UPDATE SHOP SET SHOP_NAME = ?, SHOP_NO = ?, SHOP_TEL = ?, SHOP_FAX = ?, SHOP_URL = ?, SHOP_POST = ?, SHOP_ADDRESS = ?, SERVICE_KEY = ?, LICENSE_KEY = ?, UPDATE_TIME = ?, UPDATE_USER = ? WHERE SITE = ? and SHOP_ID = ?";
 				ps = conn.prepareStatement(sql);
 
 				ps.setString(1, f180101.getShopName());
