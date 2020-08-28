@@ -101,15 +101,15 @@ body {
 -->
 </style>
 </head>
-<body bgcolor="#9CDCF9">
+<body bgcolor="#5FB4DB" background="">
 <table width="681" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:120px">
   <tr>
-    <td width="353" height="259" align="center" valign="bottom" background="Images/login_1.gif"><table width="90%" border="0" cellspacing="3" cellpadding="0">
+    <td width="353" height="259" align="center" valign="bottom" background="Images/bg1.png"><table width="90%" border="0" cellspacing="3" cellpadding="0">
     </table></td>
-    <td width="195" background="Images/login_2.gif"><table width="190" height="106" border="0" align="center" cellpadding="2" cellspacing="0">
+    <td width="195" background="Images/bg2.png"><table width="190" height="106" align="center" cellpadding="2" cellspacing="0">
       <s:form action="A000101" theme="simple">
             <tr>
-              <td height="50" colspan="2" align="left">&nbsp;</td>
+              <td height="50" colspan="2" align="left" background="Images/2.png">&nbsp;</td>
             </tr>
             <tr>
               <td width="60" height="30" align="left">登陆名称</td>
@@ -134,10 +134,10 @@ body {
             </tr>
         </s:form>
     </table></td>
-    <td width="133" background="Images/login_3.gif"></td>
+    <td width="133" background="Images/bg3.png"></td>
   </tr>
   <tr>
-    <td height="161" colspan="3" background="Images/login_4.gif"></td>
+    <td height="161" colspan="3" background="Images/bg4.png"></td>
   </tr>
 </table>
 </body>
