@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.HashMap"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -489,6 +492,25 @@ a {
 </style>
 </head>
 <body onload="init();">
+<%
+		Connection conn = null;
+	try {
+		conn = com.rakuten.util.JdbcConnection.getConnection();
+		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		Map<String, String> shopMap = new HashMap<String, String>();
+		while (rs.next()) {
+			shopMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
+		}
+		request.setAttribute("shopmap", shopMap);
+
+	} catch (Exception e) {
+		out.println(e);
+	} finally {
+		conn.close();
+	}
+	%>
 <div id='mask' class="mask" style="width:100%;height:100%;display:none"></div>
     <s:form name="form1" theme="simple" enctype="multipart/form-data">
         <div style="width:900px;margin-top: 5px;margin-left: 10px">
@@ -533,7 +555,7 @@ a {
             <tr>
                 <td class="td_bg">店舗別</td>
                 <td class="td_bg">
-                    <s:select list="#{'':'--','herz':'herz','epintl':'epintl'}" name="f130101.tenpo"/>
+                    <s:select list="#request.shopmap" name="f130101.tenpo"/>
                 </td>
                 <td class="td_bg" >コメント注意</td>
                 <td class="td_bg" >
