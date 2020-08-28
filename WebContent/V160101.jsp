@@ -114,14 +114,16 @@ function init(){
 		    </tr>
 		    <tr>
 		        <td>
-		        订单编号：<s:textfield style="width:300px;height:22px" name="f160101.chumonbango"/>
+		        订单编号：<s:textfield style="width:170px;height:22px" name="f160101.chumonbango"/>
 		        <input type="button" style="width:100px;height:30px" value="单一订单删除" onclick="actionSubmit('A16010103')">
+		        <input type="button" style="width:130px;height:30px" value="单一订单SIZE删除" onclick="actionSubmit('A16010112')">
 		        </td>
 		    </tr>
 		    <tr>
 		        <td>
-		        订单编号CSV：<input type="file" name="inputPath" />
+		        订单编号CSV：<input type="file" style="width:170px;height:22px" name="inputPath" />
 		        <input type="button" style="width:100px;height:30px" value="订单一括删除" onclick="actionSubmit('A16010109')">
+		        <input type="button" style="width:130px;height:30px" value="订单SIZE一括删除" onclick="actionSubmit('A16010113')">
 		        </td>
 		    </tr>
 		    <tr>
