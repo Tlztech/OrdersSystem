@@ -89,17 +89,17 @@ public class A03020105Action extends BaseAction {
 						}
 					}else if (shohinInfoBean.getShouhingazoUrl().indexOf("https://www.rakuten.ne.jp/") != -1) {
 						if (shohinInfoBean.getShouhingazoUrl().indexOf(" ") != -1) {
-							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_gold/"
 									+ shohinInfoBean.getShouhingazoUrl().substring(
 											shohinInfoBean.getShouhingazoUrl().indexOf(
-													"https://www.rakuten.ne.jp/"),
+													"https://www.rakuten.ne.jp/gold/"),
 											shohinInfoBean.getShouhingazoUrl().indexOf(
 													" ")) + "?_ex=200x200&s=2&r=1")
-									.replace("https://www.rakuten.ne.jp/", "");
+									.replace("https://www.rakuten.ne.jp/gold/", "");
 						}else {
-							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_gold/"
 									+ shohinInfoBean.getShouhingazoUrl() + "?_ex=200x200&s=2&r=1")
-									.replace("https://www.rakuten.ne.jp/", "");
+									.replace("https://www.rakuten.ne.jp/gold/", "");
 						}
 					}else {
 						pirurl = "";
@@ -262,17 +262,17 @@ public class A03020105Action extends BaseAction {
 						}
 					}else if (shohinInfoBean.getShouhingazoUrl().indexOf("https://www.rakuten.ne.jp/") != -1) {
 						if (shohinInfoBean.getShouhingazoUrl().indexOf(" ") != -1) {
-							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_gold/"
 									+ shohinInfoBean.getShouhingazoUrl().substring(
 											shohinInfoBean.getShouhingazoUrl().indexOf(
-													"https://www.rakuten.ne.jp/"),
+													"https://www.rakuten.ne.jp/gold/"),
 											shohinInfoBean.getShouhingazoUrl().indexOf(
 													" ")) + "?_ex=200x200&s=2&r=1")
-									.replace("https://www.rakuten.ne.jp/", "");
+									.replace("https://www.rakuten.ne.jp/gold/", "");
 						}else {
-							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_gold/"
 									+ shohinInfoBean.getShouhingazoUrl() + "?_ex=200x200&s=2&r=1")
-									.replace("https://www.rakuten.ne.jp/", "");
+									.replace("https://www.rakuten.ne.jp/gold/", "");
 						}
 					}else {
 						pirurl = "";
