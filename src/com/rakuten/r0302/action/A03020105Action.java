@@ -73,20 +73,37 @@ public class A03020105Action extends BaseAction {
 				ps.setString(1, shohinInfoBean.getShouhinmei());
 				String pirurl = "";
 				try {
-					if (shohinInfoBean.getShouhingazoUrl().indexOf(" ") != -1) {
-						pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
-								+ shohinInfoBean.getShouhingazoUrl().substring(
-										shohinInfoBean.getShouhingazoUrl().indexOf(
-												"https://image.rakuten.co.jp/"),
-										shohinInfoBean.getShouhingazoUrl().indexOf(
-												" ")) + "?_ex=200x200&s=2&r=1")
-								.replace("https://image.rakuten.co.jp/", "");
+					if (shohinInfoBean.getShouhingazoUrl().indexOf("https://image.rakuten.co.jp/") != -1) {
+						if (shohinInfoBean.getShouhingazoUrl().indexOf(" ") != -1) {
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+									+ shohinInfoBean.getShouhingazoUrl().substring(
+											shohinInfoBean.getShouhingazoUrl().indexOf(
+													"https://image.rakuten.co.jp/"),
+											shohinInfoBean.getShouhingazoUrl().indexOf(
+													" ")) + "?_ex=200x200&s=2&r=1")
+									.replace("https://image.rakuten.co.jp/", "");
+						}else {
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+									+ shohinInfoBean.getShouhingazoUrl() + "?_ex=200x200&s=2&r=1")
+									.replace("https://image.rakuten.co.jp/", "");
+						}
+					}else if (shohinInfoBean.getShouhingazoUrl().indexOf("https://www.rakuten.ne.jp/") != -1) {
+						if (shohinInfoBean.getShouhingazoUrl().indexOf(" ") != -1) {
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+									+ shohinInfoBean.getShouhingazoUrl().substring(
+											shohinInfoBean.getShouhingazoUrl().indexOf(
+													"https://www.rakuten.ne.jp/"),
+											shohinInfoBean.getShouhingazoUrl().indexOf(
+													" ")) + "?_ex=200x200&s=2&r=1")
+									.replace("https://www.rakuten.ne.jp/", "");
+						}else {
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+									+ shohinInfoBean.getShouhingazoUrl() + "?_ex=200x200&s=2&r=1")
+									.replace("https://www.rakuten.ne.jp/", "");
+						}
 					}else {
-						pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
-								+ shohinInfoBean.getShouhingazoUrl() + "?_ex=200x200&s=2&r=1")
-								.replace("https://image.rakuten.co.jp/", "");
+						pirurl = "";
 					}
-					
 				} catch (Exception e) {
 					System.out.println(shohinInfoBean.getShouhingazoUrl());
 				}
@@ -228,25 +245,41 @@ public class A03020105Action extends BaseAction {
 				ps.setString(5, "");
 				ps.setString(6, "");
 				String pirurl = "";
-				if (shohinInfoBean.getShouhingazoUrl().indexOf(" ") != -1) {
-					pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
-							+ shohinInfoBean
-									.getShouhingazoUrl()
-									.substring(
-											shohinInfoBean
-													.getShouhingazoUrl()
-													.indexOf(
-															"https://image.rakuten.co.jp/"),
-											shohinInfoBean.getShouhingazoUrl()
-													.indexOf(" ")) + "?_ex=200x200&s=2&r=1")
-							.replace("https://image.rakuten.co.jp/", "");
-				}else {
-					pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
-							+ shohinInfoBean.getShouhingazoUrl()
-							+ "?_ex=200x200&s=2&r=1")
-							.replace("https://image.rakuten.co.jp/", "");
+				try {
+					if (shohinInfoBean.getShouhingazoUrl().indexOf("https://image.rakuten.co.jp/") != -1) {
+						if (shohinInfoBean.getShouhingazoUrl().indexOf(" ") != -1) {
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+									+ shohinInfoBean.getShouhingazoUrl().substring(
+											shohinInfoBean.getShouhingazoUrl().indexOf(
+													"https://image.rakuten.co.jp/"),
+											shohinInfoBean.getShouhingazoUrl().indexOf(
+													" ")) + "?_ex=200x200&s=2&r=1")
+									.replace("https://image.rakuten.co.jp/", "");
+						}else {
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+									+ shohinInfoBean.getShouhingazoUrl() + "?_ex=200x200&s=2&r=1")
+									.replace("https://image.rakuten.co.jp/", "");
+						}
+					}else if (shohinInfoBean.getShouhingazoUrl().indexOf("https://www.rakuten.ne.jp/") != -1) {
+						if (shohinInfoBean.getShouhingazoUrl().indexOf(" ") != -1) {
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+									+ shohinInfoBean.getShouhingazoUrl().substring(
+											shohinInfoBean.getShouhingazoUrl().indexOf(
+													"https://www.rakuten.ne.jp/"),
+											shohinInfoBean.getShouhingazoUrl().indexOf(
+													" ")) + "?_ex=200x200&s=2&r=1")
+									.replace("https://www.rakuten.ne.jp/", "");
+						}else {
+							pirurl = ("https://thumbnail.image.rakuten.co.jp/@0_mall/"
+									+ shohinInfoBean.getShouhingazoUrl() + "?_ex=200x200&s=2&r=1")
+									.replace("https://www.rakuten.ne.jp/", "");
+						}
+					}else {
+						pirurl = "";
+					}
+				} catch (Exception e) {
+					System.out.println(shohinInfoBean.getShouhingazoUrl());
 				}
-				
 				ps.setString(7, "");
 				ps.setString(8, pirurl);
 				ps.setString(9, "");
