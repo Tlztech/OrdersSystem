@@ -1567,7 +1567,7 @@ public class A1001Common {
 							detailNo = "-0-0";
 						} else {
 							commodityId = bango.substring(0, bango.indexOf("-"));
-							detailNo = bango.substring(bango.indexOf("-") + 1);
+							detailNo = bango.substring(bango.indexOf("-"));
 						}
 						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
 						ps = conn.prepareStatement(sql);
@@ -1697,7 +1697,7 @@ public class A1001Common {
 							detailNo = "-0-0";
 						} else {
 							commodityId = bango.substring(0, bango.indexOf("-"));
-							detailNo = bango.substring(bango.indexOf("-") + 1);
+							detailNo = bango.substring(bango.indexOf("-"));
 						}
 						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
 						ps = conn.prepareStatement(sql);
@@ -1721,6 +1721,54 @@ public class A1001Common {
 						ps.setString(2, detailNo);
 						ps.executeUpdate();
 						ps.close();
+						
+						if (0 == count) {
+							sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+							ps = conn.prepareStatement(sql);
+							ps.setString(1, commodityId);
+							ps.setString(2, "100001");
+							ps.setString(3, shousai.getShouhinmei());
+							ps.setString(4, shousai.getShouhinmei());
+							ps.setString(5, "");
+							ps.setString(6, "");
+							ps.setString(7, "");
+							String pirurl = "";
+							ps.setString(8, pirurl);
+							ps.setString(9, "");
+							ps.setString(10, "0");
+							ps.setString(11, date);
+							ps.setString(12, "kyo");
+							ps.setString(13, date);
+							ps.setString(14, "kyo");
+							ps.setString(15, "00");
+							ps.execute();
+							ps.close();
+							
+							String maxBarcode = null;
+							sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
+							ps = conn.prepareStatement(sql);
+							ps.setString(1, bango);
+							rs = ps.executeQuery();
+							while (rs.next()) {
+								count = rs.getInt("COUNT");
+							}
+							if (count == 0) {
+								sql = "SELECT MAX(BARCODE)+1 MAX_BARCODE FROM TBL00016";
+								ps = conn.prepareStatement(sql);
+								rs = ps.executeQuery();
+								while (rs.next()) {
+									maxBarcode = rs.getString("MAX_BARCODE");
+								}
+
+								sql = "INSERT INTO TBL00016 VALUES(?,?)";
+								ps = conn.prepareStatement(sql);
+								ps.setString(1,
+										bango);
+								ps.setString(2, maxBarcode);
+								ps.execute();
+								ps.close();
+							}
+						}
 					}
 				}
 				String dateStr = "";
@@ -2068,7 +2116,7 @@ public class A1001Common {
 							detailNo = "-0-0";
 						} else {
 							commodityId = bango.substring(0, bango.indexOf("-"));
-							detailNo = bango.substring(bango.indexOf("-") + 1);
+							detailNo = bango.substring(bango.indexOf("-"));
 						}
 						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
 						ps = conn.prepareStatement(sql);
@@ -2196,7 +2244,7 @@ public class A1001Common {
 							detailNo = "-0-0";
 						} else {
 							commodityId = bango.substring(0, bango.indexOf("-"));
-							detailNo = bango.substring(bango.indexOf("-") + 1);
+							detailNo = bango.substring(bango.indexOf("-"));
 						}
 						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
 						ps = conn.prepareStatement(sql);
@@ -2220,6 +2268,54 @@ public class A1001Common {
 						ps.setString(2, detailNo);
 						ps.executeUpdate();
 						ps.close();
+						
+						if (0 == count) {
+							sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+							ps = conn.prepareStatement(sql);
+							ps.setString(1, commodityId);
+							ps.setString(2, "100001");
+							ps.setString(3, shousai.getShouhinmei());
+							ps.setString(4, shousai.getShouhinmei());
+							ps.setString(5, "");
+							ps.setString(6, "");
+							ps.setString(7, "");
+							String pirurl = "";
+							ps.setString(8, pirurl);
+							ps.setString(9, "");
+							ps.setString(10, "0");
+							ps.setString(11, date);
+							ps.setString(12, "kyo");
+							ps.setString(13, date);
+							ps.setString(14, "kyo");
+							ps.setString(15, "00");
+							ps.execute();
+							ps.close();
+							
+							String maxBarcode = null;
+							sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
+							ps = conn.prepareStatement(sql);
+							ps.setString(1, bango);
+							rs = ps.executeQuery();
+							while (rs.next()) {
+								count = rs.getInt("COUNT");
+							}
+							if (count == 0) {
+								sql = "SELECT MAX(BARCODE)+1 MAX_BARCODE FROM TBL00016";
+								ps = conn.prepareStatement(sql);
+								rs = ps.executeQuery();
+								while (rs.next()) {
+									maxBarcode = rs.getString("MAX_BARCODE");
+								}
+
+								sql = "INSERT INTO TBL00016 VALUES(?,?)";
+								ps = conn.prepareStatement(sql);
+								ps.setString(1,
+										bango);
+								ps.setString(2, maxBarcode);
+								ps.execute();
+								ps.close();
+							}
+						}
 					}
 				}
 				String dateStr = "";
