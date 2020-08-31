@@ -500,6 +500,7 @@ a {
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		Map<String, String> shopMap = new HashMap<String, String>();
+		shopMap.put("","--");
 		while (rs.next()) {
 			shopMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 		}
