@@ -140,60 +140,60 @@ public class A06010202Action extends BaseAction {
 			addError(null, "详细列表为空！");
 		}
 
-		Connection conn = null;
-		PreparedStatement ps = null;
-		String sql = null;
-		ResultSet rs = null;
-		try {
-			conn = JdbcConnection.getConnection();
-
-			for (int i = 0; i < commodityList.size(); i++) {
-				String commId = "";
-				String detailNo = "";
-				int stocksh = 0;
-				if (commodityList.get(i).getCommodityId().contains("-")) {
-					commId = commodityList
-							.get(i)
-							.getCommodityId()
-							.substring(
-									0,
-									commodityList.get(i).getCommodityId()
-											.indexOf("-"));
-					detailNo = commodityList
-							.get(i)
-							.getCommodityId()
-							.substring(
-									commodityList.get(i).getCommodityId()
-											.indexOf("-"));
-				} else {
-					commId = commodityList.get(i).getCommodityId();
-				}
-
-				sql = "SELECT STOCK_SH FROM TBL00012 WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
-				ps = conn.prepareStatement(sql);
-				ps.setString(1, commId);
-				ps.setString(2, detailNo);
-				rs = ps.executeQuery();
-
-				while (rs.next()) {
-					stocksh = rs.getInt("STOCK_SH");
-				}
-				int kosu = Integer.valueOf(commodityList.get(i).getQuantity());
-				if (stocksh - kosu < 0) {
-					addError(null, commodityList.get(i).getCommodityId()
-							+ "上海库存不足，无法发货");
-				}
-
-				// commit
-				// conn.commit();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			conn.rollback();
-			throw e;
-		} finally {
-			conn.close();
-		}
+//		Connection conn = null;
+//		PreparedStatement ps = null;
+//		String sql = null;
+//		ResultSet rs = null;
+//		try {
+//			conn = JdbcConnection.getConnection();
+//
+//			for (int i = 0; i < commodityList.size(); i++) {
+//				String commId = "";
+//				String detailNo = "";
+//				int stocksh = 0;
+//				if (commodityList.get(i).getCommodityId().contains("-")) {
+//					commId = commodityList
+//							.get(i)
+//							.getCommodityId()
+//							.substring(
+//									0,
+//									commodityList.get(i).getCommodityId()
+//											.indexOf("-"));
+//					detailNo = commodityList
+//							.get(i)
+//							.getCommodityId()
+//							.substring(
+//									commodityList.get(i).getCommodityId()
+//											.indexOf("-"));
+//				} else {
+//					commId = commodityList.get(i).getCommodityId();
+//				}
+//
+//				sql = "SELECT STOCK_SH FROM TBL00012 WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+//				ps = conn.prepareStatement(sql);
+//				ps.setString(1, commId);
+//				ps.setString(2, detailNo);
+//				rs = ps.executeQuery();
+//
+//				while (rs.next()) {
+//					stocksh = rs.getInt("STOCK_SH");
+//				}
+//				int kosu = Integer.valueOf(commodityList.get(i).getQuantity());
+//				if (stocksh - kosu < 0) {
+//					addError(null, commodityList.get(i).getCommodityId()
+//							+ "上海库存不足，无法发货");
+//				}
+//
+//				// commit
+//				// conn.commit();
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			conn.rollback();
+//			throw e;
+//		} finally {
+//			conn.close();
+//		}
 
 	}
 

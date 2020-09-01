@@ -203,7 +203,7 @@ eval("submenu" + sid + ".style.display=\"none\";");
                         <tbody>
                             <tr>
                                 <td width="2%"><img src="Images/closed.gif"></td>
-                                <td height=23><a href="A06010101" target=main>发货管理（上海至日本）</a></td>
+                                <td height=23><a href="A06010101" target=main>发货管理（广东至日本）</a></td>
                             </tr>
                             <tr>
                                 <td width="2%"><img src="Images/closed.gif"></td>
