@@ -1263,7 +1263,7 @@ public class OrderCommon {
 					continue;
 				}
 
-				sql = "UPDATE TBL00012 SET STOCK_JP = ?,UPDATE_TIME = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+				sql = "UPDATE TBL00012 SET STOCK_JP = ?,UPDATE_TIME = ? , UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 				ps = conn.prepareStatement(sql);
 
 				ps.setString(1, String.valueOf(Integer.valueOf(stockjp) - Integer.valueOf(kosu)));
@@ -2227,7 +2227,7 @@ public class OrderCommon {
 					henpinList.add(new String[] { rs.getString("SHOHINBANGO"), rs.getString("HENPINKOSU") });
 				}
 			}
-			sql = "UPDATE tbl00012 SET STOCK_JP = STOCK_JP + ?  ,UPDATE_TIME = ? ,UPDATE_USER = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+			sql = "UPDATE tbl00012 SET STOCK_JP = STOCK_JP + ?  ,UPDATE_TIME = ? ,UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 			for (String[] detail : henpinList) {
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, detail[1]);

@@ -34,11 +34,11 @@ public class A03030102Action extends BaseAction {
 				}
 			} else {
 				if ("0".equals(f030301.getJiajian())) {
-					sql = "UPDATE TBL00012 SET STOCK_JP = STOCK_JP + ? , UPDATE_TIME = ? , UPDATE_USER = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+					sql = "UPDATE TBL00012 SET STOCK_JP = STOCK_JP + ? , UPDATE_TIME = ? , UPDATE_USER = ? , UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 					ps = conn.prepareStatement(sql);
 					ps.setDouble(1, Double.valueOf(f030301.getKosu()));
 				} else {
-					sql = "UPDATE TBL00012 SET STOCK_JP = STOCK_JP - ? , UPDATE_TIME = ? , UPDATE_USER = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+					sql = "UPDATE TBL00012 SET STOCK_JP = STOCK_JP - ? , UPDATE_TIME = ? , UPDATE_USER = ? , UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 					ps = conn.prepareStatement(sql);
 					ps.setDouble(1, Double.valueOf(f030301.getKosu()));
 				}

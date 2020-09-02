@@ -129,7 +129,7 @@ public class A13010104Action extends BaseAction {
 					continue;
 				}
 
-				sql = "UPDATE TBL00012 SET STOCK_JP = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+				sql = "UPDATE TBL00012 SET STOCK_JP = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 				ps = conn.prepareStatement(sql);
 
 				ps.setString(1, String.valueOf(Integer.valueOf(stockjp) - Integer.valueOf(kosu)));

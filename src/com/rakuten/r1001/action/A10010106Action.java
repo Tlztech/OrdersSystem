@@ -115,7 +115,7 @@ public class A10010106Action extends BaseAction {
 						continue;
 					}
 
-					sql = "UPDATE TBL00012 SET STOCK_JP = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+					sql = "UPDATE TBL00012 SET STOCK_JP = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 					ps = conn.prepareStatement(sql);
 
 					ps.setString(

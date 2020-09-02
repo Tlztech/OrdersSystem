@@ -936,7 +936,7 @@ public class A06020102Action extends BaseAction {
 						int kosu = Integer.valueOf(detail.getKosu());
 						if (stock - kosu >= 0) {
 							detail.setFusokusu(0);
-							sql = "UPDATE TBL00012 SET STOCK_JP = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+							sql = "UPDATE TBL00012 SET STOCK_JP = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 							ps = conn.prepareStatement(sql);
 							ps.setInt(1, stock - kosu);
 							ps.setString(
@@ -948,7 +948,7 @@ public class A06020102Action extends BaseAction {
 							ps.executeUpdate();
 						} else if (stock > 0) {
 							detail.setFusokusu(kosu - stock);
-							sql = "UPDATE TBL00012 SET STOCK_JP = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+							sql = "UPDATE TBL00012 SET STOCK_JP = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 							ps = conn.prepareStatement(sql);
 							ps.setInt(1, 0);
 							ps.setString(
