@@ -1849,7 +1849,7 @@ public class A1001Common {
 //					} else {
 //						shop = "";
 //					}
-					shop = orderList.get(i).getJuchubango().substring(0, orderList.get(i).getJuchubango().indexOf("-"));
+					shop = orderList.get(i).getJuchubango().substring(0, orderList.get(i).getJuchubango().lastIndexOf("-"));
 					
 					ps.setString(++j, shop);
 					ps.setString(++j, "");
