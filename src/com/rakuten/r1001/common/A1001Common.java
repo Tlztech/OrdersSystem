@@ -3327,7 +3327,7 @@ public class A1001Common {
 							String maxBarcode = null;
 							sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
 							ps = conn.prepareStatement(sql);
-							ps.setString(1, shouhinbango + detailNo);
+							ps.setString(1, shouhinbango + ("-0-0".equals(detailNo)?"":detailNo));
 							rs = ps.executeQuery();
 
 							count = 0;
