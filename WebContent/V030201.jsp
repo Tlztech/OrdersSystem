@@ -288,7 +288,7 @@ function hideDiv2() {
             <table>
                 <tr height="50px">
                     <td>平台：<s:select	list="#{'楽天':'楽天','Yahoo':'Yahoo'}"	name="f030201.site" /></td>
-                    <td>店舗：<s:select list="#request.shopmap" name="f130201.shop"/></td>
+                    <td>店舗：<s:select list="#request.shopmap" name="f030201.shop"/></td>
                 </tr>
             </table>
             <table>
