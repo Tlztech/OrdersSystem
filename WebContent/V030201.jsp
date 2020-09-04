@@ -220,7 +220,7 @@ function hideDiv2() {
 		<table width="1100px">
             <tr>
                 <td>检索结果：<s:label name="f030201.resultCount" />件<s:hidden name="f030201.resultCount" /></td>
-                <td align="right"><input type="button" onclick="popupDiv2();" value="无销售记录库存查询"/>&nbsp;&nbsp;&nbsp;<input type="button" onclick="popupDiv();" value="CSV批量商品登陆更新"/>&nbsp;&nbsp;&nbsp;<input type="button" onclick="document.form1.shoriMode.value='1';actionSubmit('A03020104');" value="检索结果下载"/>&nbsp;&nbsp;&nbsp;<input type="button" onclick="document.form1.shoriMode.value='1';actionSubmit('A03020201');" value="添加商品"/></td>
+                <td align="right"><input type="button" onclick="popupDiv2();" value="无销售记录库存查询"/>&nbsp;&nbsp;&nbsp;<input type="button" onclick="popupDiv();" value="CSV批量商品登陆更新"/>&nbsp;&nbsp;&nbsp;<input type="button" onclick="document.form1.shoriMode.value='1';actionSubmit('A03020104');" value="检索结果下载"/>&nbsp;&nbsp;&nbsp;<input type="button" disabled="disabled" onclick="document.form1.shoriMode.value='1';actionSubmit('A03020201');" value="添加商品"/></td>
             </tr>
         </table>
         <table width="1100px" class="table" cellspacing="1" cellpadding="1" align="left" border="0">
