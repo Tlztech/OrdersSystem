@@ -25,7 +25,7 @@ public class A16010102Action extends BaseAction {
 	private static final long serialVersionUID = 1L;
 	F160101 f160101 = null;
 
-	private List<StockBean> getStockFromDB(String shop) throws Exception {
+	private List<StockBean> getStockFromDB(String site, String shop) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -34,9 +34,11 @@ public class A16010102Action extends BaseAction {
 		StockBean stockbean = null;
 		try {
 			conn = JdbcConnection.getConnection();
-			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id";
+			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ?";
 
 			ps = conn.prepareStatement(sql);
+			ps.setString(1, site);
+			ps.setString(2, shop);
 
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -105,7 +107,7 @@ public class A16010102Action extends BaseAction {
 	protected void exec() throws Exception {
 		if ("楽天".equals(f160101.getSite())) {
 			UpdateStock updatestock = new UpdateStock();
-			List<String> msgList = updatestock.exec(f160101.getShop(),
+			List<String> msgList = updatestock.exec(f160101.getSite(), f160101.getShop(),
 					Collections.singletonList(f160101.getShohinbango()));
 			if (Utility.isEmptyList(msgList)) {
 				addError(null, "操作成功");
@@ -115,7 +117,7 @@ public class A16010102Action extends BaseAction {
 				}
 			}
 		} else if ("Yahoo".equals(f160101.getSite())) {
-			List<StockBean> stockListDB = getStockFromDB(f160101.getShop());
+			List<StockBean> stockListDB = getStockFromDB(f160101.getSite(), f160101.getShop());
 			StringBuilder item_code = new StringBuilder();
 			StringBuilder quantity = new StringBuilder();
 			boolean ariFlg = false;

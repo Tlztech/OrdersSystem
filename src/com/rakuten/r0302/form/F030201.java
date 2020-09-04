@@ -29,6 +29,7 @@ public class F030201 implements Serializable {
 	private String cateName = null;
 	private String ptype = null;
 	private String site = null;
+	private String shop = null;
 
 	public String getCateName() {
 		return cateName;
@@ -323,6 +324,14 @@ public class F030201 implements Serializable {
 
 	public void setSite(String site) {
 		this.site = site;
+	}
+
+	public String getShop() {
+		return shop;
+	}
+
+	public void setShop(String shop) {
+		this.shop = shop;
 	}
 
 }

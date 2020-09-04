@@ -67,7 +67,7 @@ public class MupdateStock {
 		shoriList.add("nzwy178");
 		shoriList.add("nzwy179");
 
-		List<String> msgList = updatestock.exec("coverforefront", shoriList);
+		List<String> msgList = updatestock.exec("楽天", "coverforefront", shoriList);
 	}
 
 }

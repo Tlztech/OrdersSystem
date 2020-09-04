@@ -2,10 +2,8 @@ package com.rakuten.r1401.action;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,7 +53,7 @@ public class A14010104Action extends BaseAction {
 	private String logKey = null;
 	private String fileName = null;
 
-	private List<StockBean> getStockFromDB(String shop) throws Exception {
+	private List<StockBean> getStockFromDB(String site, String shop) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -64,9 +62,11 @@ public class A14010104Action extends BaseAction {
 		StockBean stockbean = null;
 		try {
 			conn = JdbcConnection.getConnection();
-			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE";
+			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ?";
 
 			ps = conn.prepareStatement(sql);
+			ps.setString(1, site);
+			ps.setString(2, shop);
 
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -161,7 +161,7 @@ public class A14010104Action extends BaseAction {
 	@Override
 	protected void exec() throws Exception {
 //		shop = Utility.getShopNameById(shop);
-		List<StockBean> stockListDB = getStockFromDB(shop);
+		List<StockBean> stockListDB = getStockFromDB(site, shop);
 		List<String[]> dataList = new ArrayList<String[]>();
 		Map<String, String> itemNoMapForUpdateStock = new HashMap<String, String>();
 		for (StockBean stock : stockListDB) {

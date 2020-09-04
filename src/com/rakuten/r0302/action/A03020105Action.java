@@ -171,6 +171,8 @@ public class A03020105Action extends BaseAction {
 							ps.setString(17, "kyo");
 							ps.setString(18, detail.getYokoname());
 							ps.setString(19, detail.getShitaganame());
+							ps.setString(20, f030201.getSite());
+							ps.setString(21, f030201.getShop());
 							ps.execute();
 						}
 
@@ -318,7 +320,8 @@ public class A03020105Action extends BaseAction {
 						ps.setString(17, "kyo");
 						ps.setString(18, detail.getYokoname());
 						ps.setString(19, detail.getShitaganame());
-
+						ps.setString(20, f030201.getSite());
+						ps.setString(21, f030201.getShop());
 						ps.execute();
 					}
 				}

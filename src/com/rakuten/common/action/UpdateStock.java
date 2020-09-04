@@ -30,7 +30,7 @@ import entity.model.v1.inventoryapi.mall.rms.rakuten.co.jp.UpdateResponseExterna
 
 public class UpdateStock {
 
-	public List<String> exec(String shop, List<String> shoribangoList) throws Exception {
+	public List<String> exec(String site, String shop, List<String> shoribangoList) throws Exception {
 		List<String> errMsgList = new ArrayList<String>();
 		Inventoryapi locator = new InventoryapiLocator();
 		InventoryapiPort port = null;
@@ -64,7 +64,7 @@ public class UpdateStock {
 			conn.close();
 		}
 
-		List<StockBean> stockListDB = getStockFromDB(shop);
+		List<StockBean> stockListDB = getStockFromDB(site, shop);
 		ExternalUserAuthModel auth = new ExternalUserAuthModel();
 		Shohincommon common = new Shohincommon();
 		String serviceSecret = common.getServiceSecret(shop);
@@ -302,7 +302,7 @@ public class UpdateStock {
 
 	}
 
-	private List<StockBean> getStockFromDB(String shop) throws Exception {
+	private List<StockBean> getStockFromDB(String site, String shop) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -311,9 +311,11 @@ public class UpdateStock {
 		StockBean stockbean = null;
 		try {
 			conn = JdbcConnection.getConnection();
-			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id";
+			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ?";
 
 			ps = conn.prepareStatement(sql);
+			ps.setString(1, site);
+			ps.setString(2, shop);
 
 			rs = ps.executeQuery();
 			while (rs.next()) {
