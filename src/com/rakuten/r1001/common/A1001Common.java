@@ -990,7 +990,7 @@ public class A1001Common {
 			detailCsvBean.setKosu(order[6]);
 			// 送料込別
 			detailCsvBean.setSouryoukomibetsu("込");
-			
+
 			detailCsvBean.setZeikomibetsu("別");
 
 			// 項目・選択肢
@@ -1000,17 +1000,17 @@ public class A1001Common {
 		}
 		// 受注番号
 		otherCsvBean.setJuchubango(orderInfo.get(0)[3]);
-		
+
 		otherCsvBean.setPlatform(orderInfo.get(0)[1]);
-		
+
 		otherCsvBean.setShopname(orderInfo.get(0)[2]);
-		
+
 		Date now = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		otherCsvBean.setHasoyakusokubi(sdf.format(now));
 		// コメント
 		otherCsvBean.setKomento(orderInfo.get(0)[15]);
-		
+
 		// 注文日時
 		SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		otherCsvBean.setChumonnichiji(sdft.format(now));
@@ -1047,7 +1047,7 @@ public class A1001Common {
 		otherCsvBean.setChumonshajushotodofuken(orderInfo.get(0)[9]);
 		// 注文者住所：都市区
 		otherCsvBean.setChumonshajushotoshiku(orderInfo.get(0)[10]);
-		
+
 		String chumonsha = orderInfo.get(0)[7];
 		String chumonshameiji = "";
 		String chumonshanamae = "";
@@ -1075,12 +1075,12 @@ public class A1001Common {
 		otherCsvBean.setChumonshameijifurigana(chumonshameijikana);
 		// 注文者名前フリガナ
 		otherCsvBean.setChumonshanamaefurigana(chumonshanamaekana);
-		
+
 		otherCsvBean.setMeruadoresu(orderInfo.get(0)[3] + "@abc.co.jp");
 		otherCsvBean.setChumonshatanjoubi("1900年1月1日");
-		
+
 		String chumonshadenwabango = orderInfo.get(0)[11];
-		
+
 		String chumonshadenwabango1 = "";
 		String chumonshadenwabango2 = "";
 		String chumonshadenwabango3 = "";
@@ -1227,7 +1227,107 @@ public class A1001Common {
 
 	}
 
-	
+	private void updateTBLForStock(Connection conn, Map<String, Map<String, String>> tbl12Map,
+			Map<String, Map<String, String>> tbl11Map, Map<String, Map<String, String>> tbl16Map) throws Exception {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = null;
+		int count = 0;
+
+		for (Map.Entry<String, Map<String, String>> entry : tbl12Map.entrySet()) {
+			sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, entry.getValue().get("commodityId"));
+			ps.setString(2, entry.getValue().get("detailNo"));
+			rs = ps.executeQuery();
+			count = 0;
+			while (rs.next()) {
+				count = rs.getInt("COUNT");
+			}
+			rs.close();
+			ps.close();
+			if (0 == count) {
+				sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`, RE_PRICE, STOCK_SH, STOCK_JP, STOCK_HANDUP, DEL_FLG, SITE, SHOP) VALUES (?, ?, TRUE, ?, 0, 0, 0, 0, ?, ?);";
+
+			} else {
+				sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+			}
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, entry.getValue().get("commodityId"));
+			ps.setString(2, entry.getValue().get("detailNo"));
+			if (0 == count) {
+				ps.setString(3, entry.getValue().get("tanka"));
+				ps.setString(4, entry.getValue().get("site"));
+				ps.setString(5, entry.getValue().get("shop"));
+			}
+			ps.executeUpdate();
+			ps.close();
+		}
+
+		for (Map.Entry<String, Map<String, String>> entry : tbl11Map.entrySet()) {
+
+			sql = "SELECT count(*) COUNT FROM rakuten.tbl00011 WHERE `COMMODITY_ID`=? and`CATEGORY_ID`='100001';";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, entry.getValue().get("commodityId"));
+			count = 0;
+			while (rs.next()) {
+				count = rs.getInt("COUNT");
+			}
+
+			if (0 == count) {
+				sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, entry.getValue().get("commodityId"));
+				ps.setString(2, "100001");
+				ps.setString(3, entry.getValue().get("productName"));
+				ps.setString(4, entry.getValue().get("productName"));
+				ps.setString(5, "");
+				ps.setString(6, "");
+				ps.setString(7, "");
+				String pirurl = "";
+				ps.setString(8, entry.getValue().get("pirurl"));
+				ps.setString(9, "");
+				ps.setString(10, "0");
+				ps.setString(11, entry.getValue().get("date"));
+				ps.setString(12, "kyo");
+				ps.setString(13, entry.getValue().get("date"));
+				ps.setString(14, "kyo");
+				ps.setString(15, "00");
+				ps.execute();
+				ps.close();
+			}
+		}
+
+		for (Map.Entry<String, Map<String, String>> entry : tbl16Map.entrySet()) {
+			String maxBarcode = null;
+			sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, entry.getValue().get("bango"));
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				count = rs.getInt("COUNT");
+			}
+			if (count == 0) {
+				sql = "SELECT MAX(BARCODE)+1 MAX_BARCODE FROM TBL00016";
+				ps = conn.prepareStatement(sql);
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					maxBarcode = rs.getString("MAX_BARCODE");
+				}
+
+				sql = "INSERT INTO TBL00016 VALUES(?,?)";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, entry.getValue().get("bango"));
+				ps.setString(2, maxBarcode);
+				ps.execute();
+				ps.close();
+			}
+
+		}
+
+	}
+
 	public void insertIntoRakutenOrderTbl(List<RakutenCsvBean> orderList) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -1245,7 +1345,7 @@ public class A1001Common {
 			}
 			rs.close();
 			ps.close();
-			
+
 			for (int i = 0; i < orderList.size(); i++) {
 
 				int j = 0;
@@ -1278,7 +1378,7 @@ public class A1001Common {
 					ps.setString(++j, "楽天");
 					shop = shopMap.get(orderList.get(i).getJuchubango().substring(0, 6));
 					if (shop != null) {
-						
+
 					} else {
 //					if (orderList.get(i).getJuchubango().startsWith("308759")) {
 //						shop = "coverforefront";
@@ -1301,7 +1401,7 @@ public class A1001Common {
 						if (Long.valueOf(
 								orderList.get(i).getPointoriyogaku()) >= (Long.valueOf(orderList.get(i).getGokei()))) {
 							ps.setString(++j, "銀行振込");
-						}else {
+						} else {
 							ps.setString(++j, orderList.get(i).getKesaihouhou());
 						}
 					} else {
@@ -1508,6 +1608,10 @@ public class A1001Common {
 				int noukiday = 2;
 				if (!donkonFlg) {
 
+					Map<String, Map<String, String>> tbl11Map = new HashMap<String, Map<String, String>>();
+					Map<String, Map<String, String>> tbl12Map = new HashMap<String, Map<String, String>>();
+					Map<String, Map<String, String>> tbl16Map = new HashMap<String, Map<String, String>>();
+					Map<String, String> dataMap = null;
 					for (int k = 0; k < orderList.get(i).getShousaiList().size(); k++) {
 
 						RakutenDetailCsvBean shousai = orderList.get(i).getShousaiList().get(k);
@@ -1553,13 +1657,12 @@ public class A1001Common {
 						ps.setString(++j, shousai.getNokijouho());
 
 						ps.executeUpdate();
-						
+
 						ps.close();
 
 						if (Utility.getNoukiDay(shousai.getNokijouho()) > noukiday) {
 							noukiday = Utility.getNoukiDay(shousai.getNokijouho());
 						}
-						
 						String commodityId;
 						String detailNo;
 						if (-1 == bango.indexOf("-")) {
@@ -1569,78 +1672,28 @@ public class A1001Common {
 							commodityId = bango.substring(0, bango.indexOf("-"));
 							detailNo = bango.substring(bango.indexOf("-"));
 						}
-						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, commodityId);
-						ps.setString(2, detailNo);
-						rs = ps.executeQuery();
-						int count = 0;
-						while (rs.next()) {
-							count = rs.getInt("COUNT");
-						}
-						rs.close();
-						ps.close();
-						if (0 == count) {
-							sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`, RE_PRICE, STOCK_SH, STOCK_JP, STOCK_HANDUP, DEL_FLG) VALUES (?, ?, TRUE, ?, 0, 0, 0, 0);";
-							
-						} else {
-							sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
-						}
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, commodityId);
-						ps.setString(2, detailNo);
-						if (0 == count) {
-							ps.setString(3, shousai.getTanka());
-						}
-						ps.executeUpdate();
-						ps.close();
-						if (0 == count) {
-							sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-							ps = conn.prepareStatement(sql);
-							ps.setString(1, commodityId);
-							ps.setString(2, "100001");
-							ps.setString(3, shousai.getShouhinmei());
-							ps.setString(4, shousai.getShouhinmei());
-							ps.setString(5, "");
-							ps.setString(6, "");
-							ps.setString(7, "");
-							String pirurl = "";
-							ps.setString(8, pirurl);
-							ps.setString(9, "");
-							ps.setString(10, "0");
-							ps.setString(11, date);
-							ps.setString(12, "kyo");
-							ps.setString(13, date);
-							ps.setString(14, "kyo");
-							ps.setString(15, "00");
-							ps.execute();
-							ps.close();
-							
-							String maxBarcode = null;
-							sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
-							ps = conn.prepareStatement(sql);
-							ps.setString(1, bango);
-							rs = ps.executeQuery();
-							while (rs.next()) {
-								count = rs.getInt("COUNT");
-							}
-							if (count == 0) {
-								sql = "SELECT MAX(BARCODE)+1 MAX_BARCODE FROM TBL00016";
-								ps = conn.prepareStatement(sql);
-								rs = ps.executeQuery();
-								while (rs.next()) {
-									maxBarcode = rs.getString("MAX_BARCODE");
-								}
-
-								sql = "INSERT INTO TBL00016 VALUES(?,?)";
-								ps = conn.prepareStatement(sql);
-								ps.setString(1,
-										bango);
-								ps.setString(2, maxBarcode);
-								ps.execute();
-								ps.close();
-							}
-						}
+						dataMap = new HashMap<String, String>();
+						dataMap.put("commodityId", commodityId);
+						dataMap.put("detailNo", detailNo);
+						dataMap.put("tanka", shousai.getTanka());
+						dataMap.put("site", "楽天");
+						dataMap.put("shop", shop);
+						tbl12Map.put(commodityId+detailNo, dataMap);
+						
+						dataMap = new HashMap<String, String>();
+						dataMap.put("commodityId", commodityId);
+						dataMap.put("productName", shousai.getShouhinmei());
+						String pirurl = "";
+						dataMap.put("pirurl", pirurl);
+						dataMap.put("date", date);
+						tbl11Map.put(commodityId, dataMap);
+						
+						dataMap = new HashMap<String, String>();
+						dataMap.put("bango", bango);
+						tbl16Map.put(bango, dataMap);
+						
+						updateTBLForStock(conn, tbl12Map, tbl11Map, tbl16Map);
+						
 					}
 				} else if (donkonFlg && donkonOyaFlg) {
 					List<RakutenDetailCsvBean> shousaiDonkonList = new ArrayList<RakutenDetailCsvBean>();
@@ -1651,6 +1704,10 @@ public class A1001Common {
 						}
 					}
 
+					Map<String, Map<String, String>> tbl11Map = new HashMap<String, Map<String, String>>();
+					Map<String, Map<String, String>> tbl12Map = new HashMap<String, Map<String, String>>();
+					Map<String, Map<String, String>> tbl16Map = new HashMap<String, Map<String, String>>();
+					Map<String, String> dataMap = null;
 					for (int k = 0; k < shousaiDonkonList.size(); k++) {
 						RakutenDetailCsvBean shousai = shousaiDonkonList.get(k);
 						j = 0;
@@ -1688,7 +1745,7 @@ public class A1001Common {
 						}
 
 						ps.executeUpdate();
-						
+
 						String bango = shousai.getShouhinbango();
 						String commodityId;
 						String detailNo;
@@ -1699,76 +1756,28 @@ public class A1001Common {
 							commodityId = bango.substring(0, bango.indexOf("-"));
 							detailNo = bango.substring(bango.indexOf("-"));
 						}
-						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, commodityId);
-						ps.setString(2, detailNo);
-						rs = ps.executeQuery();
-						int count = 0;
-						while (rs.next()) {
-							count = rs.getInt("COUNT");
-						}
-						rs.close();
-						ps.close();
-						if (0 == count) {
-							sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`) VALUES (?, ?, TRUE);";
-							
-						} else {
-							sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
-						}
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, commodityId);
-						ps.setString(2, detailNo);
-						ps.executeUpdate();
-						ps.close();
 						
-						if (0 == count) {
-							sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-							ps = conn.prepareStatement(sql);
-							ps.setString(1, commodityId);
-							ps.setString(2, "100001");
-							ps.setString(3, shousai.getShouhinmei());
-							ps.setString(4, shousai.getShouhinmei());
-							ps.setString(5, "");
-							ps.setString(6, "");
-							ps.setString(7, "");
-							String pirurl = "";
-							ps.setString(8, pirurl);
-							ps.setString(9, "");
-							ps.setString(10, "0");
-							ps.setString(11, date);
-							ps.setString(12, "kyo");
-							ps.setString(13, date);
-							ps.setString(14, "kyo");
-							ps.setString(15, "00");
-							ps.execute();
-							ps.close();
-							
-							String maxBarcode = null;
-							sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
-							ps = conn.prepareStatement(sql);
-							ps.setString(1, bango);
-							rs = ps.executeQuery();
-							while (rs.next()) {
-								count = rs.getInt("COUNT");
-							}
-							if (count == 0) {
-								sql = "SELECT MAX(BARCODE)+1 MAX_BARCODE FROM TBL00016";
-								ps = conn.prepareStatement(sql);
-								rs = ps.executeQuery();
-								while (rs.next()) {
-									maxBarcode = rs.getString("MAX_BARCODE");
-								}
-
-								sql = "INSERT INTO TBL00016 VALUES(?,?)";
-								ps = conn.prepareStatement(sql);
-								ps.setString(1,
-										bango);
-								ps.setString(2, maxBarcode);
-								ps.execute();
-								ps.close();
-							}
-						}
+						dataMap = new HashMap<String, String>();
+						dataMap.put("commodityId", commodityId);
+						dataMap.put("detailNo", detailNo);
+						dataMap.put("tanka", shousai.getTanka());
+						dataMap.put("site", "楽天");
+						dataMap.put("shop", shop);
+						tbl12Map.put(commodityId+detailNo, dataMap);
+						
+						dataMap = new HashMap<String, String>();
+						dataMap.put("commodityId", commodityId);
+						dataMap.put("productName", shousai.getShouhinmei());
+						String pirurl = "";
+						dataMap.put("pirurl", pirurl);
+						dataMap.put("date", date);
+						tbl11Map.put(commodityId, dataMap);
+						
+						dataMap = new HashMap<String, String>();
+						dataMap.put("bango", bango);
+						tbl16Map.put(bango, dataMap);
+						
+						updateTBLForStock(conn, tbl12Map, tbl11Map, tbl16Map);
 					}
 				}
 				String dateStr = "";
@@ -1849,15 +1858,16 @@ public class A1001Common {
 //					} else {
 //						shop = "";
 //					}
-					shop = orderList.get(i).getJuchubango().substring(0, orderList.get(i).getJuchubango().lastIndexOf("-"));
-					
+					shop = orderList.get(i).getJuchubango().substring(0,
+							orderList.get(i).getJuchubango().lastIndexOf("-"));
+
 					ps.setString(++j, shop);
 					ps.setString(++j, "");
 					if ("代金引換".equals(orderList.get(i).getHaisouhoho())) {
 						if (Long.valueOf(
 								orderList.get(i).getPointoriyogaku()) >= (Long.valueOf(orderList.get(i).getGokei()))) {
 							ps.setString(++j, "銀行振込");
-						}else {
+						} else {
 							ps.setString(++j, orderList.get(i).getKesaihouhou());
 						}
 					} else {
@@ -2059,6 +2069,10 @@ public class A1001Common {
 				int noukiday = 2;
 				if (!donkonFlg) {
 
+					Map<String, Map<String, String>> tbl11Map = new HashMap<String, Map<String, String>>();
+					Map<String, Map<String, String>> tbl12Map = new HashMap<String, Map<String, String>>();
+					Map<String, Map<String, String>> tbl16Map = new HashMap<String, Map<String, String>>();
+					Map<String, String> dataMap = null;
 					for (int k = 0; k < orderList.get(i).getShousaiList().size(); k++) {
 
 						RakutenDetailCsvBean shousai = orderList.get(i).getShousaiList().get(k);
@@ -2108,7 +2122,7 @@ public class A1001Common {
 						if (Utility.getNoukiDay(shousai.getNokijouho()) > noukiday) {
 							noukiday = Utility.getNoukiDay(shousai.getNokijouho());
 						}
-						
+
 						String commodityId;
 						String detailNo;
 						if (-1 == bango.indexOf("-")) {
@@ -2118,76 +2132,28 @@ public class A1001Common {
 							commodityId = bango.substring(0, bango.indexOf("-"));
 							detailNo = bango.substring(bango.indexOf("-"));
 						}
-						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, commodityId);
-						ps.setString(2, detailNo);
-						rs = ps.executeQuery();
-						int count = 0;
-						while (rs.next()) {
-							count = rs.getInt("COUNT");
-						}
-						rs.close();
-						ps.close();
-						if (0 == count) {
-							sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`) VALUES (?, ?, TRUE);";
-							
-						} else {
-							sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
-						}
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, commodityId);
-						ps.setString(2, detailNo);
-						ps.executeUpdate();
-						ps.close();
+						dataMap = new HashMap<String, String>();
+						dataMap.put("commodityId", commodityId);
+						dataMap.put("detailNo", detailNo);
+						dataMap.put("tanka", shousai.getTanka());
+						dataMap.put("site", "Yahoo");
+						dataMap.put("shop", shop);
+						tbl12Map.put(commodityId+detailNo, dataMap);
 						
-						if (0 == count) {
-							sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-							ps = conn.prepareStatement(sql);
-							ps.setString(1, commodityId);
-							ps.setString(2, "100001");
-							ps.setString(3, shousai.getShouhinmei());
-							ps.setString(4, shousai.getShouhinmei());
-							ps.setString(5, "");
-							ps.setString(6, "");
-							ps.setString(7, "");
-							String pirurl = "";
-							ps.setString(8, pirurl);
-							ps.setString(9, "");
-							ps.setString(10, "0");
-							ps.setString(11, date);
-							ps.setString(12, "kyo");
-							ps.setString(13, date);
-							ps.setString(14, "kyo");
-							ps.setString(15, "00");
-							ps.execute();
-							ps.close();
-							
-							String maxBarcode = null;
-							sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
-							ps = conn.prepareStatement(sql);
-							ps.setString(1, bango);
-							rs = ps.executeQuery();
-							while (rs.next()) {
-								count = rs.getInt("COUNT");
-							}
-							if (count == 0) {
-								sql = "SELECT MAX(BARCODE)+1 MAX_BARCODE FROM TBL00016";
-								ps = conn.prepareStatement(sql);
-								rs = ps.executeQuery();
-								while (rs.next()) {
-									maxBarcode = rs.getString("MAX_BARCODE");
-								}
-
-								sql = "INSERT INTO TBL00016 VALUES(?,?)";
-								ps = conn.prepareStatement(sql);
-								ps.setString(1,
-										bango);
-								ps.setString(2, maxBarcode);
-								ps.execute();
-								ps.close();
-							}
-						}
+						dataMap = new HashMap<String, String>();
+						dataMap.put("commodityId", commodityId);
+						dataMap.put("productName", shousai.getShouhinmei());
+						String pirurl = "";
+						dataMap.put("pirurl", pirurl);
+						dataMap.put("date", date);
+						tbl11Map.put(commodityId, dataMap);
+						
+						dataMap = new HashMap<String, String>();
+						dataMap.put("bango", bango);
+						tbl16Map.put(bango, dataMap);
+						
+						updateTBLForStock(conn, tbl12Map, tbl11Map, tbl16Map);
+						
 					}
 				} else if (donkonFlg && donkonOyaFlg) {
 					List<RakutenDetailCsvBean> shousaiDonkonList = new ArrayList<RakutenDetailCsvBean>();
@@ -2198,6 +2164,10 @@ public class A1001Common {
 						}
 					}
 
+					Map<String, Map<String, String>> tbl11Map = new HashMap<String, Map<String, String>>();
+					Map<String, Map<String, String>> tbl12Map = new HashMap<String, Map<String, String>>();
+					Map<String, Map<String, String>> tbl16Map = new HashMap<String, Map<String, String>>();
+					Map<String, String> dataMap = null;
 					for (int k = 0; k < shousaiDonkonList.size(); k++) {
 						RakutenDetailCsvBean shousai = shousaiDonkonList.get(k);
 						j = 0;
@@ -2235,7 +2205,7 @@ public class A1001Common {
 						}
 
 						ps.executeUpdate();
-						
+
 						String bango = shousai.getShouhinbango();
 						String commodityId;
 						String detailNo;
@@ -2246,76 +2216,27 @@ public class A1001Common {
 							commodityId = bango.substring(0, bango.indexOf("-"));
 							detailNo = bango.substring(bango.indexOf("-"));
 						}
-						sql = "SELECT count(*) COUNT FROM rakuten.tbl00012 WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, commodityId);
-						ps.setString(2, detailNo);
-						rs = ps.executeQuery();
-						int count = 0;
-						while (rs.next()) {
-							count = rs.getInt("COUNT");
-						}
-						rs.close();
-						ps.close();
-						if (0 == count) {
-							sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`) VALUES (?, ?, TRUE);";
-							
-						} else {
-							sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
-						}
-						ps = conn.prepareStatement(sql);
-						ps.setString(1, commodityId);
-						ps.setString(2, detailNo);
-						ps.executeUpdate();
-						ps.close();
+						dataMap = new HashMap<String, String>();
+						dataMap.put("commodityId", commodityId);
+						dataMap.put("detailNo", detailNo);
+						dataMap.put("tanka", shousai.getTanka());
+						dataMap.put("site", "Yahoo");
+						dataMap.put("shop", shop);
+						tbl12Map.put(commodityId+detailNo, dataMap);
 						
-						if (0 == count) {
-							sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-							ps = conn.prepareStatement(sql);
-							ps.setString(1, commodityId);
-							ps.setString(2, "100001");
-							ps.setString(3, shousai.getShouhinmei());
-							ps.setString(4, shousai.getShouhinmei());
-							ps.setString(5, "");
-							ps.setString(6, "");
-							ps.setString(7, "");
-							String pirurl = "";
-							ps.setString(8, pirurl);
-							ps.setString(9, "");
-							ps.setString(10, "0");
-							ps.setString(11, date);
-							ps.setString(12, "kyo");
-							ps.setString(13, date);
-							ps.setString(14, "kyo");
-							ps.setString(15, "00");
-							ps.execute();
-							ps.close();
-							
-							String maxBarcode = null;
-							sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
-							ps = conn.prepareStatement(sql);
-							ps.setString(1, bango);
-							rs = ps.executeQuery();
-							while (rs.next()) {
-								count = rs.getInt("COUNT");
-							}
-							if (count == 0) {
-								sql = "SELECT MAX(BARCODE)+1 MAX_BARCODE FROM TBL00016";
-								ps = conn.prepareStatement(sql);
-								rs = ps.executeQuery();
-								while (rs.next()) {
-									maxBarcode = rs.getString("MAX_BARCODE");
-								}
-
-								sql = "INSERT INTO TBL00016 VALUES(?,?)";
-								ps = conn.prepareStatement(sql);
-								ps.setString(1,
-										bango);
-								ps.setString(2, maxBarcode);
-								ps.execute();
-								ps.close();
-							}
-						}
+						dataMap = new HashMap<String, String>();
+						dataMap.put("commodityId", commodityId);
+						dataMap.put("productName", shousai.getShouhinmei());
+						String pirurl = "";
+						dataMap.put("pirurl", pirurl);
+						dataMap.put("date", date);
+						tbl11Map.put(commodityId, dataMap);
+						
+						dataMap = new HashMap<String, String>();
+						dataMap.put("bango", bango);
+						tbl16Map.put(bango, dataMap);
+						
+						updateTBLForStock(conn, tbl12Map, tbl11Map, tbl16Map);
 					}
 				}
 				String dateStr = "";
@@ -2351,7 +2272,7 @@ public class A1001Common {
 			conn.close();
 		}
 	}
-	
+
 	public void insertIntoPonpareOrderTbl(List<PonpareCsvBean> orderList) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -3114,7 +3035,7 @@ public class A1001Common {
 			for (int i = 0; i < orderList.size(); i++) {
 				int j = 0;
 				try {
-					
+
 					int count = 0;
 					sql = "SELECT COUNT(*) COUNT FROM common_order_tbl WHERE CHUMONBANGO = ?";
 					ps = conn.prepareStatement(sql);
@@ -3126,7 +3047,7 @@ public class A1001Common {
 					if (count > 0) {
 						sql = "UPDATE common_order_tbl SET BIKO = ?, UPDATE_TIME = ? , UPDATE_USER = ? WHERE CHUMONBANGO = ?";
 						ps = conn.prepareStatement(sql);
-						ps.setString(1,orderList.get(i).getKomento());
+						ps.setString(1, orderList.get(i).getKomento());
 						ps.setString(2, date);
 						ps.setString(3, "updater");
 						ps.setString(4, orderList.get(i).getJuchubango());
@@ -3261,7 +3182,7 @@ public class A1001Common {
 						ps.setString(++j, "");
 						ps.setString(++j, "0");
 						ps.executeUpdate();
-						
+
 						for (int k = 0; k < orderList.get(i).getShousaiList().size(); k++) {
 							OtherDetailCsvBean shousai = orderList.get(i).getShousaiList().get(k);
 
@@ -3275,7 +3196,7 @@ public class A1001Common {
 //									shouhinbango = shouhinbango.substring(0, shouhinbango.length() - 2);
 //								}
 //							}
-					
+
 							sql = "INSERT INTO common_order_detail_tbl VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);";
 							ps = conn.prepareStatement(sql);
 
@@ -3309,7 +3230,7 @@ public class A1001Common {
 							ps.setString(++j, "");
 
 							ps.executeUpdate();
-							
+
 							if (shouhinbango.indexOf("-") != -1) {
 								shouhinbango = shouhinbango.substring(0, shouhinbango.indexOf("-"));
 							}
@@ -3328,9 +3249,9 @@ public class A1001Common {
 								ps = conn.prepareStatement(sql);
 								ps.setString(1, date);
 								ps.setString(2, "updater");
-								ps.setString(3,shouhinbango);
+								ps.setString(3, shouhinbango);
 								ps.setString(4, "100001");
-								
+
 								ps.executeUpdate();
 							} else {
 								sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -3353,7 +3274,7 @@ public class A1001Common {
 								ps.setString(15, "00");
 								ps.execute();
 							}
-							
+
 							count = 0;
 							sql = "SELECT COUNT(*) COUNT FROM TBL00012 WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 							ps = conn.prepareStatement(sql);
@@ -3372,14 +3293,14 @@ public class A1001Common {
 								ps = conn.prepareStatement(sql);
 								ps.setString(1, date);
 								ps.setString(2, "updater");
-								ps.setString(3,shouhinbango);
+								ps.setString(3, shouhinbango);
 								ps.setString(4, detailNo);
-								
+
 								ps.executeUpdate();
 							} else {
 								sql = SqlUtility.getSql("SQLR0001012");
 								ps = conn.prepareStatement(sql);
-								ps.setString(1,	shouhinbango);
+								ps.setString(1, shouhinbango);
 								ps.setString(2, detailNo);
 								ps.setString(3, "");
 								ps.setString(4, "");
@@ -3398,16 +3319,17 @@ public class A1001Common {
 								ps.setString(17, null);
 								ps.setString(18, "");
 								ps.setString(19, "");
+								ps.setString(20, orderList.get(i).getPlatform());
+								ps.setString(21, orderList.get(i).getShopname());
 								ps.execute();
 							}
-							
-							
+
 							String maxBarcode = null;
 							sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
 							ps = conn.prepareStatement(sql);
 							ps.setString(1, shouhinbango + detailNo);
 							rs = ps.executeQuery();
-							
+
 							count = 0;
 							while (rs.next()) {
 								count = rs.getInt("COUNT");
@@ -3441,7 +3363,7 @@ public class A1001Common {
 							ps = conn.prepareStatement(sql);
 							ps.setString(1, date);
 							ps.setString(2, "updater");
-							ps.setString(3,orderList.get(i).getJuchubango());
+							ps.setString(3, orderList.get(i).getJuchubango());
 							ps.executeUpdate();
 						} else {
 							sql = "INSERT INTO TBL00027 VALUES(?,?,?,?,?,?)";
@@ -3460,7 +3382,7 @@ public class A1001Common {
 					System.out.println(orderList.get(i).getJuchubango() + "已存在，不再添加");
 					continue;
 				}
-				
+
 			}
 
 			// commit
@@ -3475,7 +3397,7 @@ public class A1001Common {
 			conn.close();
 		}
 	}
-	
+
 	public List<OrderList> getOrderListByBango(List<String> juchubangoList) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -3691,9 +3613,10 @@ public class A1001Common {
 			sql += " AND left(REPLACE(CHUMONNICHIJI,'-',''),8)<= " + kikanEnd.replace("-", "");
 
 			sql += " ORDER BY str_to_date(T1.CHUMONNICHIJI,'%Y-%m-%d %H:%i:%s')";
-			
+
 			if (searchKeywordCondition) {
-				sql = sql.replace("common_order_detail_tbl", "(select * from common_order_detail_tbl group by JUCHUBANGO having count(*) =1)");
+				sql = sql.replace("common_order_detail_tbl",
+						"(select * from common_order_detail_tbl group by JUCHUBANGO having count(*) =1)");
 			}
 
 			ps = conn.prepareStatement(sql);
@@ -4239,7 +4162,7 @@ public class A1001Common {
 
 		return orderList;
 	}
-	
+
 	public List<OtherCsvBean> getOrderListFromCsvOther(File csvFile) throws Exception {
 		// 从CSV文件获取订单信息
 		List<String[]> csvList = Utility.readCsvFile(csvFile, true);
