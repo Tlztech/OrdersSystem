@@ -1363,6 +1363,7 @@ public class OrderCommon {
 					ShouhinStsBean shohinsts = shouhinStsBeanList.get(j);
 					if (shohinsts.getShouhinbango().equals(shohinbango)) {
 						thisShohin = shohinsts;
+						break;
 					}
 				}
 				// 检查这个商品编号里面有没有对应的这单的信息
@@ -4178,10 +4179,13 @@ public class OrderCommon {
 
 	public List<String> getUnsochuOrderList(OrderInfoBean orderInfoBean, List<String> bangoList) throws Exception {
 
+		System.out.println("getUnsochuOrderList>>>new OrderCommon()>>>"+ Utility.getDateTime());
 		OrderCommon orderCommon = new OrderCommon();
 		List<ShouhinStsBean> shouhinStsBeanList = orderInfoBean.getShouhinStsBeanList();
 		List<CommonOrderBean> commonOrderBeanList = orderInfoBean.getCommonOrderBeanList();
 		List<String> shoriList = new ArrayList<String>();
+		
+		System.out.println("getUnsochuOrderList>>>for (String orderNo : bangoList)>>>"+ Utility.getDateTime());
 		for (String orderNo : bangoList) {
 			CommonOrderBean thisOrder = null;
 			for (CommonOrderBean order : commonOrderBeanList) {
@@ -4196,9 +4200,10 @@ public class OrderCommon {
 			// -1.運送中
 			// 1.発送待ち
 			List<Integer> nowStsList = new ArrayList<Integer>();
-
+			
+//			System.out.println("  getUnsochuOrderList>>>orderCommon.getMachiListAll>>>"+ Utility.getDateTime());
 			List<String[]> hasomachiArr = orderCommon.getMachiListAll(thisOrder, shouhinStsBeanList, "2", "7");
-
+//			System.out.println("  getUnsochuOrderList>>>for (String[] hasomachi : hasomachiArr)>>>"+ Utility.getDateTime());
 			for (String[] hasomachi : hasomachiArr) {
 				if ("入荷待ち".equals(hasomachi[2]) && !orderCommon.isNyukakano(hasomachi[0])) {
 					nowStsList.add(-10);
@@ -4214,6 +4219,7 @@ public class OrderCommon {
 					nowStsList.add(1);
 				}
 			}
+//			System.out.println("  getUnsochuOrderList>>>for (String[] hasomachi : hasomachiArr)>>>"+ Utility.getDateTime());
 			int nowSts = 2;
 			for (Integer sts : nowStsList) {
 				if (sts < nowSts) {
@@ -4236,6 +4242,8 @@ public class OrderCommon {
 			// }
 
 		}
+//		System.out.println("getUnsochuOrderList>>>for (String orderNo : bangoList)>>>"+ Utility.getDateTime());
+//		System.out.println("getUnsochuOrderList>>>for (String orderNo : shoriList)>>>"+ Utility.getDateTime());
 		List<String> shoriList1 = new ArrayList<String>();
 		for (String orderNo : shoriList) {
 			boolean ariFlg = false;
@@ -4248,6 +4256,7 @@ public class OrderCommon {
 				shoriList1.add(orderNo);
 			}
 		}
+//		System.out.println("getUnsochuOrderList>>>for (String orderNo : shoriList)>>>"+ Utility.getDateTime());
 		return shoriList1;
 	}
 
@@ -4330,10 +4339,12 @@ public class OrderCommon {
 
 	public List<String> getNyukachuList(OrderInfoBean orderInfoBean, List<String> bangoList) throws Exception {
 
+		System.out.println("getNyukachuList>>>new OrderCommon()>>>"+ Utility.getDateTime());
 		OrderCommon orderCommon = new OrderCommon();
 		List<ShouhinStsBean> shouhinStsBeanList = orderInfoBean.getShouhinStsBeanList();
 		List<CommonOrderBean> commonOrderBeanList = orderInfoBean.getCommonOrderBeanList();
 		List<String> shoriList = new ArrayList<String>();
+		System.out.println("getNyukachuList>>>for (String orderNo : bangoList)>>>"+ Utility.getDateTime());
 		for (String orderNo : bangoList) {
 			CommonOrderBean thisOrder = null;
 			for (CommonOrderBean order : commonOrderBeanList) {
@@ -4349,8 +4360,9 @@ public class OrderCommon {
 			// 1.発送待ち
 			List<Integer> nowStsList = new ArrayList<Integer>();
 
+//			System.out.println("  getNyukachuList>>>new OrderCommon()>>>"+ Utility.getDateTime());
 			List<String[]> hasomachiArr = orderCommon.getMachiListAll(thisOrder, shouhinStsBeanList, "2", "7");
-
+//			System.out.println("  getNyukachuList>>>for (String[] hasomachi : hasomachiArr)>>>"+ Utility.getDateTime());
 			for (String[] hasomachi : hasomachiArr) {
 				if ("入荷待ち".equals(hasomachi[2]) && !orderCommon.isNyukakano(hasomachi[0])) {
 					nowStsList.add(-10);
@@ -4366,6 +4378,7 @@ public class OrderCommon {
 					nowStsList.add(1);
 				}
 			}
+//			System.out.println("  getNyukachuList>>>for (String[] hasomachi : hasomachiArr)>>>"+ Utility.getDateTime());
 			int nowSts = 2;
 			for (Integer sts : nowStsList) {
 				if (sts < nowSts) {
@@ -4390,6 +4403,9 @@ public class OrderCommon {
 			// }
 
 		}
+//		System.out.println("getNyukachuList>>>for (String orderNo : bangoList)>>>"+ Utility.getDateTime());
+		
+//		System.out.println("getNyukachuList>>>for (String orderNo : shoriList)>>>"+ Utility.getDateTime());
 		List<String> shoriList1 = new ArrayList<String>();
 		for (String orderNo : shoriList) {
 			boolean ariFlg = false;
@@ -4402,6 +4418,7 @@ public class OrderCommon {
 				shoriList1.add(orderNo);
 			}
 		}
+		System.out.println("getNyukachuList>>>for (String orderNo : shoriList)>>>"+ Utility.getDateTime());
 		return shoriList1;
 	}
 
@@ -4485,17 +4502,21 @@ public class OrderCommon {
 
 	public List<String> getNyukamachiList(OrderInfoBean orderInfoBean, List<String> bangoList) throws Exception {
 
+		System.out.println("getNyukamachiList>>>new OrderCommon()>>>"+ Utility.getDateTime());
 		OrderCommon orderCommon = new OrderCommon();
 		List<ShouhinStsBean> shouhinStsBeanList = orderInfoBean.getShouhinStsBeanList();
 		List<CommonOrderBean> commonOrderBeanList = orderInfoBean.getCommonOrderBeanList();
 		List<String> shoriList = new ArrayList<String>();
+		System.out.println("getNyukamachiList>>>for (String orderNo : bangoList)>>>"+ Utility.getDateTime());
 		for (String orderNo : bangoList) {
 			CommonOrderBean thisOrder = null;
+//			System.out.println("  getNyukamachiList>>>for (CommonOrderBean order : commonOrderBeanList)>>>"+ Utility.getDateTime());
 			for (CommonOrderBean order : commonOrderBeanList) {
 				if (order.getJuchubango().equals(orderNo)) {
 					thisOrder = order;
 				}
 			}
+//			System.out.println("  getNyukamachiList>>>for (CommonOrderBean order : commonOrderBeanList)>>>"+ Utility.getDateTime());
 			// -10.入荷不可
 			// -7.入荷待ち
 			// -5.入荷中
@@ -4503,9 +4524,11 @@ public class OrderCommon {
 			// -1.運送中
 			// 1.発送待ち
 			List<Integer> nowStsList = new ArrayList<Integer>();
-
+			
+//			System.out.println("  getNyukamachiList>>>orderCommon.getMachiListAll>>>"+ Utility.getDateTime());
 			List<String[]> hasomachiArr = orderCommon.getMachiListAll(thisOrder, shouhinStsBeanList, "2", "7");
-
+			
+//			System.out.println("  getNyukamachiList>>>for (String[] hasomachi : hasomachiArr)>>>"+ Utility.getDateTime());
 			for (String[] hasomachi : hasomachiArr) {
 				if ("入荷待ち".equals(hasomachi[2]) && !orderCommon.isNyukakano(hasomachi[0])) {
 					nowStsList.add(-10);
@@ -4521,13 +4544,16 @@ public class OrderCommon {
 					nowStsList.add(1);
 				}
 			}
+//			System.out.println("  getNyukamachiList>>>for (String[] hasomachi : hasomachiArr)>>>"+ Utility.getDateTime());
 			int nowSts = 2;
+//			System.out.println("  getNyukamachiList>>>for (Integer sts : nowStsList)>>>"+ Utility.getDateTime());
 			for (Integer sts : nowStsList) {
 				if (sts < nowSts) {
 					nowSts = sts;
 				}
 			}
-
+//			System.out.println("  getNyukamachiList>>>for (Integer sts : nowStsList)>>>"+ Utility.getDateTime());
+			
 			if (-10 == nowSts) {
 				shoriList.add(orderNo);
 			} else if (-7 == nowSts) {
@@ -4544,36 +4570,47 @@ public class OrderCommon {
 			// }
 
 		}
+//		System.out.println("getNyukamachiList>>>for (String orderNo : bangoList)>>>"+ Utility.getDateTime());
 		List<String> shoriList1 = new ArrayList<String>();
+//		System.out.println("getNyukamachiList>>>for (String orderNo : shoriList)>>>"+ Utility.getDateTime());
 		for (String orderNo : shoriList) {
 			boolean ariFlg = false;
+//			System.out.println("  getNyukamachiList>>>for (String shoribango : shoriList1)>>>"+ Utility.getDateTime());
 			for (String shoribango : shoriList1) {
 				if (shoribango.equals(orderNo)) {
 					ariFlg = true;
 				}
 			}
+//			System.out.println("  getNyukamachiList>>>for (String shoribango : shoriList1)>>>"+ Utility.getDateTime());
 			if (!ariFlg) {
 				shoriList1.add(orderNo);
 			}
 		}
+		System.out.println("getNyukamachiList>>>for (String orderNo : shoriList)>>>"+ Utility.getDateTime());
 		return shoriList1;
 	}
 
 	public List<String> getOkureList(OrderInfoBean orderInfoBean) throws Exception {
+		System.out.println("getOkureList>>>getHasomachiYoteibiariList>>>"+ Utility.getDateTime());
 		List<String> bangoList = getHasomachiYoteibiariList();
+		System.out.println("getOkureList>>>new OrderCommon()>>>"+ Utility.getDateTime());
 		OrderCommon orderCommon = new OrderCommon();
 
 		List<ShouhinStsBean> shouhinStsBeanList = orderInfoBean.getShouhinStsBeanList();
 		List<CommonOrderBean> commonOrderBeanList = orderInfoBean.getCommonOrderBeanList();
 		List<String> okureList = new ArrayList<String>();
 
+		System.out.println("getOkureList>>>for (String orderNo : bangoList)>>>"+ Utility.getDateTime());
 		for (String orderNo : bangoList) {
 			CommonOrderBean thisOrder = null;
+//			System.out.println("  getOkureList>>>for (CommonOrderBean order : commonOrderBeanList)>>>"+ Utility.getDateTime());
 			for (CommonOrderBean order : commonOrderBeanList) {
 				if (order.getJuchubango().equals(orderNo)) {
 					thisOrder = order;
+					break;
 				}
 			}
+//			System.out.println("  getOkureList>>>for (CommonOrderBean order : commonOrderBeanList)>>>"+ Utility.getDateTime());
 			// -10.入荷不可
 			// -7.入荷待ち
 			// -5.入荷中
@@ -4582,8 +4619,10 @@ public class OrderCommon {
 			// 1.発送待ち
 			List<Integer> nowStsList = new ArrayList<Integer>();
 
+//			System.out.println("getOkureList>>>getMachiListAll>>>"+ Utility.getDateTime());
 			List<String[]> hasomachiArr = orderCommon.getMachiListAll(thisOrder, shouhinStsBeanList, "2", "7");
 
+//			System.out.println("  getOkureList>>>for (String[] hasomachi : hasomachiArr)>>>"+ Utility.getDateTime());
 			for (String[] hasomachi : hasomachiArr) {
 				if ("入荷待ち".equals(hasomachi[2]) && !orderCommon.isNyukakano(hasomachi[0])) {
 					nowStsList.add(-10);
@@ -4599,12 +4638,16 @@ public class OrderCommon {
 					nowStsList.add(1);
 				}
 			}
+//			System.out.println("  getOkureList>>>for (String[] hasomachi : hasomachiArr)>>>"+ Utility.getDateTime());
+//			System.out.println("  getOkureList>>>for (Integer sts : nowStsList)>>>"+ Utility.getDateTime());
 			int nowSts = 2;
 			for (Integer sts : nowStsList) {
 				if (sts < nowSts) {
 					nowSts = sts;
+					break;
 				}
 			}
+//			System.out.println("  getOkureList>>>for (Integer sts : nowStsList)>>>>>>"+ Utility.getDateTime());
 			if (!Utility.isEmptyString(thisOrder.getHasoyakusokubi()) && -10 != nowSts) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				int betweenDays = Utility.daysBetween(new Date(), sdf.parse(thisOrder.getHasoyakusokubi()));
@@ -4613,6 +4656,7 @@ public class OrderCommon {
 				}
 			}
 		}
+		System.out.println("getOkureList>>>for (String orderNo : bangoList)>>>>>>"+ Utility.getDateTime());
 		return okureList;
 	}
 

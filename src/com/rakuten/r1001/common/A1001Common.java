@@ -1270,6 +1270,7 @@ public class A1001Common {
 			sql = "SELECT count(*) COUNT FROM rakuten.tbl00011 WHERE `COMMODITY_ID`=? and`CATEGORY_ID`='100001';";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, entry.getValue().get("commodityId"));
+			rs = ps.executeQuery();
 			count = 0;
 			while (rs.next()) {
 				count = rs.getInt("COUNT");
