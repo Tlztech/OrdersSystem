@@ -35,7 +35,7 @@ public class UpdateLeft2Listener implements ServletContextListener {
 		try {
 			// 设置任务计划，启动和间隔时间(每隔24(24*60*60*1000)小时触发一次，即凌晨0点)
 
-			iTimer.schedule(myTask, 0, 40 * 60 * 1000);
+//			iTimer.schedule(myTask, 0, 40 * 60 * 1000);
 
 		} catch (Exception e) {
 
