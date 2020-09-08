@@ -36,7 +36,7 @@ public class A06010206Action extends BaseAction {
 		setTitle("V060102:添加发货单");
 	}
 
-	protected void isValidated() throws Exception {
+	protected void isValidated_SourceVersion() throws Exception {
 		String commodityId = "";
 		String detailNo = "";
 		if (Utility.isEmptyString(kosu)) {
@@ -94,6 +94,28 @@ public class A06010206Action extends BaseAction {
 				conn.close();
 			}
 
+		}
+
+	}
+	
+	protected void isValidated() throws Exception {
+		String commodityId = "";
+		String detailNo = "";
+		if (Utility.isEmptyString(kosu)) {
+			kosu = "1";
+		}
+
+		if (shouhinbango.indexOf("-") > 0) {
+			commodityId = shouhinbango.substring(0, shouhinbango.indexOf("-"));
+			detailNo = shouhinbango.substring(shouhinbango.indexOf("-"));
+		} else  {
+			commodityId = shouhinbango;
+			detailNo = "-0-0";
+		}
+		CheckCommodityAp checkCommodityAp = new CheckCommodityAp();
+		if (!checkCommodityAp.execute(commodityId, detailNo)) {
+			result = "false";
+			result += "&%&商品编号或条形码不存在！";
 		}
 
 	}

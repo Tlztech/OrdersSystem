@@ -44,12 +44,13 @@ public class A06010204Action extends BaseAction {
 						commodityIdList.get(i).indexOf("-"));
 			} else {
 				commId = commodityIdList.get(i);
+				detailNo = "-0-0";
 			}
 			GetCommodityPicUrlAp getCommodityPicUrlAp = new GetCommodityPicUrlAp();
 			String picUrl = getCommodityPicUrlAp.execute(commId, detailNo);
 
 			CommodityList commodity = new CommodityList();
-			if (Utility.isEmptyString(detailNo)) {
+			if ("-0-0".equals(detailNo)) {
 				commodity.setCommodityId(commId);
 			} else {
 				commodity.setCommodityId(commId + detailNo);
@@ -117,7 +118,7 @@ public class A06010204Action extends BaseAction {
 				detailNo = commodityId.substring(commodityId.indexOf("-"));
 			} else {
 				commId = commodityId;
-				detailNo = "";
+				detailNo = "-0-0";
 			}
 			CheckCommodityAp checkCommodityAp = new CheckCommodityAp();
 			if (!checkCommodityAp.execute(commId, detailNo)) {
