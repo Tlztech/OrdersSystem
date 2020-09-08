@@ -145,13 +145,14 @@ public class A14010105Action extends BaseAction {
 			if (stockbean.getStock_jp_kano() > 0) {
 				stock = stockbean.getStock_jp_kano();
 				nokiId = Utility.getNokiId(shop, 1);
-			} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
+//			} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
+			} else if (stockbean.getStock_unsochu_kano() > 0) {
 				if (stockbean.getStock_unsochu_kano() > 0) {
 					stock = stock + stockbean.getStock_unsochu_kano();
 				}
-				if (stockbean.getStock_sh_kano() > 0) {
-					stock = stock + stockbean.getStock_sh_kano();
-				}
+//				if (stockbean.getStock_sh_kano() > 0) {
+//					stock = stock + stockbean.getStock_sh_kano();
+//				}
 				nokiId = Utility.getNokiId(shop, 3);
 			} else {
 				stock = 0;
@@ -210,13 +211,14 @@ public class A14010105Action extends BaseAction {
 				if (stockbean.getStock_jp_kano() > 0) {
 					stock = stockbean.getStock_jp_kano();
 					nokiId = Utility.getNokiId(shop, 1);
-				} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
+//				} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
+				} else if (stockbean.getStock_unsochu_kano() > 0) {
 					if (stockbean.getStock_unsochu_kano() > 0) {
 						stock = stock + stockbean.getStock_unsochu_kano();
 					}
-					if (stockbean.getStock_sh_kano() > 0) {
-						stock = stock + stockbean.getStock_sh_kano();
-					}
+//					if (stockbean.getStock_sh_kano() > 0) {
+//						stock = stock + stockbean.getStock_sh_kano();
+//					}
 					nokiId = Utility.getNokiId(shop, 3);
 				} else {
 					stock = 0;

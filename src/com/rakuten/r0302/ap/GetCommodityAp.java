@@ -58,8 +58,8 @@ public class GetCommodityAp {
 				sql += " AND T1.JAPANESE_NAME LIKE  '%" + japaneseName + "%'";
 			}
 
-			sql += " AND STOCK_SH >= " + stockShStart;
-			sql += " AND STOCK_SH <= " + stockShEnd;
+//			sql += " AND STOCK_SH >= " + stockShStart;
+//			sql += " AND STOCK_SH <= " + stockShEnd;
 			sql += " AND STOCK_JP >= " + stockJpStart;
 			sql += " AND STOCK_JP <= " + stockJpEnd;
 

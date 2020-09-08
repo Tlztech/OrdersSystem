@@ -128,13 +128,14 @@ public class A16010102Action extends BaseAction {
 					int stock = 0;
 					if (stockbean.getStock_jp_kano() > 0) {
 						stock = stockbean.getStock_jp_kano();
-					} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
+//					} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
+					} else if (stockbean.getStock_unsochu_kano() > 0) {
 						if (stockbean.getStock_unsochu_kano() > 0) {
 							stock = stock + stockbean.getStock_unsochu_kano();
 						}
-						if (stockbean.getStock_sh_kano() > 0) {
-							stock = stock + stockbean.getStock_sh_kano();
-						}
+//						if (stockbean.getStock_sh_kano() > 0) {
+//							stock = stock + stockbean.getStock_sh_kano();
+//						}
 					} else {
 						stock = 0;
 					}

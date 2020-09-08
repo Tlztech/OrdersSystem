@@ -563,32 +563,32 @@ public class OrderCommon {
 				}
 				// 如果不够 从上海库存中检索
 
-				for (int k = 0; k < stockShListStatic.size(); k++) {
-					if (kosu > 0) {
-						if (stockShListStatic.get(k)[0].equals(shouhinbango)) {
-							// 上海库存中数
-							int stocksh = Integer.valueOf(stockShListStatic.get(k)[1]);
-							// 上海库存中有
-							if (stocksh > kosu) {
-								shohinStsInfoBean.setHoryukosuSh(String.valueOf(kosu));
-								// 设置上海库存剩余个数
-								shouhinStsBean.setNokorikosuSh(
-										String.valueOf(Integer.valueOf(stockShListStatic.get(k)[1]) - kosu));
-								stockShListStatic.get(k)[1] = shouhinStsBean.getNokorikosuSh();
-								// 剩余需求个数
-								kosu = 0;
-							} else if (stocksh > 0) {
-								// 有库存但是不够
-								shohinStsInfoBean.setHoryukosuSh(String.valueOf(stocksh));
-								// 设置上海库存剩余个数
-								shouhinStsBean.setNokorikosuSh("0");
-								stockShListStatic.get(k)[1] = "0";
-								// 剩余需求个数
-								kosu = kosu - stocksh;
-							}
-						}
-					}
-				}
+//				for (int k = 0; k < stockShListStatic.size(); k++) {
+//					if (kosu > 0) {
+//						if (stockShListStatic.get(k)[0].equals(shouhinbango)) {
+//							// 上海库存中数
+//							int stocksh = Integer.valueOf(stockShListStatic.get(k)[1]);
+//							// 上海库存中有
+//							if (stocksh > kosu) {
+//								shohinStsInfoBean.setHoryukosuSh(String.valueOf(kosu));
+//								// 设置上海库存剩余个数
+//								shouhinStsBean.setNokorikosuSh(
+//										String.valueOf(Integer.valueOf(stockShListStatic.get(k)[1]) - kosu));
+//								stockShListStatic.get(k)[1] = shouhinStsBean.getNokorikosuSh();
+//								// 剩余需求个数
+//								kosu = 0;
+//							} else if (stocksh > 0) {
+//								// 有库存但是不够
+//								shohinStsInfoBean.setHoryukosuSh(String.valueOf(stocksh));
+//								// 设置上海库存剩余个数
+//								shouhinStsBean.setNokorikosuSh("0");
+//								stockShListStatic.get(k)[1] = "0";
+//								// 剩余需求个数
+//								kosu = kosu - stocksh;
+//							}
+//						}
+//					}
+//				}
 				// 如果不够 从进货途中中检索
 
 				for (int k = 0; k < nyukachuListStatic.size(); k++) {
