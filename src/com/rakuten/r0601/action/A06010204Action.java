@@ -91,7 +91,7 @@ public class A06010204Action extends BaseAction {
 		setTitle("V060102:添加发货单");
 	}
 
-	protected void isValidated() throws Exception {
+	protected void isValidated_SourceVersion() throws Exception {
 		HSSFRow row = null;
 		HSSFSheet sheet = null;
 		HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(filepath));
@@ -129,6 +129,40 @@ public class A06010204Action extends BaseAction {
 			kosuList.add(kosu);
 
 			i++;
+		}
+
+		for (int j = 0; j < kosuList.size(); j++) {
+			if (Utility.isEmptyString(kosuList.get(j))) {
+				addError(null, "商品编号" + commodityIdList.get(j) + "数量为空！");
+			}
+		}
+	}
+	
+	protected void isValidated() throws Exception {
+		
+		List<String[]> csvList = Utility.readCsvFile(filepath,false);
+		
+		for (String[] record : csvList) {
+			String commodityId = record[0];
+			String kosu = record[1];
+
+			String commId = "";
+			String detailNo = "";
+
+			if (commodityId.indexOf("-") > 0) {
+				commId = commodityId.substring(0, commodityId.indexOf("-"));
+				detailNo = commodityId.substring(commodityId.indexOf("-"));
+			} else {
+				commId = commodityId;
+				detailNo = "-0-0";
+			}
+			CheckCommodityAp checkCommodityAp = new CheckCommodityAp();
+			if (!checkCommodityAp.execute(commId, detailNo)) {
+				addError(null, "商品编号" + commodityId + "不存在！");
+			}
+
+			commodityIdList.add(commodityId);
+			kosuList.add(kosu);
 		}
 
 		for (int j = 0; j < kosuList.size(); j++) {

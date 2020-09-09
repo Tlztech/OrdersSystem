@@ -316,6 +316,9 @@
 			<result name="input">V060102.jsp</result>
 		</action>
 		<action name="A06010204" class="com.rakuten.r0601.action.A06010204Action">
+			<interceptor-ref name="defaultStack">
+				<param name="fileUpload.allowedExtensions">csv</param>
+			</interceptor-ref>
 			<result name="success">V060102.jsp</result>
 			<result name="input">V060102.jsp</result>
 		</action>
