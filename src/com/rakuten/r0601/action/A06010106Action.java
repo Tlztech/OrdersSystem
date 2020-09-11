@@ -68,6 +68,7 @@ public class A06010106Action extends BaseAction {
 					detailNo1 = commodityId.substring(commodityId.indexOf("-"));
 				} else {
 					commodityId1 = commodityId;
+					detailNo1 = "-0-0";
 				}
 
 				sql = "UPDATE TBL00012 SET STOCK_JP = STOCK_JP + ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
