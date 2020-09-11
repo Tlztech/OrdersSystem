@@ -383,6 +383,9 @@ public class YahooShop {
 				updateXml.append("&");
 				updateXml.append("quantity=");
 				updateXml.append(quantity);
+				updateXml.append("&");
+				updateXml.append("allow_overdraft=");
+				updateXml.append(1);
 
 				URL url = new URL(URL_SETSTOCK);
 				String xml_SetStockResult = getXml(shopName, url, updateXml.toString());
