@@ -2,6 +2,7 @@ package com.rakuten.r1302.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r1002.common.A1002Common;
@@ -24,8 +25,15 @@ public class A13020114Action extends BaseAction {
 		List<String> shoriList = new ArrayList<String>();
 		List<String[]> shoriList2 = new ArrayList<String[]>();
 		List<String> msgList = null;
+		List<String> dList = a130201Common.getHaneimachiList("3");
 		if ("0".equals(outtype)) {
-			for (OrderList order : f130201.getOrderList()) {
+			List<OrderList> oList = f130201.getOrderList().stream().filter(n->dList.contains(n.getChumonbango())).collect(Collectors.toList());
+			if (oList.size() == f130201.getOrderList().size()) {
+				
+			} else {
+				addError(null, "注文の一部を「设置反应完毕」に設定できません、反映状態で検索して確認ください");
+			}
+			for (OrderList order : oList) {
 				if (order.isIschecked()) {
 
 					shoriList.add(order.getChumonbango());
@@ -36,12 +44,19 @@ public class A13020114Action extends BaseAction {
 
 			}
 
-			a130201Common.setHaneizumi(shoriList);
+			a130201Common.setHaneiToComplete(shoriList);
 
 			setSuccessFlg("1");
 		} else if ("1".equals(outtype)) {
 			List<OrderList> orderList = (List<OrderList>) getSessionAttribute("heneimachiList");
 
+			List<OrderList> oList = orderList.stream().filter(n->dList.contains(n.getChumonbango())).collect(Collectors.toList());
+			if (oList.size() == orderList.size()) {
+				
+			} else {
+				addError(null, "注文の一部を「设置反应完毕」に設定できません、反映状態で検索して確認ください");
+			}
+			
 			List<String> yahooOrderList = new ArrayList<String>();
 			List<String> denaOrderList = new ArrayList<String>();
 			List<String> yahuoku = new ArrayList<String>();
@@ -49,7 +64,7 @@ public class A13020114Action extends BaseAction {
 			List<String> qoo10OrderList = new ArrayList<String>();
 			List<String> otherOrderList = new ArrayList<String>();
 
-			for (OrderList order : orderList) {
+			for (OrderList order : oList) {
 				if ("楽天".equals(order.getSite())) {
 					rakutenOrderList.add(order.getChumonbango());
 				} else if ("Yahoo".equals(order.getSite())) {
@@ -69,25 +84,25 @@ public class A13020114Action extends BaseAction {
 			}
 			if ("1".equals(tenpobetsu)) {
 				shoriList = rakutenOrderList;
-				a130201Common.setHaneizumi(shoriList);
+				a130201Common.setHaneiToComplete(shoriList);
 			} else if ("2".equals(tenpobetsu)) {
 				shoriList = yahooOrderList;
-				a130201Common.setHaneizumi(shoriList);
+				a130201Common.setHaneiToComplete(shoriList);
 			} else if ("3".equals(tenpobetsu)) {
 				shoriList = denaOrderList;
-				a130201Common.setHaneizumi(shoriList);
+				a130201Common.setHaneiToComplete(shoriList);
 			} else if ("4".equals(tenpobetsu)) {
 				shoriList = yahuoku;
-				a130201Common.setHaneizumi(shoriList);
+				a130201Common.setHaneiToComplete(shoriList);
 			}else if ("5".equals(tenpobetsu)) {
 				shoriList = ponpaOrderList;
-				a130201Common.setHaneizumi(shoriList);
+				a130201Common.setHaneiToComplete(shoriList);
 			}else if ("6".equals(tenpobetsu)) {
 				shoriList = qoo10OrderList;
-				a130201Common.setHaneizumi(shoriList);
+				a130201Common.setHaneiToComplete(shoriList);
 			}else if ("7".equals(tenpobetsu)) {
 				shoriList = otherOrderList;
-				a130201Common.setHaneizumi(shoriList);
+				a130201Common.setHaneiToComplete(shoriList);
 			}
 
 			setSuccessFlg("1");

@@ -335,8 +335,12 @@ a {
             </tr>
             <tr>
                 <td class="td_bg">店舗別</td>
-                <td class="td_bg" colspan="3">
+                <td class="td_bg">
                     <s:select list="#request.shopmap" name="f130201.tenpo"/>
+                </td>
+				<td class="td_bg">反映状態</td>
+                <td class="td_bg">
+                    <s:select list="#{'0':'CSV未ダウンロード','1':'CSVダウンロードした','3':'反映済みに設定した','2':'设置反应完毕'}" name="f130201.haneists"/>
                 </td>
             </tr>
         </table>
@@ -348,10 +352,10 @@ a {
                     <s:select list="#{'0':'選択した注文','1':'すべての注文'}" name="f130201.outtype"/>
                    
                     <input type="button" style="height:30px" onclick="if(confirm('反映済みに設定しますか')){actionSubmit('A13020106')};" value="反映済みに設定"/>
-                    <input type="button" style="height:30px" onclick="actionSubmit('A13020112')" value="下载雅虎未反应csv"/>
-                    <input type="button" style="height:30px" onclick="actionSubmit('A13020113')" value="下载乐天未反应csv"/>
-                    <input type="button" style="height:30px" onclick="actionSubmit('A13020114')" value="设置反应完毕"/>
-                    <input type="button" style="height:30px" onclick="actionSubmit('A13020115')" value="下载其他平台csv"/>
+                    <input type="button" style="height:30px" onclick="actionSubmit('A13020112');" value="下载雅虎未反应csv"/>
+                    <input type="button" style="height:30px" onclick="actionSubmit('A13020113');" value="下载乐天未反应csv"/>
+                    <input type="button" style="height:30px" onclick="actionSubmit('A13020114');" value="设置反应完毕"/>
+                    <input type="button" style="height:30px" onclick="actionSubmit('A13020115');" value="下载其他平台csv"/>
                 </td>
             </tr>
         </table>

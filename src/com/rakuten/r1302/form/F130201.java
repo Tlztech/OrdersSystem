@@ -39,6 +39,8 @@ public class F130201 implements Serializable {
 	private String qoo10Count = null;
 	private String otherCount = null;
 	
+	private String haneists = "0";
+	
 	/**
 	 * @return the inputJuchubango
 	 */
@@ -386,6 +388,20 @@ public class F130201 implements Serializable {
 
 	public void setOtherCount(String otherCount) {
 		this.otherCount = otherCount;
+	}
+
+	/**
+	 * @return the haneists
+	 */
+	public String getHaneists() {
+		return haneists;
+	}
+
+	/**
+	 * @param haneists the haneists to set
+	 */
+	public void setHaneists(String haneists) {
+		this.haneists = haneists;
 	}
 	
 }

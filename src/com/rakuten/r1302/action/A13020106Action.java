@@ -2,6 +2,7 @@ package com.rakuten.r1302.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r1002.common.A1002Common;
@@ -25,8 +26,15 @@ public class A13020106Action extends BaseAction {
 		List<String> shoriList = new ArrayList<String>();
 		List<String[]> shoriList2 = new ArrayList<String[]>();
 		List<String> msgList = null;
+		List<String> dList = a130201Common.getHaneimachiList("1");
 		if ("0".equals(outtype)) {
-			for (OrderList order : f130201.getOrderList()) {
+			List<OrderList> oList = f130201.getOrderList().stream().filter(n->dList.contains(n.getChumonbango())).collect(Collectors.toList());
+			if (oList.size() == f130201.getOrderList().size()) {
+				
+			} else {
+				addError(null, "注文の一部を反映済みに設定できません、反映状態で検索して確認ください");
+			}
+			for (OrderList order : oList) {
 				if (order.isIschecked()) {
 					if ("楽天".equals(order.getSite())) {
 						rakutenOrderList.add(new String[] {
@@ -59,11 +67,18 @@ public class A13020106Action extends BaseAction {
 		} else if ("1".equals(outtype)) {
 			List<OrderList> orderList = (List<OrderList>) getSessionAttribute("heneimachiList");
 
+			List<OrderList> oList = orderList.stream().filter(n->dList.contains(n.getChumonbango())).collect(Collectors.toList());
+			if (oList.size() == orderList.size()) {
+				
+			} else {
+				addError(null, "注文の一部を反映済みに設定できません、反映状態で検索して確認ください");
+			}
+			
 //			List<String> yahooOrderList = new ArrayList<String>();
 			List<String> denaOrderList = new ArrayList<String>();
 			List<String> yahuoku = new ArrayList<String>();
 
-			for (OrderList order : orderList) {
+			for (OrderList order : oList) {
 				if ("楽天".equals(order.getSite())) {
 					rakutenOrderList.add(new String[] { order.getChumonbango(),
 							order.getTenpo() });
@@ -74,6 +89,8 @@ public class A13020106Action extends BaseAction {
 					denaOrderList.add(order.getChumonbango());
 				} else if ("ヤフオク".equals(order.getSite())) {
 					yahuoku.add(order.getChumonbango());
+				} else {
+					shoriList.add(order.getChumonbango());
 				}
 				shoriList2.add(new String[] { order.getChumonbango(),
 						order.getHaisokaisha(), order.getDenpyobango() });
@@ -89,10 +106,12 @@ public class A13020106Action extends BaseAction {
 					addError(null, msg);
 				}
 			} else if ("3".equals(tenpobetsu)) {
-				shoriList = denaOrderList;
-				a130201Common.setHaneizumi(shoriList);
+
+				a130201Common.setHaneizumi(denaOrderList);
 			} else if ("4".equals(tenpobetsu)) {
-				shoriList = yahuoku;
+
+				a130201Common.setHaneizumi(yahuoku);
+			} else {
 				a130201Common.setHaneizumi(shoriList);
 			}
 			

@@ -63,7 +63,7 @@ public class A130201Common {
 			f130201 = new F130201();
 		}
 
-		List<String> juchubangoList = getHaneimachiList();
+		List<String> juchubangoList = getHaneimachiList(f130201.getHaneists());
 		List<OrderList> heneimachiList = getOrderListByBango(juchubangoList);
 		List<OrderList> orderList = searchOrder(heneimachiList, f130201);
 
@@ -429,7 +429,7 @@ public class A130201Common {
 				shorilist.addAll(updatedOrderNoSet);
 
 				if (!Utility.isEmptyList(shorilist)) {
-					String sql = "UPDATE tbl00024 SET HANEISTS = '2' WHERE CHUMONBANGO = ?";
+					String sql = "UPDATE tbl00024 SET HANEISTS = '3' WHERE CHUMONBANGO = ?";
 					for (String orderNo : shorilist) {
 						ps = conn.prepareStatement(sql);
 						ps.setString(1, orderNo);
@@ -538,7 +538,7 @@ public class A130201Common {
 				shorilist.addAll(updatedOrderNoList);
 
 				if (!Utility.isEmptyList(shorilist)) {
-					String sql = "UPDATE tbl00024 SET HANEISTS = '2' WHERE CHUMONBANGO = ?";
+					String sql = "UPDATE tbl00024 SET HANEISTS = '3' WHERE CHUMONBANGO = ?";
 					for (String orderNo : shorilist) {
 						ps = conn.prepareStatement(sql);
 						ps.setString(1, orderNo);
@@ -587,6 +587,29 @@ public class A130201Common {
 		PreparedStatement ps = null;
 		try {
 			conn = JdbcConnection.getConnection();
+			String sql = "UPDATE tbl00024 SET HANEISTS = '3',UPDATE_TIME = ? WHERE CHUMONBANGO = ?";
+
+			for (String orderNo : orderNoList) {
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, Utility.getDateTime());
+				ps.setString(2, orderNo);
+				ps.execute();
+			}
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		} finally {
+			conn.close();
+		}
+	}
+	
+	public void setHaneiToComplete(List<String> orderNoList) throws Exception {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = JdbcConnection.getConnection();
 			String sql = "UPDATE tbl00024 SET HANEISTS = '2',UPDATE_TIME = ? WHERE CHUMONBANGO = ?";
 
 			for (String orderNo : orderNoList) {
@@ -604,17 +627,41 @@ public class A130201Common {
 			conn.close();
 		}
 	}
+	
+	public void setHaneiToCSVDownloaded(List<String> orderNoList) throws Exception {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = JdbcConnection.getConnection();
+			String sql = "UPDATE tbl00024 SET HANEISTS = '1',UPDATE_TIME = ? WHERE CHUMONBANGO = ?";
 
-	public List<String> getHaneimachiList() throws Exception {
+			for (String orderNo : orderNoList) {
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, Utility.getDateTime());
+				ps.setString(2, orderNo);
+				ps.execute();
+			}
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		} finally {
+			conn.close();
+		}
+	}
+
+	public List<String> getHaneimachiList(String haneists) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
 			List<String> haneimachiList = new ArrayList<String>();
 			conn = JdbcConnection.getConnection();
-			String sql = "SELECT * FROM tbl00024 WHERE HANEISTS = '0'";
+			String sql = "SELECT * FROM tbl00024 WHERE HANEISTS = ?";
 
 			ps = conn.prepareStatement(sql);
 
+			ps.setString(1, haneists);
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
