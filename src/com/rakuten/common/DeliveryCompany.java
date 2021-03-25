@@ -2,7 +2,7 @@ package com.rakuten.common;
 
 public enum DeliveryCompany {
 
-	YAMATO("ヤマト運輸","v"),SAGAWA("佐川急便","s"),POST("郵便局","p");
+	YAMATO("ヤマト運輸","1001"),SAGAWA("佐川急便","1002"),POST("郵便局","1003");
 	
 	DeliveryCompany(String name, String tag) {
         this.name = name;  

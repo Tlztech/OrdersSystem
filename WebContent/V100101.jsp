@@ -310,7 +310,9 @@ select {
 	Map<String, String> rakutenMap = new HashMap<String, String>();
 	Map<String, String> yahooMap = new HashMap<String, String>();
 	Map<String, String> shopMap = new HashMap<String, String>();
+	Map<String, String> siteMap = new HashMap<String, String>();
 	shopMap.put("","--");
+	siteMap.put("","--");
 	try {
 		conn = com.rakuten.util.JdbcConnection.getConnection();
 		String sql= "SELECT SITE, SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo', '楽天')";
@@ -323,11 +325,13 @@ select {
 				yahooMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 			}
 			shopMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
+			siteMap.put(rs.getString("SITE"),rs.getString("SITE"));
 		}
 		
 		request.setAttribute("rakutenmap",rakutenMap);
 		request.setAttribute("yahoomap",yahooMap);
 		request.setAttribute("shopmap",shopMap);
+		request.setAttribute("siteMap",siteMap);
 
 	} catch (Exception e) {
 		out.println(e);
@@ -382,7 +386,7 @@ select {
 							name="f100101.tenpobetsu" /></td>
 					<td class="td_bg">サイト：</td>
 					<td class="td_bg"><s:select
-							list="#{ '':'--','楽天':'楽天','Yahoo':'Yahoo','ヤフオク':'ヤフオク','DENA':'DENA','ポンパレモール':'ポンパレモール','qoo10':'qoo10','ken':'ken'}"
+							list="#request.siteMap"
 							name="f100101.site" /></td>
 				<tr>
 					<td class="td_bg">電話番号：</td>

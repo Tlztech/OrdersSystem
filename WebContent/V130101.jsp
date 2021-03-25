@@ -364,10 +364,14 @@ function isNumber(val){
 
 function updateSize(bango,size1,thisIdx){
 	if(isNumber(size1)){
-		$.post("A13010111", {orderNo:bango,thisSize:size1}, function(result) {
-			document.getElementsByName("f130101.orderList["+thisIdx+"].unsokaisha")[0].value=result;
-			alert("成功しました！");
-		},"json");
+		if((parseFloat(size1)>=parseFloat("0.1")) && (parseFloat(size1)<parseFloat("9"))){
+			$.post("A13010111", {orderNo:bango,thisSize:size1}, function(result) {
+				document.getElementsByName("f130101.orderList["+thisIdx+"].unsokaisha")[0].value=result;
+				alert("成功しました！");
+			},"json");
+		}else{
+			alert("尺寸输入不正确，请重新输入0.1~9之间！");
+		}
 	}else{
 		alert("尺寸输入不正确，请重新输入！");
 	}
@@ -570,7 +574,7 @@ a {
                 </td>
                 <td class="td_bg">運送会社</td>
                 <td class="td_bg">
-                    <s:select list="#{'':'--','1001':'ヤマト運輸','1002':'佐川急便'}" name="f130101.unyokaisha"/>
+                    <s:select list="#{'':'--','1001':'ヤマト運輸','1002':'佐川急便','1003':'郵便局'}" name="f130101.unyokaisha"/>
                 </td>
             </tr>
             <tr>
@@ -694,7 +698,7 @@ a {
 				
 
 
-				        <s:select list="#{'':'--','1001':'ヤマト運輸','1002':'佐川急便'}" name="f130101.orderList[%{#status.index}].unsokaisha" value="%{unsokaisha}" onchange="updateKaisha('%{chumonbango}',%{#status.index})"/>
+				        <s:select list="#{'':'--','1001':'ヤマト運輸','1002':'佐川急便','1003':'郵便局'}" name="f130101.orderList[%{#status.index}].unsokaisha" value="%{unsokaisha}" onchange="updateKaisha('%{chumonbango}',%{#status.index})"/>
 <%-- 				        <input type="button" value="設定" name="" onclick="updateKaisha('<s:property value='chumonbango'/>',document.getElementsByName('f130101.orderList[${status.index}].size')[0].value,document.getElementsByName('f130101.orderList[${status.index}].unsokaisha')[0].value)"/> --%>
 
 				    

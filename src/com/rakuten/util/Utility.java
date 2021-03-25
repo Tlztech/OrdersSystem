@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -43,6 +44,10 @@ import org.xvolks.jnative.JNative;
 import org.xvolks.jnative.exceptions.NativeException;
 
 import com.csvreader.CsvReader;
+import com.google.common.collect.HashBasedTable;
+import com.rakuten.common.DeliveryCompany;
+import com.rakuten.common.PackageSize;
+import com.rakuten.common.Prefecture;
 import com.rakuten.common.bean.DetailListBean;
 import com.rakuten.common.bean.KingakuBean;
 import com.rakuten.common.bean.OrderBean;
@@ -1348,7 +1353,8 @@ public class Utility {
 
 	}
 
-	public static List<ShohinBean> getShohinFromYahooCsv(File itemCsv, File itemCatCsv, File selectCsv) throws Exception {
+	public static List<ShohinBean> getShohinFromYahooCsv(File itemCsv, File itemCatCsv, File selectCsv)
+			throws Exception {
 		List<String[]> itemList = readCsvFile(itemCsv, true);
 		List<String[]> itemCatList = null;
 		if (itemCatCsv != null) {
@@ -1511,13 +1517,15 @@ public class Utility {
 						// Select/Checkbox用選択肢
 						shohinsentakushiBean.setSelectcheckboxyousentakushi("");
 						// 項目選択肢別在庫用横軸選択肢
-						shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi(selectList.get(k)[3]+":"+selectList.get(k)[4]+" "+selectList.get(k)[9]+":"+selectList.get(k)[10]);
+						shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi(
+								selectList.get(k)[3] + ":" + selectList.get(k)[4] + " " + selectList.get(k)[9] + ":"
+										+ selectList.get(k)[10]);
 						// 項目選択肢別在庫用横軸選択肢子番号
 						String strXAxisNo = selectList.get(k)[1];
 						String strYAxisNo = "";
 						if (strXAxisNo.length() > 0 && (strXAxisNo.replace("－", "-").indexOf("-") != -1)) {
 							strXAxisNo = strXAxisNo.substring(strXAxisNo.replace("－", "-").indexOf("-"));
-						}else {
+						} else {
 							strXAxisNo = "-0";
 							strYAxisNo = "-0";
 						}
@@ -1540,7 +1548,7 @@ public class Utility {
 						shohinsentakushiBean.setZaikoaritokinoukikanribango("1");
 						// 在庫切れ時納期管理番号
 						shohinsentakushiBean.setZaikokiretokinoukikanribango("1");
-						
+
 						detailFlg = true;
 					}
 				}
@@ -1618,7 +1626,7 @@ public class Utility {
 		return shohinList;
 
 	}
-	
+
 	public static String getDateTime() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = format.format(new Date());
@@ -1906,7 +1914,7 @@ public class Utility {
 		try {
 			conn = com.rakuten.util.JdbcConnection.getConnection();
 			PreparedStatement ps = null;
-			String sql= "SELECT SHOP_ID FROM rakuten.shop where SHOP_NO = ?";
+			String sql = "SELECT SHOP_ID FROM rakuten.shop where SHOP_NO = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, id);
 			ResultSet rs = ps.executeQuery();
@@ -1925,7 +1933,7 @@ public class Utility {
 			}
 		}
 
-		name = (name ==null) ? "":name;
+		name = (name == null) ? "" : name;
 //		if ("306685".equals(id)) {
 //			name = "trend777";
 //		} else if ("308759".equals(id)) {
@@ -2171,7 +2179,7 @@ public class Utility {
 		try {
 			conn = com.rakuten.util.JdbcConnection.getConnection();
 			PreparedStatement ps = null;
-			String sql= "SELECT SHOP_URL FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
+			String sql = "SELECT SHOP_URL FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, site);
 			ps.setString(2, shop);
@@ -2179,9 +2187,9 @@ public class Utility {
 			while (rs.next()) {
 				shopUrl = rs.getString("SHOP_URL");
 			}
-			
-			shopUrl = shopUrl == null ? "" :shopUrl;
-			
+
+			shopUrl = shopUrl == null ? "" : shopUrl;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -2228,7 +2236,7 @@ public class Utility {
 		try {
 			conn = com.rakuten.util.JdbcConnection.getConnection();
 			PreparedStatement ps = null;
-			String sql= "SELECT SHOP_POST FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
+			String sql = "SELECT SHOP_POST FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, site);
 			ps.setString(2, shop);
@@ -2236,9 +2244,9 @@ public class Utility {
 			while (rs.next()) {
 				shopPost = rs.getString("SHOP_POST");
 			}
-			
-			shopPost = shopPost == null ? "" :shopPost;
-			
+
+			shopPost = shopPost == null ? "" : shopPost;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -2262,7 +2270,7 @@ public class Utility {
 		try {
 			conn = com.rakuten.util.JdbcConnection.getConnection();
 			PreparedStatement ps = null;
-			String sql= "SELECT SHOP_ADDRESS FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
+			String sql = "SELECT SHOP_ADDRESS FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, site);
 			ps.setString(2, shop);
@@ -2270,9 +2278,9 @@ public class Utility {
 			while (rs.next()) {
 				shopAddr = rs.getString("SHOP_ADDRESS");
 			}
-			
-			shopAddr = shopAddr == null ? "" :shopAddr;
-			
+
+			shopAddr = shopAddr == null ? "" : shopAddr;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -2295,7 +2303,7 @@ public class Utility {
 		try {
 			conn = com.rakuten.util.JdbcConnection.getConnection();
 			PreparedStatement ps = null;
-			String sql= "SELECT SHOP_TEL FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
+			String sql = "SELECT SHOP_TEL FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, site);
 			ps.setString(2, shop);
@@ -2303,9 +2311,9 @@ public class Utility {
 			while (rs.next()) {
 				shopTel = rs.getString("SHOP_TEL");
 			}
-			
-			shopTel = shopTel == null ? "" :shopTel;
-			
+
+			shopTel = shopTel == null ? "" : shopTel;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -2346,7 +2354,7 @@ public class Utility {
 		try {
 			conn = com.rakuten.util.JdbcConnection.getConnection();
 			PreparedStatement ps = null;
-			String sql= "SELECT SHOP_FAX FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
+			String sql = "SELECT SHOP_FAX FROM rakuten.shop where SITE = ? AND SHOP_ID = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, site);
 			ps.setString(2, shop);
@@ -2354,9 +2362,9 @@ public class Utility {
 			while (rs.next()) {
 				shopFax = rs.getString("SHOP_FAX");
 			}
-			
-			shopFax = shopFax == null ? "" :shopFax;
-			
+
+			shopFax = shopFax == null ? "" : shopFax;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -2536,7 +2544,7 @@ public class Utility {
 		try {
 			conn = com.rakuten.util.JdbcConnection.getConnection();
 			PreparedStatement ps = null;
-			String sql= "SELECT count(*) COUNT FROM rakuten.shop where SHOP_ID = ?";
+			String sql = "SELECT count(*) COUNT FROM rakuten.shop where SHOP_ID = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, shop);
 			ResultSet rs = ps.executeQuery();
@@ -2554,13 +2562,13 @@ public class Utility {
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (count > 0) {
 			return true;
 		} else {
 			return false;
 		}
-		
+
 //		if ("123mart".equals(shop) || "trend777".equals(shop) || "coverforefront".equals(shop) || "herz".equals(shop)
 //				|| "epintl".equals(shop)) {
 //			return true;
@@ -2653,6 +2661,60 @@ public class Utility {
 		}
 
 		return soryoMap;
+
+	}
+
+	public static Map<DeliveryCompany, HashBasedTable<PackageSize, Prefecture, String>> getShippingFeeMap()
+			throws Exception {
+
+		Map<DeliveryCompany, HashBasedTable<PackageSize, Prefecture, String>> shippingFee = new LinkedHashMap<>();
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		String sql = null;
+		ResultSet rs = null;
+		try {
+			conn = JdbcConnection.getConnection();
+			sql = "SELECT * FROM soryo";
+			ps = conn.prepareStatement(sql);
+
+			rs = ps.executeQuery();
+			shippingFee.put(DeliveryCompany.YAMATO, HashBasedTable.create());
+			shippingFee.put(DeliveryCompany.SAGAWA, HashBasedTable.create());
+			shippingFee.put(DeliveryCompany.POST, HashBasedTable.create());
+			while (rs.next()) {
+				switch (DeliveryCompany.getDeliveryCompanyByName(rs.getString("kaisha"))) {
+				case YAMATO:
+					shippingFee.get(DeliveryCompany.YAMATO)
+							.put(PackageSize
+									.getPackageSizeBySize(PackageSize.getSize(Integer.parseInt(rs.getString("size")))),
+									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku"));
+					break;
+				case SAGAWA:
+					shippingFee.get(DeliveryCompany.SAGAWA)
+							.put(PackageSize
+									.getPackageSizeBySize(PackageSize.getSize(Integer.parseInt(rs.getString("size")))),
+									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku"));
+					break;
+				case POST:
+					shippingFee.get(DeliveryCompany.POST)
+							.put(PackageSize
+									.getPackageSizeBySize(PackageSize.getSize(Integer.parseInt(rs.getString("size")))),
+									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku"));
+					break;
+				default:
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		} finally {
+			conn.close();
+		}
+
+		return shippingFee;
 
 	}
 
@@ -2789,6 +2851,44 @@ public class Utility {
 			return "1002";
 		}
 
+	}
+
+	public static String getBestShippingFee(String address, String size, Map<DeliveryCompany, HashBasedTable<PackageSize, Prefecture, String>> shippingFeeMap) throws Exception {
+		String deliveryCompanyTag = DeliveryCompany.YAMATO.getTag();
+		PackageSize ps = null;
+		String shippingFee_YAMATO, shippingFee_SAGAWA, shippingFee_POST;
+		int shippingFee_i_YAMATO, shippingFee_i_SAGAWA, shippingFee_i_POST;
+		BigDecimal s = new BigDecimal(size);
+		if (s.compareTo(new BigDecimal("0.1"))>=0 && s.compareTo(new BigDecimal("1"))<0) {
+			
+		} else if (s.compareTo(new BigDecimal("1"))>=0 && s.compareTo(new BigDecimal("2"))<0){
+			ps = PackageSize.SIZE60;
+		} else if (s.compareTo(new BigDecimal("2"))>=0 && s.compareTo(new BigDecimal("3"))<0){
+			ps = PackageSize.SIZE80;
+		} else if (s.compareTo(new BigDecimal("3"))>=0 && s.compareTo(new BigDecimal("4"))<0){
+			ps = PackageSize.SIZE100;
+		} else if (s.compareTo(new BigDecimal("4"))>=0 && s.compareTo(new BigDecimal("5"))<0){
+			ps = PackageSize.SIZE120;
+		} else if (s.compareTo(new BigDecimal("5"))>=0 && s.compareTo(new BigDecimal("6"))<0){
+			ps = PackageSize.SIZE140;
+		} else if (s.compareTo(new BigDecimal("6"))>=0 && s.compareTo(new BigDecimal("7"))<0){
+			ps = PackageSize.SIZE160;
+		} else if (s.compareTo(new BigDecimal("7"))>=0 && s.compareTo(new BigDecimal("8"))<0){
+			ps = PackageSize.SIZE180;
+		} else if (s.compareTo(new BigDecimal("8"))>=0 && s.compareTo(new BigDecimal("9"))<0){
+			ps = PackageSize.SIZE200;
+		}
+		if (ps != null) {
+			shippingFee_YAMATO = shippingFeeMap.get(DeliveryCompany.YAMATO).get(ps, Prefecture.getPrefectureByName(address));
+			shippingFee_SAGAWA = shippingFeeMap.get(DeliveryCompany.SAGAWA).get(ps, Prefecture.getPrefectureByName(address));
+			shippingFee_POST = shippingFeeMap.get(DeliveryCompany.POST).get(ps, Prefecture.getPrefectureByName(address));
+			shippingFee_i_YAMATO = shippingFee_YAMATO == null || "".equals(shippingFee_YAMATO)?Integer.MAX_VALUE:Integer.parseInt(shippingFee_YAMATO);
+			shippingFee_i_SAGAWA = shippingFee_SAGAWA == null || "".equals(shippingFee_SAGAWA)?Integer.MAX_VALUE:Integer.parseInt(shippingFee_SAGAWA);
+			shippingFee_i_POST = shippingFee_POST == null || "".equals(shippingFee_POST)?Integer.MAX_VALUE:Integer.parseInt(shippingFee_POST);
+			deliveryCompanyTag = (shippingFee_i_YAMATO<=shippingFee_i_SAGAWA?shippingFee_i_YAMATO:shippingFee_i_SAGAWA)<=shippingFee_i_POST?(shippingFee_i_YAMATO<=shippingFee_i_SAGAWA?DeliveryCompany.YAMATO.getTag():DeliveryCompany.SAGAWA.getTag()):DeliveryCompany.POST.getTag();
+		}
+		
+		return deliveryCompanyTag;
 	}
 
 	public static String strStringValue(Object str) {

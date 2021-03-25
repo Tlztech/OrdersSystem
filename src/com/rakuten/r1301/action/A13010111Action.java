@@ -1,11 +1,13 @@
 package com.rakuten.r1301.action;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
 
 import com.rakuten.common.action.BaseAction;
+import com.rakuten.r1301.form.F130101;
 import com.rakuten.util.JdbcConnection;
 import com.rakuten.util.Utility;
 
@@ -32,8 +34,9 @@ public class A13010111Action extends BaseAction {
 				address = rs.getString("SOUFUSAKIJUSHOTODOFUKEN");
 			}
 
-			Map<String, Integer> soryoMap = Utility.getSoryoMap();
-			String kaisha = Utility.getBestSoryo(address, thisSize, soryoMap);
+//			Map<String, Integer> soryoMap = Utility.getSoryoMap();
+//			String kaisha = Utility.getBestSoryo(address, thisSize, soryoMap);
+			String kaisha = Utility.getBestShippingFee(address, thisSize, Utility.getShippingFeeMap());
 
 			sql = "delete from kaisha_size_tbl where juchubango = ?";
 			ps = conn.prepareStatement(sql);
@@ -102,5 +105,6 @@ public class A13010111Action extends BaseAction {
 	public void setThisSize(String thisSize) {
 		this.thisSize = thisSize;
 	}
+
 
 }
