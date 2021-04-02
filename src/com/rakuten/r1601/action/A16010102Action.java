@@ -120,6 +120,7 @@ public class A16010102Action extends BaseAction {
 			List<StockBean> stockListDB = getStockFromDB(f160101.getSite(), f160101.getShop());
 			StringBuilder item_code = new StringBuilder();
 			StringBuilder quantity = new StringBuilder();
+			StringBuilder allow_overdraft = new StringBuilder();
 			boolean ariFlg = false;
 			for (StockBean stockbean : stockListDB) {
 				if (f160101.getShohinbango().equals(stockbean.getCommodity_id())) {
@@ -142,8 +143,10 @@ public class A16010102Action extends BaseAction {
 					if (0 == item_code.length()) {
 						item_code.append(itemurl);
 						quantity.append(stock);
+						allow_overdraft.append(stockbean.isNyukafukaFlg()?0:1);
 					} else {
 						quantity.append(",").append(stock);
+						allow_overdraft.append(",").append(stockbean.isNyukafukaFlg()?0:1);
 					}
 				}
 			}
@@ -151,7 +154,7 @@ public class A16010102Action extends BaseAction {
 				addError(null, f160101.getShohinbango() + "无效的商品编号");
 			} else {
 				YahooShop yahooShop = new YahooShop(f160101.getShop());
-				yahooShop.updateOrderStock(item_code.toString(), quantity.toString());
+				yahooShop.updateOrderStock(item_code.toString(), quantity.toString(), allow_overdraft.toString());
 				
 				System.out.println("処理完了");
 				List<String> errMsgList = new ArrayList<String>();
