@@ -418,6 +418,7 @@ public class A14010104Action extends BaseAction {
 		} else if ("Yahoo".equals(site)){
 			StringBuilder item_code = new StringBuilder();
 			StringBuilder quantity = new StringBuilder();
+			StringBuilder allow_overdraft = new StringBuilder();
 			String subCode;
 			for (StockBean stockbean : stockListDB) {
 
@@ -443,13 +444,15 @@ public class A14010104Action extends BaseAction {
 				if (0 == item_code.length()) {
 					item_code.append(itemurl).append(subCode);
 					quantity.append(stock);
+					allow_overdraft.append(stockbean.isNyukafukaFlg()?0:1);
 				} else {
 					item_code.append(",").append(itemurl).append(subCode);
 					quantity.append(",").append(stock);
+					allow_overdraft.append(",").append(stockbean.isNyukafukaFlg()?0:1);
 				}
 			}
 			YahooShop yahooShop = new YahooShop(shop);
-			yahooShop.updateOrderStock(item_code.toString(), quantity.toString());
+			yahooShop.updateOrderStock(item_code.toString(), quantity.toString(), allow_overdraft.toString());
 			
 			System.out.println("処理完了");
 			List<String> errMsgList = new ArrayList<String>();

@@ -364,7 +364,7 @@ public class YahooShop {
 		return updatedOrderNoList;
 	}
 
-	public void updateOrderStock(String item_code, String quantity) throws Exception {
+	public void updateOrderStock(String item_code, String quantity, String allow_overdraft) throws Exception {
 		messageFromYahooList_UpdateOrder.clear();
 		if (Utility.isEmptyString(item_code) || Utility.isEmptyString(quantity)) {
 			MessageFromYahoo messageFromYahoo = new MessageFromYahoo();
@@ -385,7 +385,7 @@ public class YahooShop {
 				updateXml.append(quantity);
 				updateXml.append("&");
 				updateXml.append("allow_overdraft=");
-				updateXml.append(1);
+				updateXml.append(allow_overdraft);
 
 				URL url = new URL(URL_SETSTOCK);
 				String xml_SetStockResult = getXml(shopName, url, updateXml.toString());

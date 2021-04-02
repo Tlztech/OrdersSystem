@@ -50,6 +50,18 @@
 	function doAction3() {
 		actionSubmit('A14010106');
 	}
+	function doAction4() {
+		var div_obj = $("#pop-div");
+		//添加并显示遮罩层   
+		$("#mask").show("slow");
+		div_obj.show("slow");
+		var logKey = "";
+		logKey = _getRandomString(10);
+		actionSubmit('A14010107' + '?logKey=' + logKey);
+		setInterval(function() {
+			getLog(logKey);
+		}, 2000);
+	}
 </script>
 <style type="text/css">
 <!--
@@ -227,6 +239,7 @@ a {
 		<input type="button" onclick="actionSubmit('A14010103')"
 			value="上传最新预警列表">
 		<input type="button" onclick="doAction()" value="同步库存">
+		<input type="button" onclick="doAction4()" value="同步全部楽天とYahoo库存">
 		<br />
 		<br />
 		<br />
