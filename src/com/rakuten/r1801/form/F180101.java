@@ -82,11 +82,11 @@ public class F180101 implements Serializable {
 		this.shopUrl = shopUrl;
 	}
 	
-	public String getPost() {
+	public String getShopPost() {
 		return shopPost;
 	}
 
-	public void setPost(String shopPost) {
+	public void setShopPost(String shopPost) {
 		this.shopPost = shopPost;
 	}
 	

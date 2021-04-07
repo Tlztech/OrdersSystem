@@ -54,7 +54,7 @@ public class A18010105Action extends BaseAction {
 				f180101.setPhoneNumber(null);;
 				f180101.setFax(null);
 				f180101.setShopUrl(null);
-				f180101.setPost(null);
+				f180101.setShopPost(null);
 				f180101.setShopAddress(null);
 				f180101.setServiceKey(null);
 				f180101.setLicenseKey(null);

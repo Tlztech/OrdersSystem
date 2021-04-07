@@ -45,7 +45,7 @@ public class A18010103Action extends BaseAction {
 				ps.setString(5, f180101.getPhoneNumber());
 				ps.setString(6, f180101.getFax());
 				ps.setString(7, f180101.getShopUrl());
-				ps.setString(8, f180101.getPost());
+				ps.setString(8, f180101.getShopPost());
 				ps.setString(9, f180101.getShopAddress());
 				ps.setString(10, f180101.getServiceKey());
 				ps.setString(11, f180101.getLicenseKey());
@@ -69,7 +69,7 @@ public class A18010103Action extends BaseAction {
 				f180101.setPhoneNumber(null);;
 				f180101.setFax(null);
 				f180101.setShopUrl(null);
-				f180101.setPost(null);
+				f180101.setShopPost(null);
 				f180101.setShopAddress(null);
 				f180101.setServiceKey(null);
 				f180101.setLicenseKey(null);
