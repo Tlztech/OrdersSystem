@@ -487,12 +487,12 @@ public class A130101Common {
 									Order.setHaisohoho("宅配便");
 									ps2.setString(1, "宅配便");
 									
-									sql = "update kaisha_size_tbl set kaisha = ? where juchubango = ?";
-									ps3 = conn.prepareStatement(sql);
-
-									ps3.setString(1, "1002");
-									ps3.setString(2, Order.getChumonbango());
-									ps3.execute();
+//									sql = "update kaisha_size_tbl set kaisha = ? where juchubango = ?";
+//									ps3 = conn.prepareStatement(sql);
+//
+//									ps3.setString(1, "1002");
+//									ps3.setString(2, Order.getChumonbango());
+//									ps3.execute();
 								}
 
 								ps2.setString(2, Utility.getDateTime());
