@@ -274,15 +274,24 @@ a {
 <%
 		Connection conn = null;
 	try {
+		Map<String, String> siteMap = new HashMap<String, String>();
+		siteMap.put("","--");
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop";
+		String sql = "SELECT distinct SITE FROM rakuten.shop";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			siteMap.put(rs.getString("SITE"), rs.getString("SITE"));
+		}
+		sql = "SELECT distinct SHOP_ID FROM rakuten.shop";
+		ps = conn.prepareStatement(sql);
+		rs = ps.executeQuery();
 		Map<String, String> shopMap = new HashMap<String, String>();
 		shopMap.put("","--");
 		while (rs.next()) {
 			shopMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 		}
+		request.setAttribute("sitemap", siteMap);
 		request.setAttribute("shopmap", shopMap);
 
 	} catch (Exception e) {
@@ -331,17 +340,24 @@ a {
                 <td class="td_bg" >
                     <s:select list="#{'':'--','ネコポス':'ネコポス','宅配便':'宅配便'}" name="f130201.haisohoho"/>
                 </td>
-                <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A13020102')" value="検索" style="width:50px;height:25px"/></td>
             </tr>
             <tr>
-                <td class="td_bg">店舗別</td>
+                <td class="td_bg">平台別</td>
+                <td class="td_bg">
+                    <s:select list="#request.sitemap" name="f130201.site"/>
+                </td>
+				<td class="td_bg">店舗別</td>
                 <td class="td_bg">
                     <s:select list="#request.shopmap" name="f130201.tenpo"/>
                 </td>
+            </tr>
+			<tr>
 				<td class="td_bg">反映状態</td>
                 <td class="td_bg">
                     <s:select list="#{'0':'CSV未ダウンロード','1':'CSVダウンロードした','3':'反映済みに設定した','2':'设置反应完毕'}" name="f130201.haneists"/>
                 </td>
+				<td class="td_bg"></td>
+				<td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A13020102')" value="検索" style="width:50px;height:25px"/></td>
             </tr>
         </table>
 		</div>

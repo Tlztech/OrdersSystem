@@ -734,6 +734,12 @@ public class A130201Common {
 		List<OrderList> shoriList = new ArrayList<OrderList>();
 
 		for (OrderList order : orderList) {
+			// 检查平台名
+			if (!Utility.isEmptyString(f130201.getSite())) {
+				if (!f130201.getSite().equals(order.getSite())) {
+					continue;
+				}
+			}
 			// 检查店铺名
 			if (!Utility.isEmptyString(f130201.getTenpo())) {
 				if (!f130201.getTenpo().equals(order.getTenpo())) {

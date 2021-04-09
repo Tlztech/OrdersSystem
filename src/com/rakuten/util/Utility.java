@@ -2688,19 +2688,19 @@ public class Utility {
 					shippingFee.get(DeliveryCompany.YAMATO)
 							.put(PackageSize
 									.getPackageSizeBySize(PackageSize.getSize(Integer.parseInt(rs.getString("size")))),
-									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku"));
+									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku") == null ? "" : rs.getString("kakaku"));
 					break;
 				case SAGAWA:
 					shippingFee.get(DeliveryCompany.SAGAWA)
 							.put(PackageSize
 									.getPackageSizeBySize(PackageSize.getSize(Integer.parseInt(rs.getString("size")))),
-									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku"));
+									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku") == null ? "" : rs.getString("kakaku"));
 					break;
 				case POST:
 					shippingFee.get(DeliveryCompany.POST)
 							.put(PackageSize
 									.getPackageSizeBySize(PackageSize.getSize(Integer.parseInt(rs.getString("size")))),
-									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku"));
+									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku") == null ? "" : rs.getString("kakaku"));
 					break;
 				default:
 					break;

@@ -33,7 +33,7 @@ public class A13030101Action extends BaseAction {
 		ResultSet rs = null;
 		try {
 			conn = JdbcConnection.getConnection();
-			String sql = "select * from soryo order by id";
+			String sql = "select * from rakuten.soryo;";
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 
@@ -48,19 +48,19 @@ public class A13030101Action extends BaseAction {
 					shippingFee.get(DeliveryCompany.YAMATO)
 							.put(PackageSize
 									.getPackageSizeBySize(PackageSize.getSize(Integer.parseInt(rs.getString("size")))),
-									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku"));
+									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku") == null ? "" : rs.getString("kakaku"));
 					break;
 				case SAGAWA:
 					shippingFee.get(DeliveryCompany.SAGAWA)
 							.put(PackageSize
 									.getPackageSizeBySize(PackageSize.getSize(Integer.parseInt(rs.getString("size")))),
-									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku"));
+									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku") == null ? "" : rs.getString("kakaku"));
 					break;
 				case POST:
 					shippingFee.get(DeliveryCompany.POST)
 							.put(PackageSize
 									.getPackageSizeBySize(PackageSize.getSize(Integer.parseInt(rs.getString("size")))),
-									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku"));
+									Prefecture.getPrefectureByName(rs.getString("chiku")), rs.getString("kakaku") == null ? "" : rs.getString("kakaku"));
 					break;
 				default:
 					break;
