@@ -499,15 +499,24 @@ a {
 <%
 		Connection conn = null;
 	try {
+		Map<String, String> siteMap = new HashMap<String, String>();
+		siteMap.put("","--");
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop";
+		String sql = "SELECT distinct SITE FROM rakuten.shop";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			siteMap.put(rs.getString("SITE"), rs.getString("SITE"));
+		}
+		sql = "SELECT distinct SHOP_ID FROM rakuten.shop";
+		ps = conn.prepareStatement(sql);
+		rs = ps.executeQuery();
 		Map<String, String> shopMap = new HashMap<String, String>();
 		shopMap.put("","--");
 		while (rs.next()) {
 			shopMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 		}
+		request.setAttribute("sitemap", siteMap);
 		request.setAttribute("shopmap", shopMap);
 
 	} catch (Exception e) {
@@ -555,29 +564,33 @@ a {
                 <td class="td_bg" >
                     <s:select list="#{'':'--','DM便':'DM便','メール便':'メール便','宅配便':'宅配便'}" name="f130101.haisohoho"/>
                 </td>
-                <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A13010102')" value="検索" style="width:50px;height:25px"/></td>
             </tr>
             <tr>
+                <td class="td_bg">平台別</td>
+                <td class="td_bg">
+                    <s:select list="#request.sitemap" name="f130101.site"/>
+                </td>
                 <td class="td_bg">店舗別</td>
                 <td class="td_bg">
                     <s:select list="#request.shopmap" name="f130101.tenpo"/>
                 </td>
+            </tr>
+            <tr>
                 <td class="td_bg" >コメント注意</td>
                 <td class="td_bg" >
                     <s:select list="#{'':'--','1':'○'}" name="f130101.chuyi"/>
                 </td>
-            </tr>
-            <tr>
-                <td class="td_bg">時間帯設定</td>
+				<td class="td_bg">時間帯設定</td>
                 <td class="td_bg">
                     <s:select list="#{'':'--','1':'あり','0':'なし'}" name="f130101.jikantaiset"/>
                 </td>
-                <td class="td_bg">運送会社</td>
+                
+            </tr>
+            <tr>
+				<td class="td_bg">運送会社</td>
                 <td class="td_bg">
                     <s:select list="#{'':'--','1001':'ヤマト運輸','1002':'佐川急便','1003':'郵便局'}" name="f130101.unyokaisha"/>
                 </td>
-            </tr>
-            <tr>
                 <td class="td_bg">商品番号</td>
                 <td class="td_bg">
                     <s:textfield size="15" maxlength="50" name="f130101.shohinbango"/>
@@ -585,7 +598,7 @@ a {
                 </td>
                 <td class="td_bg"></td>
                 <td class="td_bg">
-                    
+                <td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A13010102')" value="検索" style="width:50px;height:25px"/></td>
                 </td>
             </tr>
 		</table>

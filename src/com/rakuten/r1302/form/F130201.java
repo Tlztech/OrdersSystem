@@ -31,6 +31,7 @@ public class F130201 implements Serializable {
 	private String tenposhubetsu = "1";
 	private String outtype = null;
 
+	private String site = "";
 	private String tenpo = "";
 
 	private String inputJuchubango = null;
@@ -348,6 +349,20 @@ public class F130201 implements Serializable {
 
 	public void setTenposhubetsu(String tenposhubetsu) {
 		this.tenposhubetsu = tenposhubetsu;
+	}
+
+	/**
+	 * @return the site
+	 */
+	public String getSite() {
+		return site;
+	}
+
+	/**
+	 * @param site the site to set
+	 */
+	public void setSite(String site) {
+		this.site = site;
 	}
 
 	public String getTenpo() {

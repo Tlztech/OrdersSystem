@@ -253,6 +253,12 @@ public class A130101Common {
 		List<OrderList> shoriList = new ArrayList<OrderList>();
 
 		for (OrderList order : orderList) {
+			// 检查平台名
+			if (!Utility.isEmptyString(f130101.getSite())) {
+				if (!f130101.getSite().equals(order.getSite())) {
+					continue;
+				}
+			}
 			// 检查店铺名
 			if (!Utility.isEmptyString(f130101.getTenpo())) {
 				if (!f130101.getTenpo().equals(order.getTenpo())) {
