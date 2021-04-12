@@ -424,7 +424,7 @@ a {
 			        <s:hidden name="f130201.orderList[%{#status.index}].chumonbango" value="%{chumonbango}"/>
 			    </td>
 				<td width="16%" class="td_bg" align="center" valign="middle">
-				　　　　<s:select list="#{'1001':'ヤマト運輸','1002':'佐川急便'}" name="f130201.orderList[%{#status.index}].haisokaisha" />
+				　　　　<s:select list="#{'1001':'ヤマト運輸','1002':'佐川急便','1003':'郵便局'}" name="f130201.orderList[%{#status.index}].haisokaisha" />
 				    <s:textfield size="15" name="f130201.orderList[%{#status.index}].denpyobango" value="%{denpyobango}"/>
 				    <input type="button" value="変更" onclick="henko('<s:property value='chumonbango'/>',document.getElementsByName('f130201.orderList[${status.index}].haisokaisha')[0].value,document.getElementsByName('f130201.orderList[${status.index}].denpyobango')[0].value)">
 				</td>
