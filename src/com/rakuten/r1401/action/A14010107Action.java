@@ -39,6 +39,7 @@ public class A14010107Action extends BaseAction {
 
 	private static final long serialVersionUID = 1L;
 	private String logKey = null;
+	private Map<String, String> itemNoMapForUpdateStock = new HashMap<String, String>();
 	
 	@Override
 	protected void init() throws Exception {
@@ -57,14 +58,19 @@ public class A14010107Action extends BaseAction {
 	
 		String site = "Yahoo";
 		List<String> shopList = getShopsBySite(site);
+		List<StockBean> stockBeanList = getStockFromDB();
+		stockBeanList.stream().forEach(n->{
+			itemNoMapForUpdateStock.put(n.getCommodity_id(), n.getCommodity_id());
+		});
 		for (String shop : shopList) {
-			updateYahooOrderStockByShop(getStockFromDB(site, shop), shop);
+			updateYahooOrderStockByShop(stockBeanList, shop);
 		}
 		site = "楽天";
 		shopList = getShopsBySite(site);
 		for (String shop : shopList) {
-			updateLottoOrderStockByShop(getStockFromDB(site, shop), shop);
+			updateLottoOrderStockByShop(stockBeanList, shop);
 		}
+		updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
 	}
 
 	@Override
@@ -101,7 +107,8 @@ public class A14010107Action extends BaseAction {
 		return shopList;
 	}
 	
-	private List<StockBean> getStockFromDB(String site, String shop) throws Exception {
+//	private List<StockBean> getStockFromDB(String site, String shop) throws Exception {
+	private List<StockBean> getStockFromDB() throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -110,11 +117,12 @@ public class A14010107Action extends BaseAction {
 		StockBean stockbean = null;
 		try {
 			conn = JdbcConnection.getConnection();
-			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ?";
+//			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ?";
+			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE";
 
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, site);
-			ps.setString(2, shop);
+//			ps.setString(1, site);
+//			ps.setString(2, shop);
 
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -197,25 +205,29 @@ public class A14010107Action extends BaseAction {
 	private void updateQuantityFlg(List<String> itemNoList) {
 		Connection conn = null;
 		PreparedStatement ps = null;
-		try {
-			conn = JdbcConnection.getConnection();
-			String sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=FALSE WHERE `COMMODITY_ID`=?;";
-			ps = conn.prepareStatement(sql);
-			for (String itemNo : itemNoList) {
-				ps.setString(1, itemNo);
-				ps.addBatch();
-			}
-			ps.executeBatch();
-			ps.close();
-			conn.commit();
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
+		if(itemNoList.isEmpty()) {
+			
+		} else {
+			try {
+				conn = JdbcConnection.getConnection();
+				String sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=FALSE WHERE `COMMODITY_ID`=?;";
+				ps = conn.prepareStatement(sql);
+				for (String itemNo : itemNoList) {
+					ps.setString(1, itemNo);
+					ps.addBatch();
+				}
+				ps.executeBatch();
+				ps.close();
+				conn.commit();
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -223,7 +235,7 @@ public class A14010107Action extends BaseAction {
 	
 	private void updateLottoOrderStockByShop(List<StockBean> stockListDB, String shop) throws Exception {
 
-		Map<String, String> itemNoMapForUpdateStock = new HashMap<String, String>();
+//		Map<String, String> itemNoMapForUpdateStock = new HashMap<String, String>();
 		
 		Inventoryapi locator = new InventoryapiLocator();
 		InventoryapiPort port = null;
@@ -258,7 +270,7 @@ public class A14010107Action extends BaseAction {
 			boolean hanbaikano = false;
 
 			String itemurl = stockbean.getCommodity_id();
-			itemNoMapForUpdateStock.put(itemurl, itemurl);
+//			itemNoMapForUpdateStock.put(itemurl, itemurl);
 
 			item = new UpdateRequestExternalItem();
 			updateList.add(item);
@@ -460,14 +472,14 @@ public class A14010107Action extends BaseAction {
 			addActionError("SITE:楽天,SHOP:"+shop+" " +msg);
 		}
 		
-		updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
+//		updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
 
 	
 	}
 	
 	private void updateYahooOrderStockByShop(List<StockBean> stockListDB, String shop) throws Exception {
 
-		Map<String, String> itemNoMapForUpdateStock = new HashMap<String, String>();
+//		Map<String, String> itemNoMapForUpdateStock = new HashMap<String, String>();
 		
 		StringBuilder item_code = new StringBuilder();
 		StringBuilder quantity = new StringBuilder();
@@ -476,7 +488,7 @@ public class A14010107Action extends BaseAction {
 		for (StockBean stockbean : stockListDB) {
 
 			String itemurl = stockbean.getCommodity_id();
-			itemNoMapForUpdateStock.put(itemurl, itemurl);
+//			itemNoMapForUpdateStock.put(itemurl, itemurl);
 			String detailNo = stockbean.getDetail_no();
 			int stock = 0;
 			if (stockbean.getStock_jp_kano() > 0) {
@@ -511,9 +523,10 @@ public class A14010107Action extends BaseAction {
 		List<String> errMsgList = new ArrayList<String>();
 		List<MessageFromYahoo> messageList = yahooShop.getMessageFromYahooList_UpdateOrder();
 		if (Utility.isEmptyList(messageList)) {
-			updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
+//			updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
 			addError(null, "SITE:Yahoo,SHOP:"+shop+" 操作成功");
 		} else {
+			itemNoMapForUpdateStock.clear();
 			for (MessageFromYahoo message : messageList) {
 				System.out.println(message.getCode() + " " + message.getMessage());
 				errMsgList.add(message.getCode() + " " + message.getMessage());
