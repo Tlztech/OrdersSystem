@@ -543,8 +543,8 @@ public class A130101Common {
 							Order.setSize(size);
 
 							if (!Utility.isEmptyString(size)) {
-								String kaisha = Utility.getBestSoryo(rs.getString("SOUFUSAKIJUSHOTODOFUKEN"), size,
-										soryoMap);
+								String kaisha = Utility.getBestShippingFee(rs.getString("SOUFUSAKIJUSHOTODOFUKEN"), size, Utility.getShippingFeeMap());
+								
 								sql = "update common_order_tbl set haisouhoho = ?, UPDATE_TIME = ? where chumonbango = ?";
 								ps2 = conn.prepareStatement(sql);
 								
@@ -557,7 +557,7 @@ public class A130101Common {
 								}else {
 									Order.setHaisohoho("宅配便");
 									ps2.setString(1, "宅配便");
-									kaisha = "1002";
+//									kaisha = "1002";
 								}
 								
 								ps2.setString(2, Utility.getDateTime());
