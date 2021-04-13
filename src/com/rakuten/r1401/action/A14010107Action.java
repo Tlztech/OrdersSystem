@@ -62,15 +62,23 @@ public class A14010107Action extends BaseAction {
 		stockBeanList.stream().forEach(n->{
 			itemNoMapForUpdateStock.put(n.getCommodity_id(), n.getCommodity_id());
 		});
-		for (String shop : shopList) {
-			updateYahooOrderStockByShop(stockBeanList, shop);
+		if (itemNoMapForUpdateStock.isEmpty()) {
+			
+		} else {
+			for (String shop : shopList) {
+				updateYahooOrderStockByShop(stockBeanList, shop);
+			}
 		}
-		site = "楽天";
-		shopList = getShopsBySite(site);
-		for (String shop : shopList) {
-			updateLottoOrderStockByShop(stockBeanList, shop);
+		if (itemNoMapForUpdateStock.isEmpty()) {
+			
+		} else {
+			site = "楽天";
+			shopList = getShopsBySite(site);
+			for (String shop : shopList) {
+				updateLottoOrderStockByShop(stockBeanList, shop);
+			}
+			updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
 		}
-		updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
 	}
 
 	@Override
@@ -118,7 +126,7 @@ public class A14010107Action extends BaseAction {
 		try {
 			conn = JdbcConnection.getConnection();
 //			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ?";
-			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE";
+			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE IN ('Yahoo','楽天')";
 
 			ps = conn.prepareStatement(sql);
 //			ps.setString(1, site);
@@ -485,43 +493,60 @@ public class A14010107Action extends BaseAction {
 		StringBuilder quantity = new StringBuilder();
 		StringBuilder allow_overdraft = new StringBuilder();
 		String subCode;
-		for (StockBean stockbean : stockListDB) {
-
-			String itemurl = stockbean.getCommodity_id();
-//			itemNoMapForUpdateStock.put(itemurl, itemurl);
-			String detailNo = stockbean.getDetail_no();
-			int stock = 0;
-			if (stockbean.getStock_jp_kano() > 0) {
-				stock = stockbean.getStock_jp_kano();
-//			} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
-			} else if (stockbean.getStock_unsochu_kano() > 0) {
-				if (stockbean.getStock_unsochu_kano() > 0) {
-					stock = stock + stockbean.getStock_unsochu_kano();
-				}
-//				if (stockbean.getStock_sh_kano() > 0) {
-//					stock = stock + stockbean.getStock_sh_kano();
-//				}
-			} else {
-				stock = 0;
-			}
-
-			subCode = ((null == detailNo || "".equals(detailNo)) ? "" : (":" + itemurl + detailNo));
-			if (0 == item_code.length()) {
-				item_code.append(itemurl).append(subCode);
-				quantity.append(stock);
-				allow_overdraft.append(stockbean.isNyukafukaFlg()?0:1);
-			} else {
-				item_code.append(",").append(itemurl).append(subCode);
-				quantity.append(",").append(stock);
-				allow_overdraft.append(",").append(stockbean.isNyukafukaFlg()?0:1);
-			}
-		}
-		YahooShop yahooShop = new YahooShop(shop);
-		yahooShop.updateOrderStock(item_code.toString(), quantity.toString(), allow_overdraft.toString());
+		List<StockBean> stockList = stockListDB.size() > 1000 ? stockListDB.subList(0, 1000) : stockListDB;
 		
-		System.out.println("処理完了");
 		List<String> errMsgList = new ArrayList<String>();
-		List<MessageFromYahoo> messageList = yahooShop.getMessageFromYahooList_UpdateOrder();
+		List<MessageFromYahoo> messageList = new ArrayList<>();
+		while(!stockList.isEmpty()) {
+			
+			for (StockBean stockbean : stockList) {
+	
+				String itemurl = stockbean.getCommodity_id();
+	//			itemNoMapForUpdateStock.put(itemurl, itemurl);
+				String detailNo = stockbean.getDetail_no();
+				int stock = 0;
+				if (stockbean.getStock_jp_kano() > 0) {
+					stock = stockbean.getStock_jp_kano();
+	//			} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
+				} else if (stockbean.getStock_unsochu_kano() > 0) {
+					if (stockbean.getStock_unsochu_kano() > 0) {
+						stock = stock + stockbean.getStock_unsochu_kano();
+					}
+	//				if (stockbean.getStock_sh_kano() > 0) {
+	//					stock = stock + stockbean.getStock_sh_kano();
+	//				}
+				} else {
+					stock = 0;
+				}
+	
+				subCode = ((null == detailNo || "".equals(detailNo)) ? "" : (":" + itemurl + detailNo));
+				if (0 == item_code.length()) {
+					item_code.append(itemurl).append(subCode);
+					quantity.append(stock);
+					allow_overdraft.append(stockbean.isNyukafukaFlg()?0:1);
+				} else {
+					item_code.append(",").append(itemurl).append(subCode);
+					quantity.append(",").append(stock);
+					allow_overdraft.append(",").append(stockbean.isNyukafukaFlg()?0:1);
+				}
+			}
+			YahooShop yahooShop = new YahooShop(shop);
+			yahooShop.updateOrderStock(item_code.toString(), quantity.toString(), allow_overdraft.toString());
+			messageList.addAll(yahooShop.getMessageFromYahooList_UpdateOrder());
+			if (Utility.isEmptyList(messageList)) {
+				
+			} else {
+				break;
+			}
+			if (stockListDB.size() > 1000) {
+				stockListDB = stockListDB.subList(1000, stockListDB.size());
+				stockList = stockListDB.size() > 1000 ? stockListDB.subList(0, 1000) : stockListDB;
+			} else {
+				break;
+			}
+
+		}
+		System.out.println("処理完了");
 		if (Utility.isEmptyList(messageList)) {
 //			updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
 			addError(null, "SITE:Yahoo,SHOP:"+shop+" 操作成功");
@@ -535,6 +560,7 @@ public class A14010107Action extends BaseAction {
 				addActionError("SITE:Yahoo,SHOP:"+shop+" " +msg);
 			}
 		}
+		
 	
 	}
 	

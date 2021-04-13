@@ -97,6 +97,8 @@ public class A10010201Action extends BaseAction {
 					f100102.setHaisokaisha_hasozumi("ヤマト運輸");
 				} else if ("1002".equals(hasobean.getUnsokaisha())) {
 					f100102.setHaisokaisha_hasozumi("佐川急便");
+				} else if ("1003".equals(hasobean.getUnsokaisha())) {
+					f100102.setHaisokaisha_hasozumi("郵便局");
 				}
 				f100102.setToiawasebango_hasozumi(hasobean.getToiawasebango());
 			}

@@ -1657,6 +1657,8 @@ public class Utility {
 			name = "ヤマト運輸";
 		} else if ("1002".equals(code)) {
 			name = "佐川急便";
+		} else if ("1003".equals(code)) {
+			name = "郵便局";
 		}
 		return name;
 	}

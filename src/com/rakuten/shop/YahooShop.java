@@ -411,6 +411,7 @@ public class YahooShop {
 
 	private String getXml(String shopName, URL url, String getXml) throws Exception {
 
+		System.out.println(shopName);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestProperty("Authorization",
 				"Bearer " + (tokenIsValid(TOKEN_VALIDTIMEINTERVAL_ONEHOUR)?getAccessToken():GetTokenFromYahoo.getToken(getClientId(), getSellerId(), getRefreshToken())));
@@ -421,13 +422,17 @@ public class YahooShop {
 		conn.connect();// 得到请求的输出流对象
 		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
 		out.write(new String(getXml.getBytes("UTF-8")));
-
+		
 		System.out.println(new String(getXml.getBytes("UTF-8")));
 		out.flush();
 		out.close();
 		BufferedReader in = null;
 		try {
-			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK || conn.getResponseCode() == 207) {
+				in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			} else {
+				in = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
