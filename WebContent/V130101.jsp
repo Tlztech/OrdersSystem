@@ -113,14 +113,19 @@ function setInfoVal(infoVal){
 	var Regx = /^[A-Za-z]*$/;
 	
 	// 是快递单号
-	if((infoVal.charAt(0) == 3 || infoVal.charAt(0) == 4 || infoVal.charAt(0) == 7 || infoVal.charAt(0) == 5) && infoVal.length<15){
+	if((infoVal.charAt(0) == 3 || infoVal.charAt(0) == 4 || infoVal.charAt(0) == 1 || infoVal.charAt(0) == 5) && infoVal.length == 12){
 		document.getElementsByName("f130101.inputDenpyobango")[0].value=infoVal;
 		
 	    if(checkHasokano()){
 			actionSubmit('A13010104');
 		}
-	
-	}else if((infoVal.charAt(0) == 1 && infoVal.length != 13) || infoVal.charAt(0) == 2 || infoVal.charAt(0) == 3 || infoVal.charAt(0) == 'O'|| infoVal.charAt(0) == 'P' || infoVal.charAt(0) == 'Y' || Regx.test(infoVal.charAt(0)) ){
+	}else{
+		clearInfo();
+		// 订单号
+		document.getElementsByName("f130101.inputJuchubango")[0].value=infoVal;
+		checkBiko();
+	}
+/* 	}else if((infoVal.charAt(0) == 1 && infoVal.length != 13) || infoVal.charAt(0) == 2 || infoVal.charAt(0) == 3 || infoVal.charAt(0) == 'O'|| infoVal.charAt(0) == 'P' || infoVal.charAt(0) == 'Y' || Regx.test(infoVal.charAt(0)) ){
 		clearInfo();
 		// 订单号
 		document.getElementsByName("f130101.inputJuchubango")[0].value=infoVal;
@@ -148,7 +153,7 @@ function setInfoVal(infoVal){
 		}
 		document.getElementsByName("receive")[0].value = "";
 		setColor();
-	}
+	} */
 }
 
 function setColor(){
