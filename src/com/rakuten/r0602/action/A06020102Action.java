@@ -557,7 +557,7 @@ public class A06020102Action extends BaseAction {
 				cell.setCellStyle(style);
 				cell.setCellValue("お荷物伝票番号");
 
-				String[] haisoukaisha = { "ヤマト運輸", "佐川急便" };
+				String[] haisoukaisha = { "ヤマト運輸", "佐川急便", "郵便局" };
 				// 加载下拉列表内容
 				DVConstraint constraint = DVConstraint
 						.createExplicitListConstraint(haisoukaisha);

@@ -1320,6 +1320,9 @@ select {
                                 <s:if test="f100102.haisokaisha_hasozumi == 'ヤマト運輸'">
                                     <input type="button" value="追跡" onclick="window.open ('http://toi.kuronekoyamato.co.jp/cgi-bin/tneko', 'newwindow', 'height=1024, width=600, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no') ">
                                 </s:if>
+                                <s:if test="f100102.haisokaisha_hasozumi == '郵便局'">
+                                    <input type="button" value="追跡" onclick="window.open ('https://trackings.post.japanpost.jp/services/srv/search/input', 'newwindow', 'height=1024, width=600, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no') ">
+                                </s:if>
                             </td>
                         </tr>
                     </table>
@@ -1393,6 +1396,9 @@ select {
                                     </s:if>
                                     <s:if test="haisokaisha == 'ヤマト運輸'">
                                         <input type="button" value="追跡" onclick="window.open ('http://toi.kuronekoyamato.co.jp/cgi-bin/tneko', 'newwindow', 'height=1024, width=600, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no') ">
+                                    </s:if>
+                                    <s:if test="haisokaisha == '郵便局'">
+                                        <input type="button" value="追跡" onclick="window.open ('https://trackings.post.japanpost.jp/services/srv/search/input', 'newwindow', 'height=1024, width=600, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no') ">
                                     </s:if>
 				                </td>
 			                </tr>
@@ -1473,6 +1479,9 @@ select {
                                 </s:if>
                                 <s:if test="henpinhaisokaisha == 'ヤマト運輸'">
                                     <input type="button" value="追跡" onclick="window.open ('http://toi.kuronekoyamato.co.jp/cgi-bin/tneko', 'newwindow', 'height=1024, width=600, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no') ">
+                                </s:if>
+                                <s:if test="henpinhaisokaisha == '郵便局'">
+                                    <input type="button" value="追跡" onclick="window.open ('https://trackings.post.japanpost.jp/services/srv/search/input', 'newwindow', 'height=1024, width=600, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no') ">
                                 </s:if>
                             </td>
                         </tr>
@@ -1577,6 +1586,9 @@ select {
                                 </s:if>
                                 <s:if test="tuikahaisokaisha == 'ヤマト運輸'">
                                     <input type="button" value="追跡" onclick="window.open ('http://toi.kuronekoyamato.co.jp/cgi-bin/tneko', 'newwindow', 'height=1024, width=600, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no') ">
+                                </s:if>
+                                <s:if test="tuikahaisokaisha == '郵便局">
+                                    <input type="button" value="追跡" onclick="window.open ('https://trackings.post.japanpost.jp/services/srv/search/input', 'newwindow', 'height=1024, width=600, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no') ">
                                 </s:if>
                             </td>
                         </tr>
@@ -1848,7 +1860,7 @@ select {
 		                <s:select list="#{ '0':'その他','1':'宅急便','2':'メール便'}" name="f100102.haisohoho_futsuhasou" />
 		            </td>
                     <td>配送会社
-		                <s:select list="#{ '1000':'その他','1001':'ヤマト運輸','1002':'佐川急便'}" name="f100102.haisokaisha_futsuhasou" />
+		                <s:select list="#{ '1000':'その他','1001':'ヤマト運輸','1002':'佐川急便','1003':'郵便局'}" name="f100102.haisokaisha_futsuhasou" />
 		            </td>
                 </tr>
             </table>
@@ -1895,7 +1907,7 @@ select {
 		                <s:select list="#{ '0':'その他','1':'宅急便','2':'メール便'}" name="f100102.haisohoho_bunnou" />
 		            </td>
                     <td>配送会社
-		                <s:select list="#{ '1000':'その他','1001':'ヤマト運輸','1002':'佐川急便'}" name="f100102.haisokaisha_bunnou" />
+		                <s:select list="#{ '1000':'その他','1001':'ヤマト運輸','1002':'佐川急便','1003':'郵便局'}" name="f100102.haisokaisha_bunnou" />
 		            </td>
                 </tr>
             </table>
@@ -2131,7 +2143,7 @@ select {
 		                <s:select list="#{ '0':'その他','1':'宅急便','2':'メール便'}" name="f100102.haisohoho_henpinhaso" />
 		            </td>
                     <td>配送会社
-		                <s:select list="#{ '1000':'その他','1001':'ヤマト運輸','1002':'佐川急便'}" name="f100102.haisokaisha_henpinhaso" />
+		                <s:select list="#{ '1000':'その他','1001':'ヤマト運輸','1002':'佐川急便','1003':'郵便局'}" name="f100102.haisokaisha_henpinhaso" />
 		            </td>
                 </tr>
             </table>
@@ -2309,7 +2321,7 @@ select {
 		                <s:select list="#{ '0':'その他','1':'宅急便','2':'メール便'}" name="f100102.haisohoho_tuikahaso" />
 		            </td>
                     <td>配送会社
-		                <s:select list="#{ '1000':'その他','1001':'ヤマト運輸','1002':'佐川急便'}" name="f100102.haisokaisha_tuikahaso" />
+		                <s:select list="#{ '1000':'その他','1001':'ヤマト運輸','1002':'佐川急便','1003':'郵便局'}" name="f100102.haisokaisha_tuikahaso" />
 		            </td>
                 </tr>
             </table>
