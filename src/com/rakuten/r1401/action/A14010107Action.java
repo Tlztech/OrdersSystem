@@ -62,23 +62,18 @@ public class A14010107Action extends BaseAction {
 		stockBeanList.stream().forEach(n->{
 			itemNoMapForUpdateStock.put(n.getCommodity_id(), n.getCommodity_id());
 		});
-		if (itemNoMapForUpdateStock.isEmpty()) {
-			
-		} else {
-			for (String shop : shopList) {
-				updateYahooOrderStockByShop(stockBeanList, shop);
-			}
+		
+		for (String shop : shopList) {
+			updateYahooOrderStockByShop(stockBeanList, shop);
 		}
-		if (itemNoMapForUpdateStock.isEmpty()) {
-			
-		} else {
-			site = "楽天";
-			shopList = getShopsBySite(site);
-			for (String shop : shopList) {
-				updateLottoOrderStockByShop(stockBeanList, shop);
-			}
-			updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
+	
+		site = "楽天";
+		shopList = getShopsBySite(site);
+		for (String shop : shopList) {
+			updateLottoOrderStockByShop(stockBeanList, shop);
 		}
+		updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
+		
 	}
 
 	@Override
@@ -533,11 +528,11 @@ public class A14010107Action extends BaseAction {
 			YahooShop yahooShop = new YahooShop(shop);
 			yahooShop.updateOrderStock(item_code.toString(), quantity.toString(), allow_overdraft.toString());
 			messageList.addAll(yahooShop.getMessageFromYahooList_UpdateOrder());
-			if (Utility.isEmptyList(messageList)) {
-				
-			} else {
-				break;
-			}
+//			if (Utility.isEmptyList(messageList)) {
+//				
+//			} else {
+//				break;
+//			}
 			if (stockListDB.size() > 1000) {
 				stockListDB = stockListDB.subList(1000, stockListDB.size());
 				stockList = stockListDB.size() > 1000 ? stockListDB.subList(0, 1000) : stockListDB;

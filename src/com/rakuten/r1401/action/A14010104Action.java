@@ -413,7 +413,7 @@ public class A14010104Action extends BaseAction {
 				addActionError(msg);
 			}
 			
-			updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
+//			updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
 
 		} else if ("Yahoo".equals(site)){
 			StringBuilder item_code = new StringBuilder();
@@ -458,7 +458,7 @@ public class A14010104Action extends BaseAction {
 			List<String> errMsgList = new ArrayList<String>();
 			List<MessageFromYahoo> messageList = yahooShop.getMessageFromYahooList_UpdateOrder();
 			if (Utility.isEmptyList(messageList)) {
-				updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
+//				updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
 				addError(null, "操作成功");
 			} else {
 				for (MessageFromYahoo message : messageList) {
