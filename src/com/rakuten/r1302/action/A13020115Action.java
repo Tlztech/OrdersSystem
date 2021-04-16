@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.rakuten.common.DeliveryCompany;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r1302.common.A130201Common;
 import com.rakuten.r1302.form.F130201;
@@ -49,14 +50,14 @@ public class A13020115Action extends BaseAction {
 					&& !"ポンパレモール".equals(order.getSite()) && !"qoo10".equals(order.getSite())) {
 				
 				String haisokaishaName = "";
-				if ("1001".equals(order.getHaisokaisha())) {
-					haisokaishaName = "ヤマト運輸";
-				} else if ("1002".equals(order.getHaisokaisha())) {
-					haisokaishaName = "佐川急便";
-				}else if ("1003".equals(order.getHaisokaisha())) {
-					haisokaishaName = "郵便局";
+				if (DeliveryCompany.YAMATO.getTag().equals(order.getHaisokaisha())) {
+					haisokaishaName = DeliveryCompany.YAMATO.getName();
+				} else if (DeliveryCompany.SAGAWA.getTag().equals(order.getHaisokaisha())) {
+					haisokaishaName = DeliveryCompany.SAGAWA.getName();
+				}else if (DeliveryCompany.POST.getTag().equals(order.getHaisokaisha())) {
+					haisokaishaName = DeliveryCompany.POST.getName();
 				}else {
-					haisokaishaName = "ヤマト運輸";
+					haisokaishaName = DeliveryCompany.YAMATO.getName();
 				}
 				shoriList2.add(new String[] { order.getChumonbango(), order.getTodohuken(), haisokaishaName, order.getHaisohoho(), 
 						order.getDenpyobango(), order.getSize()	}

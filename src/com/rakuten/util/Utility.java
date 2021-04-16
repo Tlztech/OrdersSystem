@@ -1653,12 +1653,12 @@ public class Utility {
 		String name = "";
 		if ("1000".equals(code)) {
 			name = "その他";
-		} else if ("1001".equals(code)) {
-			name = "ヤマト運輸";
-		} else if ("1002".equals(code)) {
-			name = "佐川急便";
-		} else if ("1003".equals(code)) {
-			name = "郵便局";
+		} else if (DeliveryCompany.YAMATO.getTag().equals(code)) {
+			name = DeliveryCompany.YAMATO.getName();
+		} else if (DeliveryCompany.SAGAWA.getTag().equals(code)) {
+			name = DeliveryCompany.SAGAWA.getName();
+		} else if (DeliveryCompany.POST.getTag().equals(code)) {
+			name = DeliveryCompany.POST.getName();
 		}
 		return name;
 	}

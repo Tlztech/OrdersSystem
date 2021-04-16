@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.rakuten.common.DeliveryCompany;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r1302.common.A130201Common;
 import com.rakuten.r1302.form.F130201;
@@ -54,14 +55,14 @@ public class A13020112Action extends BaseAction {
 //				shoriList2.add(new String[] { order.getChumonbango().replace("coverforefront-", ""), 
 //						order.getHaisohoho().replace("宅配便", "postage2").replace("宅急便", "postage2").replace("メール便", "postage1"), order.getDenpyobango(), shipUrl, "8" ,"3"});
 				String haisokaishaName = "";
-				if ("1001".equals(order.getHaisokaisha())) {
-					haisokaishaName = "ヤマト運輸";
-				} else if ("1002".equals(order.getHaisokaisha())) {
-					haisokaishaName = "佐川急便";
-				} else if ("1003".equals(order.getHaisokaisha())) {
-					haisokaishaName = "郵便局";
+				if (DeliveryCompany.YAMATO.getTag().equals(order.getHaisokaisha())) {
+					haisokaishaName = DeliveryCompany.YAMATO.getName();
+				} else if (DeliveryCompany.SAGAWA.getTag().equals(order.getHaisokaisha())) {
+					haisokaishaName = DeliveryCompany.SAGAWA.getName();
+				} else if (DeliveryCompany.POST.getTag().equals(order.getHaisokaisha())) {
+					haisokaishaName = DeliveryCompany.POST.getName();
 				}else {
-					haisokaishaName = "ヤマト運輸";
+					haisokaishaName = DeliveryCompany.YAMATO.getName();
 				}
 				shoriList2.add(new String[] { order.getChumonbango(), order.getTodohuken(), haisokaishaName, order.getHaisohoho(), 
 						order.getDenpyobango(), order.getSize()	}

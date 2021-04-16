@@ -3,6 +3,7 @@ package com.rakuten.r1001.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.rakuten.common.DeliveryCompany;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.common.action.OrderCommon;
 import com.rakuten.common.bean.CommonOrderBean;
@@ -93,12 +94,12 @@ public class A10010201Action extends BaseAction {
 
 				if ("1000".equals(hasobean.getUnsokaisha())) {
 					f100102.setHaisokaisha_hasozumi("その他");
-				} else if ("1001".equals(hasobean.getUnsokaisha())) {
-					f100102.setHaisokaisha_hasozumi("ヤマト運輸");
-				} else if ("1002".equals(hasobean.getUnsokaisha())) {
-					f100102.setHaisokaisha_hasozumi("佐川急便");
-				} else if ("1003".equals(hasobean.getUnsokaisha())) {
-					f100102.setHaisokaisha_hasozumi("郵便局");
+				} else if (DeliveryCompany.YAMATO.getTag().equals(hasobean.getUnsokaisha())) {
+					f100102.setHaisokaisha_hasozumi(DeliveryCompany.YAMATO.getName());
+				} else if (DeliveryCompany.SAGAWA.getTag().equals(hasobean.getUnsokaisha())) {
+					f100102.setHaisokaisha_hasozumi(DeliveryCompany.SAGAWA.getName());
+				} else if (DeliveryCompany.POST.getTag().equals(hasobean.getUnsokaisha())) {
+					f100102.setHaisokaisha_hasozumi(DeliveryCompany.POST.getName());
 				}
 				f100102.setToiawasebango_hasozumi(hasobean.getToiawasebango());
 			}
@@ -353,15 +354,15 @@ public class A10010201Action extends BaseAction {
 			f100102.setHaisohoho_bunnou("2");
 			f100102.setHaisohoho_futsuhasou("2");
 
-			f100102.setHaisokaisha_bunnou("1001");
-			f100102.setHaisokaisha_futsuhasou("1001");
+			f100102.setHaisokaisha_bunnou(DeliveryCompany.YAMATO.getTag());
+			f100102.setHaisokaisha_futsuhasou(DeliveryCompany.YAMATO.getTag());
 
 		} else if ("宅配便".equals(haisohoho)) {
 			f100102.setHaisohoho_bunnou("1");
 			f100102.setHaisohoho_futsuhasou("1");
 
-			f100102.setHaisokaisha_bunnou("1002");
-			f100102.setHaisokaisha_futsuhasou("1002");
+			f100102.setHaisokaisha_bunnou(DeliveryCompany.SAGAWA.getTag());
+			f100102.setHaisokaisha_futsuhasou(DeliveryCompany.SAGAWA.getTag());
 		}
 
 		// 获取发送约定日
