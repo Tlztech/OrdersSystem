@@ -315,7 +315,7 @@ select {
 	siteMap.put("","--");
 	try {
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql= "SELECT SITE, SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo', '楽天')";
+		String sql= "SELECT SITE, SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo', '楽天') and DELETE_FLG is null";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {

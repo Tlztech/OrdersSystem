@@ -152,7 +152,7 @@ function hideDiv2() {
 		Connection conn = null;
 	try {
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop";
+		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop where DELETE_FLG is null";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		Map<String, String> shopMap = new HashMap<String, String>();

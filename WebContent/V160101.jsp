@@ -71,7 +71,7 @@ function init(){
 	Map<String, String> shopMap = new HashMap<String, String>();
 	try {
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo', '楽天')";
+		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo', '楽天') and DELETE_FLG is null";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
@@ -81,7 +81,7 @@ function init(){
 		request.setAttribute("shopmap", shopMap);
 		
 		Map<String, String> rakutenShopMap = new HashMap<String, String>();
-		sql = "SELECT SHOP_ID FROM rakuten.shop where SITE = '楽天'";
+		sql = "SELECT SHOP_ID FROM rakuten.shop where SITE = '楽天' and DELETE_FLG is null";
 		ps = conn.prepareStatement(sql);
 		rs = ps.executeQuery();
 		while (rs.next()) {

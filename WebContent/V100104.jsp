@@ -176,7 +176,7 @@ select {
 		while (rs.next()) {
 			siteMap.put(rs.getString("SITE"), rs.getString("SITE"));
 		}
-		sql = "SELECT distinct SHOP_ID FROM rakuten.shop";
+		sql = "SELECT distinct SHOP_ID FROM rakuten.shop where DELETE_FLG is null";
 		ps = conn.prepareStatement(sql);
 		rs = ps.executeQuery();
 		while (rs.next()) {
