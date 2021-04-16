@@ -94,7 +94,7 @@ a {
                 <td width="70px" align="center">埼玉県</td>
                 <td width="70px" align="center">千葉県</td>
                 <td width="70px" align="center">東京都</td>
-                <td width="70px" align="center">神奈川</td>
+                <td width="70px" align="center">神奈川県</td>
                 <td width="70px" align="center">新潟県</td>
                 <td width="70px" align="center">富山県</td>
                 <td width="70px" align="center">石川県</td>
@@ -110,7 +110,7 @@ a {
                 <td width="70px" align="center">大阪府</td>
                 <td width="70px" align="center">兵庫県</td>
                 <td width="70px" align="center">奈良県</td>
-                <td width="70px" align="center">和歌山</td>
+                <td width="70px" align="center">和歌山県</td>
                 <td width="70px" align="center">鳥取県</td>
                 <td width="70px" align="center">島根県</td>
                 <td width="70px" align="center">岡山県</td>
@@ -126,7 +126,7 @@ a {
                 <td width="70px" align="center">熊本県</td>
                 <td width="70px" align="center">大分県</td>
                 <td width="70px" align="center">宮崎県</td>
-                <td width="70px" align="center">鹿児島</td>
+                <td width="70px" align="center">鹿児島県</td>
                 <td width="70px" align="center">沖縄県</td>
                 <td width="70px" align="center">その他</td>
             </tr>
@@ -661,7 +661,7 @@ a {
                 <td width="70px" align="center">埼玉県</td>
                 <td width="70px" align="center">千葉県</td>
                 <td width="70px" align="center">東京都</td>
-                <td width="70px" align="center">神奈川</td>
+                <td width="70px" align="center">神奈川県</td>
                 <td width="70px" align="center">新潟県</td>
                 <td width="70px" align="center">富山県</td>
                 <td width="70px" align="center">石川県</td>
@@ -677,7 +677,7 @@ a {
                 <td width="70px" align="center">大阪府</td>
                 <td width="70px" align="center">兵庫県</td>
                 <td width="70px" align="center">奈良県</td>
-                <td width="70px" align="center">和歌山</td>
+                <td width="70px" align="center">和歌山県</td>
                 <td width="70px" align="center">鳥取県</td>
                 <td width="70px" align="center">島根県</td>
                 <td width="70px" align="center">岡山県</td>
@@ -693,7 +693,7 @@ a {
                 <td width="70px" align="center">熊本県</td>
                 <td width="70px" align="center">大分県</td>
                 <td width="70px" align="center">宮崎県</td>
-                <td width="70px" align="center">鹿児島</td>
+                <td width="70px" align="center">鹿児島県</td>
                 <td width="70px" align="center">沖縄県</td>
                 <td width="70px" align="center">その他</td>
             </tr>
@@ -1229,7 +1229,7 @@ a {
                 <td width="70px" align="center">埼玉県</td>
                 <td width="70px" align="center">千葉県</td>
                 <td width="70px" align="center">東京都</td>
-                <td width="70px" align="center">神奈川</td>
+                <td width="70px" align="center">神奈川県</td>
                 <td width="70px" align="center">新潟県</td>
                 <td width="70px" align="center">富山県</td>
                 <td width="70px" align="center">石川県</td>
@@ -1245,7 +1245,7 @@ a {
                 <td width="70px" align="center">大阪府</td>
                 <td width="70px" align="center">兵庫県</td>
                 <td width="70px" align="center">奈良県</td>
-                <td width="70px" align="center">和歌山</td>
+                <td width="70px" align="center">和歌山県</td>
                 <td width="70px" align="center">鳥取県</td>
                 <td width="70px" align="center">島根県</td>
                 <td width="70px" align="center">岡山県</td>
@@ -1261,7 +1261,7 @@ a {
                 <td width="70px" align="center">熊本県</td>
                 <td width="70px" align="center">大分県</td>
                 <td width="70px" align="center">宮崎県</td>
-                <td width="70px" align="center">鹿児島</td>
+                <td width="70px" align="center">鹿児島県</td>
                 <td width="70px" align="center">沖縄県</td>
                 <td width="70px" align="center">その他</td>
             </tr>

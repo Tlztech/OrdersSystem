@@ -15,7 +15,7 @@ public enum Prefecture {
 	SAITAMA("埼玉県",11),
 	CHIBA("千葉県",12),
 	TOKYO("東京都",13),
-	KANAGAWA("神奈川",14),
+	KANAGAWA("神奈川県",14),
 	NIIGATA("新潟県",15),
 	TOYAMA("富山県",16),
 	ISHIKAWA("石川県",17),
@@ -31,7 +31,7 @@ public enum Prefecture {
 	OSAKA("大阪府",27),
 	HYOGO("兵庫県",28),
 	NARA("奈良県",29),
-	WAKAYAMA("和歌山",30),
+	WAKAYAMA("和歌山県",30),
 	TOTTORI("鳥取県",31),
 	SHIMANE("島根県",32),
 	OKAYAMA("岡山県",33),
@@ -47,7 +47,7 @@ public enum Prefecture {
 	KUMAMOTO("熊本県",43),
 	OITA("大分県",44),
 	MIYAZAKI("宮崎県",45),
-	KAGOSHIMA("鹿児島",46),
+	KAGOSHIMA("鹿児島県",46),
 	OKINAWA("沖縄県",47),
 	OTHER("その他",48)
 	;
