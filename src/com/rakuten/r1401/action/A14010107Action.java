@@ -91,7 +91,7 @@ public class A14010107Action extends BaseAction {
 		ResultSet rs = null;
 		try {
 			conn = JdbcConnection.getConnection();
-			String sql = "SELECT distinct SHOP_ID FROM rakuten.shop where site = ?";
+			String sql = "SELECT distinct SHOP_ID FROM rakuten.shop where site = ? and DELETE_FLG  is null";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, site);
 			
