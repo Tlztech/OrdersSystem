@@ -15,7 +15,7 @@ public enum Prefecture {
 	SAITAMA("埼玉県",11),
 	CHIBA("千葉県",12),
 	TOKYO("東京都",13),
-	KANAGAWA("神奈川",14),
+	KANAGAWA("神奈川県",14),
 	NIIGATA("新潟県",15),
 	TOYAMA("富山県",16),
 	ISHIKAWA("石川県",17),

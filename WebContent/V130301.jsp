@@ -94,7 +94,7 @@ a {
                 <td width="70px" align="center">埼玉県</td>
                 <td width="70px" align="center">千葉県</td>
                 <td width="70px" align="center">東京都</td>
-                <td width="70px" align="center">神奈川</td>
+                <td width="70px" align="center">神奈川県</td>
                 <td width="70px" align="center">新潟県</td>
                 <td width="70px" align="center">富山県</td>
                 <td width="70px" align="center">石川県</td>
@@ -661,7 +661,7 @@ a {
                 <td width="70px" align="center">埼玉県</td>
                 <td width="70px" align="center">千葉県</td>
                 <td width="70px" align="center">東京都</td>
-                <td width="70px" align="center">神奈川</td>
+                <td width="70px" align="center">神奈川県</td>
                 <td width="70px" align="center">新潟県</td>
                 <td width="70px" align="center">富山県</td>
                 <td width="70px" align="center">石川県</td>
@@ -1229,7 +1229,7 @@ a {
                 <td width="70px" align="center">埼玉県</td>
                 <td width="70px" align="center">千葉県</td>
                 <td width="70px" align="center">東京都</td>
-                <td width="70px" align="center">神奈川</td>
+                <td width="70px" align="center">神奈川県</td>
                 <td width="70px" align="center">新潟県</td>
                 <td width="70px" align="center">富山県</td>
                 <td width="70px" align="center">石川県</td>
