@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 
+import com.rakuten.common.DeliveryCompany;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r0602.bean.DetailListBean;
 import com.rakuten.r0602.bean.OrderBean;
@@ -508,7 +509,7 @@ public class A13010103Action extends BaseAction {
 					shohinmei = shohinmei.substring(0, 25);
 				}
 				if ("宅配便".equals(orderBean.getHaisouhoho()) || "宅急便".equals(orderBean.getHaisouhoho())) {
-					if ("1002".equals(orderBean.getUnsokaisha())) {
+					if (DeliveryCompany.SAGAWA.getTag().equals(orderBean.getUnsokaisha()) || DeliveryCompany.POST.getTag().equals(orderBean.getUnsokaisha())) {
 						// 出荷予定日
 						 String yotebi = df2.format(new Date());
 						// お届け先電話番号
@@ -546,7 +547,7 @@ public class A13010103Action extends BaseAction {
 						
 						bufferedWriter.newLine();
 						bufferedWriter.write(yotebi+","+peidari+","+zhidingrishi+","+denwabango+",,"+yunbinbango+","+jusho1+","+jusho2+",,,"+name+",,"+"様"+","+tenpodenwabango+",,3490114,埼玉県蓮田市馬込2-132エルディムセブン1-203,,"+shop+",,"+shohinmei+",");
-					} else if ("1001".equals(orderBean.getUnsokaisha())) {
+					} else if (DeliveryCompany.YAMATO.getTag().equals(orderBean.getUnsokaisha())) {
 						String yamatoType = "";
 	
 						if (orderBean.getKesaihoho().contains("代")) {
