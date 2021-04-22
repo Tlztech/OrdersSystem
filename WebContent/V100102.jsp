@@ -899,6 +899,10 @@ function hideDivZumi(shoribango){
 	clearhenpinzumi(shoribango);
 	hideDiv();
 }
+function orderDetail(){
+	//window.location.href='A10010301?orderNo='+document.getElementsByName('f100102.juchubango')[0].value;
+	window.open('A10010301?orderNo='+document.getElementsByName('f100102.juchubango')[0].value);
+}
 </script>
 <style type="text/css">
 <!--
@@ -1015,7 +1019,8 @@ select {
         <table cellspacing="1" cellpadding="2" width="800px" class="table">
             <tr>
                 <s:if test="f100102.chumonsts1 != 7">
-                <td style="font-size:13px"><a target="_blank" href="javascript:actionSubmit('A10010301?orderNo='+document.getElementsByName('f100102.juchubango')[0].value);">▲注文情報修正</a></td>
+                <!--<td style="font-size:13px"><a target="_blank" href="javascript:actionSubmit('A10010301?orderNo='+document.getElementsByName('f100102.juchubango')[0].value);">▲注文情報修正</a></td>-->
+				<td style="font-size:13px"><a a href="javascript:orderDetail();">▲注文情報修正</a></td>
                 </s:if>
                 <s:if test="f100102.site == '楽天'">
                 <td style="font-size:13px"><a id="mailUrl1" target="_blank" href="https://order.rms.rakuten.co.jp/rms/mall/order/rb/vc?__event=BO03_001_007&order_number=<s:property value="f100102.juchubango"/>">▲メール送信</a></td>
