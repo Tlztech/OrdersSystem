@@ -2,7 +2,6 @@ package com.rakuten.r1901.action;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r1901.form.F190101;
