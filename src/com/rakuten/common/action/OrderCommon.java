@@ -4802,6 +4802,19 @@ public class OrderCommon {
 
 		return orderApiBean;
 	}
+	
+	public OrderApiBean getAmazonOrderListByCSV(File file,String shop) throws Exception {
+		List<RakutenCsvBean> rakutenBeanList = new ArrayList<RakutenCsvBean>();
+		List<String> messageList = new ArrayList<String>();
+		List<String[]> orderList = Utility.readCsvFile(file, true, "\t", "Shift-JIS");
+		rakutenBeanList = setAmazonOrderByCsv(file,orderList);
+		
+		OrderApiBean orderApiBean = new OrderApiBean();
+		orderApiBean.setRakutenBeanList(rakutenBeanList);
+		orderApiBean.setMessageList(messageList);
+		
+		return orderApiBean;
+	}
 
 	public List<String> getijoList() throws Exception {
 		Connection conn = null;
@@ -5758,6 +5771,109 @@ public class OrderCommon {
 			// 在庫タイプ
 			detail.setZaikotaipu(order[83]);
 
+		}
+		return rakutenCsvBeanList;
+	}
+	
+	private List<RakutenCsvBean> setAmazonOrderByCsv(File file, List<String[]> orderList) {
+		List<RakutenCsvBean> rakutenCsvBeanList = new ArrayList<RakutenCsvBean>();
+		RakutenCsvBean bean = null;
+		String orderNo = "";
+		
+		for (String[] order : orderList) {
+			if (bean == null || !order[0].equals(orderNo)) {
+				orderNo = order[0];
+				bean = new RakutenCsvBean();
+				rakutenCsvBeanList.add(bean);
+				// 受注番号
+				bean.setJuchubango(order[0]);
+				// 注文日時
+				bean.setChumonnichiji(order[2]);
+				// 注文者名字
+				bean.setChumonshameiji(order[5]);
+				// 注文者名前
+				bean.setChumonshanamae("");
+				
+				String phoneNumber = order[7];
+				phoneNumber = (phoneNumber == null || "".equals(phoneNumber))?"":phoneNumber.replace("-", "").replace("－", "");
+				// 注文者郵便番号１
+				bean.setChumonshadenwabango1("".equals(phoneNumber)?"":phoneNumber.substring(0,phoneNumber.length()-8));
+				
+				// 注文者電話番号２
+				bean.setChumonshadenwabango2("".equals(phoneNumber)?"":phoneNumber.substring(phoneNumber.length()-8, phoneNumber.length()-4));
+				
+				// 注文者電話番号３
+				bean.setChumonshadenwabango3("".equals(phoneNumber)?"":phoneNumber.substring(phoneNumber.length()-4, phoneNumber.length()));
+				
+				// 決済方法
+				bean.setKesaihouhou(order[6]);
+				
+				// 配送方法
+				bean.setHaisouhoho("");
+				
+				// ポイント利用額
+				bean.setPointoriyogaku("0");
+				
+				// あす楽希望フラグ 
+				bean.setAsurakukibou("0");
+				
+				// クーポン利用額
+				bean.setKuponriyougaku("0");
+			}
+			
+			if (Utility.isEmptyList(bean.getShousaiList())) {
+				bean.setShousaiList(new ArrayList<RakutenDetailCsvBean>());
+			}
+			RakutenDetailCsvBean detail = new RakutenDetailCsvBean();
+			bean.getShousaiList().add(detail);
+			// 商品ID
+			detail.setShouhinId(order[1]);
+			// 商品名
+			detail.setShouhinmei(order[10]);
+			// 商品番号
+			detail.setShouhinbango(order[8]);
+			int itemPrice = Utility.isNum(order[13])?Integer.valueOf(order[13]):0;
+			int quantity = Utility.isNum(order[13])?Integer.valueOf(order[11]):0;
+			// 単価
+			detail.setTanka(String.valueOf((itemPrice == 0 || quantity == 0) ? 0 : (itemPrice/quantity)));
+			// 個数
+			detail.setKosu(String.valueOf(quantity));
+			// 送料込別
+			detail.setSouryoukomibetsu("込");
+			// 税込別
+			detail.setZeikomibetsu("込");
+			// 代引手数料込別
+			detail.setDaibikitesuryoukomibetsu("0");
+			// 項目・選択肢
+			detail.setKomokusentakushi("");
+			// ポイント倍率
+			detail.setPointobairitsu("0");
+			// 納期情報
+			detail.setNokijouho("");
+			
+			int shippingPrice = Utility.isNum(order[15])?Integer.valueOf(order[15]):0;
+			int totalAmount = Utility.isNum(bean.getGokei())?Integer.valueOf(bean.getGokei()):0;
+			// 合計
+			bean.setGokei(String.valueOf(totalAmount + itemPrice + shippingPrice));
+			
+			int itemTax = Utility.isNum(order[14])?Integer.valueOf(order[14]):0;
+			int totalTax = Utility.isNum(bean.getShohizei())?Integer.valueOf(bean.getShohizei()):0;
+			// 消費税
+			bean.setShohizei(String.valueOf(totalTax+itemTax));
+			
+			int totalShippingPrice = Utility.isNum(bean.getSoryou())?Integer.valueOf(bean.getSoryou()):0;
+			// 送料
+			bean.setSoryou(String.valueOf(totalShippingPrice + shippingPrice));
+			
+			// 請求金額
+			bean.setSeikyukingaku(bean.getGokei());
+			
+			// 同梱ステータス
+			bean.setDokonsutetasu("0");
+			
+			// 同梱ID
+			bean.setDokonId("0");
+			
 		}
 		return rakutenCsvBeanList;
 	}

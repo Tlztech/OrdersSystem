@@ -58,6 +58,21 @@ import com.rakuten.common.bean.ShohinsentakushiBean;
 import com.rakuten.r1503.form.Type;
 
 public class Utility {
+	
+	public static List<String[]> readCsvFile(File file, boolean jumpFlg, String splitCode, String encoding) throws Exception {
+		ArrayList<String[]> csvList = new ArrayList<String[]>(); // 用来保存数据
+		CsvReader reader = new CsvReader(new FileInputStream(file), splitCode.charAt(0), Charset.forName(encoding)); // 一般用这编码读就可以了
+		if (jumpFlg) {
+			reader.readHeaders(); // 跳过表头 如果需要表头的话，不要写这句。
+		}
+		while (reader.readRecord()) { // 逐行读入除表头的数据
+			csvList.add(reader.getValues());
+		}
+		reader.close();
+
+		return csvList;
+	}
+	
 	public static List<String[]> readCsvFile(File file, boolean jumpFlg) throws Exception {
 		ArrayList<String[]> csvList = new ArrayList<String[]>(); // 用来保存数据
 		CsvReader reader = new CsvReader(new FileInputStream(file), ',', Charset.forName("Shift-JIS")); // 一般用这编码读就可以了

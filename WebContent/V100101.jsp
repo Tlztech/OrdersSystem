@@ -119,6 +119,14 @@ function popupDiv9() {
     $("#mask").show("slow");  
     div_obj.show("slow");  
 }
+function popupDiv10() {   
+    var div_obj = $("#pop-div10"); 
+	div_obj.css("top",($(window).height()-160)/2);
+	div_obj.css("left",($(window).width()-350)/2);
+    //添加并显示遮罩层   
+    $("#mask").show("slow");  
+    div_obj.show("slow");  
+}
 function hideDiv() {   
   $("#mask").hide();   
   $("#pop-div").hide(); 
@@ -130,6 +138,7 @@ function hideDiv() {
   $("#pop-div8").hide();
   $("#pop-divGetOrderInfoYahoo").hide();
   $("#pop-div9").hide();
+  $("#pop-div10").hide();
 } 
 
 function showTodoke(index){
@@ -309,13 +318,14 @@ select {
 		Connection conn = null;
 	Map<String, String> rakutenMap = new HashMap<String, String>();
 	Map<String, String> yahooMap = new HashMap<String, String>();
+	Map<String, String> amazonMap = new HashMap<String, String>();
 	Map<String, String> shopMap = new HashMap<String, String>();
 	Map<String, String> siteMap = new HashMap<String, String>();
 	shopMap.put("","--");
 	siteMap.put("","--");
 	try {
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql= "SELECT SITE, SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo', '楽天') and DELETE_FLG is null";
+		String sql= "SELECT SITE, SHOP_ID FROM rakuten.shop where DELETE_FLG is null";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
@@ -323,6 +333,8 @@ select {
 				rakutenMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 			} else if ("Yahoo".equals(rs.getString("SITE"))) {
 				yahooMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
+			} else if ("Amazon".equals(rs.getString("SITE"))) {
+				amazonMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 			}
 			shopMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 			siteMap.put(rs.getString("SITE"),rs.getString("SITE"));
@@ -330,6 +342,7 @@ select {
 		
 		request.setAttribute("rakutenmap",rakutenMap);
 		request.setAttribute("yahoomap",yahooMap);
+		request.setAttribute("amazonmap",amazonMap);
 		request.setAttribute("shopmap",shopMap);
 		request.setAttribute("siteMap",siteMap);
 
@@ -681,6 +694,7 @@ select {
 						<input type="button" onclick="popupDiv4();" value="CSVから取得(Yahoo)" />&nbsp;&nbsp;
 						<input type="button" onclick="popupDiv5();" value="CSVから取得(ポンパレ)" />&nbsp;&nbsp;
 						<input type="button" onclick="popupDiv9();" value="CSVから取得(代理発送)" />&nbsp;&nbsp;
+						<input type="button" onclick="popupDiv10();" value="CSVから取得(Amazon)" />&nbsp;&nbsp;
 						<!--                     <input type="button" onclick="actionSubmit('A10010105');" value="発送可リスト生成"/>&nbsp;&nbsp; -->
 						<!--                     <input type="button" onclick="popupDiv();" value="発送情報をシステムに反映"/>&nbsp;&nbsp; -->
 					</td>
@@ -951,12 +965,33 @@ select {
 				</table>
 			</div>
 		</div>
+		<div id='pop-div10' style="left: 30%; width: 350px; height: 160px;"
+			class="pop-box">
+			<div class="pop-box-body">
+				<table align="center">
+					<tr height="80px">
+						<td align="center" colspan="2">Amazon CSVから最新情報取得<br />店舗：<s:select
+								list="#request.amazonmap"
+								name="f100101.shutokuamazonshop" /><br />csvファイル選択：<s:file
+								name="csvFile10" /></td>
+					</tr>
+				</table>
+				<table align="center" width="200px">
+					<tr>
+						<td align="center"><input type="button" onclick="hideDiv();"
+							value="戻る" /></td>
+						<td align="center"><input type="button"
+							onclick="actionSubmit('A10010114?shop='+escape(document.getElementsByName('f100101.shutokuamazonshop')[0].value))" value="確定" /></td>
+					</tr>
+				</table>
+			</div>
+		</div>
 		<div id='pop-div2' style="left: 30%; width: 350px; height: 160px;"
 			class="pop-box">
 			<div class="pop-box-body">
 				<table align="center">
 					<tr height="80px">
-						<td align="center" colspan="2">注文情報を取得する<br /> <s:select
+						<td align="center" colspan="2">楽天注文情報を取得する<br />店舗：<s:select
 								list="#request.rakutenmap"
 								name="f100101.shutokushop" />
 						</td>
@@ -979,7 +1014,7 @@ select {
 			<div class="pop-box-body">
 				<table align="center">
 					<tr height="80px">
-						<td align="center" colspan="2">Yahoo 注文情報を取得する<br /> <s:select
+						<td align="center" colspan="2">Yahoo 注文情報を取得する<br />店舗：<s:select
 								list="#request.yahoomap"
 								name="f100101.shutokuyahooshop" />
 						</td>

@@ -11,6 +11,7 @@ public class F100101 implements Serializable {
 	private String mondaiariCount = null;
 	private String shutokushop = null;
 	private String shutokuyahooshop = null;
+	private String shutokuamazonshop = null;
 	private String kikanStart = null;
 	private String kikanEnd = null;
 	private String keyword = null;
@@ -800,6 +801,20 @@ public class F100101 implements Serializable {
 
 	public void setShutokuyahooshop(String shutokuyahooshop) {
 		this.shutokuyahooshop = shutokuyahooshop;
+	}
+
+	/**
+	 * @return the shutokuamazonshop
+	 */
+	public String getShutokuamazonshop() {
+		return shutokuamazonshop;
+	}
+
+	/**
+	 * @param shutokuamazonshop the shutokuamazonshop to set
+	 */
+	public void setShutokuamazonshop(String shutokuamazonshop) {
+		this.shutokuamazonshop = shutokuamazonshop;
 	}
 
 	public String getIjoCount() {
