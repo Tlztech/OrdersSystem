@@ -18,6 +18,7 @@ import java.util.List;
 import javax.xml.datatype.DatatypeFactory;
 
 import org.apache.axis.encoding.Base64;
+import org.apache.commons.lang.time.DateFormatUtils;
 
 import com.rakuten.common.MessageFromRMS;
 import com.rakuten.common.MessageFromYahoo;
@@ -451,7 +452,7 @@ public class OrderCommon {
 				// 检查已有的商品bean，有的话利用，没得话new一个
 				ShouhinStsBean shouhinStsBean = null;
 				for (int k = 0; k < shouhinStsBeanList.size(); k++) {
-					if (shouhinStsBeanList.get(k).getShouhinbango().equals(shouhinbango)) {
+					if (shouhinStsBeanList.get(k).getShouhinbango().equalsIgnoreCase(shouhinbango)) {
 						shouhinStsBean = shouhinStsBeanList.get(k);
 						break;
 					}
@@ -462,19 +463,19 @@ public class OrderCommon {
 					shouhinStsBean.setShouhinbango(shouhinbango);
 					// 设置日本初始库存
 					for (String[] japanStock : stockJpList) {
-						if (japanStock[0].equals(shouhinbango)) {
+						if (japanStock[0].equalsIgnoreCase(shouhinbango)) {
 							shouhinStsBean.setNihonStock(japanStock[1]);
 						}
 					}
 					// 设置上海初始库存
 					for (String[] shanghaiStock : stockShList) {
-						if (shanghaiStock[0].equals(shouhinbango)) {
+						if (shanghaiStock[0].equalsIgnoreCase(shouhinbango)) {
 							shouhinStsBean.setShanghaiStock(shanghaiStock[1]);
 						}
 					}
 					// 设置进货途中初始库存
 					for (String[] nyukachu : nyukachuList) {
-						if (nyukachu[0].equals(shouhinbango)) {
+						if (nyukachu[0].equalsIgnoreCase(shouhinbango)) {
 							shouhinStsBean.setNyukachukosu(String.valueOf(
 									Integer.valueOf(shouhinStsBean.getNyukachukosu()) + Integer.valueOf(nyukachu[1])));
 						}
@@ -484,7 +485,7 @@ public class OrderCommon {
 						if ("xbx078-T-01".equals(unsochu[0])) {
 							System.out.println(shouhinbango);
 						}
-						if (unsochu[0].equals(shouhinbango)) {
+						if (unsochu[0].equalsIgnoreCase(shouhinbango)) {
 							shouhinStsBean.setUnsochukosu(String.valueOf(
 									Integer.valueOf(shouhinStsBean.getUnsochukosu()) + Integer.valueOf(unsochu[1])));
 						}
@@ -499,7 +500,7 @@ public class OrderCommon {
 				ShohinStsInfoBean shohinStsInfoBean = new ShohinStsInfoBean();
 				shouhinStsBean.getShohinStsInfoBeanList().add(shohinStsInfoBean);
 				for (int k = 0; k < stockJpListStatic.size(); k++) {
-					if (stockJpListStatic.get(k)[0].equals(shouhinbango)) {
+					if (stockJpListStatic.get(k)[0].equalsIgnoreCase(shouhinbango)) {
 						// 日本库存数
 						int stockJp = Integer.valueOf(stockJpListStatic.get(k)[1]);
 						// 日本有库存
@@ -525,7 +526,7 @@ public class OrderCommon {
 				// 如果不够 从运送途中检索
 				for (int k = 0; k < unsochuListStatic.size(); k++) {
 					if (kosu > 0) {
-						if (unsochuListStatic.get(k)[0].equals(shouhinbango)) {
+						if (unsochuListStatic.get(k)[0].equalsIgnoreCase(shouhinbango)) {
 							// 运送途中数
 							int unsokosu = Integer.valueOf(unsochuListStatic.get(k)[1]);
 							// 运送途中有
@@ -565,7 +566,7 @@ public class OrderCommon {
 
 //				for (int k = 0; k < stockShListStatic.size(); k++) {
 //					if (kosu > 0) {
-//						if (stockShListStatic.get(k)[0].equals(shouhinbango)) {
+//						if (stockShListStatic.get(k)[0].equalsIgnoreCase(shouhinbango)) {
 //							// 上海库存中数
 //							int stocksh = Integer.valueOf(stockShListStatic.get(k)[1]);
 //							// 上海库存中有
@@ -593,7 +594,7 @@ public class OrderCommon {
 
 				for (int k = 0; k < nyukachuListStatic.size(); k++) {
 					if (kosu > 0) {
-						if (nyukachuListStatic.get(k)[0].equals(shouhinbango)) {
+						if (nyukachuListStatic.get(k)[0].equalsIgnoreCase(shouhinbango)) {
 							// 进货途中数
 							int nyukakosu = Integer.valueOf(nyukachuListStatic.get(k)[1]);
 							// 进货途中有
@@ -3863,7 +3864,7 @@ public class OrderCommon {
 					for (CommonOrderDetailrBean detail : commonOrderDetailBeanList) {
 						shouhinbango = detail.getShohinbango();
 						for (String fukabango : nyukafukaList) {
-							if (fukabango.equals(shouhinbango)) {
+							if (fukabango.equalsIgnoreCase(shouhinbango)) {
 								if (!isRenrakuzumi(order.getJuchubango(), shouhinbango, conn)) {
 									orderNoList.add(order.getJuchubango());
 									break;
@@ -4009,7 +4010,7 @@ public class OrderCommon {
 					for (CommonOrderDetailrBean detail : commonOrderDetailBeanList) {
 						shouhinbango = detail.getShohinbango();
 						for (String fukabango : nyukafukaList) {
-							if (fukabango.equals(shouhinbango)) {
+							if (fukabango.equalsIgnoreCase(shouhinbango)) {
 								fukaari = true;
 								if (!isRenrakuzumi(order.getJuchubango(), shouhinbango, conn)) {
 									ariFlg = false;
@@ -5788,7 +5789,12 @@ public class OrderCommon {
 				// 受注番号
 				bean.setJuchubango(order[0]);
 				// 注文日時
-				bean.setChumonnichiji(order[2]);
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+				try {
+					bean.setChumonnichiji(DateFormatUtils.format(format.parse(order[2]), "yyyy-MM-dd HH:mm:ss"));
+				} catch (ParseException e) {
+					bean.setChumonnichiji(format.format(new Date()));
+				}
 				// 注文者名字
 				bean.setChumonshameiji(order[5]);
 				// 注文者名前

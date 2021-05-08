@@ -62,6 +62,11 @@ function getShohinInfo(){
 		return;
 	}
 	
+	if(isNaN(kosu) || kosu == " "){
+		alert("数字を入力してください");
+		return;
+	}
+	
 	$.post("checkShohinAri", {shohinbango:bango}, function(result) {
         if("true" != result){
         	alert("この商品は存在してません");
