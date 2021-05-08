@@ -3208,7 +3208,7 @@ public class A1001Common {
 							// 商品名
 							ps.setString(++j, shousai.getShouhinmei());
 							// 商品番号
-							ps.setString(++j, shouhinbango.toUpperCase());
+							ps.setString(++j, shouhinbango);
 							// 商品URL
 							ps.setString(++j, "");
 							// 単価
@@ -3257,7 +3257,7 @@ public class A1001Common {
 							} else {
 								sql = "INSERT INTO tbl00011(COMMODITY_ID,CATEGORY_ID,CHINESE_NAME,JAPANESE_NAME,SOURCE,RESP_PERSON,COMMODITY_URL,PIC_URL,REMARKS,DEL_FLG,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,STATUS)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 								ps = conn.prepareStatement(sql);
-								ps.setString(1, shouhinbango.toUpperCase());
+								ps.setString(1, shouhinbango);
 								//
 								ps.setString(2, "100001");
 								ps.setString(3, shousai.getShouhinmei());
@@ -3301,8 +3301,8 @@ public class A1001Common {
 							} else {
 								sql = SqlUtility.getSql("SQLR0001012");
 								ps = conn.prepareStatement(sql);
-								ps.setString(1, shouhinbango.toUpperCase());
-								ps.setString(2, detailNo.toUpperCase());
+								ps.setString(1, shouhinbango);
+								ps.setString(2, detailNo);
 								ps.setString(3, "");
 								ps.setString(4, "");
 								ps.setString(5, null);
@@ -3345,7 +3345,7 @@ public class A1001Common {
 
 								sql = "INSERT INTO TBL00016 VALUES(?,?)";
 								ps = conn.prepareStatement(sql);
-								ps.setString(1, shouhinbango.toUpperCase() + detailNo.toUpperCase());
+								ps.setString(1, shouhinbango + detailNo);
 								ps.setString(2, maxBarcode);
 								ps.execute();
 							}
