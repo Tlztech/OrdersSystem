@@ -95,6 +95,10 @@
 			<result name="input">V030301.jsp</result>
 			<result name="success">V030301.jsp</result>
 		</action>
+		<action name="A03030103" class="com.rakuten.r0303.action.A03030103Action">
+			<result name="input">V030301.jsp</result>
+			<result name="success">V030301.jsp</result>
+		</action>
 		<action name="A04010101" class="com.rakuten.r0401.action.A04010101Action">
 			<result name="success">V040101.jsp</result>
 		</action>

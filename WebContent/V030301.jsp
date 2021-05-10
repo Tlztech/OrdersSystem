@@ -38,7 +38,7 @@
 </style>
 </head>
 <body>
-    <s:form name="form1" theme="simple">
+    <s:form name="form1" theme="simple" enctype="multipart/form-data">
         <div style="width:900px;margin-top: 5px;margin-left: 10px">
         <b><s:label name="title"/></b>
         <hr>
@@ -67,6 +67,17 @@
 		<table cellspacing="1" cellpadding="2" width="90%"  border="0">
             <tr class="bg_tr">
                 <td class="td_bg" valign="top" align="right"><input type="button" onclick="this.disabled=true;actionSubmit('A03030102')" value="確定"/>
+            </tr>
+		</table>
+		<hr>
+		<table cellspacing="1" cellpadding="2" width="90%"  border="0">
+            <tr class="bg_tr">
+				<td class="td_bg" valign="top">CSVから在庫数量更新</td>
+			</tr>
+			<tr class="bg_tr">
+				<td class="td_bg">csvファイル選択：<s:file
+							name="csvFile" /></td>
+                <td class="td_bg" valign="top" align="right"><input type="button" onclick="actionSubmit('A03030103');" value="CSVから導入"/>
             </tr>
 		</table>
 		</div>
