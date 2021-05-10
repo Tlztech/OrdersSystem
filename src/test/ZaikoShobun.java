@@ -42,7 +42,7 @@ public class ZaikoShobun {
 		for (String shohinbango : shohinbangoList) {
 			boolean ariFlg = false;
 			for (ShouhinStsBean bean : shouhinStsBeanList) {
-				if (bean.getShouhinbango().equals(shohinbango)) {
+				if (bean.getShouhinbango().equalsIgnoreCase(shohinbango)) {
 					ariFlg = true;
 					// 残り個数(日本)
 					System.out.println(bean.getShouhinbango() + "	" + bean.getNokorikosuJp());

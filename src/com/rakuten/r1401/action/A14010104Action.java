@@ -107,7 +107,7 @@ public class A14010104Action extends BaseAction {
 				String shohinbango = (stock.getCommodity_id()
 						+ (Utility.isEmptyString(stock.getDetail_no()) ? "" : stock.getDetail_no()));
 				for (ShouhinStsBean shohin : shouhinStsBeanList) {
-					if (shohin.getShouhinbango().equals(shohinbango)) {
+					if (shohin.getShouhinbango().equalsIgnoreCase(shohinbango)) {
 						stock.setStock_jp_kano(Integer.valueOf(shohin.getNokorikosuJp()));
 						stock.setStock_sh_kano(Integer.valueOf(shohin.getNokorikosuSh()));
 						stock.setStock_nyukachu_kano(Integer.valueOf(shohin.getNokorikosuNyuka()));

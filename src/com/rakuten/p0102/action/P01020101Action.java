@@ -34,7 +34,7 @@ public class P01020101Action extends BaseAction {
 		StringBuffer sb = new StringBuffer();
 		boolean ariFlg = false;
 		for (ShouhinStsBean bean : shouhinStsBeanList) {
-			if (bean.getShouhinbango().equals(shohinbango)) {
+			if (bean.getShouhinbango().equalsIgnoreCase(shohinbango)) {
 				ariFlg = true;
 				// …Ã∆∑∑¨∫≈
 				sb.append(bean.getShouhinbango());
