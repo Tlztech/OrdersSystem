@@ -179,7 +179,7 @@ public class A03020107Action extends BaseAction {
 					if (!Utility
 							.isEmptyString(detailListBean.getShouhinbango())) {
 
-						if (detailListBean.getShouhinbango().equals(
+						if (detailListBean.getShouhinbango().equalsIgnoreCase(
 								stockInfo[0])) {
 							ariList.add(stockInfo[0]);
 						}
@@ -215,7 +215,7 @@ public class A03020107Action extends BaseAction {
 						if (!Utility.isEmptyString(detailListBean
 								.getShouhinbango())) {
 							if (Utility.getCommodityId(
-									detailListBean.getShouhinbango()).equals(
+									detailListBean.getShouhinbango()).equalsIgnoreCase(
 									Utility.getCommodityId(outList.get(i)))) {
 								removeList.add(Utility
 										.getCommodityId(detailListBean

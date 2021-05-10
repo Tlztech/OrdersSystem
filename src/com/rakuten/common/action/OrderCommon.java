@@ -3898,7 +3898,7 @@ public class OrderCommon {
 					String shohinbango = detail.getShohinbango();
 					// 从商品stsbean里面搜索状态
 					for (ShouhinStsBean shohin : shouhinStsBeanList) {
-						if (shohin.getShouhinbango().equals(shohinbango)) {
+						if (shohin.getShouhinbango().equalsIgnoreCase(shohinbango)) {
 							for (ShohinStsInfoBean order : shohin.getShohinStsInfoBeanList()) {
 								if (order.getJuchubango().equals(juchubango)) {
 									if ("0".equals(order.getHoryukosuJp()) && "0".equals(order.getHoryukosuSh())
@@ -5795,14 +5795,37 @@ public class OrderCommon {
 				} catch (ParseException e) {
 					bean.setChumonnichiji(format.format(new Date()));
 				}
+				
+				String zipCode = order[27];
+				zipCode = (zipCode == null || "".equals(zipCode))?"":zipCode.replace("-", "").replace("－", "");
+				// 注文者郵便番号１
+				bean.setChumonshayubinbango1("".equals(zipCode)?"":zipCode.substring(0,3));
+				// 注文者郵便番号２
+				bean.setChumonshayubinbango2("".equals(zipCode)?"":zipCode.substring(3));
+				
+				// 注文者住所：都道府県
+				bean.setChumonshajushotodofuken(order[26]);
+				
+				// 注文者住所：都市区
+				bean.setChumonshajushotoshiku(order[25]);
+				
+				// 注文者住所：町以降
+				bean.setChumonshajushochoijou(order[22]+order[23]+order[24]);
+				
 				// 注文者名字
 				bean.setChumonshameiji(order[5]);
 				// 注文者名前
 				bean.setChumonshanamae("");
 				
+				// 注文者名字カナ
+				bean.setChumonshameijifurigana(order[5]);
+				
+				// 注文者名称カナ
+				bean.setChumonshanamaefurigana("");
+				
 				String phoneNumber = order[7];
 				phoneNumber = (phoneNumber == null || "".equals(phoneNumber))?"":phoneNumber.replace("-", "").replace("－", "");
-				// 注文者郵便番号１
+				// 注文者電話番号１
 				bean.setChumonshadenwabango1("".equals(phoneNumber)?"":phoneNumber.substring(0,phoneNumber.length()-8));
 				
 				// 注文者電話番号２
@@ -5811,20 +5834,62 @@ public class OrderCommon {
 				// 注文者電話番号３
 				bean.setChumonshadenwabango3("".equals(phoneNumber)?"":phoneNumber.substring(phoneNumber.length()-4, phoneNumber.length()));
 				
+				// メールアドレス
+				bean.setMeruadoresu(order[4]);
+				
 				// 決済方法
 				bean.setKesaihouhou(order[6]);
 				
 				// 配送方法
-				bean.setHaisouhoho("");
+				bean.setHaisouhoho("メール便");
 				
 				// ポイント利用額
 				bean.setPointoriyogaku("0");
+				
+				// 送付先郵便番号１
+				bean.setSoufusakiyubinbango1("".equals(zipCode)?"":zipCode.substring(0,3));
+				
+				// 送付先郵便番号２
+				bean.setSoufusakiyubinbango2("".equals(zipCode)?"":zipCode.substring(3));
+				
+				// 送付先住所：都道府県
+				bean.setSoufusakijushotodofuken(order[26]);
+				
+				// 送付先住所：都市区
+				bean.setSoufusakijushotoshiku(order[25]);
+				
+				// 送付先住所：町以降
+				bean.setSoufusakijushochoijou(order[22]+order[23]+order[24]);
+				
+				// 送付先名字
+				bean.setSofusakimeiji(order[21]);
+				
+				// 送付先名前
+				bean.setSoufusakinamae("");
+				
+				// 送付先名字フリガナ
+				bean.setSoufusakimeijifurigana(order[21]);
+				
+				// 送付先名前フリガナ
+				bean.setSoufusakimeijinamaefurigana("");
+				
+				// 送付先電話番号１
+				String shipPhoneNumber = order[29];
+				shipPhoneNumber = (shipPhoneNumber == null || "".equals(shipPhoneNumber)?"":shipPhoneNumber.replace("-", "").replace("－", ""));
+				bean.setSoufusakidenwabango1("".equals(shipPhoneNumber)?"":shipPhoneNumber.substring(0, shipPhoneNumber.length()-8));
+				
+				// 送付先電話番号２
+				bean.setSoufusakidenwabango2("".equals(shipPhoneNumber)?"":shipPhoneNumber.substring(shipPhoneNumber.length()-8, shipPhoneNumber.length()-4));
+				
+				// 送付先電話番号３
+				bean.setSoufusakidenwabango3("".equals(shipPhoneNumber)?"":shipPhoneNumber.substring(shipPhoneNumber.length()-4, shipPhoneNumber.length()));
 				
 				// あす楽希望フラグ 
 				bean.setAsurakukibou("0");
 				
 				// クーポン利用額
 				bean.setKuponriyougaku("0");
+				
 			}
 			
 			if (Utility.isEmptyList(bean.getShousaiList())) {
