@@ -3898,7 +3898,7 @@ public class OrderCommon {
 					String shohinbango = detail.getShohinbango();
 					// 从商品stsbean里面搜索状态
 					for (ShouhinStsBean shohin : shouhinStsBeanList) {
-						if (shohin.getShouhinbango().equals(shohinbango)) {
+						if (shohin.getShouhinbango().equalsIgnoreCase(shohinbango)) {
 							for (ShohinStsInfoBean order : shohin.getShohinStsInfoBeanList()) {
 								if (order.getJuchubango().equals(juchubango)) {
 									if ("0".equals(order.getHoryukosuJp()) && "0".equals(order.getHoryukosuSh())

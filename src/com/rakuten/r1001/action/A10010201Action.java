@@ -301,7 +301,7 @@ public class A10010201Action extends BaseAction {
 					String shouhinbango = Utility.strTrim(detail
 							.getShohinbango());
 					for (String[] tuikahasomachi : tuikahasomachiArr) {
-						if (shouhinbango.equals(tuikahasomachi[0])) {
+						if (shouhinbango.equalsIgnoreCase(tuikahasomachi[0])) {
 							if ("入荷待ち".equals(tuikahasomachi[2])) {
 								// TODO 添加如何不可CHECK
 								if (!orderCommon.isNyukakano(shouhinbango)) {
