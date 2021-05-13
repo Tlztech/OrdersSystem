@@ -30,6 +30,14 @@ public class OrderList implements Serializable {
 	private String comento = null;
 	private boolean checkFlg = false;
 	private String hasoshahenokomento = "";
+	
+	private String shohinbango = null;
+	private String kosu = null;
+	private String sofusakisha = null;
+	private String sofusakiyubinbango = null;
+	private String sofusakijushotodofuke = null;
+	private String sofusakijushotoshikuchoijou = null;
+	private String sofusakidenwabango = null;
 
 	/**
 	 * @return the chumonsts3
@@ -348,6 +356,104 @@ public class OrderList implements Serializable {
 
 	public void setHasoshahenokomento(String hasoshahenokomento) {
 		this.hasoshahenokomento = hasoshahenokomento;
+	}
+
+	/**
+	 * @return the shohinbango
+	 */
+	public String getShohinbango() {
+		return shohinbango;
+	}
+
+	/**
+	 * @param shohinbango the shohinbango to set
+	 */
+	public void setShohinbango(String shohinbango) {
+		this.shohinbango = shohinbango;
+	}
+
+	/**
+	 * @return the kosu
+	 */
+	public String getKosu() {
+		return kosu;
+	}
+
+	/**
+	 * @param kosu the kosu to set
+	 */
+	public void setKosu(String kosu) {
+		this.kosu = kosu;
+	}
+
+	/**
+	 * @return the sofusakisha
+	 */
+	public String getSofusakisha() {
+		return sofusakisha;
+	}
+
+	/**
+	 * @param sofusakisha the sofusakisha to set
+	 */
+	public void setSofusakisha(String sofusakisha) {
+		this.sofusakisha = sofusakisha;
+	}
+
+	/**
+	 * @return the sofusakiyubinbango
+	 */
+	public String getSofusakiyubinbango() {
+		return sofusakiyubinbango;
+	}
+
+	/**
+	 * @param sofusakiyubinbango the sofusakiyubinbango to set
+	 */
+	public void setSofusakiyubinbango(String sofusakiyubinbango) {
+		this.sofusakiyubinbango = sofusakiyubinbango;
+	}
+
+	/**
+	 * @return the sofusakijushotodofuke
+	 */
+	public String getSofusakijushotodofuke() {
+		return sofusakijushotodofuke;
+	}
+
+	/**
+	 * @param sofusakijushotodofuke the sofusakijushotodofuke to set
+	 */
+	public void setSofusakijushotodofuke(String sofusakijushotodofuke) {
+		this.sofusakijushotodofuke = sofusakijushotodofuke;
+	}
+
+	/**
+	 * @return the sofusakijushotoshikuchoijou
+	 */
+	public String getSofusakijushotoshikuchoijou() {
+		return sofusakijushotoshikuchoijou;
+	}
+
+	/**
+	 * @param sofusakijushotoshikuchoijou the sofusakijushotoshikuchoijou to set
+	 */
+	public void setSofusakijushotoshikuchoijou(String sofusakijushotoshikuchoijou) {
+		this.sofusakijushotoshikuchoijou = sofusakijushotoshikuchoijou;
+	}
+
+	/**
+	 * @return the sofusakidenwabango
+	 */
+	public String getSofusakidenwabango() {
+		return sofusakidenwabango;
+	}
+
+	/**
+	 * @param sofusakidenwabango the sofusakidenwabango to set
+	 */
+	public void setSofusakidenwabango(String sofusakidenwabango) {
+		this.sofusakidenwabango = sofusakidenwabango;
 	}
 
 }

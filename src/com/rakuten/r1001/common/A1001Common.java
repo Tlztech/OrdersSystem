@@ -3938,6 +3938,14 @@ public class A1001Common {
 				Order.setChumonsts4(chumonsts4);
 				Order.setChumonsts5(chumonsts5);
 				Order.setChumonsts6(chumonsts6);
+				
+				Order.setShohinbango(rs.getString("T2.SHOUHINBANGO"));
+				Order.setKosu(rs.getString("T2.KOSU"));
+				Order.setSofusakisha(rs.getString("T1.SOFUSAKIMEIJI")+rs.getString("T1.SOUFUSAKINAMAE"));
+				Order.setSofusakiyubinbango(rs.getString("T1.SOUFUSAKIYUBINBANGO1")+"-"+rs.getString("T1.SOUFUSAKIYUBINBANGO2"));
+				Order.setSofusakijushotodofuke(rs.getString("T1.SOUFUSAKIJUSHOTODOFUKEN"));
+				Order.setSofusakijushotoshikuchoijou(rs.getString("T1.SOUFUSAKIJUSHOTOSHIKU")+rs.getString("T1.SOUFUSAKIJUSHOCHOIJOU"));
+				Order.setSofusakidenwabango(rs.getString("T1.SOFUSAKIDENWABANGO1") + "-" + rs.getString("T1.SOFUSAKIDENWABANGO2") + "-"+ rs.getString("T1.SOFUSAKIDENWABANGO3"));
 
 				orderList.add(Order);
 			}

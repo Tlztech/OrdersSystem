@@ -441,6 +441,9 @@ select {
 						</table>
 					</td>
 					<td class="td_bg" align="right"><input type="button"
+						onclick="actionSubmit('A10010115?type=search')" value="下载注文csv"
+						style="width: 100px; height: 25px" /></td>
+					<td class="td_bg" align="right"><input type="button"
 						onclick="actionSubmit('A10010101?type=search')" value="検索"
 						style="width: 50px; height: 25px" /></td>
 				</tr>

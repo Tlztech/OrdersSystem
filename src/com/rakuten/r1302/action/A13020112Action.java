@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,8 +74,10 @@ public class A13020112Action extends BaseAction {
 			}
 		}
 
-		Utility.writeCsvFile(shoriList2, "c:\\temp\\odstats_order.csv");
-		fileName = "odstats_order.csv";
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String date = sdf1.format(new Date());
+		Utility.writeCsvFile(shoriList2, "c:\\temp\\odstats_order_"+date+".csv");
+		fileName = "odstats_order_"+date+".csv";
 		a130201Common.setHaneiToCSVDownloaded(shoriList);
 
 	}

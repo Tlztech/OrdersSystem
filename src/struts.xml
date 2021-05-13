@@ -546,6 +546,15 @@
 				<param name="actionName">A10010101</param>
 			</result>
 		</action>
+		<action name="A10010115" class="com.rakuten.r1001.action.A10010115Action">
+			<result name="input">V100101.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
 		<action name="A10010105" class="com.rakuten.r1001.action.A10010105Action">
 			<result type="stream">
 				<param name="contentType">application/octet-stream</param>
