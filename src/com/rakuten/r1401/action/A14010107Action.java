@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.xml.rpc.ServiceException;
 
@@ -497,8 +498,26 @@ public class A14010107Action extends BaseAction {
 			for (StockBean stockbean : stockList) {
 	
 				String itemurl = stockbean.getCommodity_id();
+				if (!Pattern.matches("^[A-Za-z0-9-]+$", itemurl)) {
+					MessageFromYahoo e = new MessageFromYahoo();
+					e.setMessage("COMMODITY_ID:"+itemurl+"不正");
+					e.setCode("");
+					e.setOrderId("");
+					messageList.add(e);
+					continue;
+				}
 	//			itemNoMapForUpdateStock.put(itemurl, itemurl);
 				String detailNo = stockbean.getDetail_no();
+				if (!(null == detailNo || "".equals(detailNo))) {
+					if (!Pattern.matches("^[A-Za-z0-9-]+$", detailNo)) {
+						MessageFromYahoo e = new MessageFromYahoo();
+						e.setMessage("COMMODITY_ID:"+itemurl+",DETAIL_NO:"+detailNo+"不正");
+						e.setCode("");
+						e.setOrderId("");
+						messageList.add(e);
+						continue;
+					}
+				}
 				int stock = 0;
 				if (stockbean.getStock_jp_kano() > 0) {
 					stock = stockbean.getStock_jp_kano();
