@@ -83,7 +83,7 @@ public class A10010115Action extends BaseAction {
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String date = sdf1.format(new Date());
 			Utility.writeCsvFile(shoriList, "c:\\temp\\orderlist.csv");
-			fileName = "orderlist.csv";
+			fileName = "orderlist_"+date.replace(" ", "")+".csv";
 			
 
 		} catch (Exception e) {
