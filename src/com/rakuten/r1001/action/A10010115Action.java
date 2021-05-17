@@ -80,12 +80,10 @@ public class A10010115Action extends BaseAction {
 				}
 				shoriList.add(new String[] {Utility.isEmptyString(order.getSite())?"":order.getSite(),Utility.isEmptyString(order.getTenpo())?"":order.getTenpo(),order.getChumonbango(),order.getShohinbango(),order.getKosu(),order.getSofusakisha(),order.getSofusakiyubinbango(),order.getSofusakijushotodofuke(),order.getSofusakijushotoshikuchoijou(),order.getSofusakidenwabango(),order.getTenpo(), Utility.isEmptyString(post)?"":post, Utility.isEmptyString(address)?"":address, Utility.isEmptyString(telephone)?"":telephone});
 			}
-			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 			String date = sdf1.format(new Date());
-			Utility.writeCsvFile(shoriList, "c:\\temp\\orderlist.csv");
-			fileName = "orderlist_"+date.replace(" ", "")+".csv";
-			
-
+			fileName = "orderlist_"+date.replace(" ", "_")+".csv";
+			Utility.writeCsvFile(shoriList, "c:\\temp\\"+fileName);
 		} catch (Exception e) {
 			e.printStackTrace();
 			conn.rollback();

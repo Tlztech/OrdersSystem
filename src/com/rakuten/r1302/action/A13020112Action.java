@@ -74,10 +74,10 @@ public class A13020112Action extends BaseAction {
 			}
 		}
 
-		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 		String date = sdf1.format(new Date());
-		Utility.writeCsvFile(shoriList2, "c:\\temp\\odstats_order_"+date+".csv");
-		fileName = "odstats_order_"+date.replace(" ", "")+".csv";
+		fileName = "odstats_order_"+date.replace(" ", "_")+".csv";
+		Utility.writeCsvFile(shoriList2, "c:\\temp\\"+fileName);
 		a130201Common.setHaneiToCSVDownloaded(shoriList);
 
 	}
