@@ -111,6 +111,14 @@ function popupDivGetOrderInfoYahoo() {
     $("#mask").show("slow");
     div_obj.show("slow");
 }
+function popupDivGetOrderInfoAU() {
+    var div_obj = $("#pop-divGetOrderInfoAU");
+	div_obj.css("top",($(window).height()-160)/2);
+	div_obj.css("left",($(window).width()-350)/2);
+    //添加并显示遮罩层 
+    $("#mask").show("slow");
+    div_obj.show("slow");
+}
 function popupDiv9() {   
     var div_obj = $("#pop-div9"); 
 	div_obj.css("top",($(window).height()-160)/2);
@@ -137,6 +145,7 @@ function hideDiv() {
   $("#pop-div7").hide();
   $("#pop-div8").hide();
   $("#pop-divGetOrderInfoYahoo").hide();
+  $("#pop-divGetOrderInfoAU").hide();
   $("#pop-div9").hide();
   $("#pop-div10").hide();
 } 
@@ -319,6 +328,7 @@ select {
 	Map<String, String> rakutenMap = new HashMap<String, String>();
 	Map<String, String> yahooMap = new HashMap<String, String>();
 	Map<String, String> amazonMap = new HashMap<String, String>();
+	Map<String, String> auMap = new HashMap<String, String>();
 	Map<String, String> shopMap = new HashMap<String, String>();
 	Map<String, String> siteMap = new HashMap<String, String>();
 	shopMap.put("","--");
@@ -335,6 +345,8 @@ select {
 				yahooMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 			} else if ("Amazon".equals(rs.getString("SITE"))) {
 				amazonMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
+			} else if ("AU".equals(rs.getString("SITE"))) {
+				auMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 			}
 			shopMap.put(rs.getString("SHOP_ID"), rs.getString("SHOP_ID"));
 			siteMap.put(rs.getString("SITE"),rs.getString("SITE"));
@@ -343,6 +355,7 @@ select {
 		request.setAttribute("rakutenmap",rakutenMap);
 		request.setAttribute("yahoomap",yahooMap);
 		request.setAttribute("amazonmap",amazonMap);
+		request.setAttribute("aumap",auMap);
 		request.setAttribute("shopmap",shopMap);
 		request.setAttribute("siteMap",siteMap);
 
@@ -690,7 +703,9 @@ select {
 						onclick="actionSubmit('A10010401')" value="新規" />&nbsp;&nbsp; <input
 						type="button" onclick="popupDiv2();" value="楽天注文取得" />&nbsp;&nbsp;
 						<input type="button" onclick="popupDivGetOrderInfoYahoo();"
-						value="Yahoo注文取得" />&nbsp;&nbsp; <input type="button"
+						value="Yahoo注文取得" />&nbsp;&nbsp;
+						<input type="button" onclick="popupDivGetOrderInfoAU();"
+						value="AU注文取得" />&nbsp;&nbsp; <input type="button"
 						onclick="popupDiv7();" value="CSVから取得(Rakuten)" />&nbsp;&nbsp; <input
 						type="button" onclick="popupDiv8();" value="CSVから取得(qoo10)" />&nbsp;&nbsp;
 						<input type="button" onclick="popupDiv3();" value="CSVから取得(DENA)" />&nbsp;&nbsp;
@@ -1030,6 +1045,29 @@ select {
 							value="戻る" /></td>
 						<td align="center"><input type="button"
 							onclick="actionSubmit('A10010104?shop='+document.getElementsByName('f100101.shutokuyahooshop')[0].value+'&platform=Yahoo')"
+							value="確定" /></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div id='pop-divGetOrderInfoAU'
+			style="left: 30%; width: 350px; height: 160px;" class="pop-box">
+			<div class="pop-box-body">
+				<table align="center">
+					<tr height="80px">
+						<td align="center" colspan="2">AU 注文情報を取得する<br />店舗：<s:select
+								list="#request.aumap"
+								name="f100101.shutokuaushop" />
+						</td>
+					</tr>
+
+				</table>
+				<table align="center" width="200px">
+					<tr>
+						<td align="center"><input type="button" onclick="hideDiv();"
+							value="戻る" /></td>
+						<td align="center"><input type="button"
+							onclick="actionSubmit('A10010104?shop='+document.getElementsByName('f100101.shutokuaushop')[0].value+'&platform=AU')"
 							value="確定" /></td>
 					</tr>
 				</table>

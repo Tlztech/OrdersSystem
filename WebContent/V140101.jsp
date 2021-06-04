@@ -239,7 +239,7 @@ a {
 		<input type="button" onclick="actionSubmit('A14010103')"
 			value="上传最新预警列表">
 		<input type="button" onclick="doAction()" value="同步库存">
-		<input type="button" onclick="doAction4()" value="同步全部楽天とYahoo库存">
+		<input type="button" onclick="doAction4()" value="同步全部楽天、Yahoo、AU库存">
 		<br />
 		<br />
 		<br />

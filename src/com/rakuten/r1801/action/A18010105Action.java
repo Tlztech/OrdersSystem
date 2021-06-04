@@ -62,6 +62,13 @@ public class A18010105Action extends BaseAction {
 				f180101.setAccessToken(null);
 				f180101.setRefreshToken(null);
 				f180101.setLoginTime(null);
+				f180101.setAwsAccessKeyId(null);
+				f180101.setAwsSecretKey(null);
+				f180101.setAwsARN(null);
+				f180101.setAwsClientId(null);
+				f180101.setAwsClientSecret(null);
+				f180101.setAwsRefreshToken(null);
+				f180101.setAuApiKey(null);
 				
 				addError(null, "删除成功");
 				

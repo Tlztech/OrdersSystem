@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.axis.encoding.Base64;
 
@@ -33,12 +32,13 @@ import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.opensymphony.xwork2.ActionContext;
+import com.rakuten.common.MessageFromAU;
 import com.rakuten.common.MessageFromRMS;
 import com.rakuten.common.MessageFromYahoo;
-import com.rakuten.order.Order;
 import com.rakuten.order.OrderShppingInfo;
 import com.rakuten.r1302.form.F130201;
 import com.rakuten.r1302.form.OrderList;
+import com.rakuten.shop.AUShop;
 import com.rakuten.shop.Shop;
 import com.rakuten.shop.YahooShop;
 import com.rakuten.util.JdbcConnection;
@@ -77,6 +77,7 @@ public class A130201Common {
 		int yafuokuCount = 0;
 		int ponpareCount = 0;
 		int qoo10Count = 0;
+		int auCount = 0;
 		int otherCount = 0;
 		String tenposhubetsu = f130201.getTenposhubetsu();
 
@@ -94,7 +95,9 @@ public class A130201Common {
 				ponpareCount++;
 			}else if ("qoo10".equals(order.getSite())) {
 				qoo10Count++;
-			}else {
+			} else if ("AU".equals(order.getSite())) {
+				auCount++;
+			} else {
 				otherCount++;
 			}
 
@@ -129,9 +132,15 @@ public class A130201Common {
 				}
 			}
 			if ("7".equals(tenposhubetsu)) {
+				if ("AU".equals(order.getSite())) {
+					shoriList.add(order);
+				}
+			}
+			if ("8".equals(tenposhubetsu)) {
 				if (!"楽天".equals(order.getSite()) && !"Yahoo".equals(order.getSite()) 
 						&& !"DENA".equals(order.getSite()) && !"ヤフオク".equals(order.getSite()) 
-						&& !"ポンパレモール".equals(order.getSite()) && !"qoo10".equals(order.getSite())) {
+						&& !"ポンパレモール".equals(order.getSite()) && !"qoo10".equals(order.getSite())
+						&& !"AU".equals(order.getSite())) {
 					shoriList.add(order);
 				}
 			}
@@ -143,6 +152,7 @@ public class A130201Common {
 		f130201.setYafuokuCount(String.valueOf(yafuokuCount));
 		f130201.setPonpareCount(String.valueOf(ponpareCount));
 		f130201.setQoo10Count(String.valueOf(qoo10Count));
+		f130201.setAuCount(String.valueOf(auCount));
 		f130201.setOtherCount(String.valueOf(otherCount));
 		f130201.setOrderList(shoriList);
 		return f130201;
@@ -561,6 +571,114 @@ public class A130201Common {
 
 		}
 
+	}
+	
+	public List<String> setHaneizumiAU(List<String[]> orderNoList1) throws Exception {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		List<String> messageList = new ArrayList<String>();
+		try {
+			String result = "";
+
+			conn = JdbcConnection.getConnection();
+
+			if (Utility.isEmptyList(orderNoList1)) {
+				messageList.add("没有单号需要反映");
+				return messageList;
+			}
+			
+			for (String[] bango : orderNoList1) {
+				result = result + bango[0] + "&";
+			}
+			List<String[]> dataList = getDenpyoAndKaishaFast(orderNoList1, conn);
+			result = result.substring(0, result.length() - 1) + "%%";
+			for (String data[] : dataList) {
+				result = result + data[0] + "&";
+			}
+			result = result.substring(0, result.length() - 1) + "%%";
+			for (String data[] : dataList) {
+				result = result + data[1] + "&";
+			}
+			result = result.substring(0, result.length() - 1) + "%%";
+			for (String data[] : dataList) {
+				result = result + data[2] + "&";
+			}
+			result = result.substring(0, result.length() - 1).replace("&&", "&");
+
+			String[] orderNoList = result.split("%%")[0].split("&");
+			String[] expNoList = result.split("%%")[1].split("&");
+			String[] kaisha = result.split("%%")[2].split("&");
+			String[] shop = result.split("%%")[3].split("&");
+
+			if (orderNoList == null || orderNoList.length == 0) {
+				messageList.add("没有单号需要反映");
+				return messageList;
+			}
+			List<String> shopNameList = new ArrayList<String>();
+			for (String shopname : shop) {
+				boolean ariFlg = false;
+				for (String shopnameListname : shopNameList) {
+					if (shopname.equals(shopnameListname)) {
+						ariFlg = true;
+						break;
+					}
+				}
+				if (!ariFlg) {
+					shopNameList.add(shopname);
+				}
+			}
+
+			List<List<String[]>> shopbetsuOrderInfoList = new ArrayList<List<String[]>>();
+			for (int i = 0; i < shopNameList.size(); i++) {
+				shopbetsuOrderInfoList.add(new ArrayList<String[]>());
+				String shopname = shopNameList.get(i);
+				for (int j = 0; j < shop.length; j++) {
+					if (shopname.equals(shop[j])) {
+						shopbetsuOrderInfoList.get(i)
+								.add(new String[] { orderNoList[j], expNoList[j], kaisha[j], shop[j] });
+					}
+				}
+
+			}
+			
+			for (List<String[]> shopbetsuOrderInfo : shopbetsuOrderInfoList) {
+				String shopname = shopbetsuOrderInfo.get(0)[3];
+				AUShop auShop = new AUShop(shopname);
+				OrderShppingInfo orderShppingInfo = OrderShppingInfo.convertOrderShppingInfoFromPage(shopbetsuOrderInfo);
+				List<String> updatedOrderNoList = auShop.updateOrderShipping(orderShppingInfo);
+				List<MessageFromAU> messageFromAUList = auShop.getMessageFromAUList();
+				List<String> shorilist = new ArrayList<String>();
+				
+				for (MessageFromAU messageFromAU : messageFromAUList) {
+					messageList.add(messageFromAU.getCode() + messageFromAU.getMessage() + (messageFromAU.getOrderId() == null ? "" : messageFromAU.getOrderId()));
+				}
+				
+				shorilist.addAll(updatedOrderNoList);
+
+				if (!Utility.isEmptyList(shorilist)) {
+					String sql = "UPDATE tbl00024 SET HANEISTS = '3' WHERE CHUMONBANGO = ?";
+					for (String orderNo : shorilist) {
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, orderNo);
+						ps.execute();
+					}
+				}
+
+			}
+			if (Utility.isEmptyList(messageList)) {
+				messageList.add("正常终了");
+			}
+			
+			conn.commit();
+			return messageList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		} finally {
+			conn.close();
+
+		}
 	}
 	
 	public static List<String[]> getDenpyoAndKaishaFast(List<String[]> juchubangoList, Connection conn)

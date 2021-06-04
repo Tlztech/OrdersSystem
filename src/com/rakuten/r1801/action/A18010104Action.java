@@ -34,7 +34,7 @@ public class A18010104Action extends BaseAction {
 				count = rs.getInt("COUNT");
 			}
 			if (count > 0) {
-				sql = "UPDATE SHOP SET SHOP_NAME = ?, SHOP_NO = ?, SHOP_TEL = ?, SHOP_FAX = ?, SHOP_URL = ?, SHOP_POST = ?, SHOP_ADDRESS = ?, SERVICE_KEY = ?, LICENSE_KEY = ?, UPDATE_TIME = ?, UPDATE_USER = ? WHERE SITE = ? and SHOP_ID = ?";
+				sql = "UPDATE SHOP SET SHOP_NAME = ?, SHOP_NO = ?, SHOP_TEL = ?, SHOP_FAX = ?, SHOP_URL = ?, SHOP_POST = ?, SHOP_ADDRESS = ?, SERVICE_KEY = ?, LICENSE_KEY = ?, UPDATE_TIME = ?, UPDATE_USER = ?, YAHOO_APP_ID = ?, AWS_ACCESS_KEY_ID = ?, AWS_SECRET_KEY = ?, AWS_ARN = ?, AWS_CLIENT_ID = ?, AWS_CLIENT_SECRET = ?, AWS_REFRESH_TOKEN = ?, AU_APIKEY = ? WHERE SITE = ? and SHOP_ID = ?";
 				ps = conn.prepareStatement(sql);
 
 				ps.setString(1, f180101.getShopName());
@@ -48,8 +48,16 @@ public class A18010104Action extends BaseAction {
 				ps.setString(9, f180101.getLicenseKey());
 				ps.setString(10, Utility.getDateTime());
 				ps.setString(11, Utility.getUser());
-				ps.setString(12, f180101.getPlatform());
-				ps.setString(13, f180101.getShopId());
+				ps.setString(12, f180101.getApplicationID());
+				ps.setString(13, f180101.getAwsAccessKeyId());
+				ps.setString(14, f180101.getAwsSecretKey());
+				ps.setString(15, f180101.getAwsARN());
+				ps.setString(16, f180101.getAwsClientId());
+				ps.setString(17, f180101.getAwsClientSecret());
+				ps.setString(18, f180101.getAwsRefreshToken());
+				ps.setString(19, f180101.getAuApiKey());
+				ps.setString(20, f180101.getPlatform());
+				ps.setString(21, f180101.getShopId());
 				
 				ps.execute();
 				
@@ -70,6 +78,13 @@ public class A18010104Action extends BaseAction {
 				f180101.setAccessToken(null);
 				f180101.setRefreshToken(null);
 				f180101.setLoginTime(null);
+				f180101.setAwsAccessKeyId(null);
+				f180101.setAwsSecretKey(null);
+				f180101.setAwsARN(null);
+				f180101.setAwsClientId(null);
+				f180101.setAwsClientSecret(null);
+				f180101.setAwsRefreshToken(null);
+				f180101.setAuApiKey(null);
 				
 				addError(null, "更新成功");
 				

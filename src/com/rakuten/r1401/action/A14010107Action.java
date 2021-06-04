@@ -10,16 +10,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.xml.rpc.ServiceException;
 
 import org.apache.axis.encoding.Base64;
 
+import com.rakuten.common.MessageFromAU;
 import com.rakuten.common.MessageFromYahoo;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.common.action.OrderCommon;
 import com.rakuten.common.bean.OrderInfoBean;
 import com.rakuten.common.bean.ShouhinStsBean;
+import com.rakuten.shop.AUShop;
 import com.rakuten.shop.YahooShop;
 import com.rakuten.util.JdbcConnection;
 import com.rakuten.util.Utility;
@@ -73,6 +76,13 @@ public class A14010107Action extends BaseAction {
 		for (String shop : shopList) {
 			updateLottoOrderStockByShop(stockBeanList, shop);
 		}
+		
+		site = "AU";
+		shopList = getShopsBySite(site);
+		for (String shop : shopList) {
+			updateAUOrderStockByShop(stockBeanList, shop);
+		}
+		
 		updateQuantityFlg(new ArrayList<String>(itemNoMapForUpdateStock.keySet()));
 		
 	}
@@ -576,6 +586,76 @@ public class A14010107Action extends BaseAction {
 		}
 		
 	
+	}
+	
+	private void updateAUOrderStockByShop(List<StockBean> stockListDB, String shop) throws Exception {
+		
+		List<StockBean> stockList = stockListDB.size() > 2000 ? stockListDB.subList(0, 200) : stockListDB;
+		List<String> errMsgList = new ArrayList<String>();
+		List<MessageFromAU> messageList = new ArrayList<>();
+		List<String> commodityIdList = new ArrayList<>();
+		List<String> detailNoList = new ArrayList<>();
+		List<String> quantityList = new ArrayList<>();
+		while(!stockList.isEmpty()) {
+			for (StockBean stockbean : stockList) {
+				String commodityId = stockbean.getCommodity_id();
+				if (!Pattern.matches("^[A-Za-z0-9-]+$", commodityId)) {
+					MessageFromAU e = new MessageFromAU();
+					e.setMessage("COMMODITY_ID:"+commodityId+"不正");
+					e.setCode("");
+					e.setOrderId("");
+					messageList.add(e);
+					continue;
+				}
+				String detailNo = stockbean.getDetail_no();
+				if (!(null == detailNo || "".equals(detailNo))) {
+					if (!Pattern.matches("^[A-Za-z0-9-]+$", detailNo)) {
+						MessageFromAU e = new MessageFromAU();
+						e.setMessage("COMMODITY_ID:"+commodityId+",DETAIL_NO:"+detailNo+"不正");
+						e.setCode("");
+						e.setOrderId("");
+						messageList.add(e);
+						continue;
+					}
+				}
+				int stock = 0;
+				if (stockbean.getStock_jp_kano() > 0) {
+					stock = stockbean.getStock_jp_kano();
+				} else if (stockbean.getStock_unsochu_kano() > 0) {
+					if (stockbean.getStock_unsochu_kano() > 0) {
+						stock = stock + stockbean.getStock_unsochu_kano();
+					}
+				} else {
+					stock = 0;
+				}
+				commodityIdList.add(commodityId);
+				detailNoList.add(detailNo);
+				quantityList.add(String.valueOf(stock));
+			}
+			AUShop auShop = new AUShop(shop);
+			auShop.updateOrderStock(commodityIdList, detailNoList, quantityList);
+			messageList.addAll(auShop.getMessageFromAUList());
+			
+			if (stockListDB.size() > 200) {
+				stockListDB = stockListDB.subList(200, stockListDB.size());
+				stockList = stockListDB.size() > 200 ? stockListDB.subList(0, 200) : stockListDB;
+			} else {
+				break;
+			}
+		}
+		System.out.println("処理完了");
+		if (Utility.isEmptyList(messageList)) {
+			addError(null, "SITE:AU,SHOP:"+shop+" 操作成功");
+		} else {
+			itemNoMapForUpdateStock.clear();
+			for (MessageFromAU message : messageList) {
+				System.out.println(message.getCode() + " " + message.getMessage());
+				errMsgList.add(message.getCode() + " " + message.getMessage());
+			}
+			for (String msg : errMsgList) {
+				addActionError("SITE:AU,SHOP:"+shop+" " +msg);
+			}
+		}
 	}
 	
 	/**

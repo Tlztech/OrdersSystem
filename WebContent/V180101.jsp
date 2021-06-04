@@ -217,8 +217,7 @@ function hideDiv2() {
            
   		</table>
   		
-		</div>
-		<div id="div1">
+		
 		<table cellspacing="1" cellpadding="2" width="90%" border="0">
   		 	<tr class="bg_tr">
                 <td class="td_bg" width="80px">店铺URL：</td>
@@ -288,6 +287,66 @@ function hideDiv2() {
 	            <td class="td_bg" width="80px">登录时日：</td>
                 <td class="td_bg" width="180px">
                     <s:textfield size="20" maxlength="50" name="f180101.loginTime" readonly="true"/>
+                </td>
+            </tr>
+		</table>
+		<div style="width:811px;height:20px;margin-top: 10px;">
+            <hr>
+        </div>
+		</div>
+		
+		<div id="div1">
+        <h3>Amazon信息</h3>
+		<table cellspacing="1" cellpadding="2" width="90%" border="0">
+			<tr class="bg_tr">
+                <td class="td_bg" width="80px">AccessKeyId：</td>
+                <td class="td_bg">
+                    <s:textfield size="20" maxlength="100" name="f180101.awsAccessKeyId" style="width:700px"/>
+                </td>
+            </tr>
+			<tr class="bg_tr">
+                <td class="td_bg" width="80px">SecretKey：</td>
+                <td class="td_bg">
+                    <s:textfield size="20" maxlength="100" name="f180101.awsSecretKey" style="width:700px"/>
+                </td>
+            </tr>
+			<tr class="bg_tr">
+                <td class="td_bg" width="80px">ARN：</td>
+                <td class="td_bg">
+                    <s:textfield size="20" maxlength="100" name="f180101.awsARN" style="width:700px"/>
+                </td>
+            </tr>
+			<tr class="bg_tr">
+                <td class="td_bg" width="80px">ClientId：</td>
+                <td class="td_bg">
+                    <s:textfield size="20" maxlength="5000" name="f180101.awsClientId" style="width:700px" />
+                </td>
+            </tr>
+			<tr class="bg_tr">
+                <td class="td_bg" width="80px">ClientSecret：</td>
+                <td class="td_bg">
+                    <s:textfield size="20" maxlength="5000" name="f180101.awsClientSecret" style="width:700px" />
+                </td>
+            </tr>
+            <tr class="bg_tr">
+                <td class="td_bg" width="80px">RefreshToken：</td>
+                <td class="td_bg">
+                    <s:textfield size="20" maxlength="200" name="f180101.awsRefreshToken" style="width:700px" />
+                </td>
+            </tr>
+		</table>
+		<div style="width:811px;height:20px;margin-top: 10px;">
+            <hr>
+        </div>
+		</div>
+		
+		<div id="div1">
+        <h3>AU信息</h3>
+		<table cellspacing="1" cellpadding="2" width="90%" border="0">
+			<tr class="bg_tr">
+                <td class="td_bg" width="80px">ApiKey：</td>
+                <td class="td_bg">
+                    <s:textfield size="20" maxlength="100" name="f180101.auApiKey" style="width:700px"/>
                 </td>
             </tr>
 		</table>

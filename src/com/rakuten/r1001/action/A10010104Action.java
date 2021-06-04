@@ -40,6 +40,15 @@ public class A10010104Action extends BaseAction {
 				}
 				a1001Common
 						.insertIntoYahooOrderTbl(orderapibean.getRakutenBeanList());
+			} else if ("AU".equals(platform)) {
+				
+				OrderApiBean orderapibean = common.getAUOrderListByApi(shop);
+				if (!Utility.isEmptyList(orderapibean.getMessageList())) {
+					for (String msg : orderapibean.getMessageList())
+						addError(null, msg);
+				}
+				a1001Common
+						.insertIntoAUOrderTbl(orderapibean.getRakutenBeanList(), shop);
 			}
 		}
 

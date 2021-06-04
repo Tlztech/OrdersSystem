@@ -20,6 +20,13 @@ public class F180101 implements Serializable {
 	private String accessToken = null;
 	private String refreshToken = null;
 	private String loginTime = null;
+	private String awsAccessKeyId = null;
+	private String awsSecretKey = null;
+	private String awsARN = null;
+	private String awsClientId = null;
+	private String awsClientSecret = null;
+	private String awsRefreshToken = null;
+	private String auApiKey = null;
 	private static List<String> siteList = null;
 	private static List<String> shopList = null;
 	private String platformSelect = null;
@@ -146,6 +153,104 @@ public class F180101 implements Serializable {
 		this.loginTime = loginTime;
 	}
 	
+	/**
+	 * @return the awsAccessKeyId
+	 */
+	public String getAwsAccessKeyId() {
+		return awsAccessKeyId;
+	}
+
+	/**
+	 * @param awsAccessKeyId the awsAccessKeyId to set
+	 */
+	public void setAwsAccessKeyId(String awsAccessKeyId) {
+		this.awsAccessKeyId = awsAccessKeyId;
+	}
+
+	/**
+	 * @return the awsSecretKey
+	 */
+	public String getAwsSecretKey() {
+		return awsSecretKey;
+	}
+
+	/**
+	 * @param awsSecretKey the awsSecretKey to set
+	 */
+	public void setAwsSecretKey(String awsSecretKey) {
+		this.awsSecretKey = awsSecretKey;
+	}
+
+	/**
+	 * @return the awsARN
+	 */
+	public String getAwsARN() {
+		return awsARN;
+	}
+
+	/**
+	 * @param awsARN the awsARN to set
+	 */
+	public void setAwsARN(String awsARN) {
+		this.awsARN = awsARN;
+	}
+
+	/**
+	 * @return the awsClientId
+	 */
+	public String getAwsClientId() {
+		return awsClientId;
+	}
+
+	/**
+	 * @param awsClientId the awsClientId to set
+	 */
+	public void setAwsClientId(String awsClientId) {
+		this.awsClientId = awsClientId;
+	}
+
+	/**
+	 * @return the awsClientSecret
+	 */
+	public String getAwsClientSecret() {
+		return awsClientSecret;
+	}
+
+	/**
+	 * @param awsClientSecret the awsClientSecret to set
+	 */
+	public void setAwsClientSecret(String awsClientSecret) {
+		this.awsClientSecret = awsClientSecret;
+	}
+
+	/**
+	 * @return the awsRefreshToken
+	 */
+	public String getAwsRefreshToken() {
+		return awsRefreshToken;
+	}
+
+	/**
+	 * @param awsRefreshToken the awsRefreshToken to set
+	 */
+	public void setAwsRefreshToken(String awsRefreshToken) {
+		this.awsRefreshToken = awsRefreshToken;
+	}
+
+	/**
+	 * @return the auApiKey
+	 */
+	public String getAuApiKey() {
+		return auApiKey;
+	}
+
+	/**
+	 * @param auApiKey the auApiKey to set
+	 */
+	public void setAuApiKey(String auApiKey) {
+		this.auApiKey = auApiKey;
+	}
+
 	public List<String> getSiteList() {
 		return siteList;
 	}

@@ -23,6 +23,7 @@ public class A13020106Action extends BaseAction {
 		A130201Common a130201Common = new A130201Common();
 		List<String[]> rakutenOrderList = new ArrayList<String[]>();
 		List<String[]> yahooOrderList = new ArrayList<String[]>();
+		List<String[]> auOrderList = new ArrayList<String[]>();
 		List<String> shoriList = new ArrayList<String>();
 		List<String[]> shoriList2 = new ArrayList<String[]>();
 		List<String> msgList = null;
@@ -42,6 +43,9 @@ public class A13020106Action extends BaseAction {
 					} else if ("Yahoo".equals(order.getSite())) {
 						yahooOrderList.add(new String[] {
 								order.getChumonbango(), order.getTenpo() });
+					} else if ("AU".equals(order.getSite())) {
+						auOrderList.add(new String[] {
+								order.getChumonbango(), order.getTenpo() });
 					} else {
 						shoriList.add(order.getChumonbango());
 					}
@@ -57,6 +61,11 @@ public class A13020106Action extends BaseAction {
 				}
 			} else if (!Utility.isEmptyList(yahooOrderList)) {
 				msgList = a130201Common.setHaneizumiYahoo(yahooOrderList);
+				for (String msg : msgList) {
+					addError(null, msg);
+				}
+			} else if (!Utility.isEmptyList(auOrderList)) {
+				msgList = a130201Common.setHaneizumiAU(auOrderList);
 				for (String msg : msgList) {
 					addError(null, msg);
 				}
@@ -89,6 +98,9 @@ public class A13020106Action extends BaseAction {
 					denaOrderList.add(order.getChumonbango());
 				} else if ("ефе╒екеп".equals(order.getSite())) {
 					yahuoku.add(order.getChumonbango());
+				} else if ("AU".equals(order.getSite())) {
+					auOrderList.add(new String[] { order.getChumonbango(),
+							order.getTenpo() });
 				} else {
 					shoriList.add(order.getChumonbango());
 				}
@@ -101,7 +113,7 @@ public class A13020106Action extends BaseAction {
 					addError(null, msg);
 				}
 			} else if ("2".equals(tenpobetsu)) {
-				msgList = a130201Common.setHaneizumiYahoo(rakutenOrderList);
+				msgList = a130201Common.setHaneizumiYahoo(yahooOrderList);
 				for (String msg : msgList) {
 					addError(null, msg);
 				}
@@ -111,6 +123,11 @@ public class A13020106Action extends BaseAction {
 			} else if ("4".equals(tenpobetsu)) {
 
 				a130201Common.setHaneizumi(yahuoku);
+			} else if ("7".equals(tenpobetsu)) {
+				msgList = a130201Common.setHaneizumiAU(auOrderList);
+				for (String msg : msgList) {
+					addError(null, msg);
+				}
 			} else {
 				a130201Common.setHaneizumi(shoriList);
 			}

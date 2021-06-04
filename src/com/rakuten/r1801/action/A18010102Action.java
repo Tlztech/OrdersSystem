@@ -53,6 +53,14 @@ public class A18010102Action extends BaseAction {
 					f180101.setAccessToken(rs.getString("ACCESS_TOKEN"));
 					f180101.setRefreshToken(rs.getString("REFRESH_TOKEN"));
 					f180101.setLoginTime(rs.getString("LOGIN_TIME"));
+					f180101.setAwsAccessKeyId(rs.getString("AWS_ACCESS_KEY_ID"));
+					f180101.setAwsSecretKey(rs.getString("AWS_SECRET_KEY"));
+					f180101.setAwsARN(rs.getString("AWS_ARN"));
+					f180101.setAwsClientId(rs.getString("AWS_CLIENT_ID"));
+					f180101.setAwsClientSecret(rs.getString("AWS_CLIENT_SECRET"));
+					f180101.setAwsRefreshToken(rs.getString("AWS_REFRESH_TOKEN"));
+					f180101.setAuApiKey(rs.getString("AU_APIKEY"));
+					
 				}
 				if (rowCount == 0) {
 					f180101.setPlatform(null);
@@ -70,6 +78,13 @@ public class A18010102Action extends BaseAction {
 					f180101.setAccessToken(null);
 					f180101.setRefreshToken(null);
 					f180101.setLoginTime(null);
+					f180101.setAwsAccessKeyId(null);
+					f180101.setAwsSecretKey(null);
+					f180101.setAwsARN(null);
+					f180101.setAwsClientId(null);
+					f180101.setAwsClientSecret(null);
+					f180101.setAwsRefreshToken(null);
+					f180101.setAuApiKey(null);
 					
 					addError(null, "选择的平台和店铺的查找信息不存在！");
 				}

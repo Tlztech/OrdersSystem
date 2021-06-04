@@ -36,7 +36,7 @@ public class A18010103Action extends BaseAction {
 			if (count > 0) {
 				addError(null, "平台和店铺已经存在，请做更新处理");
 			} else {
-				sql = "INSERT INTO SHOP VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				sql = "INSERT INTO `rakuten`.`shop`(`SITE`,`SHOP_ID`,`SHOP_NAME`,`SHOP_NO`,`SHOP_TEL`,`SHOP_FAX`,`SHOP_URL`,`SHOP_POST`,`SHOP_ADDRESS`,`SERVICE_KEY`,`LICENSE_KEY`,`YAHOO_APP_ID`,`ACCESS_TOKEN`,`REFRESH_TOKEN`,`LOGIN_TIME`,`CREATE_TIME`,`CREATE_USER`,`UPDATE_TIME`,`UPDATE_USER`,`DELETE_FLG`,`AWS_ACCESS_KEY_ID`,`AWS_SECRET_KEY`,`AWS_ARN`,`AWS_CLIENT_ID`,`AWS_CLIENT_SECRET`,`AWS_REFRESH_TOKEN`, `AU_APIKEY`)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, f180101.getPlatform());
 				ps.setString(2, f180101.getShopId());
@@ -58,6 +58,13 @@ public class A18010103Action extends BaseAction {
 				ps.setString(18, null);
 				ps.setString(19, null);
 				ps.setString(20, null);
+				ps.setString(21, f180101.getAwsAccessKeyId());
+				ps.setString(22, f180101.getAwsSecretKey());
+				ps.setString(23, f180101.getAwsARN());
+				ps.setString(24, f180101.getAwsClientId());
+				ps.setString(25, f180101.getAwsClientSecret());
+				ps.setString(26, f180101.getAwsRefreshToken());
+				ps.setString(27, f180101.getAuApiKey());
 				ps.execute();
 				
 				conn.commit();
@@ -74,6 +81,13 @@ public class A18010103Action extends BaseAction {
 				f180101.setServiceKey(null);
 				f180101.setLicenseKey(null);
 				f180101.setApplicationID(null);
+				f180101.setAwsAccessKeyId(null);
+				f180101.setAwsSecretKey(null);
+				f180101.setAwsARN(null);
+				f180101.setAwsClientId(null);
+				f180101.setAwsClientSecret(null);
+				f180101.setAwsRefreshToken(null);
+				f180101.setAuApiKey(null);
 				
 				addError(null, "添加成功");
 			}

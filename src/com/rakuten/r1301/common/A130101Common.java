@@ -159,6 +159,7 @@ public class A130101Common {
 		int denaCount = 0;
 		int yafuokuCount = 0;
 		int qoo10Count = 0;
+		int auCount = 0;
 		int ponpareCount = 0;
 		int otherCount = 0;
 
@@ -178,7 +179,9 @@ public class A130101Common {
 				ponpareCount++;
 			} else if ("qoo10".equals(order.getSite())) {
 				qoo10Count++;
-			}else {
+			} else if ("AU".equals(order.getSite())) {
+				auCount++;
+			} else {
 				otherCount++;
 			}
 
@@ -213,9 +216,15 @@ public class A130101Common {
 				}
 			}
 			if ("7".equals(tenposhubetsu)) {
+				if ("AU".equals(order.getSite())) {
+					shoriList.add(order);
+				}
+			}
+			if ("8".equals(tenposhubetsu)) {
 				if (!"楽天".equals(order.getSite()) && !"Yahoo".equals(order.getSite()) 
 						&& !"DENA".equals(order.getSite()) && !"ヤフオク".equals(order.getSite()) 
-						&& !"ポンパレモール".equals(order.getSite()) && !"qoo10".equals(order.getSite())) {
+						&& !"ポンパレモール".equals(order.getSite()) && !"qoo10".equals(order.getSite())
+						&& !"AU".equals(order.getSite())) {
 					shoriList.add(order);
 				}
 			}
@@ -227,6 +236,7 @@ public class A130101Common {
 		f130101.setYafuokuCount(String.valueOf(yafuokuCount));
 		f130101.setPonpareCount(String.valueOf(ponpareCount));
 		f130101.setQoo10Count(String.valueOf(qoo10Count));
+		f130101.setAuCount(String.valueOf(auCount));
 		f130101.setOtherCount(String.valueOf(otherCount));
 		Comparator<OrderList> comparator = new Comparator<OrderList>() {
 			@Override

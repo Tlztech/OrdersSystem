@@ -49,6 +49,7 @@ public class F130101 implements Serializable {
 	private String merubinkaisha = null;
 	private String ponpareCount = null;
 	private String qoo10Count = null;
+	private String auCount = null;
 	private String otherCount = null;
 
 	/**
@@ -500,6 +501,20 @@ public class F130101 implements Serializable {
 
 	public void setQoo10Count(String qoo10Count) {
 		this.qoo10Count = qoo10Count;
+	}
+
+	/**
+	 * @return the auCount
+	 */
+	public String getAuCount() {
+		return auCount;
+	}
+
+	/**
+	 * @param auCount the auCount to set
+	 */
+	public void setAuCount(String auCount) {
+		this.auCount = auCount;
 	}
 
 	public String getOtherCount() {
