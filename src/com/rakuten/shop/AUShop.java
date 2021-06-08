@@ -85,7 +85,7 @@ public class AUShop {
 		List<AUOrder> orderList = new ArrayList<>();
 		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 		String date = sdf1.format(new Date());
-		String result = getHttpRsp(URL_GETORDERINFOLIST+date+"&shopId"+shopId+"&orderStatus="+URLEncoder.encode("発送待ち","utf-8"));
+		String result = getHttpRsp(URL_GETORDERINFOLIST+date+"&shopId="+shopId+"&orderStatus="+URLEncoder.encode("発送待ち","utf-8"));
 		if (result.isEmpty()) {
 			
 		} else {
