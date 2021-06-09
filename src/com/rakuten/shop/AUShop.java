@@ -26,8 +26,8 @@ import com.rakuten.util.Utility;
 
 public class AUShop {
 
-	private final static String URL_GETORDERNOLIST = "https://api.manager.wowma.jp/wmshopapi/searchTradeNoListProc?startDate=2021-05-10&endDate=";
-	private final static String URL_GETORDERINFOLIST = "https://api.manager.wowma.jp/wmshopapi/searchTradeInfoListProc?startDate=2021-05-10&endDate=";
+	private final static String URL_GETORDERNOLIST = "https://api.manager.wowma.jp/wmshopapi/searchTradeNoListProc?totalCount=1000&startDate=2021-05-10&endDate=";
+	private final static String URL_GETORDERINFOLIST = "https://api.manager.wowma.jp/wmshopapi/searchTradeInfoListProc?totalCount=1000&startDate=2021-05-10&endDate=";
 	private final static String URL_POSTSTOCKLIST = "https://api.manager.wowma.jp/wmshopapi/updateStock";
 	private final static String URL_POSTTRADELIST = "https://api.manager.wowma.jp/wmshopapi/updateTradeInfoProc";
 	private final static String URL_POSTSTATUSLIST = "https://api.manager.wowma.jp/wmshopapi/updateTradeStsProc";
