@@ -490,7 +490,8 @@ public class A13010103Action extends BaseAction {
 				String tenpodenwabango = "";
 				if (!"楽天".equals(site) && !"Yahoo".equals(site) 
 						&& !"DENA".equals(site) && !"ヤフオク".equals(site) 
-						&& !"ポンパレモール".equals(site) && !"qoo10".equals(site)) {
+						&& !"ポンパレモール".equals(site) && !"qoo10".equals(site)
+						&& !"AU".equals(site)) {
 					
 	
 					ps = conn.prepareStatement(sql);
