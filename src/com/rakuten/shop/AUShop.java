@@ -138,9 +138,9 @@ public class AUShop {
 	        		for (Map<String, Object> itemMap : itemMapList) {
 	        			Item item = auorder.new Item();
 	        			if (Utility.isEmptyString((String)itemMap.get("itemManagementId"))) {
-	        				item.setItemCode((String)itemMap.get("itemCode"));
+	        				item.setItemCode(((String)itemMap.get("itemCode")).replaceAll("--", "-"));
 	        			} else {
-	        				item.setItemCode((String)itemMap.get("itemCode")+(String)itemMap.get("itemManagementId"));
+	        				item.setItemCode(((String)itemMap.get("itemCode")).replaceAll("--", "-")+((String)itemMap.get("itemManagementId")).replaceAll("--", "-"));
 	        			}
 	        			
 	        			item.setItemName((String)itemMap.get("itemName"));
