@@ -48,21 +48,22 @@ public class A13020115Action extends BaseAction {
 			if (!"楽天".equals(order.getSite()) && !"Yahoo".equals(order.getSite()) 
 					&& !"DENA".equals(order.getSite()) && !"ヤフオク".equals(order.getSite()) 
 					&& !"ポンパレモール".equals(order.getSite()) && !"qoo10".equals(order.getSite())) {
-				
-				String haisokaishaName = "";
-				if (DeliveryCompany.YAMATO.getTag().equals(order.getHaisokaisha())) {
-					haisokaishaName = DeliveryCompany.YAMATO.getName();
-				} else if (DeliveryCompany.SAGAWA.getTag().equals(order.getHaisokaisha())) {
-					haisokaishaName = DeliveryCompany.SAGAWA.getName();
-				}else if (DeliveryCompany.POST.getTag().equals(order.getHaisokaisha())) {
-					haisokaishaName = DeliveryCompany.POST.getName();
-				}else {
-					haisokaishaName = DeliveryCompany.YAMATO.getName();
+				if ("".equals(f130201.getSite()) || order.getSite().equals(f130201.getSite())) {
+					String haisokaishaName = "";
+					if (DeliveryCompany.YAMATO.getTag().equals(order.getHaisokaisha())) {
+						haisokaishaName = DeliveryCompany.YAMATO.getName();
+					} else if (DeliveryCompany.SAGAWA.getTag().equals(order.getHaisokaisha())) {
+						haisokaishaName = DeliveryCompany.SAGAWA.getName();
+					}else if (DeliveryCompany.POST.getTag().equals(order.getHaisokaisha())) {
+						haisokaishaName = DeliveryCompany.POST.getName();
+					}else {
+						haisokaishaName = DeliveryCompany.YAMATO.getName();
+					}
+					shoriList2.add(new String[] { order.getChumonbango(), order.getTodohuken(), haisokaishaName, order.getHaisohoho(), 
+							order.getDenpyobango(), order.getSize()	}
+					);
+					shoriList.add(order.getChumonbango());
 				}
-				shoriList2.add(new String[] { order.getChumonbango(), order.getTodohuken(), haisokaishaName, order.getHaisohoho(), 
-						order.getDenpyobango(), order.getSize()	}
-				);
-				shoriList.add(order.getChumonbango());
 			}
 		}
 
