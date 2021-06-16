@@ -151,7 +151,7 @@ public class Shop {
 	}
 
 	private void getOrder() throws Exception{
-		Map<String, List<String>> requestMap = new HashMap<String, List<String>>();
+		Map<String, Object> requestMap = new HashMap<String, Object>();
 		ObjectMapper objectMapper_GetOrderResult = new ObjectMapper();
 		String getxml;
 		int orderNoAmount = orderNoList.size();
@@ -166,6 +166,7 @@ public class Shop {
 		while (endPos > startPos) {
 			orderNoSubList = orderNoList.subList(startPos, endPos);
 			requestMap.put("orderNumberList", orderNoSubList);
+			requestMap.put("version", 5);
 			getxml = objectMapper_GetOrderResult.writeValueAsString(requestMap);
 			URL url = new URL(URL_GETORDER);
 			String json_GetOrderResult = getJson(shopName, url, getxml);
