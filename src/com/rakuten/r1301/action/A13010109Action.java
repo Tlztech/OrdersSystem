@@ -17,12 +17,7 @@ public class A13010109Action extends BaseAction {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		if (orderNo.startsWith("O")) {
-			orderNo = getjuchubango(orderNo);
-		}
-		if (orderNo.startsWith("Y")) {
-			orderNo = "coverforefront-" + orderNo.replace("Y", "");
-		}
+
 		try {
 			conn = JdbcConnection.getConnection();
 			String sql = "select count(*) count from tbl00024 where CHUMONBANGO = ?";

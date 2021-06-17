@@ -18,15 +18,7 @@ public class A13020109Action extends BaseAction {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		if (orderNo.startsWith("O")) {
-			orderNo = getjuchubango(orderNo,"O");
-		}
-		if (orderNo.startsWith("Y")) {
-			orderNo = "coverforefront-" + orderNo.replace("Y", "");
-		}
-		if (orderNo.startsWith("P")) {
-			orderNo = getjuchubango(orderNo,"P");
-		}
+
 		try {
 			conn = JdbcConnection.getConnection();
 			String sql = "select hassoushahenokomento from common_order_tbl where CHUMONBANGO = ?";
