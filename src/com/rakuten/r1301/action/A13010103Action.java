@@ -866,13 +866,7 @@ public class A13010103Action extends BaseAction {
 
 			for (OrderList order : orderList) {
 				String barchumonbango = "";
-				if (order.getChumonbango().startsWith("3")) {
-					barchumonbango = "O" + order.getChumonbango().substring(16, order.getChumonbango().length());
-				} else if (order.getChumonbango().startsWith("cover")) {
-					barchumonbango = order.getChumonbango().replace("coverforefront-", "Y");
-				} else if (order.getChumonbango().startsWith("120697")) {
-					barchumonbango = "P" + order.getChumonbango().substring(16, order.getChumonbango().length());
-				}
+
 				sb.append("$(\"#bcTarget" + i + "\").empty().barcode('" + barchumonbango
 						+ "', 'code93',{barWidth:2, barHeight:27,showHRI:false});");
 				i++;

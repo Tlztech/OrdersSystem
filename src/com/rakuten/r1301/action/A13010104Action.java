@@ -20,15 +20,7 @@ public class A13010104Action extends BaseAction {
 
 	protected void exec() throws Exception {
 		String juchubango = f130101.getInputJuchubango().trim();
-		if (juchubango.startsWith("O")) {
-			juchubango = getjuchubango(juchubango, "O");
-		}
-		if (juchubango.startsWith("Y")) {
-			juchubango = "coverforefront-" + juchubango.replace("Y", "");
-		}
-		if (juchubango.startsWith("P")) {
-			juchubango = getjuchubango(juchubango, "P");
-		}
+
 		f130101.setInputJuchubango(juchubango);
 		String denpyoubango = f130101.getInputDenpyobango().trim();
 
@@ -191,15 +183,7 @@ public class A13010104Action extends BaseAction {
 
 	protected void isValidated() throws Exception {
 		String juchubango = f130101.getInputJuchubango().trim();
-		if (juchubango.startsWith("O")) {
-			juchubango = getjuchubango(juchubango, "O");
-		}
-		if (juchubango.startsWith("P")) {
-			juchubango = getjuchubango(juchubango, "P");
-		}
-		if (juchubango.startsWith("Y")) {
-			juchubango = "coverforefront-" + juchubango.replace("Y", "");
-		}
+
 		f130101.setInputJuchubango(juchubango);
 		List<String> hasomachihasokaList = (List<String>) getSessionAttribute("hasomachiList");
 
