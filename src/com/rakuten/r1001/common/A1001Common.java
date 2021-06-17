@@ -3622,7 +3622,11 @@ public class A1001Common {
 
 								sql = "INSERT INTO TBL00016 VALUES(?,?)";
 								ps = conn.prepareStatement(sql);
-								ps.setString(1, shouhinbango + detailNo);
+								if ("-0-0".equals(detailNo)) {
+									ps.setString(1, shouhinbango);
+								}else {
+									ps.setString(1, shouhinbango + detailNo);
+								}
 								ps.setString(2, maxBarcode);
 								ps.execute();
 							}
