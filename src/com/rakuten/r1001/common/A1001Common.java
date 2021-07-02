@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.axis.utils.StringUtils;
+
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.rakuten.common.action.OrderCommon;
 import com.rakuten.r1001.bean.DenaCsvBean;
@@ -4745,7 +4747,11 @@ public class A1001Common {
 			if (csvDataNext != null) {
 				chumonbangoNext = csvDataNext[3];
 			}
-			orderInfo.add(csvData);
+			if(StringUtils.isEmpty(csvData[6])) {
+				
+			} else {
+				orderInfo.add(csvData);
+			}
 			if (!chumonbango.equals(chumonbangoNext) || "".equals(chumonbangoNext)) {
 				AddtoOrderListOther(orderList, orderInfo);
 				orderInfo = new ArrayList<String[]>();
