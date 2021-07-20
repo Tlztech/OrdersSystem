@@ -4747,7 +4747,7 @@ public class A1001Common {
 			if (csvDataNext != null) {
 				chumonbangoNext = csvDataNext[3];
 			}
-			if(StringUtils.isEmpty(csvData[6])) {
+			if(StringUtils.isEmpty(csvData[6]) || "0".equals(csvData[6])) {
 				
 			} else {
 				orderInfo.add(csvData);
