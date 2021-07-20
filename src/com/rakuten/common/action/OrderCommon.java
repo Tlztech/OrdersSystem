@@ -3497,6 +3497,7 @@ public class OrderCommon {
 					&& !commonOrderBean.isTuikaFlg()) {
 				String juchubango = commonOrderBean.getJuchubango();
 				boolean hasokanoFlg = true;
+				boolean ariFlg = false;
 				for (CommonOrderDetailrBean detail : commonOrderBean.getCommonOrderDetailBeanList()) {
 					if ("0".equals(detail.getShubetsu())) {
 						// 已经取得的商品编号
@@ -3504,6 +3505,7 @@ public class OrderCommon {
 						// 从商品stsbean里面搜索状态
 						for (ShouhinStsBean shohin : shouhinStsBeanList) {
 							if (shohin.getShouhinbango().equals(shohinbango)) {
+								ariFlg = true;
 								for (ShohinStsInfoBean order : shohin.getShohinStsInfoBeanList()) {
 									if (order.getJuchubango().equals(juchubango)) {
 										if (!order.getHoryukosuJp().equals(String.valueOf(detail.getKosu()))) {
@@ -3513,6 +3515,11 @@ public class OrderCommon {
 								}
 							}
 
+						}
+						if (!ariFlg) {
+							hasokanoFlg = false;
+						} else {
+							ariFlg = false;
 						}
 					}
 				}
