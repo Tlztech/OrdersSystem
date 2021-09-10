@@ -115,7 +115,13 @@ public class YahooShop {
 					messageFromYahooList_GetOrder.add(messageFromYahoo);
 				}
 			} else {
-				List<Object> orderInfoList = (List<Object>) searchMap.get("OrderInfo");
+				List<Object> orderInfoList;
+				if (searchMap.get("OrderInfo") instanceof List) {
+					orderInfoList = (List<Object>) searchMap.get("OrderInfo");
+				} else {
+					orderInfoList = new ArrayList<>();
+					orderInfoList.add(searchMap.get("OrderInfo"));
+				}
 				if (null == orderInfoList || 0 == orderInfoList.size()) {
 
 				} else {
