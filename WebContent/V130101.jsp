@@ -112,8 +112,10 @@ function setInfoVal(infoVal){
 	
 	var Regx = /^[A-Za-z]*$/;
 	
+	infoVal = infoVal.replace(/\s+/g,"");
 	// 是快递单号
-	if((infoVal.charAt(0) == 3 || infoVal.charAt(0) == 4 || infoVal.charAt(0) == 1 || infoVal.charAt(0) == 5 || (infoVal.charAt(0) == 2 && infoVal.charAt(1) == 8)) && infoVal.length == 12){
+	//if((infoVal.charAt(0) == 3 || infoVal.charAt(0) == 4 || infoVal.charAt(0) == 1 || infoVal.charAt(0) == 5 || (infoVal.charAt(0) == 2 && infoVal.charAt(1) == 8)) && infoVal.length == 12){
+	if((/^\d+$/.test(infoVal)) && infoVal.length == 12) {
 		document.getElementsByName("f130101.inputDenpyobango")[0].value=infoVal;
 		
 	    if(checkHasokano()){
