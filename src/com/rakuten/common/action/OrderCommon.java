@@ -702,7 +702,7 @@ public class OrderCommon {
 			conn = JdbcConnection.getConnection();
 
 			String sql = "SELECT * FROM common_order_tbl t1 left join tbl00027 t2 on t1.chumonbango = t2.chumonbango"
-					+ " WHERE CHUMONSTS1 = ? OR CHUMONSTS1 = ? AND t1.chumonbango in (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1)) ";
+					+ " WHERE CHUMONSTS1 = ? OR CHUMONSTS1 = ? AND (t1.chumonbango in (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))) ";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, "2");
 			ps.setString(2, "5");
