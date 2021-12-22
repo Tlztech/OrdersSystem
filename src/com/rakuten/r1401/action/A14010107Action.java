@@ -16,6 +16,7 @@ import javax.xml.rpc.ServiceException;
 
 import org.apache.axis.encoding.Base64;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.MessageFromAU;
 import com.rakuten.common.MessageFromYahoo;
 import com.rakuten.common.action.BaseAction;
@@ -130,9 +131,16 @@ public class A14010107Action extends BaseAction {
 		List<String[]> unsochuArr = new ArrayList<String[]>();
 		StockBean stockbean = null;
 		try {
+//			Map<String,Object> map =  ActionContext.getContext().getSession();
+//			int companyId;
+//			if (null == map.get("comp")) {
+//				companyId = -1;
+//			} else {
+//				companyId = (int)map.get("comp");
+//			}
 			conn = JdbcConnection.getConnection();
 //			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ?";
-			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE IN ('Yahoo','楽天')";
+			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE IN ('Yahoo','楽天','AU')";
 
 			ps = conn.prepareStatement(sql);
 //			ps.setString(1, site);

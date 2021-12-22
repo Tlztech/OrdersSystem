@@ -3,7 +3,9 @@ package com.rakuten.r1302.action;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Map;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.util.JdbcConnection;
 import com.rakuten.util.Utility;
@@ -20,11 +22,21 @@ public class A13020109Action extends BaseAction {
 		ResultSet rs = null;
 
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
-			String sql = "select hassoushahenokomento from common_order_tbl where CHUMONBANGO = ?";
+			String sql = "select hassoushahenokomento from common_order_tbl where CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
 
 			ps.setString(1, orderNo);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
+			ps.setInt(4, companyId);
 
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -33,9 +45,10 @@ public class A13020109Action extends BaseAction {
 				}
 			}
 
-			sql = "select * from common_order_detail_tbl left join tbl00016 on SHOUHINBANGO = commodity_id where juchubango = ?";
+			sql = "select * from common_order_detail_tbl left join tbl00016 on SHOUHINBANGO = commodity_id where juchubango in (select order_id from company_order_tbl where order_id = ? AND (COMPANY_ID = ?))";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, orderNo);
+			ps.setInt(2, companyId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				result = result + "&&";

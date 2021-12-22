@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r0702.form.F070201;
 import com.rakuten.r0702.form.NyukaList;
@@ -74,6 +76,13 @@ public class A07020102Action extends BaseAction {
 		PreparedStatement ps = null;
 		String sql = null;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
 
 			sql = "SELECT * FROM TBL00015 WHERE 1=1";
@@ -86,7 +95,9 @@ public class A07020102Action extends BaseAction {
 			String printStatus = f070201.getPrintStatus();
 
 			if (!Utility.isEmptyString(commodityId)) {
-				sql += " AND COMMODITY_ID like '%" + commodityId + "%'";
+				sql += " AND SUBSTRING_INDEX(COMMODITY_ID, '-', 1) in (select commodity_id from company_commodity_tbl where commodity_id like '%" + Utility.getCommodityId(commodityId) + "%' AND (? = 0 OR ? = 1))";
+			} else {
+				sql += " AND SUBSTRING_INDEX(COMMODITY_ID, '-', 1) in (select commodity_id from company_commodity_tbl where (? = 0 OR ? = 1))";
 			}
 			if (!Utility.isEmptyString(nyukabiStart)) {
 				sql += " AND CREATE_DATE >= '" + nyukabiStart.replace("-", "") + "'";
@@ -122,6 +133,8 @@ public class A07020102Action extends BaseAction {
 			sql += " ORDER BY CREATE_DATE DESC";
 
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
 			ResultSet rs = ps.executeQuery();
 
 			if (f070201 == null) {

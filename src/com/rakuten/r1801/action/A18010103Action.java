@@ -21,6 +21,11 @@ public class A18010103Action extends BaseAction {
 		ResultSet rs = null;
 		String sql = null;
 
+		if (0 == (f180101.getCompanyId())) {
+			this.addFieldError("error", "请选择公司");
+			return;
+		}
+		
 		try {
 			conn = JdbcConnection.getConnection();
 
@@ -34,9 +39,9 @@ public class A18010103Action extends BaseAction {
 				count = rs.getInt("COUNT");
 			}
 			if (count > 0) {
-				addError(null, "平台和店铺已经存在，请做更新处理");
+				this.addFieldError("error", "平台和店铺已经存在，请做更新处理");
 			} else {
-				sql = "INSERT INTO `rakuten`.`shop`(`SITE`,`SHOP_ID`,`SHOP_NAME`,`SHOP_NO`,`SHOP_TEL`,`SHOP_FAX`,`SHOP_URL`,`SHOP_POST`,`SHOP_ADDRESS`,`SERVICE_KEY`,`LICENSE_KEY`,`YAHOO_APP_ID`,`ACCESS_TOKEN`,`REFRESH_TOKEN`,`LOGIN_TIME`,`CREATE_TIME`,`CREATE_USER`,`UPDATE_TIME`,`UPDATE_USER`,`DELETE_FLG`,`AWS_ACCESS_KEY_ID`,`AWS_SECRET_KEY`,`AWS_ARN`,`AWS_CLIENT_ID`,`AWS_CLIENT_SECRET`,`AWS_REFRESH_TOKEN`, `AU_APIKEY`)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				sql = "INSERT INTO `rakuten`.`shop`(`SITE`,`SHOP_ID`,`SHOP_NAME`,`SHOP_NO`,`SHOP_TEL`,`SHOP_FAX`,`SHOP_URL`,`SHOP_POST`,`SHOP_ADDRESS`,`SERVICE_KEY`,`LICENSE_KEY`,`YAHOO_APP_ID`,`ACCESS_TOKEN`,`REFRESH_TOKEN`,`LOGIN_TIME`,`CREATE_TIME`,`CREATE_USER`,`UPDATE_TIME`,`UPDATE_USER`,`DELETE_FLG`,`AWS_ACCESS_KEY_ID`,`AWS_SECRET_KEY`,`AWS_ARN`,`AWS_CLIENT_ID`,`AWS_CLIENT_SECRET`,`AWS_REFRESH_TOKEN`, `AU_APIKEY`, `COMPANY_ID`)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, f180101.getPlatform());
 				ps.setString(2, f180101.getShopId());
@@ -65,6 +70,7 @@ public class A18010103Action extends BaseAction {
 				ps.setString(25, f180101.getAwsClientSecret());
 				ps.setString(26, f180101.getAwsRefreshToken());
 				ps.setString(27, f180101.getAuApiKey());
+				ps.setInt(28, f180101.getCompanyId());
 				ps.execute();
 				
 				conn.commit();
@@ -106,6 +112,7 @@ public class A18010103Action extends BaseAction {
 	}
 
 	protected void isValidated() throws Exception {
+		
 	}
 
 	@Override

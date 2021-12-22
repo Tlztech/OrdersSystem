@@ -55,6 +55,11 @@ public class A06010110Action extends BaseAction {
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, waybillNo);
 			ps.execute();
+			
+			sql = "DELETE FROM company_waybill_tbl WHERE WAYBILL_NO = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, waybillNo);
+			ps.execute();
 
 			sql = "DELETE FROM TBL00014 WHERE WAYBILL_NO = ?";
 			ps = conn.prepareStatement(sql);

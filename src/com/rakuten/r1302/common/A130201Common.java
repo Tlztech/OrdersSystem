@@ -773,13 +773,22 @@ public class A130201Common {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			List<String> haneimachiList = new ArrayList<String>();
 			conn = JdbcConnection.getConnection();
-			String sql = "SELECT * FROM tbl00024 WHERE HANEISTS = ?";
+			String sql = "SELECT * FROM tbl00024 WHERE HANEISTS = ? AND chumonbango in (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 0))";
 
 			ps = conn.prepareStatement(sql);
 
 			ps.setString(1, haneists);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {

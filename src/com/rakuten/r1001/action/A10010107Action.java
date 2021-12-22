@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -23,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 
 import com.csvreader.CsvReader;
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r0302.ap.GetCommodityByIdAp;
 import com.rakuten.r0302.bean.CommodityDetail;
@@ -59,10 +61,19 @@ public class A10010107Action extends BaseAction {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
-			String sql = "SELECT * FROM common_order_tbl T1 LEFT JOIN common_order_detail_tbl T2 ON T1.CHUMONBANGO = T2.JUCHUBANGO WHERE T1.CHUMONSTS1 = ?";
+			String sql = "SELECT * FROM common_order_tbl T1 LEFT JOIN common_order_detail_tbl T2 ON T1.CHUMONBANGO = T2.JUCHUBANGO WHERE T1.CHUMONSTS1 = ? AND T1.CHUMONBANGO in (select order_id from company_order_tbl where (? = 1 OR ? = 0))";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, "2");
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				String shohinbango = rs.getString("T2.SHOUHINBANGO");
@@ -106,10 +117,12 @@ public class A10010107Action extends BaseAction {
 				}
 			}
 
-			sql = "SELECT * FROM common_order_tbl WHERE CHUMONSTS1 = ? AND CHUMONSTS3 = ?";
+			sql = "SELECT * FROM common_order_tbl WHERE CHUMONSTS1 = ? AND CHUMONSTS3 = ? AND chumonbango in (select order_id from company_order_tbl where (? = 1 OR ? = 0))";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, "5");
 			ps.setString(2, "1");
+			ps.setInt(3, companyId);
+			ps.setInt(4, companyId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				List<String[]> hasozumiList = new ArrayList<String[]>();

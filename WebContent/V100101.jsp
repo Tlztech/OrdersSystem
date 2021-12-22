@@ -334,8 +334,10 @@ select {
 	shopMap.put("","--");
 	siteMap.put("","--");
 	try {
+		Integer companyId = (Integer)session.getAttribute("comp");
+		System.out.println("COMPANY_ID"+companyId);
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql= "SELECT SITE, SHOP_ID FROM rakuten.shop where DELETE_FLG is null";
+		String sql= "SELECT SITE, SHOP_ID FROM rakuten.shop where DELETE_FLG is null and (COMPANY_ID = " + companyId.intValue() + " OR " + companyId.intValue() + " = 0)";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
@@ -699,7 +701,8 @@ select {
 				<tr>
 					<td>検索結果：<s:label name="f100101.resultCount" />件<s:hidden
 							name="f100101.resultCount" /></td>
-					<td align="right"><input type="button"
+					<td align="right">
+					<s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)"><input type="button"
 						onclick="actionSubmit('A10010401')" value="新規" />&nbsp;&nbsp; <input
 						type="button" onclick="popupDiv2();" value="楽天注文取得" />&nbsp;&nbsp;
 						<input type="button" onclick="popupDivGetOrderInfoYahoo();"
@@ -711,8 +714,9 @@ select {
 						<input type="button" onclick="popupDiv3();" value="CSVから取得(DENA)" />&nbsp;&nbsp;
 						<input type="button" onclick="popupDiv4();" value="CSVから取得(Yahoo)" />&nbsp;&nbsp;
 						<input type="button" onclick="popupDiv5();" value="CSVから取得(ポンパレ)" />&nbsp;&nbsp;
-						<input type="button" onclick="popupDiv9();" value="CSVから取得(代理発送)" />&nbsp;&nbsp;
 						<input type="button" onclick="popupDiv10();" value="CSVから取得(Amazon)" />&nbsp;&nbsp;
+						</s:if>
+						<input type="button" onclick="popupDiv9();" value="CSVから取得(代理発送)" />&nbsp;&nbsp;
 						<!--                     <input type="button" onclick="actionSubmit('A10010105');" value="発送可リスト生成"/>&nbsp;&nbsp; -->
 						<!--                     <input type="button" onclick="popupDiv();" value="発送情報をシステムに反映"/>&nbsp;&nbsp; -->
 					</td>

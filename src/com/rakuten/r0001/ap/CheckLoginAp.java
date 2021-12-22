@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.servlet.http.HttpSession;
+
+import org.apache.struts2.ServletActionContext;
+
 import com.rakuten.common.ap.CommonAp;
 import com.rakuten.r0001.bean.CheckLoginInput;
 import com.rakuten.r0001.bean.CheckLoginOutput;
@@ -26,12 +30,15 @@ public class CheckLoginAp extends CommonAp {
 			ps.setString(2, password);
 			ResultSet rs = ps.executeQuery();
 			int count = 0;
+			int companyId = -1;
 			while (rs.next()) {
 				count = rs.getInt("COUNT");
+				companyId = rs.getInt("COMPANYID");
 			}
 			output = new CheckLoginOutput();
 			if (count > 0) {
 				output.setSuccessFlg(true);
+				output.setCompanyId(companyId);
 			}
 			// commit
 			conn.commit();

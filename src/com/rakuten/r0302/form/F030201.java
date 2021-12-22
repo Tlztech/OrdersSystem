@@ -30,6 +30,8 @@ public class F030201 implements Serializable {
 	private String ptype = null;
 	private String site = null;
 	private String shop = null;
+	private String siteForGoods = null;
+	private String shopForGoods = null;
 
 	public String getCateName() {
 		return cateName;
@@ -332,6 +334,34 @@ public class F030201 implements Serializable {
 
 	public void setShop(String shop) {
 		this.shop = shop;
+	}
+
+	/**
+	 * @return the siteForGoods
+	 */
+	public String getSiteForGoods() {
+		return siteForGoods;
+	}
+
+	/**
+	 * @param siteForGoods the siteForGoods to set
+	 */
+	public void setSiteForGoods(String siteForGoods) {
+		this.siteForGoods = siteForGoods;
+	}
+
+	/**
+	 * @return the shopForGoods
+	 */
+	public String getShopForGoods() {
+		return shopForGoods;
+	}
+
+	/**
+	 * @param shopForGoods the shopForGoods to set
+	 */
+	public void setShopForGoods(String shopForGoods) {
+		this.shopForGoods = shopForGoods;
 	}
 
 }

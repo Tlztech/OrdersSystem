@@ -12,7 +12,7 @@ import com.rakuten.util.Utility;
 public class A18010105Action extends BaseAction {
 
 	private static final long serialVersionUID = 1L;
-	F180101 f180101 = new F180101();
+	F180101 f180101;
 	
 	protected void exec() throws Exception {
 
@@ -21,20 +21,26 @@ public class A18010105Action extends BaseAction {
 		ResultSet rs = null;
 		String sql = null;
 
+		if (0 == (f180101.getCompanyId())) {
+			this.addFieldError("error", "请选择公司");
+			return;
+		}
+		
 		try {
 			conn = JdbcConnection.getConnection();
 
 			int count = 0;
-			sql = "SELECT COUNT(*) COUNT FROM SHOP WHERE SITE = ? and SHOP_ID = ? AND DELETE_FLG is null";
+			sql = "SELECT COUNT(*) COUNT FROM SHOP WHERE SITE = ? and SHOP_ID = ? and COMPANY_ID = ? AND DELETE_FLG is null";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, f180101.getPlatform());
 			ps.setString(2, f180101.getShopId());
+			ps.setInt(3, f180101.getCompanyId());
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				count = rs.getInt("COUNT");
 			}
 			if (count > 0) {
-				sql = "UPDATE SHOP SET DELETE_FLG = ?, UPDATE_TIME = ?, UPDATE_USER = ? WHERE SITE = ? and SHOP_ID = ?";
+				sql = "UPDATE SHOP SET DELETE_FLG = ?, UPDATE_TIME = ?, UPDATE_USER = ? WHERE SITE = ? and SHOP_ID = ? and COMPANY_ID = ?";
 				ps = conn.prepareStatement(sql);
 
 				ps.setString(1, "1");
@@ -42,6 +48,7 @@ public class A18010105Action extends BaseAction {
 				ps.setString(3, Utility.getUser());
 				ps.setString(4, f180101.getPlatform());
 				ps.setString(5, f180101.getShopId());
+				ps.setInt(6, f180101.getCompanyId());
 				
 				ps.execute();
 				
@@ -74,7 +81,7 @@ public class A18010105Action extends BaseAction {
 				
 			} else {
 				
-				addError(null, "删除的平台和店铺不存在，请确认！");
+				this.addFieldError("error", "删除的平台和店铺不存在，请确认！");
 			}
 			
 		} catch (Exception e) {

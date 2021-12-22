@@ -12,7 +12,7 @@ import com.rakuten.util.Utility;
 public class A18010104Action extends BaseAction {
 
 	private static final long serialVersionUID = 1L;
-	F180101 f180101 = new F180101();
+	F180101 f180101;
 	
 	protected void exec() throws Exception {
 
@@ -21,6 +21,11 @@ public class A18010104Action extends BaseAction {
 		ResultSet rs = null;
 		String sql = null;
 
+		if (0 == (f180101.getCompanyId())) {
+			this.addFieldError("error", "请选择公司");
+			return;
+		}
+		
 		try {
 			conn = JdbcConnection.getConnection();
 
@@ -34,7 +39,7 @@ public class A18010104Action extends BaseAction {
 				count = rs.getInt("COUNT");
 			}
 			if (count > 0) {
-				sql = "UPDATE SHOP SET SHOP_NAME = ?, SHOP_NO = ?, SHOP_TEL = ?, SHOP_FAX = ?, SHOP_URL = ?, SHOP_POST = ?, SHOP_ADDRESS = ?, SERVICE_KEY = ?, LICENSE_KEY = ?, UPDATE_TIME = ?, UPDATE_USER = ?, YAHOO_APP_ID = ?, AWS_ACCESS_KEY_ID = ?, AWS_SECRET_KEY = ?, AWS_ARN = ?, AWS_CLIENT_ID = ?, AWS_CLIENT_SECRET = ?, AWS_REFRESH_TOKEN = ?, AU_APIKEY = ? WHERE SITE = ? and SHOP_ID = ?";
+				sql = "UPDATE SHOP SET SHOP_NAME = ?, SHOP_NO = ?, SHOP_TEL = ?, SHOP_FAX = ?, SHOP_URL = ?, SHOP_POST = ?, SHOP_ADDRESS = ?, SERVICE_KEY = ?, LICENSE_KEY = ?, UPDATE_TIME = ?, UPDATE_USER = ?, YAHOO_APP_ID = ?, AWS_ACCESS_KEY_ID = ?, AWS_SECRET_KEY = ?, AWS_ARN = ?, AWS_CLIENT_ID = ?, AWS_CLIENT_SECRET = ?, AWS_REFRESH_TOKEN = ?, AU_APIKEY = ?, COMPANY_ID = ? WHERE SITE = ? and SHOP_ID = ?";
 				ps = conn.prepareStatement(sql);
 
 				ps.setString(1, f180101.getShopName());
@@ -58,6 +63,7 @@ public class A18010104Action extends BaseAction {
 				ps.setString(19, f180101.getAuApiKey());
 				ps.setString(20, f180101.getPlatform());
 				ps.setString(21, f180101.getShopId());
+				ps.setInt(22, f180101.getCompanyId());
 				
 				ps.execute();
 				
@@ -85,12 +91,13 @@ public class A18010104Action extends BaseAction {
 				f180101.setAwsClientSecret(null);
 				f180101.setAwsRefreshToken(null);
 				f180101.setAuApiKey(null);
+				f180101.setCompanyId(0);
 				
 				addError(null, "更新成功");
 				
 			} else {
 				
-				addError(null, "更新的平台和店铺不存在，请确认！");
+				this.addFieldError("error", "更新的平台和店铺不存在，请确认！");
 			}
 			
 		} catch (Exception e) {

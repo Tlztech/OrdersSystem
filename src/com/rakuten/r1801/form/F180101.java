@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 public class F180101 implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+	private int companyId;
 	private String platform = null;
 	private String shopId = null;
 	private String shopName = null;
@@ -29,9 +31,24 @@ public class F180101 implements Serializable {
 	private String auApiKey = null;
 	private static List<String> siteList = null;
 	private static List<String> shopList = null;
+	private static List<Company> companyList = null;
 	private String platformSelect = null;
 	private String shopSelect = null;
+	private int companyIdSelect;
 	
+	/**
+	 * @return the companyId
+	 */
+	public int getCompanyId() {
+		return companyId;
+	}
+
+	/**
+	 * @param companyId the companyId to set
+	 */
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 
 	public String getPlatform() {
 		return platform;
@@ -282,4 +299,63 @@ public class F180101 implements Serializable {
 	public void setShopSelect(String shopSelect) {
 		this.shopSelect = shopSelect;
 	}
+
+	/**
+	 * @return the companyList
+	 */
+	public List<Company> getCompanyList() {
+		return companyList;
+	}
+
+	/**
+	 * @param companyList the companyList to set
+	 */
+	public void setCompanyList(List<Company> companyList) {
+		F180101.companyList = companyList;
+	}
+
+	/**
+	 * @return the companyIdSelect
+	 */
+	public int getCompanyIdSelect() {
+		return companyIdSelect;
+	}
+
+	/**
+	 * @param companyIdSelect the companyIdSelect to set
+	 */
+	public void setCompanyIdSelect(int companyIdSelect) {
+		this.companyIdSelect = companyIdSelect;
+	}
+	
+	public static class Company {
+		private int companyId;
+		private String companyName;
+		/**
+		 * @return the companyId
+		 */
+		public int getCompanyId() {
+			return companyId;
+		}
+		/**
+		 * @param companyId the companyId to set
+		 */
+		public void setCompanyId(int companyId) {
+			this.companyId = companyId;
+		}
+		/**
+		 * @return the companyName
+		 */
+		public String getCompanyName() {
+			return companyName;
+		}
+		/**
+		 * @param companyName the companyName to set
+		 */
+		public void setCompanyName(String companyName) {
+			this.companyName = companyName;
+		}
+		
+	}
+	
 }

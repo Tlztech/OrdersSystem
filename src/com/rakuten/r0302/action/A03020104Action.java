@@ -23,6 +23,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r0302.form.F030201;
 import com.rakuten.util.JdbcConnection;
@@ -171,6 +172,13 @@ public class A03020104Action extends BaseAction {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			List<Map<String, String>> ouputList = new ArrayList<Map<String, String>>();
 			Map<String, String> output = null;
 			conn = JdbcConnection.getConnection();
@@ -199,7 +207,9 @@ public class A03020104Action extends BaseAction {
 			}
 
 			if (!Utility.isEmptyString(commodityId)) {
-				sql += " AND T1.COMMODITY_ID LIKE '" + commodityId + "%'";
+				sql += " AND T1.COMMODITY_ID in (select commodity_id from company_commodity_tbl where COMMODITY_ID LIKE '" + commodityId + "%' AND (COMPANY_ID = "+companyId+" OR "+ companyId + " = 0 OR "+ companyId + " = 1))";
+			} else {
+				sql += " AND T1.COMMODITY_ID in (select commodity_id from company_commodity_tbl where (COMPANY_ID = "+ companyId+ " OR " + companyId + " = 0 OR " + companyId +" = 1))";
 			}
 			if (!Utility.isEmptyString(categoryId)) {
 				sql += " AND T1.CATEGORY_ID = '" + categoryId + "'";

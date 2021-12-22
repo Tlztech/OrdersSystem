@@ -3,6 +3,8 @@ package com.rakuten.r0601.form;
 import java.io.Serializable;
 import java.util.List;
 
+import com.rakuten.r1801.form.F180101.Company;
+
 public class F060101 implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -16,6 +18,8 @@ public class F060101 implements Serializable {
 	private String resultCount;
 	private String passFlg = null;
 	List<WayBillInfo> wayBillList = null;
+	private static List<Company> companyList = null;
+	private int companyId;
 
 	/**
 	 * @return the deliverDay
@@ -145,4 +149,61 @@ public class F060101 implements Serializable {
 		this.passFlg = passFlg;
 	}
 
+	/**
+	 * @return the companyList
+	 */
+	public List<Company> getCompanyList() {
+		return companyList;
+	}
+
+	/**
+	 * @param companyList the companyList to set
+	 */
+	public void setCompanyList(List<Company> companyList) {
+		F060101.companyList = companyList;
+	}
+
+	/**
+	 * @return the companyId
+	 */
+	public int getCompanyId() {
+		return companyId;
+	}
+
+	/**
+	 * @param companyId the companyId to set
+	 */
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
+
+	public static class Company {
+		private int companyId;
+		private String companyName;
+		/**
+		 * @return the companyId
+		 */
+		public int getCompanyId() {
+			return companyId;
+		}
+		/**
+		 * @param companyId the companyId to set
+		 */
+		public void setCompanyId(int companyId) {
+			this.companyId = companyId;
+		}
+		/**
+		 * @return the companyName
+		 */
+		public String getCompanyName() {
+			return companyName;
+		}
+		/**
+		 * @param companyName the companyName to set
+		 */
+		public void setCompanyName(String companyName) {
+			this.companyName = companyName;
+		}
+		
+	}
 }

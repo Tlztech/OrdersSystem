@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r1601.form.F160101;
 import com.rakuten.util.JdbcConnection;
@@ -29,76 +30,92 @@ public class A16010111Action extends BaseAction {
 		StringBuilder conditionWithDetailNo = new StringBuilder();
 		StringBuilder commdityId = new StringBuilder();
 		Map<String, String> commdityIdMap = new HashMap<String, String>();
-		try {
-			
-			for(String[] itemNo : itemNoList){
-				if (itemNo[0].indexOf("-") == -1) {
-					condition.append("'").append(itemNo[0]).append("'").append(",");
-					commdityId.append("'").append(itemNo[0]).append("'").append(",");
-					commdityIdMap.put(itemNo[0], itemNo[0]);
-				} else {
-					commdityId.append("'").append(itemNo[0].substring(0, itemNo[0].indexOf("-"))).append("'").append(",");
-					conditionWithDetailNo.append("'").append(itemNo[0]).append("'").append(",");
-					commdityIdMap.put(itemNo[0].substring(0, itemNo[0].indexOf("-")), itemNo[0].substring(0, itemNo[0].indexOf("-")));
+		Map<String, Object> map = ActionContext.getContext().getSession();
+		int companyId;
+		if (null == map.get("comp")) {
+			companyId = -1;
+		} else {
+			companyId = (int) map.get("comp");
+		}
+		if (companyId == 0 || companyId == 1) {
+			try {
+
+				for (String[] itemNo : itemNoList) {
+					if (itemNo[0].indexOf("-") == -1) {
+						condition.append("'").append(itemNo[0]).append("'").append(",");
+						commdityId.append("'").append(itemNo[0]).append("'").append(",");
+						commdityIdMap.put(itemNo[0], itemNo[0]);
+					} else {
+						commdityId.append("'").append(itemNo[0].substring(0, itemNo[0].indexOf("-"))).append("'")
+								.append(",");
+						conditionWithDetailNo.append("'").append(itemNo[0]).append("'").append(",");
+						commdityIdMap.put(itemNo[0].substring(0, itemNo[0].indexOf("-")),
+								itemNo[0].substring(0, itemNo[0].indexOf("-")));
+					}
 				}
-            }
-			
-			conn = JdbcConnection.getConnection();
-			int count = 0;
-			if (condition.length() > 0) {
-				condition.setLength(condition.length() - 1);
-				sql = "delete from tbl00012 where COMMODITY_ID IN (" + condition + ")";
-				ps = conn.prepareStatement(sql);
-				count = ps.executeUpdate();
-				ps.close();
-			}
-			if (conditionWithDetailNo.length() > 0) {
-				conditionWithDetailNo.setLength(conditionWithDetailNo.length() - 1);
-				sql = "delete from tbl00012 WHERE concat(commodity_id,detail_no) IN (" + conditionWithDetailNo + ")";
-				ps = conn.prepareStatement(sql);
-				count+=ps.executeUpdate();
-				ps.close();
-			}
-			conn.commit();
-			
-			if (count > 0) {
-				if (commdityId.length() > 0) {
-					commdityId.setLength(commdityId.length() - 1);
-					sql = "SELECT count(*) COUNT, COMMODITY_ID from tbl00012 where COMMODITY_ID IN (" + commdityId + ") group by COMMODITY_ID";
+
+				conn = JdbcConnection.getConnection();
+				int count = 0;
+				if (condition.length() > 0) {
+					condition.setLength(condition.length() - 1);
+					sql = "delete from tbl00012 where COMMODITY_ID IN (" + condition + ")";
 					ps = conn.prepareStatement(sql);
-					rs = ps.executeQuery();
-					while (rs.next()) {
-						if(rs.getInt("COUNT") > 0) {
-							commdityIdMap.remove(rs.getString("COMMODITY_ID"));
+					count = ps.executeUpdate();
+					ps.close();
+				}
+				if (conditionWithDetailNo.length() > 0) {
+					conditionWithDetailNo.setLength(conditionWithDetailNo.length() - 1);
+					sql = "delete from tbl00012 WHERE concat(commodity_id,detail_no) IN (" + conditionWithDetailNo
+							+ ")";
+					ps = conn.prepareStatement(sql);
+					count += ps.executeUpdate();
+					ps.close();
+				}
+				conn.commit();
+
+				if (count > 0) {
+					if (commdityId.length() > 0) {
+						commdityId.setLength(commdityId.length() - 1);
+						sql = "SELECT count(*) COUNT, COMMODITY_ID from tbl00012 where COMMODITY_ID IN (" + commdityId
+								+ ") group by COMMODITY_ID";
+						ps = conn.prepareStatement(sql);
+						rs = ps.executeQuery();
+						while (rs.next()) {
+							if (rs.getInt("COUNT") > 0) {
+								commdityIdMap.remove(rs.getString("COMMODITY_ID"));
+							}
+						}
+						rs.close();
+						ps.close();
+						commdityId = new StringBuilder();
+						for (String cId : commdityIdMap.keySet()) {
+							commdityId.append("'").append(cId).append("'").append(",");
+						}
+
+						if (commdityId.length() == 0) {
+
+						} else {
+							commdityId.setLength(commdityId.length() - 1);
+							sql = "delete from tbl00011 where COMMODITY_ID IN (" + commdityId + ")";
+							ps = conn.prepareStatement(sql);
+							ps.executeUpdate();
+							sql = "delete from company_commodity_tbl where COMMODITY_ID IN (" + commdityId + ")";
+							ps = conn.prepareStatement(sql);
+							ps.executeUpdate();
+							ps.close();
+							conn.commit();
 						}
 					}
-					rs.close();
-					ps.close();
-					commdityId = new StringBuilder();
-					for(String cId : commdityIdMap.keySet()) {
-						commdityId.append("'").append(cId).append("'").append(",");
-					}
-					
-					if(commdityId.length() == 0) {
-						
-					} else {
-						commdityId.setLength(commdityId.length() - 1);
-						sql = "delete from tbl00011 where COMMODITY_ID IN (" + commdityId + ")";
-						ps = conn.prepareStatement(sql);
-						ps.executeUpdate();
-						ps.close();
-						conn.commit();
-					}
 				}
-			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			conn.rollback();
-			throw e;
-		} finally {
-			conn.close();
-			addError(null, "操作終わった");
+			} catch (Exception e) {
+				e.printStackTrace();
+				conn.rollback();
+				throw e;
+			} finally {
+				conn.close();
+				addError(null, "操作終わった");
+			}
 		}
 	}
 

@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r1801.form.F180101;
+import com.rakuten.r1801.form.F180101.Company;
 import com.rakuten.util.JdbcConnection;
 
 public class A18010101Action extends BaseAction {
@@ -46,7 +47,19 @@ public class A18010101Action extends BaseAction {
 			}
 			
 			f180101.setShopList(shopList);
-				
+			
+			sql = "SELECT company_id, company_name FROM rakuten.tbl00001 where company_id <> 0 group by company_id";
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			List<Company> companyList = new ArrayList<Company>();
+			while (rs.next()) {
+				Company comp = new Company();
+				comp.setCompanyId(rs.getInt("company_id"));
+				comp.setCompanyName(rs.getString("company_name"));
+				companyList.add(comp);
+			}
+			f180101.setCompanyList(companyList);
+			
 			} catch (Exception e) {
 				e.printStackTrace();
 				conn.rollback();

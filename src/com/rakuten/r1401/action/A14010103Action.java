@@ -7,12 +7,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.tomcat.util.buf.StringUtils;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.util.JdbcConnection;
 import com.rakuten.util.Utility;
@@ -27,8 +30,16 @@ public class A14010103Action extends BaseAction {
 		PreparedStatement ps = null;
 		String sql = null;
 		ResultSet rs = null;
+		List<String> errOrderIdList = new ArrayList<>();
 
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
 			List<String[]> haneiList = new ArrayList<String[]>();
 			HSSFRow row = null;
@@ -70,7 +81,7 @@ public class A14010103Action extends BaseAction {
 				}
 			}
 
-			sql = "UPDATE common_order_tbl SET biko = ?  WHERE chumonbango = ?";
+			sql = "UPDATE common_order_tbl SET biko = ?  WHERE CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
 			String sql2 = "select count(*) COUNT from tbl00027 where chumonbango = ?";
 			String sql3 = "update tbl00027 set hasoyakusokubi = ?,update_time = ?,update_user = ? where chumonbango = ? ";
@@ -85,8 +96,15 @@ public class A14010103Action extends BaseAction {
 				System.out.println(data[0]);
 				ps.setString(1, data[2]);
 				ps.setString(2, data[0]);
+				ps.setInt(3, companyId);
+				ps.setInt(4, companyId);
+				ps.setInt(5, companyId);
 
-				ps.executeUpdate();
+				int updateCnt = ps.executeUpdate();
+				if (0 == updateCnt) {
+					errOrderIdList.add(data[0]);
+					continue;
+				}
 				int count = 0;
 
 				ps2.setString(1, data[0]);
@@ -117,7 +135,11 @@ public class A14010103Action extends BaseAction {
 
 			// commit
 			conn.commit();
-			addError(null, "success");
+			if (errOrderIdList.isEmpty()) {
+				addError(null, "success");
+			} else {
+				addError(null, "error order list:" + StringUtils.join(errOrderIdList));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			conn.rollback();

@@ -3,10 +3,12 @@ package com.rakuten.common.action;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.struts2.interceptor.SessionAware;
+
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-public abstract class BaseAction extends ActionSupport {
+public abstract class BaseAction extends ActionSupport implements SessionAware {
 	private static final long serialVersionUID = 1L;
 	private String scrollx = null;
 	private String scrolly = null;
@@ -15,6 +17,9 @@ public abstract class BaseAction extends ActionSupport {
 	private String page = "0";
 	private String nowPage = "0";
 	private String allPage = "0";
+	
+	private Map<String, Object> session;
+	
 	/**
 	 * �������
 	 */
@@ -38,6 +43,9 @@ public abstract class BaseAction extends ActionSupport {
 	 * @throws Exception
 	 */
 	public String execute() throws Exception {
+		if(null == session.get("comp") || (int)session.get("comp") < 0) {
+			return LOGIN;
+		}
 		// ����ǰ����ID
 		setPreViewId();
 		// ���ڻ�����
@@ -314,4 +322,9 @@ public abstract class BaseAction extends ActionSupport {
 		this.allPage = allPage;
 	}
 
+	@Override
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
+	}
+	
 }

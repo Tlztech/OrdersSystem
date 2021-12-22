@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.r1505.form.F150501;
 import com.rakuten.r1505.form.MeisaiList;
 import com.rakuten.util.JdbcConnection;
@@ -19,19 +21,32 @@ public class A150501Common {
 		String sql = null;
 		ResultSet rs = null;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
 			sql = "select distinct t1.juchubango,t1.shouhinbango,t3.tanka*? seikyutanka,t1.hassoukosu "
 					+ "from hassou_tbl t1 left join common_order_detail_tbl t3 "
 					+ "on t1.JUCHUBANGO = t3.JUCHUBANGO and t1.SHOUHINBANGO = t3.SHOUHINBANGO "
-					+ "where  t1.CREATE_TIME between ? and  ? and t1.juchubango like ? and t1.SHUBETSU = '0' order by t1.juchubango";
+					+ "where  t1.CREATE_TIME between ? and  ? and t1.juchubango in (select order_id from company_order_tbl where order_id like ? AND (COMPANY_ID = ? OR ? = 0 OR ? = 1)) and t1.SHUBETSU = '0' order by t1.juchubango";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, f150501.getJishu());
 			ps.setString(2, f150501.getStartDay() + " 00:00:00");
 			ps.setString(3, f150501.getEndDay() + " 23:00:00");
 			if ("トレンド最前線".equals(f150501.getHiseikyusha())) {
 				ps.setString(4, "306%");
+				ps.setInt(5, companyId);
+				ps.setInt(6, companyId);
+				ps.setInt(7, companyId);
 			} else if ("勝意有限会社".equals(f150501.getHiseikyusha())) {
 				ps.setString(4, "308%");
+				ps.setInt(5, companyId);
+				ps.setInt(6, companyId);
+				ps.setInt(7, companyId);
 			}
 			rs = ps.executeQuery();
 			List<MeisaiList> meisaiList = new ArrayList<MeisaiList>();
@@ -62,17 +77,23 @@ public class A150501Common {
 			f150501.setMeisaiList(meisaiList);
 
 			sql = "SELECT distinct t2.chumonbango,t1.HAISOHOHO FROM hassou_tbl t1 left join common_order_tbl t2 on t1.JUCHUBANGO = t2.CHUMONBANGO"
-					+ " where juchubango like ? and shubetsu = '0' "
+					+ " where juchubango in (select order_id from company_order_tbl where order_id like ? AND (COMPANY_ID = ? OR ? = 0 OR ? = 1)) and shubetsu = '0' "
 					+ "and t1.CREATE_TIME between ? and  ? and t1.haisohoho = ?";
 			ps = conn.prepareStatement(sql);
 			if ("トレンド最前線".equals(f150501.getHiseikyusha())) {
 				ps.setString(1, "306%");
+				ps.setInt(2, companyId);
+				ps.setInt(3, companyId);
+				ps.setInt(4, companyId);
 			} else if ("勝意有限会社".equals(f150501.getHiseikyusha())) {
 				ps.setString(1, "308%");
+				ps.setInt(2, companyId);
+				ps.setInt(3, companyId);
+				ps.setInt(4, companyId);
 			}
-			ps.setString(2, f150501.getStartDay() + " 00:00:00");
-			ps.setString(3, f150501.getEndDay() + " 23:00:00");
-			ps.setString(4, "1");
+			ps.setString(3, f150501.getStartDay() + " 00:00:00");
+			ps.setString(4, f150501.getEndDay() + " 23:00:00");
+			ps.setString(5, "1");
 			rs = ps.executeQuery();
 			Long i = 0L;
 			while (rs.next()) {
@@ -94,15 +115,21 @@ public class A150501Common {
 			if (f150501.isDaibikiChk()) {
 				sql = "SELECT distinct t2.chumonbango,t2.GOKEISHOHIN,t2.GOKEISOURYOU FROM hassou_tbl t1 left join common_order_tbl t2 "
 						+ "on t1.JUCHUBANGO = t2.CHUMONBANGO "
-						+ "where juchubango like ? and shubetsu = '0' and t1.CREATE_TIME between ? and ? and t2.OSHIHARAISTS like '代金%'";
+						+ "where juchubango in (select order_id from company_order_tbl where order_id like ? AND (COMPANY_ID = ? OR ? = 0 OR ? = 1)) and shubetsu = '0' and t1.CREATE_TIME between ? and ? and t2.OSHIHARAISTS like '代金%'";
 				ps = conn.prepareStatement(sql);
 				if ("トレンド最前線".equals(f150501.getHiseikyusha())) {
 					ps.setString(1, "306%");
+					ps.setInt(2, companyId);
+					ps.setInt(3, companyId);
+					ps.setInt(4, companyId);
 				} else if ("勝意有限会社".equals(f150501.getHiseikyusha())) {
 					ps.setString(1, "308%");
+					ps.setInt(2, companyId);
+					ps.setInt(3, companyId);
+					ps.setInt(4, companyId);
 				}
-				ps.setString(2, f150501.getStartDay() + " 00:00:00");
-				ps.setString(3, f150501.getEndDay() + " 23:00:00");
+				ps.setString(3, f150501.getStartDay() + " 00:00:00");
+				ps.setString(4, f150501.getEndDay() + " 23:00:00");
 				rs = ps.executeQuery();
 				Long kingaku = 0l;
 				f150501.setDaibikikosu("1");

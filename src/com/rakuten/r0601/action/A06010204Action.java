@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r0601.ap.CheckCommodityAp;
 import com.rakuten.r0601.ap.GetCommodityPicUrlAp;
@@ -141,6 +143,13 @@ public class A06010204Action extends BaseAction {
 	protected void isValidated() throws Exception {
 		
 		List<String[]> csvList = Utility.readCsvFile(filepath,false);
+		Map<String,Object> map =  ActionContext.getContext().getSession();
+		int companyId;
+		if (null == map.get("comp")) {
+			companyId = -1;
+		} else {
+			companyId = (int)map.get("comp");
+		}
 		
 		for (String[] record : csvList) {
 			String commodityId = record[0];
@@ -157,8 +166,14 @@ public class A06010204Action extends BaseAction {
 				detailNo = "-0-0";
 			}
 			CheckCommodityAp checkCommodityAp = new CheckCommodityAp();
-			if (!checkCommodityAp.execute(commId, detailNo)) {
-				addError(null, "商品编号" + commodityId + "不存在！");
+			if (companyId == 0 || companyId == 1) {
+				if (!checkCommodityAp.execute(commId, detailNo)) {
+					addError(null, "商品编号" + commodityId + "不存在！");
+				}
+			} else {
+				if (!checkCommodityAp.execute(commId, detailNo, companyId)) {
+					addError(null, "商品编号" + commodityId + "不存在！");
+				}
 			}
 
 			commodityIdList.add(commodityId);

@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedOutputStream;
 import java.util.zip.ZipEntry;
@@ -33,6 +34,7 @@ import org.apache.poi.hssf.util.CellRangeAddress;
 import org.apache.poi.hssf.util.CellRangeAddressList;
 import org.apache.poi.hssf.util.HSSFColor;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.common.action.OrderCommon;
 import com.rakuten.common.bean.CommonOrderBean;
@@ -105,7 +107,7 @@ public class A10010105Action extends BaseAction {
 			List<DetailListBean> detailList = null;
 			OrderBean Order = null;
 			conn = JdbcConnection.getConnection();
-			String sql = "SELECT * FROM common_order_tbl T1 LEFT JOIN common_order_detail_tbl T2 ON T1.CHUMONBANGO = T2.JUCHUBANGO WHERE T1.CHUMONBANGO = ? ";
+			String sql = "SELECT * FROM common_order_tbl T1 LEFT JOIN common_order_detail_tbl T2 ON T1.CHUMONBANGO = T2.JUCHUBANGO WHERE T1.CHUMONBANGO = ?";
 			for (String juchubango : hasomachihasokaList) {
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, juchubango);

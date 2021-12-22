@@ -56,8 +56,13 @@ function popupDiv2() {
     var div_obj = $("#pop-div2");    
     //添加并显示遮罩层   
     div_obj.show("slow");  
-}  
-  
+}
+function popupDiv3() {
+    var div_obj = $("#pop-div3");
+    //添加并显示遮罩层  
+    div_obj.show("slow");
+}
+
 function hideDiv() {   
   $("#mask").hide();   
   $("#pop-div").hide();   
@@ -67,8 +72,12 @@ function hideDiv2() {
 	  $("#mask").hide("slow");   
 	  $("#pop-div").hide("slow");   
 	  $("#pop-div2").hide("slow");  
-	} 
-
+} 
+function hideDiv3() {   
+	  $("#mask").hide("slow");
+	  $("#pop-div").hide("slow");  
+	  $("#pop-div3").hide("slow");
+} 
 
 </script>
 <style type="text/css">
@@ -152,9 +161,19 @@ function hideDiv2() {
 		Connection conn = null;
 	try {
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop where DELETE_FLG is null";
+		String sql = "SELECT distinct SITE FROM rakuten.shop where DELETE_FLG is null";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
+		Map<String, String> siteMap = new HashMap<String, String>();
+		siteMap.put("","--");
+		while (rs.next()) {
+			siteMap.put(rs.getString("SITE"), rs.getString("SITE"));
+		}
+		request.setAttribute("sitemap", siteMap);
+		
+		sql = "SELECT distinct SHOP_ID FROM rakuten.shop where DELETE_FLG is null";
+		ps = conn.prepareStatement(sql);
+		rs = ps.executeQuery();
 		Map<String, String> shopMap = new HashMap<String, String>();
 		shopMap.put("","--");
 		while (rs.next()) {
@@ -220,7 +239,7 @@ function hideDiv2() {
 		<table width="1100px">
             <tr>
                 <td>检索结果：<s:label name="f030201.resultCount" />件<s:hidden name="f030201.resultCount" /></td>
-                <td align="right"><input type="button" onclick="popupDiv2();" value="无销售记录库存查询"/>&nbsp;&nbsp;&nbsp;<input type="button" onclick="popupDiv();" value="CSV批量商品登陆更新"/>&nbsp;&nbsp;&nbsp;<input type="button" onclick="document.form1.shoriMode.value='1';actionSubmit('A03020104');" value="检索结果下载"/>&nbsp;&nbsp;&nbsp;<input type="button" disabled="disabled" onclick="document.form1.shoriMode.value='1';actionSubmit('A03020201');" value="添加商品"/></td>
+                <td align="right"><s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)"><input type="button" onclick="popupDiv2();" value="无销售记录库存查询"/>&nbsp;&nbsp;&nbsp;<input type="button" onclick="popupDiv();" value="CSV批量商品登陆更新"/>&nbsp;&nbsp;&nbsp;<input type="button" onclick="document.form1.shoriMode.value='1';actionSubmit('A03020104');" value="检索结果下载"/>&nbsp;&nbsp;&nbsp;</s:if><input type="button" onclick="popupDiv3();" value="一括添加商品"/></td>
             </tr>
         </table>
         <table width="1100px" class="table" cellspacing="1" cellpadding="1" align="left" border="0">
@@ -249,9 +268,11 @@ function hideDiv2() {
 				<td width="88px" class="td_bg" align="left">运输途中：<s:property value='stockHandup'/><s:hidden name="f030201.commodityList[%{#status.index}].stockHandup" value="%{stockHandup}"/></td>
 				<td width="88px" class="td_bg" align="left">进货途中：<s:property value='nyuka'/><s:hidden name="f030201.commodityList[%{#status.index}].nyuka" value="%{nyuka}"/></td>
 				<td class="td_bg" align="center">
+				<s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
 				    <input type="button" onclick="document.form1.rowIndex.value=${status.index};document.form1.shoriMode.value='2';actionSubmit('A03020201')" value="查看/修改"/>&nbsp;&nbsp;&nbsp;
 				 
 				    <input type="button" onclick="actionSubmit('A03020401?commodityId=<s:property value='commodityId'/>&shop=coverforefront')" value="cover详情页"/>&nbsp;&nbsp;&nbsp;
+				</s:if>
 				</td>
 			</tr>
 		    </s:iterator>
@@ -325,6 +346,30 @@ function hideDiv2() {
                 <tr height="50px">
                     <td><input type="button" onclick="actionSubmit('A03020107');" value="确认"></td>
                     <td><input type="button" onclick="hideDiv2();" value="关闭"></td>
+                </tr>
+            </table>
+            </div>
+        </div>
+        
+        <div id='pop-div3' style="left:400px;top:250px;width:400px;height:250px;position:absolute;display:none" class="pop-box">   
+            <div class="pop-box-body" >
+            <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
+            <table>
+                <tr height="50px">
+                    <td>平台：<s:select list="#request.sitemap" name="f030201.siteForGoods"/></td>
+                    <td>店舗：<s:select list="#request.shopmap" name="f030201.shopForGoods"/></td>
+                </tr>
+            </table>
+            </s:if>
+            <table>
+                <tr height="50px">
+                    <td>商品列表CSV文件：<s:file name="itemCsv"/></td>
+                </tr>
+            </table>
+            <table align="center">
+                <tr height="50px">
+                    <td><input type="button" onclick="actionSubmit('A03020108');" value="确认"></td>
+                    <td><input type="button" onclick="hideDiv3();" value="关闭"></td>
                 </tr>
             </table>
             </div>

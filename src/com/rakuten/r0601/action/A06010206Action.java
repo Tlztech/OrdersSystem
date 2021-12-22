@@ -3,7 +3,9 @@ package com.rakuten.r0601.action;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Map;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r0601.ap.CheckCommodityAp;
 import com.rakuten.util.JdbcConnection;
@@ -112,12 +114,24 @@ public class A06010206Action extends BaseAction {
 			commodityId = shouhinbango;
 			detailNo = "-0-0";
 		}
-		CheckCommodityAp checkCommodityAp = new CheckCommodityAp();
-		if (!checkCommodityAp.execute(commodityId, detailNo)) {
-			result = "false";
-			result += "&%&商品编号或条形码不存在！";
+		Map<String,Object> map =  ActionContext.getContext().getSession();
+		int companyId;
+		if (null == map.get("comp")) {
+			companyId = -1;
+		} else {
+			companyId = (int)map.get("comp");
 		}
-
+		CheckCommodityAp checkCommodityAp = new CheckCommodityAp();
+		if (companyId == 0 || companyId == 1) {
+			if (!checkCommodityAp.execute(commodityId, detailNo)) {
+				addError(null, "商品编号" + commodityId + "不存在！");
+			}
+		} else {
+			if (!checkCommodityAp.execute(commodityId, detailNo, companyId)) {
+				result = "false";
+				result += "&%&商品编号或条形码不存在！";
+			}
+		}
 	}
 
 	@Override

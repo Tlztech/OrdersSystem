@@ -530,9 +530,9 @@ public class RakutenToYahooNew {
 			// ship_weight
 			String weight = "";
 			if (name.contains("【送料無料】")) {
-				weight = "10000";
+//				weight = "10000";
 			} else if (name.contains("【メール便送料無料】")) {
-				weight = "1";
+//				weight = "1";
 			} else if (options.contains("メール便対応不可")) {
 				weight = "1001";
 			} else {

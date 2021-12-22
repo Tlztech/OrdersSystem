@@ -8,8 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r1001.bean.DenaDetailCsvBean;
 import com.rakuten.r1001.bean.RakutenCsvBean;
@@ -32,6 +34,13 @@ public class A10010109Action extends BaseAction {
 		PreparedStatement ps = null;
 		String sql = null;
 		ResultSet rs = null;
+		Map<String,Object> map =  ActionContext.getContext().getSession();
+		int companyId;
+		if (null == map.get("comp")) {
+			companyId = -1;
+		} else {
+			companyId = (int)map.get("comp");
+		}
 		conn = JdbcConnection.getConnection();
 		try {
 			for (String[] orderkeiData : orderkeiDataList) {
@@ -194,6 +203,14 @@ public class A10010109Action extends BaseAction {
 									+ Integer.valueOf(gokeidaibikiryou) - Integer.valueOf(seikyukingaku));
 					ps.setString(++j, sonota);
 					ps.executeUpdate();
+					
+					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
+					j = 0;
+					ps.setInt(++j, companyId == 0 ? 1 : companyId);
+					ps.setString(++j, Utility.strTrim(orderNo));
+					ps.setInt(++j, 3);
+					ps.executeUpdate();
+					
 					for (String[] shohinkeiData : shohinkeiDataList) {
 
 						if (shohinkeiData[2].equals(orderNo)) {

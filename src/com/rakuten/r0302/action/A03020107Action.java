@@ -24,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.common.bean.DetailListBean;
 import com.rakuten.common.bean.OrderBean;
@@ -78,12 +79,22 @@ public class A03020107Action extends BaseAction {
 		PreparedStatement ps = null;
 		try {
 
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			OrderBean order = null;
 			conn = JdbcConnection.getConnection();
-			String sql = "SELECT * FROM common_order_tbl T1 LEFT JOIN common_order_detail_tbl T2 ON T1.CHUMONBANGO = T2.JUCHUBANGO LEFT JOIN HENPIN_TBL T3 ON T1.CHUMONBANGO = T3.JUCHUBANGO LEFT JOIN TUIKA_HASOU_TBL T4 ON T1.CHUMONBANGO = T4.JUCHUBANGO WHERE CHUMONNICHIJI >= ? ";
+			String sql = "SELECT * FROM common_order_tbl T1 LEFT JOIN common_order_detail_tbl T2 ON T1.CHUMONBANGO = T2.JUCHUBANGO LEFT JOIN HENPIN_TBL T3 ON T1.CHUMONBANGO = T3.JUCHUBANGO LEFT JOIN TUIKA_HASOU_TBL T4 ON T1.CHUMONBANGO = T4.JUCHUBANGO WHERE CHUMONNICHIJI >= ? AND T1.CHUMONBANGO in (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, startDay + " 00:00:00");
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
+			ps.setInt(4, companyId);
 
 			ResultSet rs = ps.executeQuery();
 			String chumonbangoComp = "";
@@ -122,10 +133,17 @@ public class A03020107Action extends BaseAction {
 		PreparedStatement ps = null;
 
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			List<Map<String, String>> ouputList = new ArrayList<Map<String, String>>();
 			Map<String, String> output = null;
 			conn = JdbcConnection.getConnection();
-			String sql = "SELECT T2.CATEGORY_NAME, T1.CHINESE_NAME,T1.COMMODITY_ID, T1.JAPANESE_NAME,T3.DETAIL_NO,T3.COMM_DESCRIBE,T3.PRICE_IN,T3.RE_PRICE,T3.STOCK_SH,T3.STOCK_JP,T3.REMARKS FROM TBL00011 T1 LEFT JOIN TBL00010 T2 ON T1.CATEGORY_ID = T2.CATEGORY_ID LEFT JOIN TBL00012 T3 ON T1.COMMODITY_ID = T3.COMMODITY_ID WHERE T1.DEL_FLG = '0' AND T3.COMMODITY_ID = ? AND T3.DETAIL_NO = ?";
+			String sql = "SELECT T2.CATEGORY_NAME, T1.CHINESE_NAME,T1.COMMODITY_ID, T1.JAPANESE_NAME,T3.DETAIL_NO,T3.COMM_DESCRIBE,T3.PRICE_IN,T3.RE_PRICE,T3.STOCK_SH,T3.STOCK_JP,T3.REMARKS FROM TBL00011 T1 LEFT JOIN TBL00010 T2 ON T1.CATEGORY_ID = T2.CATEGORY_ID LEFT JOIN TBL00012 T3 ON T1.COMMODITY_ID = T3.COMMODITY_ID WHERE T1.DEL_FLG = '0' AND T3.COMMODITY_ID in (select commodity_id from company_commodity_tbl where commodity_id = ? AND (COMPANY_ID = ? OR ? = 0 OR ? = 1)) AND T3.DETAIL_NO = ?";
 			for (int i = 0; i < comparedList.size(); i++) {
 				String commodityId = Utility
 						.getCommodityId(comparedList.get(i));
@@ -133,7 +151,10 @@ public class A03020107Action extends BaseAction {
 
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, commodityId);
-				ps.setString(2, detailNo);
+				ps.setInt(2, companyId);
+				ps.setInt(3, companyId);
+				ps.setInt(4, companyId);
+				ps.setString(5, detailNo);
 
 				ResultSet rs = ps.executeQuery();
 
@@ -308,9 +329,19 @@ public class A03020107Action extends BaseAction {
 		PreparedStatement ps = null;
 		List<String[]> stockList = new ArrayList<String[]>();
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
-			String sql = "SELECT * FROM TBL00012 WHERE STOCK_JP > 0";
+			String sql = "SELECT * FROM TBL00012 WHERE STOCK_JP > 0 AND commodity_id in (select commodity_id from company_commodity_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				String commodityId = rs.getString("COMMODITY_ID");

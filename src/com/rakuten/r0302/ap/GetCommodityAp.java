@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.r0302.bean.GetCommodityApInput;
 import com.rakuten.r0302.bean.GetCommodityApOutput;
 import com.rakuten.util.JdbcConnection;
@@ -19,10 +21,22 @@ public class GetCommodityAp {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			List<GetCommodityApOutput> outputList = new ArrayList<GetCommodityApOutput>();
 			GetCommodityApOutput output = null;
 			conn = JdbcConnection.getConnection();
-			String sql = SqlUtility.getSql("SQLR0001013");
+			String sql = "SELECT T2.CATEGORY_NAME, T1.CHINESE_NAME,T1.COMMODITY_ID, " + 
+					"              T1.JAPANESE_NAME, T1.PIC_URL, SUM(T3.STOCK_SH) STOCK_SH, " + 
+					"              SUM(T3.STOCK_JP) STOCK_JP , SUM(T3.STOCK_HANDUP) STOCK_HANDUP " + 
+					"              FROM TBL00011 T1 LEFT JOIN TBL00010 T2 ON T1.CATEGORY_ID = " + 
+					"              T2.CATEGORY_ID LEFT JOIN TBL00012 T3 ON T1.COMMODITY_ID = " + 
+					"              T3.COMMODITY_ID WHERE T1.DEL_FLG = '0'";
 
 			String commodityId = input.getCommodityId();
 			String categoryId = input.getCategoryId();
@@ -46,7 +60,9 @@ public class GetCommodityAp {
 			}
 
 			if (!Utility.isEmptyString(commodityId)) {
-				sql += " AND T1.COMMODITY_ID LIKE '" + commodityId + "%'";
+				sql += " AND T1.COMMODITY_ID IN (select commodity_id from company_commodity_tbl where commodity_id like '"+ commodityId + "%' AND (COMPANY_ID = "+companyId+" OR "+companyId+" = 0 OR "+companyId+" = 1))";
+			} else {
+				sql += " AND T1.COMMODITY_ID IN (select commodity_id from company_commodity_tbl where (COMPANY_ID = "+companyId+" OR "+companyId+" = 0 OR "+companyId+" = 1))";
 			}
 			if (!Utility.isEmptyString(categoryId)) {
 				sql += " AND T1.CATEGORY_ID = '" + categoryId + "'";

@@ -188,7 +188,11 @@ function hideDiv() {
 		<table width="680px" align="center">
 		    <tr>
 		    <td align="left"><input type="button" value="返回" onclick="window.close()"></td>
-		    <td align="right"><input type="button" id="confirmBtn" value="签收" onclick="popupDiv();actionSubmit('A06010106')"></td>
+		    <td align="right">
+		    <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
+		    <input type="button" id="confirmBtn" value="签收" onclick="popupDiv();actionSubmit('A06010106')">
+		    </s:if>
+		    </td>
 		    </tr>
 		</table>
 		</div>

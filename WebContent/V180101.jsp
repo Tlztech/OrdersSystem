@@ -43,7 +43,13 @@ function init() {
    //                                 + i + "].picUrl")[0].value;
    //     }
    // }
-    hideDiv();
+//    var company = document.getElementsByName("f180101.companyId");
+//    if (company) {
+// 	   for ( var i = 0; i < imgs.length; i++) {
+//    			document.getElementsByName("f180101.companyId").options[i]
+// 	   }
+//    }
+   hideDiv();
 }
 function popupDiv() {   
     var div_obj = $("#pop-div");    
@@ -157,6 +163,15 @@ function hideDiv2() {
         <s:actionerror name="err" cssStyle="color:red;font-size:13"/>
 		<table cellspacing="1" cellpadding="2" width="90%" border="0" >
             <tr class="bg_tr">
+            	<td class="td_bg" width="80px">公司：</td>
+                <td class="td_bg">
+                    <select id="f180101.CompanyIdSelect" name="f180101.CompanyIdSelect">
+                    	<option value="0">请选择</option>
+                        <c:forEach items="${f180101.companyList}" var="company" >  
+                              <option value="${company.companyId}"> ${company.companyName} </option>
+                        </c:forEach>  
+                    </select> 
+                </td>
                 <td class="td_bg" width="80px">平台：</td>
                 <td class="td_bg">
                     <select id="f180101.PlatformSelect" name="f180101.PlatformSelect">
@@ -186,6 +201,23 @@ function hideDiv2() {
         <div id="div1">
         <h3>店铺</h3>
 		<table cellspacing="1" cellpadding="2" width="90%" border="0">
+			<tr class="bg_tr">
+				<td class="td_bg" width="80px">公司：</td>
+                <td class="td_bg">
+                    <select id="f180101.companyId" name="f180101.companyId">
+                    	<option value="0">请选择</option>
+                        <c:forEach items="${f180101.companyList}" var="company" >
+                        	<c:if test="${company.companyId==f180101.companyId}">
+                              <option value="${company.companyId}" selected="selected"> ${company.companyName} </option>
+                            </c:if>
+                            <c:if test="${company.companyId!=f180101.companyId}">
+                            	<option value="${company.companyId}"> ${company.companyName} </option>
+                            </c:if>
+                        </c:forEach>  
+                    </select>
+                </td>
+                <td height="30" colspan="2"><s:fielderror fieldName="error"/></td>
+			</tr>
             <tr class="bg_tr">
                 <td class="td_bg" width="80px">平台：</td>
                 <td class="td_bg">

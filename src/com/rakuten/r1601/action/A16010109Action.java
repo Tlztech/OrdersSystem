@@ -13,12 +13,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r0601.ap.CheckCommodityAp;
 import com.rakuten.r0601.ap.GetCommodityPicUrlAp;
@@ -46,18 +48,42 @@ public class A16010109Action extends BaseAction {
                 }
             }
 			
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
+			
 			conn = JdbcConnection.getConnection();
-			sql = "delete from tbl00027 where chumonbango in (" + condition + ")";
+			sql = "delete from tbl00027 where chumonbango in (select order_id from company_order_tbl where order_id in (" + condition + ") AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			int count1 = ps.executeUpdate();
 
-			sql = "delete from common_order_tbl where chumonbango in (" + condition + ")";
+			sql = "delete from common_order_tbl where chumonbango in (select order_id from company_order_tbl where order_id in (" + condition + ") AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			int count2 = ps.executeUpdate();
 
-			sql = "delete from common_order_detail_tbl where juchubango in (" + condition + ")";
+			sql = "delete from common_order_detail_tbl where juchubango in (select order_id from company_order_tbl where order_id in (" + condition + ") AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			int count3 = ps.executeUpdate();
+			
+			sql = "delete from company_order_tbl where order_id in (" + condition + ") AND (COMPANY_ID = ? OR ? = 0 OR ? = 1) ";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
+			ps.executeUpdate();
 
 			if (count1 > 0  && count2 > 0 && count3 > 0) {
 				addError(null, "操作成功");

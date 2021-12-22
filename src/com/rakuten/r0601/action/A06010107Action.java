@@ -86,15 +86,15 @@ public class A06010107Action extends BaseAction {
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, commodityId);
 				rs = ps.executeQuery();
-				String comm = "";
+				String commId = "";
 				while (rs.next()) {
-					comm = rs.getString("COMMODITY_ID");
+					commId = rs.getString("COMMODITY_ID");
 				}
-				if (Utility.isEmptyString(comm)) {
+				if (Utility.isEmptyString(commId)) {
 					addError("f060102.commodityIdInput", "商品编号或条形码不存在！");
 					return;
 				} else {
-					barcode = comm;
+					barcode = commId;
 					if (barcode.indexOf("-") > 0) {
 						commodityId = barcode
 								.substring(0, barcode.indexOf("-"));

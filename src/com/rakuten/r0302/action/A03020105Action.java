@@ -8,7 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.common.bean.ShohinBean;
 import com.rakuten.common.bean.ShohinInfoBean;
@@ -230,6 +232,13 @@ public class A03020105Action extends BaseAction {
 		String sql = null;
 		String date = format.format(new Date());
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
 			for (ShohinBean shohinBean : insertList) {
 				ShohinInfoBean shohinInfoBean = shohinBean.getShohinInfoBean();
@@ -292,6 +301,12 @@ public class A03020105Action extends BaseAction {
 				ps.setString(14, "kyo");
 				ps.setString(15, "00");
 				ps.execute();
+				
+				sql = "INSERT INTO `rakuten`.`company_commodity_tbl` (`company_id`,`commodity_id`,`permission`) VALUES (?,?,?);";
+				ps.setInt(1, companyId == 0 ? 1 : companyId);
+				ps.setString(2, shohinInfoBean.getShouhinkanribango());
+				ps.setInt(3, 3);
+				ps.executeUpdate();
 
 				sql = SqlUtility.getSql("SQLR0001012");
 				if (!Utility.isEmptyList(commodityDetailList)) {

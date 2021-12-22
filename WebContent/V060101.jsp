@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -26,6 +27,7 @@ function openBaoguanWin() {
     //}
 }
 function init(){
+	var companyId = "<%=session.getAttribute("comp")%>";
     var imgs = document.getElementsByName("button1");
     listLength = imgs.length;
     for(var i=0;i<listLength;i++){
@@ -33,8 +35,11 @@ function init(){
     		document.getElementsByName("button1")[i].value="查看";
     		document.getElementsByName("button1")[i].disabled = false;
     	}
-    	if(document.getElementsByName("f060101.wayBillList["+i+"].status")[0].value == "未签收"){
-            document.getElementsByName("button1")[i].disabled = false;
+    	
+   		if(document.getElementsByName("f060101.wayBillList["+i+"].status")[0].value == "未签收"){
+   			if(companyId == 0 || companyId == 1) {
+   			document.getElementsByName("button1")[i].disabled = false;
+   			}
             document.getElementsByName("button5")[i].disabled = false;
         }
     	if(document.getElementsByName("f060101.wayBillList["+i+"].status")[0].value == "一时保存"){
@@ -139,6 +144,22 @@ function updateCustoms(value) {
                 <td class="td_bg" width="280px">
                     <s:select list="#{ '01':'ZCE', '02':'EMS', '03':'其他','04':'全部'}"   name="f060101.logistics"/>
                 </td>
+                <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
+                <td class="td_bg" width="80px">发货公司：</td>
+                <td class="td_bg">
+                    <select id="f060101.companyId" name="f060101.companyId">
+                    	<option value="0">请选择</option>
+                        <c:forEach items="${f060101.companyList}" var="company" >
+                        	<c:if test="${company.companyId==f060101.companyId}">
+                              <option value="${company.companyId}" selected="selected"> ${company.companyName} </option>
+                            </c:if>
+                            <c:if test="${company.companyId!=f060101.companyId}">
+                            	<option value="${company.companyId}"> ${company.companyName} </option>
+                            </c:if>
+                        </c:forEach>  
+                    </select>
+                </td>
+                </s:if>
                 <td class="td_bg" width="80px">&nbsp;</td>
                 <td class="td_bg">
                    &nbsp;

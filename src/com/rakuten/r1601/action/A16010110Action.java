@@ -3,7 +3,9 @@ package com.rakuten.r1601.action;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Map;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r1601.form.F160101;
 import com.rakuten.util.JdbcConnection;
@@ -19,50 +21,63 @@ public class A16010110Action extends BaseAction {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sql = null;
-		String commdityId =null;
+		String commdityId = null;
 		boolean flg = false;
-		try {
-			if(itemno.indexOf("-") == -1) {
-				sql = "delete from tbl00012 where COMMODITY_ID = ?";
-				commdityId = itemno;
-			} else {
-				commdityId = itemno.substring(0, itemno.indexOf("-"));
-				sql = "delete from tbl00012 WHERE concat(commodity_id,detail_no) = ?";
-			}
-			conn = JdbcConnection.getConnection();
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, itemno);
-			int count = ps.executeUpdate();
-			ps.close();
-			conn.commit();
-			if (count > 0) {
-				sql = "SELECT count(*) COUNT from tbl00012 where COMMODITY_ID = ?";
-				ps = conn.prepareStatement(sql);
-				ps.setString(1, commdityId);
-				rs = ps.executeQuery();
-				while (rs.next()) {
-					if (rs.getInt("COUNT") == 0) {
-						flg = true;
-					}
+		Map<String, Object> map = ActionContext.getContext().getSession();
+		int companyId;
+		if (null == map.get("comp")) {
+			companyId = -1;
+		} else {
+			companyId = (int) map.get("comp");
+		}
+		if (companyId == 0 || companyId == 1) {
+			try {
+				if (itemno.indexOf("-") == -1) {
+					sql = "delete from tbl00012 where COMMODITY_ID = ?";
+					commdityId = itemno;
+				} else {
+					commdityId = itemno.substring(0, itemno.indexOf("-"));
+					sql = "delete from tbl00012 WHERE concat(commodity_id,detail_no) = ?";
 				}
-				rs.close();
+				conn = JdbcConnection.getConnection();
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, itemno);
+				int count = ps.executeUpdate();
 				ps.close();
-				if (flg) {
-					sql = "delete from tbl00011 where COMMODITY_ID = ?";
+				conn.commit();
+				if (count > 0) {
+					sql = "SELECT count(*) COUNT from tbl00012 where COMMODITY_ID = ?";
 					ps = conn.prepareStatement(sql);
 					ps.setString(1, commdityId);
-					ps.executeUpdate();
+					rs = ps.executeQuery();
+					while (rs.next()) {
+						if (rs.getInt("COUNT") == 0) {
+							flg = true;
+						}
+					}
+					rs.close();
 					ps.close();
-					conn.commit();
+					if (flg) {
+						sql = "delete from tbl00011 where COMMODITY_ID = ?";
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, commdityId);
+						ps.executeUpdate();
+						sql = "delete from company_commodity_tbl where COMMODITY_ID = ?";
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, commdityId);
+						ps.executeUpdate();
+						ps.close();
+						conn.commit();
+					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				conn.rollback();
+				throw e;
+			} finally {
+				conn.close();
+				addError(null, "操作終わった");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			conn.rollback();
-			throw e;
-		} finally {
-			conn.close();
-			addError(null, "操作終わった");
 		}
 	}
 

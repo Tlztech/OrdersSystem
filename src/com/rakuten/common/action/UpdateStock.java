@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.rpc.ServiceException;
 
@@ -17,6 +18,7 @@ import jp.co.rakuten.rms.inventoryapi.rms.mall.inventoryapi.InventoryapiPort;
 import shohinmodel.common.Shohincommon;
 import batch.bean.StockBean;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.bean.OrderInfoBean;
 import com.rakuten.common.bean.ShouhinStsBean;
 import com.rakuten.util.JdbcConnection;
@@ -312,12 +314,22 @@ public class UpdateStock {
 		List<String[]> unsochuArr = new ArrayList<String[]>();
 		StockBean stockbean = null;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
-			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ?";
+			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ? AND t1.commodity_id in (select commodity_id from company_commodity_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, site);
 			ps.setString(2, shop);
+			ps.setInt(3, companyId);
+			ps.setInt(4, companyId);
+			ps.setInt(5, companyId);
 
 			rs = ps.executeQuery();
 			while (rs.next()) {

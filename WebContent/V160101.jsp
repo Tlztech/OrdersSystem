@@ -104,14 +104,14 @@ function init(){
 		<div id="div2">
 		<s:actionerror name="err" cssStyle="color:red;font-size:13"/>
 		<table>
-		    <tr>
+		    <!--tr>
 		        <td>
 		        货号：<s:textfield style="width:100px;height:22px" name="f160101.shohinbango"/>
 		        <s:select list="#{'楽天':'楽天','Yahoo':'Yahoo'}" style="width:120px;height:30px" name="f160101.site"/>
 		        <s:select list="#request.shopmap" style="width:120px;height:30px" name="f160101.shop"/>
 		        <input type="button" style="width:100px;height:30px" value="同步库存" onclick="actionSubmit('A16010102')">
 		        </td>
-		    </tr>
+		    </tr>-->
 		    <tr>
 		        <td>
 		        订单编号：<s:textfield style="width:170px;height:22px" name="f160101.chumonbango"/>

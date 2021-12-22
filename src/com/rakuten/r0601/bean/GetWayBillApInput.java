@@ -12,6 +12,7 @@ public class GetWayBillApInput implements Serializable {
 	private String delieverDay;
 	private String receiveDay;
 	private String customs;
+	private int companyId;
 
 	/**
 	 * @return the waybillNo
@@ -101,6 +102,20 @@ public class GetWayBillApInput implements Serializable {
 	 */
 	public void setCustoms(String customs) {
 		this.customs = customs;
+	}
+
+	/**
+	 * @return the companyId
+	 */
+	public int getCompanyId() {
+		return companyId;
+	}
+
+	/**
+	 * @param companyId the companyId to set
+	 */
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
 	}
 
 }

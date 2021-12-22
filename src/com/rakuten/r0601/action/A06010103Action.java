@@ -22,6 +22,7 @@ public class A06010103Action extends BaseAction {
 		input.setCustoms(f060101.getCustoms());
 		input.setLogistics(f060101.getLogistics());
 		input.setStatus(f060101.getStatus());
+		input.setCompanyId(f060101.getCompanyId());
 		GetWayBillAp getWayBillAp = new GetWayBillAp();
 		List<GetWayBillApOutput> outputList = getWayBillAp.execute(input);
 

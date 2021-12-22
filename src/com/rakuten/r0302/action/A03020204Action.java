@@ -2,7 +2,9 @@ package com.rakuten.r0302.action;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.Map;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.util.JdbcConnection;
 
@@ -14,24 +16,36 @@ public class A03020204Action extends BaseAction {
 	private String data2 = "";
 
 	protected void exec() throws Exception {
+		Map<String, Object> map = ActionContext.getContext().getSession();
+		int companyId;
+		if (null == map.get("comp")) {
+			companyId = -1;
+		} else {
+			companyId = (int) map.get("comp");
+		}
 		Connection conn = null;
 		PreparedStatement ps = null;
-		try {
-			conn = JdbcConnection.getConnection();
-			String sql = "UPDATE tbl00012 SET DEL_FLG = ? WHERE concat(commodity_id,detail_no) = ?";
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, "true".equals(data2) ? "1" : "0");
-			ps.setString(2, data1);
-			ps.execute();
+		if (companyId == 0 || companyId == 1) {
+			try {
+				conn = JdbcConnection.getConnection();
+				String sql = "UPDATE tbl00012 SET DEL_FLG = ? WHERE concat(commodity_id,detail_no) = ?";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, "true".equals(data2) ? "1" : "0");
+				ps.setString(2, data1);
+				ps.execute();
 
-			conn.commit();
-			result = "1";
-		} catch (Exception e) {
-			e.printStackTrace();
-			conn.rollback();
-			throw e;
-		} finally {
-			conn.close();
+				conn.commit();
+				result = "1";
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				conn.rollback();
+				throw e;
+			} finally {
+				conn.close();
+			}
+		} else {
+			result = "0";
 		}
 	}
 
@@ -56,8 +70,7 @@ public class A03020204Action extends BaseAction {
 	}
 
 	/**
-	 * @param result
-	 *            the result to set
+	 * @param result the result to set
 	 */
 	public void setResult(String result) {
 		this.result = result;

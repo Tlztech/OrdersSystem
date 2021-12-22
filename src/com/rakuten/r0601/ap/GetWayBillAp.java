@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.r0601.bean.GetWayBillApInput;
 import com.rakuten.r0601.bean.GetWayBillApOutput;
 import com.rakuten.util.JdbcConnection;
@@ -20,6 +22,13 @@ public class GetWayBillAp {
 		PreparedStatement ps = null;
 		String sql = null;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
 
 			sql = SqlUtility.getSql("SQLR0001024");
@@ -32,7 +41,9 @@ public class GetWayBillAp {
 			String customs = input.getCustoms();
 
 			if (!Utility.isEmptyString(waybillNo)) {
-				sql += " AND WAYBILL_NO = '" + waybillNo + "'";
+				sql += " AND WAYBILL_NO in (select waybill_no from company_waybill_tbl where waybill_no = '"+waybillNo+"' AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
+			} else {
+				sql += " AND WAYBILL_NO in (select waybill_no from company_waybill_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			}
 			if (!Utility.isEmptyString(logistics) && !"04".equals(logistics)) {
 				sql += " AND LOGISTICS = '" + logistics + "'";
@@ -56,6 +67,9 @@ public class GetWayBillAp {
 			sql += " ORDER BY DELIVER_DAY DESC";
 
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, (companyId==0||companyId==1)&&(input.getCompanyId()>0)?input.getCompanyId():companyId);
+			ps.setInt(2, (companyId==0||companyId==1)&&(input.getCompanyId()>0)?input.getCompanyId():companyId);
+			ps.setInt(3, (companyId==0||companyId==1)&&(input.getCompanyId()>0)?input.getCompanyId():companyId);
 			ResultSet rs = ps.executeQuery();
 
 			List<GetWayBillApOutput> outputList = new ArrayList<GetWayBillApOutput>();

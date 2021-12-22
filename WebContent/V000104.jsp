@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -48,18 +49,22 @@ eval("submenu" + sid + ".style.display=\"none\";");
                     <table id=submenu2 cellSpacing=0 cellPadding=0 width="100%"
                         border=0>
                         <tbody>
+                        	<s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
                             <tr>
                                 <td width="2%"><img src="Images/closed.gif"></td>
                                 <td height=23><a href="A03010101" target=main>商品分类</a></td>
                             </tr>
+                            </s:if>
                             <tr>
                                 <td width="2%"><img src="Images/closed.gif"></td>
                                 <td height=23><a href="A03020101" target=main>库存列表</a></td>
                             </tr>
+                            <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
                             <tr>
                                 <td width="2%"><img src="Images/closed.gif"></td>
                                 <td height=23><a href="A03030101" target=main>添加损益</a></td>
                             </tr>
+                            </s:if>
                         </tbody>
                     </table>
                     </td>
@@ -101,6 +106,7 @@ eval("submenu" + sid + ".style.display=\"none\";");
                                 <td width="2%"><img src="Images/closed.gif"></td>
                                 <td height=23><a href="A10010101" target="_blank">订单列表</a></td>
                             </tr>
+                            <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
                             <tr>
                                 <td width="2%"><img src="Images/closed.gif"></td>
                                 <td height=23><a href="A14010101" target="main">发送预警</a></td>
@@ -109,6 +115,7 @@ eval("submenu" + sid + ".style.display=\"none\";");
                                 <td width="2%"><img src="Images/closed.gif"></td>
                                 <td height=23><a href="A10020101" target="main">订单状态</a></td>
                             </tr>
+                            </s:if>
                         </tbody>
                     </table>
                     </td>
@@ -205,6 +212,7 @@ eval("submenu" + sid + ".style.display=\"none\";");
                                 <td width="2%"><img src="Images/closed.gif"></td>
                                 <td height=23><a href="A06010101" target=main>发货管理（广东至日本）</a></td>
                             </tr>
+                            <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
                             <tr>
                                 <td width="2%"><img src="Images/closed.gif"></td>
                                 <td height=23><a href="A13010101" target=_blank>发货管理（日本）</a></td>
@@ -221,6 +229,7 @@ eval("submenu" + sid + ".style.display=\"none\";");
                                 <td width="2%"><img src="Images/closed.gif"></td>
                                 <td height=23><a href="A13040101" target=main>报关单模板设置</a></td>
                             </tr>
+                            </s:if>
                         </tbody>
                     </table>
                     </td>
@@ -231,6 +240,7 @@ eval("submenu" + sid + ".style.display=\"none\";");
         <td height="5" background="Images/tableline_bottom.jpg"
             bgcolor="#9BC2ED"></td>
     </tr>
+    <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
 <tr>
         <td height="5" background="Images/tableline_top.jpg" bgcolor="#9BC2ED"></td>
     </tr>
@@ -408,6 +418,7 @@ eval("submenu" + sid + ".style.display=\"none\";");
     <tr>
         <td height="5" background="Images/tableline_top.jpg" bgcolor="#9BC2ED"></td>
     </tr>
+    
     <tr>
         <td> 
         <table class="leftframetable" cellspacing="0" cellpadding="0"
@@ -494,10 +505,12 @@ eval("submenu" + sid + ".style.display=\"none\";");
         </table>
         </td>
     </tr>
+    
     <tr>
         <td height="5" background="Images/tableline_bottom.jpg"
             bgcolor="#9BC2ED"></td>
     </tr>
+    </s:if>
 </table>
 </body>
 </html>

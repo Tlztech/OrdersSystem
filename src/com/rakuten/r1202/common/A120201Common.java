@@ -1516,73 +1516,73 @@ public class A120201Common {
 				sel2.setZaikokiretokinoukikanribango("");
 			}
 			// if (detail.isMerubinsoryomuryokyanpen()) {
-			if (detail.getShohinmei_jp().contains("【メール便送料無料】")) {
-				ShohinsentakushiBean sel2 = new ShohinsentakushiBean();
-
-				resultList.add(sel2);
-
-				// // コントロールカラム
-				// sel1.setKontororukaramu("u");
-				// // 商品管理番号（商品URL）
-				// sel1.setShohinkanribango(detail.getShohinbango());
-				// // 選択肢タイプ
-				// sel1.setSentakutaipu("s");
-				// // Select/Checkbox用項目名
-				// sel1.setSelectcheckboxyoukomokumei("レビューキャンペーン");
-				// // Select/Checkbox用選択肢
-				// sel1.setSelectcheckboxyousentakushi("いいえ、不参加。");
-				// // 項目選択肢別在庫用横軸選択肢
-				// sel1.setKomokusentakushibetuzaikoyouyokojikusentakushi("");
-				// // 項目選択肢別在庫用横軸選択肢子番号
-				// sel1.setKomokusentakushibetuzaikoyoyokojikusentakushishibango("");
-				// // 項目選択肢別在庫用縦軸選択肢
-				// sel1.setKomokusentakushizaikoyoutatejikusentakushi("");
-				// // 項目選択肢別在庫用縦軸選択肢子番号
-				// sel1.setKomokusentakushibetuzaikoyotatejikusentakushishibango("");
-				// // 項目選択肢別在庫用取り寄せ可能表示
-				// sel1.setKomokusentakushibetuzaikototoriyosekanohyouji("");
-				// // 項目選択肢別在庫用在庫数
-				// sel1.setKomokusentakushibetuzaikoyozaikosu("");
-				// // 在庫戻しフラグ
-				// sel1.setZaikonodoshifuragu("");
-				// // 在庫切れ時の注文受付
-				// sel1.setZaikokiretokinochumonuketuke("");
-				// // 在庫あり時納期管理番号
-				// sel1.setZaikoaritokinoukikanribango("");
-				// // 在庫切れ時納期管理番号
-				// sel1.setZaikokiretokinoukikanribango("");
-
-				// コントロールカラム
-				sel2.setKontororukaramu("u");
-				// 商品管理番号（商品URL）
-				sel2.setShohinkanribango(detail.getShohinbango());
-				// 選択肢タイプ
-				sel2.setSentakutaipu("s");
-				// Select/Checkbox用項目名
-				sel2.setSelectcheckboxyoukomokumei("代金引換の場合は送料無料対象外");
-				// Select/Checkbox用選択肢
-				sel2.setSelectcheckboxyousentakushi("了承済み");
-				// 項目選択肢別在庫用横軸選択肢
-				sel2.setKomokusentakushibetuzaikoyouyokojikusentakushi("");
-				// 項目選択肢別在庫用横軸選択肢子番号
-				sel2.setKomokusentakushibetuzaikoyoyokojikusentakushishibango("");
-				// 項目選択肢別在庫用縦軸選択肢
-				sel2.setKomokusentakushizaikoyoutatejikusentakushi("");
-				// 項目選択肢別在庫用縦軸選択肢子番号
-				sel2.setKomokusentakushibetuzaikoyotatejikusentakushishibango("");
-				// 項目選択肢別在庫用取り寄せ可能表示
-				sel2.setKomokusentakushibetuzaikototoriyosekanohyouji("");
-				// 項目選択肢別在庫用在庫数
-				sel2.setKomokusentakushibetuzaikoyozaikosu("");
-				// 在庫戻しフラグ
-				sel2.setZaikonodoshifuragu("");
-				// 在庫切れ時の注文受付
-				sel2.setZaikokiretokinochumonuketuke("");
-				// 在庫あり時納期管理番号
-				sel2.setZaikoaritokinoukikanribango("");
-				// 在庫切れ時納期管理番号
-				sel2.setZaikokiretokinoukikanribango("");
-			}
+//			if (detail.getShohinmei_jp().contains("【メール便送料無料】")) {
+//				ShohinsentakushiBean sel2 = new ShohinsentakushiBean();
+//
+//				resultList.add(sel2);
+//
+//				// // コントロールカラム
+//				// sel1.setKontororukaramu("u");
+//				// // 商品管理番号（商品URL）
+//				// sel1.setShohinkanribango(detail.getShohinbango());
+//				// // 選択肢タイプ
+//				// sel1.setSentakutaipu("s");
+//				// // Select/Checkbox用項目名
+//				// sel1.setSelectcheckboxyoukomokumei("レビューキャンペーン");
+//				// // Select/Checkbox用選択肢
+//				// sel1.setSelectcheckboxyousentakushi("いいえ、不参加。");
+//				// // 項目選択肢別在庫用横軸選択肢
+//				// sel1.setKomokusentakushibetuzaikoyouyokojikusentakushi("");
+//				// // 項目選択肢別在庫用横軸選択肢子番号
+//				// sel1.setKomokusentakushibetuzaikoyoyokojikusentakushishibango("");
+//				// // 項目選択肢別在庫用縦軸選択肢
+//				// sel1.setKomokusentakushizaikoyoutatejikusentakushi("");
+//				// // 項目選択肢別在庫用縦軸選択肢子番号
+//				// sel1.setKomokusentakushibetuzaikoyotatejikusentakushishibango("");
+//				// // 項目選択肢別在庫用取り寄せ可能表示
+//				// sel1.setKomokusentakushibetuzaikototoriyosekanohyouji("");
+//				// // 項目選択肢別在庫用在庫数
+//				// sel1.setKomokusentakushibetuzaikoyozaikosu("");
+//				// // 在庫戻しフラグ
+//				// sel1.setZaikonodoshifuragu("");
+//				// // 在庫切れ時の注文受付
+//				// sel1.setZaikokiretokinochumonuketuke("");
+//				// // 在庫あり時納期管理番号
+//				// sel1.setZaikoaritokinoukikanribango("");
+//				// // 在庫切れ時納期管理番号
+//				// sel1.setZaikokiretokinoukikanribango("");
+//
+//				// コントロールカラム
+//				sel2.setKontororukaramu("u");
+//				// 商品管理番号（商品URL）
+//				sel2.setShohinkanribango(detail.getShohinbango());
+//				// 選択肢タイプ
+//				sel2.setSentakutaipu("s");
+//				// Select/Checkbox用項目名
+//				sel2.setSelectcheckboxyoukomokumei("代金引換の場合は送料無料対象外");
+//				// Select/Checkbox用選択肢
+//				sel2.setSelectcheckboxyousentakushi("了承済み");
+//				// 項目選択肢別在庫用横軸選択肢
+//				sel2.setKomokusentakushibetuzaikoyouyokojikusentakushi("");
+//				// 項目選択肢別在庫用横軸選択肢子番号
+//				sel2.setKomokusentakushibetuzaikoyoyokojikusentakushishibango("");
+//				// 項目選択肢別在庫用縦軸選択肢
+//				sel2.setKomokusentakushizaikoyoutatejikusentakushi("");
+//				// 項目選択肢別在庫用縦軸選択肢子番号
+//				sel2.setKomokusentakushibetuzaikoyotatejikusentakushishibango("");
+//				// 項目選択肢別在庫用取り寄せ可能表示
+//				sel2.setKomokusentakushibetuzaikototoriyosekanohyouji("");
+//				// 項目選択肢別在庫用在庫数
+//				sel2.setKomokusentakushibetuzaikoyozaikosu("");
+//				// 在庫戻しフラグ
+//				sel2.setZaikonodoshifuragu("");
+//				// 在庫切れ時の注文受付
+//				sel2.setZaikokiretokinochumonuketuke("");
+//				// 在庫あり時納期管理番号
+//				sel2.setZaikoaritokinoukikanribango("");
+//				// 在庫切れ時納期管理番号
+//				sel2.setZaikokiretokinoukikanribango("");
+//			}
 
 			if ("0".equals(detail.getMerubin())) {
 				ShohinsentakushiBean sel1 = new ShohinsentakushiBean();

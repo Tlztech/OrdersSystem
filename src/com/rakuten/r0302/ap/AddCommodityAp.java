@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.r0302.bean.AddCommodityApInput;
 import com.rakuten.r0302.bean.CommodityDetail;
 import com.rakuten.util.JdbcConnection;
@@ -22,9 +24,15 @@ public class AddCommodityAp {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String sql = null;
 		String date = format.format(new Date());
-		List<CommodityDetail> commodityDetailList = input
-				.getCommodityDetailList();
+		List<CommodityDetail> commodityDetailList = input.getCommodityDetailList();
 		try {
+			Map<String, Object> map = ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int) map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
 
 			if ("2".equals(shoriMode)) {
@@ -38,6 +46,12 @@ public class AddCommodityAp {
 				ps.setString(1, input.getCommodityId());
 				ps.execute();
 
+			} else {
+				sql = "INSERT INTO `rakuten`.`company_commodity_tbl` (`company_id`,`commodity_id`,`permission`) VALUES (?,?,?);";
+				ps.setInt(1, companyId);
+				ps.setString(2, input.getCommodityId());
+				ps.setInt(3, 3);
+				ps.executeUpdate();
 			}
 
 			sql = SqlUtility.getSql("SQLR0001011");
@@ -67,10 +81,8 @@ public class AddCommodityAp {
 					ps.setString(2, detail.getDetailNo());
 					ps.setString(3, detail.getDescribe());
 					ps.setString(4, detail.getPicUrl());
-					ps.setString(5, "".equals(input.getPriceIn()) ? null
-							: input.getPriceIn());
-					ps.setString(6, "".equals(input.getRePrice()) ? null
-							: input.getRePrice());
+					ps.setString(5, "".equals(input.getPriceIn()) ? null : input.getPriceIn());
+					ps.setString(6, "".equals(input.getRePrice()) ? null : input.getRePrice());
 					ps.setString(7, detail.getStockSh());
 					ps.setString(8, detail.getStockJp());
 					ps.setString(9, detail.getStockHandup());
@@ -94,8 +106,7 @@ public class AddCommodityAp {
 				for (CommodityDetail detail : commodityDetailList) {
 					sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
 					ps = conn.prepareStatement(sql);
-					ps.setString(1,
-							input.getCommodityId() + detail.getDetailNo());
+					ps.setString(1, input.getCommodityId() + detail.getDetailNo());
 					rs = ps.executeQuery();
 					int count = 0;
 					while (rs.next()) {
@@ -111,8 +122,7 @@ public class AddCommodityAp {
 
 						sql = "INSERT INTO TBL00016 VALUES(?,?)";
 						ps = conn.prepareStatement(sql);
-						ps.setString(1,
-								input.getCommodityId() + detail.getDetailNo());
+						ps.setString(1, input.getCommodityId() + detail.getDetailNo());
 						ps.setString(2, maxBarcode);
 						ps.execute();
 					}

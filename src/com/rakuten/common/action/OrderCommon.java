@@ -14,12 +14,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.datatype.DatatypeFactory;
 
 import org.apache.axis.encoding.Base64;
 import org.apache.commons.lang.time.DateFormatUtils;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.MessageFromAU;
 import com.rakuten.common.MessageFromRMS;
 import com.rakuten.common.MessageFromYahoo;
@@ -690,13 +692,23 @@ public class OrderCommon {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
 
 			String sql = "SELECT * FROM common_order_tbl t1 left join tbl00027 t2 on t1.chumonbango = t2.chumonbango"
-					+ " WHERE CHUMONSTS1 = ? OR CHUMONSTS1 = ?";
+					+ " WHERE CHUMONSTS1 = ? OR CHUMONSTS1 = ? AND t1.chumonbango in (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1)) ";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, "2");
 			ps.setString(2, "5");
+			ps.setInt(3, companyId);
+			ps.setInt(4, companyId);
+			ps.setInt(5, companyId);
 			rs = ps.executeQuery();
 
 			String chumonbango = null;
@@ -968,12 +980,22 @@ public class OrderCommon {
 		Connection conn = null;
 		List<String[]> stockList = new ArrayList<String[]>();
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
 
 			PreparedStatement ps = null;
 
-			String sql = "SELECT * FROM TBL00012 WHERE STOCK_JP > 0";
+			String sql = "SELECT * FROM TBL00012 WHERE STOCK_JP > 0 AND commodity_id in (select commodity_id from company_commodity_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				stockList.add(new String[] { rs.getString("COMMODITY_ID") + rs.getString("DETAIL_NO").replace("-0-0", ""),
@@ -989,12 +1011,22 @@ public class OrderCommon {
 		Connection conn = null;
 		List<String[]> stockList = new ArrayList<String[]>();
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
 
 			PreparedStatement ps = null;
 
-			String sql = "SELECT * FROM TBL00012 WHERE STOCK_SH > 0";
+			String sql = "SELECT * FROM TBL00012 WHERE STOCK_SH > 0 AND commodity_id in (select commodity_id from company_commodity_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				stockList.add(new String[] { rs.getString("COMMODITY_ID") + rs.getString("DETAIL_NO").replace("-0-0", ""),
@@ -1010,10 +1042,18 @@ public class OrderCommon {
 		Connection conn = null;
 		List<String[]> unsochuList = new ArrayList<String[]>();
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
+			
 			conn = JdbcConnection.getConnection();
 			PreparedStatement ps = null;
 
-			String sql = "SELECT * FROM TBL00013 T1 LEFT JOIN TBL00014 T2 ON T1.WAYBILL_NO = T2.WAYBILL_NO WHERE T1.STATUS = '00'";
+			String sql = "SELECT * FROM TBL00013 T1 LEFT JOIN TBL00014 T2 ON T1.WAYBILL_NO = T2.WAYBILL_NO WHERE T1.WAYBILL_NO in ( SELECT WAYBILL_NO FROM company_waybill_tbl WHERE (COMPANY_ID = "+ companyId + " OR "+ companyId +" = 0 OR " + companyId + " = 1)) and T1.STATUS = '00'";
 			ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -1081,27 +1121,36 @@ public class OrderCommon {
 		PreparedStatement ps = null;
 		int count = 0;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
 			String sql = null;
 
 			for (int i = 0; i < statusShubetsu.length; i++) {
 
 				if ("1".equals(statusShubetsu[i])) {
-					sql = "UPDATE common_order_tbl SET CHUMONSTS1 = ? WHERE CHUMONBANGO = ?";
+					sql = "UPDATE common_order_tbl SET CHUMONSTS1 = ? WHERE CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (? = 0 OR ? = 1))";
 				} else if ("2".equals(statusShubetsu[i])) {
-					sql = "UPDATE common_order_tbl SET CHUMONSTS2 = ? WHERE CHUMONBANGO = ?";
+					sql = "UPDATE common_order_tbl SET CHUMONSTS2 = ? WHERE CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (? = 0 OR ? = 1))";
 				} else if ("3".equals(statusShubetsu[i])) {
-					sql = "UPDATE common_order_tbl SET CHUMONSTS3 = ? WHERE CHUMONBANGO = ?";
+					sql = "UPDATE common_order_tbl SET CHUMONSTS3 = ? WHERE CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (? = 0 OR ? = 1))";
 				} else if ("4".equals(statusShubetsu[i])) {
-					sql = "UPDATE common_order_tbl SET CHUMONSTS4 = ? WHERE CHUMONBANGO = ?";
+					sql = "UPDATE common_order_tbl SET CHUMONSTS4 = ? WHERE CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (? = 0 OR ? = 1))";
 				} else if ("5".equals(statusShubetsu[i])) {
-					sql = "UPDATE common_order_tbl SET CHUMONSTS5 = ? WHERE CHUMONBANGO = ?";
+					sql = "UPDATE common_order_tbl SET CHUMONSTS5 = ? WHERE CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (? = 0 OR ? = 1))";
 				} else if ("6".equals(statusShubetsu[i])) {
-					sql = "UPDATE common_order_tbl SET CHUMONSTS6 = ? WHERE CHUMONBANGO = ?";
+					sql = "UPDATE common_order_tbl SET CHUMONSTS6 = ? WHERE CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (? = 0 OR ? = 1))";
 				}
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, status[i]);
 				ps.setString(2, chumonbango);
+				ps.setInt(3, companyId);
+				ps.setInt(4, companyId);
 
 				count = ps.executeUpdate();
 
@@ -2819,9 +2868,17 @@ public class OrderCommon {
 		List<String> errmsg = new ArrayList<String>();
 		ResultSet rs = null;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
+			
 			conn = JdbcConnection.getConnection();
 
-			sql = "UPDATE common_order_tbl SET OTODOKEBISHITEI = ?, OTODOKEJIKANTAI1 = ?,OTODOKEJIKANTAI2 = ?,OTODOKEJIKANTAI3 = ?, BIKO = ? ,HASSOUSHAHENOKOMENTO = ? ,UPDATE_TIME = ? , UPDATE_USER = ? WHERE CHUMONBANGO = ?";
+			sql = "UPDATE common_order_tbl SET OTODOKEBISHITEI = ?, OTODOKEJIKANTAI1 = ?,OTODOKEJIKANTAI2 = ?,OTODOKEJIKANTAI3 = ?, BIKO = ? ,HASSOUSHAHENOKOMENTO = ? ,UPDATE_TIME = ? , UPDATE_USER = ? WHERE CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, otodokebishitei);
 			ps.setString(2, otodokejikantai1);
@@ -2832,6 +2889,8 @@ public class OrderCommon {
 			ps.setString(7, Utility.getDateTime());
 			ps.setString(8, Utility.getUser());
 			ps.setString(9, orderNo);
+			ps.setInt(10, companyId);
+			ps.setInt(11, companyId);
 
 			ps.execute();
 
@@ -2981,7 +3040,7 @@ public class OrderCommon {
 			ps.setString(6, tuikaOrderNo);
 			ps.execute();
 
-			sql = "UPDATE common_order_detail_tbl SET JUCHUBANGO = ?  WHERE JUCHUBANGO = ?";
+			sql = "UPDATE common_order_detail_tbl SET JUCHUBANGO = ? WHERE JUCHUBANGO = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, orderNo);
 			ps.setString(2, tuikaOrderNo);
@@ -3100,10 +3159,19 @@ public class OrderCommon {
 					daibikiryokomiAri = true;
 				}
 			}
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
-			sql = "SELECT * FROM common_order_tbl T1 LEFT JOIN common_order_detail_tbl T2 ON T1.CHUMONBANGO = T2.JUCHUBANGO WHERE T1.CHUMONBANGO = ?";
+			sql = "SELECT * FROM common_order_tbl T1 LEFT JOIN common_order_detail_tbl T2 ON T1.CHUMONBANGO = T2.JUCHUBANGO WHERE T1.CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (? = 1 OR ? = 0))";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, orderNo);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			ResultSet rs = ps.executeQuery();
 			String site = "";
 			String tenpo = "";
@@ -3132,7 +3200,7 @@ public class OrderCommon {
 			f100103.setSeikyukingaku(seikyukingaku);
 
 			int j = 1;
-			sql = "UPDATE common_order_tbl SET POINTRIYO=?,SONOTARIYOGAKU=?, OSHIHARAISTS = ?,CHUMONSHAMEIJI = ?,CHUMONSHANAMAE = ?,CHUMONSHAMEIJIFURIGANA = ?,CHUMONSHANAMAEFURIGANA = ?,MERUADORESU = ?,CHUMONSHAYUBINBANGO1 = ?,CHUMONSHAYUBINBANGO2 = ?,CHUMONSHAJUSHOTODOFUKEN = ?,CHUMONSHAJUSHOTOSHIKU = ?,CHUMONSHAJUSHOCHOIJOU = ?,CHUMONSHADENWABANGO1 = ?,CHUMONSHADENWABANGO2 = ?,CHUMONSHADENWABANGO3 =?,SOFUSAKIMEIJI = ?,SOUFUSAKINAMAE = ?,SOUFUSAKIMEIJIFURIGANA = ?,SOUFUSAKIMEIJINAMAEFURIGANA = ?,HAISOUHOHO = ?,SOUFUSAKIYUBINBANGO1 = ?,SOUFUSAKIYUBINBANGO2 = ?,SOFUSAKIDENWABANGO1 = ?,SOFUSAKIDENWABANGO2 = ?,SOFUSAKIDENWABANGO3 = ?,SOUFUSAKIJUSHOTODOFUKEN = ?,SOUFUSAKIJUSHOTOSHIKU = ?,SOUFUSAKIJUSHOCHOIJOU = ?,GOKEISHOHIN = ?,GOKEIZEI = ?,GOKEISOURYOU =?,GOKEIDAIBIKIRYOU = ?,SEIKYUKINGAKU = ?,UPDATE_TIME = ?,UPDATE_USER = ?WHERE CHUMONBANGO = ?";
+			sql = "UPDATE common_order_tbl SET POINTRIYO=?,SONOTARIYOGAKU=?, OSHIHARAISTS = ?,CHUMONSHAMEIJI = ?,CHUMONSHANAMAE = ?,CHUMONSHAMEIJIFURIGANA = ?,CHUMONSHANAMAEFURIGANA = ?,MERUADORESU = ?,CHUMONSHAYUBINBANGO1 = ?,CHUMONSHAYUBINBANGO2 = ?,CHUMONSHAJUSHOTODOFUKEN = ?,CHUMONSHAJUSHOTOSHIKU = ?,CHUMONSHAJUSHOCHOIJOU = ?,CHUMONSHADENWABANGO1 = ?,CHUMONSHADENWABANGO2 = ?,CHUMONSHADENWABANGO3 =?,SOFUSAKIMEIJI = ?,SOUFUSAKINAMAE = ?,SOUFUSAKIMEIJIFURIGANA = ?,SOUFUSAKIMEIJINAMAEFURIGANA = ?,HAISOUHOHO = ?,SOUFUSAKIYUBINBANGO1 = ?,SOUFUSAKIYUBINBANGO2 = ?,SOFUSAKIDENWABANGO1 = ?,SOFUSAKIDENWABANGO2 = ?,SOFUSAKIDENWABANGO3 = ?,SOUFUSAKIJUSHOTODOFUKEN = ?,SOUFUSAKIJUSHOTOSHIKU = ?,SOUFUSAKIJUSHOCHOIJOU = ?,GOKEISHOHIN = ?,GOKEIZEI = ?,GOKEISOURYOU =?,GOKEIDAIBIKIRYOU = ?,SEIKYUKINGAKU = ?,UPDATE_TIME = ?,UPDATE_USER = ? WHERE CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
 			ps.setString(j++, f100103.getPointriyo());
 			ps.setString(j++, f100103.getSonotariyogaku());
@@ -3171,6 +3239,8 @@ public class OrderCommon {
 			ps.setString(j++, Utility.getDateTime());
 			ps.setString(j++, Utility.getUser());
 			ps.setString(j++, orderNo);
+			ps.setInt(j++, companyId);
+			ps.setInt(j++, companyId);
 
 			int updateCount = ps.executeUpdate();
 
@@ -3320,11 +3390,21 @@ public class OrderCommon {
 		ResultSet rs = null;
 		List<String> orderNoList = new ArrayList<String>();
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
-			sql = "SELECT DISTINCT JUCHUBANGO FROM henpin_tbl WHERE HENPINSTATUS = '0'";
+			sql = "SELECT DISTINCT JUCHUBANGO FROM henpin_tbl WHERE HENPINSTATUS = '0' AND JUCHUBANGO IN (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 1 OR ? = 0))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			rs = ps.executeQuery();
-
+			
 			while (rs.next()) {
 				orderNoList.add(rs.getString("JUCHUBANGO"));
 			}
@@ -3345,9 +3425,19 @@ public class OrderCommon {
 		ResultSet rs = null;
 		List<String> orderNoList = new ArrayList<String>();
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
-			sql = "SELECT DISTINCT JUCHUBANGO FROM henpin_tbl WHERE HENPINSTATUS = '1'";
+			sql = "SELECT DISTINCT JUCHUBANGO FROM henpin_tbl WHERE HENPINSTATUS = '1' AND JUCHUBANGO IN (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 1 OR ? = 0))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			rs = ps.executeQuery();
 			String juchubango = null;
 
@@ -3381,9 +3471,19 @@ public class OrderCommon {
 		ResultSet rs = null;
 		List<String> orderNoList = new ArrayList<String>();
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
-			sql = "SELECT * FROM henkin_tbl WHERE HENKINZUMIFLG = '0'";
+			sql = "SELECT * FROM henkin_tbl WHERE HENKINZUMIFLG = '0' AND JUCHUBANGO IN (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			rs = ps.executeQuery();
 
 			String juchubango = null;
@@ -3417,9 +3517,19 @@ public class OrderCommon {
 		ResultSet rs = null;
 		List<String> orderNoList = new ArrayList<String>();
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
-			sql = "SELECT DISTINCT JUCHUBANGO FROM soushin_tbl WHERE SOUSHINZUMIFLG = '0'";
+			sql = "SELECT DISTINCT JUCHUBANGO FROM soushin_tbl WHERE SOUSHINZUMIFLG = '0' AND JUCHUBANGO IN (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				String juchubango = rs.getString("JUCHUBANGO");
@@ -3441,9 +3551,19 @@ public class OrderCommon {
 		ResultSet rs = null;
 		List<String> orderNoList = new ArrayList<String>();
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
-			sql = "SELECT * FROM common_order_tbl WHERE CHUMONSTS1 = '2'";
+			sql = "SELECT * FROM common_order_tbl WHERE CHUMONSTS1 = '2' AND CHUMONBANGO in (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				if (!Utility.isEmptyString(rs.getString("KOMENTO"))) {
@@ -3472,9 +3592,19 @@ public class OrderCommon {
 		ResultSet rs = null;
 		List<String> orderNoList = new ArrayList<String>();
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
-			sql = "SELECT * FROM common_order_tbl WHERE CHUMONSTS1 = '1'";
+			sql = "SELECT * FROM common_order_tbl WHERE CHUMONSTS1 = '1' AND CHUMONBANGO in (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				String juchubango = rs.getString("CHUMONBANGO");
@@ -3710,6 +3840,13 @@ public class OrderCommon {
 		String sql = null;
 		List<String> errmsg = new ArrayList<String>();
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			int j = 0;
 			conn = JdbcConnection.getConnection();
 			sql = "INSERT INTO common_order_tbl VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -3809,6 +3946,13 @@ public class OrderCommon {
 			ps.setString(++j, Utility.getUser());
 			ps.setString(++j, "");
 			ps.setString(++j, Utility.strTrim(f100104.getSonotariyogaku()));
+			ps.executeUpdate();
+			
+			sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
+			j = 0;
+			ps.setInt(++j, companyId == 0 ? 1 : companyId);
+			ps.setString(++j, Utility.strTrim(f100104.getJuchubango()));
+			ps.setInt(++j, 3);
 			ps.executeUpdate();
 
 			for (int k = 0; k < f100104.getShohinList().size(); k++) {
@@ -3938,12 +4082,22 @@ public class OrderCommon {
 		List<String> shohinbangoList = new ArrayList<String>();
 
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			PreparedStatement ps = null;
 			String sql = null;
 			ResultSet rs = null;
 			conn = JdbcConnection.getConnection();
-			sql = "SELECT concat(commodity_id,detail_no) juchubango FROM tbl00012 WHERE del_flg = '1'";
+			sql = "SELECT concat(commodity_id,detail_no) juchubango FROM tbl00012 WHERE del_flg = '1' AND commodity_id in (select commodity_id from company_commodity_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				shohinbangoList.add(rs.getString("juchubango"));
@@ -4092,7 +4246,7 @@ public class OrderCommon {
 		PreparedStatement ps = null;
 		String sql = null;
 		ResultSet rs = null;
-
+		
 		sql = "SELECT * FROM common_order_tbl WHERE CHUMONBANGO = ?";
 		ps = conn.prepareStatement(sql);
 		ps.setString(1, juchubango);
@@ -4169,10 +4323,20 @@ public class OrderCommon {
 		String sql = null;
 		ResultSet rs = null;
 		try {
+			Map<String,Object> map =  ActionContext.getContext().getSession();
+			int companyId;
+			if (null == map.get("comp")) {
+				companyId = -1;
+			} else {
+				companyId = (int)map.get("comp");
+			}
 			conn = JdbcConnection.getConnection();
 			sql = "SELECT t1.chumonbango bangot1 from common_order_tbl t1 left join tbl00027 t2 "
-					+ "on t1.chumonbango = t2.chumonbango where t1.chumonsts1 = '2'";
+					+ "on t1.chumonbango = t2.chumonbango where t1.chumonsts1 = '2' AND t1.chumonbango in (select order_id from company_order_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, companyId);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				bangoList.add(rs.getString("bangot1"));
@@ -5299,7 +5463,7 @@ public class OrderCommon {
 			
 			// 商品番号
 			if (item.getItemNumber() != null) {
-				detail.setShouhinbango(item.getManageNumber() + item.getItemNumber());
+				detail.setShouhinbango(item.getItemNumber());
 			}else {
 				detail.setShouhinbango(item.getManageNumber());
 			}
@@ -6174,12 +6338,12 @@ public class OrderCommon {
 			}
 
 			for (ShohinList shohin : order.getShohinList()) {
-				if (shohin.getShouhinmei().contains("メール便送料無料") && shohin.getKomokusentakushi().contains("メール便送料無料")) {
-					merubinsoryomuryoFlg = true;
-				} else if (shohin.getShouhinmei().contains("送料無料") && shohin.getKomokusentakushi().contains("送料無料")) {
-					takyubinsoryomuryoFlg = true;
-					merubinsoryomuryoFlg = true;
-				}
+//				if (shohin.getShouhinmei().contains("メール便送料無料") && shohin.getKomokusentakushi().contains("メール便送料無料")) {
+//					merubinsoryomuryoFlg = true;
+//				} else if (shohin.getShouhinmei().contains("送料無料") && shohin.getKomokusentakushi().contains("送料無料")) {
+//					takyubinsoryomuryoFlg = true;
+//					merubinsoryomuryoFlg = true;
+//				}
 
 				if (shohin.getShouhinmei().contains("nzfd-300")) {
 					if (!"300".equals(shohin.getTankaku())) {
