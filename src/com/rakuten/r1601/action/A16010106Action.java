@@ -465,19 +465,19 @@ public class A16010106Action extends BaseAction {
 //					item.setPrice(800);
 //				}
 
-			if (shohinbango.contains("nzfd-1000")) {
-				merubinfuka++;
-			} else {
-				if ((name.contains("送料無料") && !name.contains("メール便送料無料")) || price >= 5480L) {
-					takyubinmuryou++;
-					continue;
-				} else if (name.contains("メール便送料無料")) {
-					merubinmuryou++;
-					continue;
-				} else if (choice.contains("メール便対応不可")) {
-					merubinfuka++;
-				}
-			}
+//			if (shohinbango.contains("nzfd-1000")) {
+//				merubinfuka++;
+//			} else {
+//				if ((name.contains("送料無料") && !name.contains("メール便送料無料")) || price >= 5480L) {
+//					takyubinmuryou++;
+//					continue;
+//				} else if (name.contains("メール便送料無料")) {
+//					merubinmuryou++;
+//					continue;
+//				} else if (choice.contains("メール便対応不可")) {
+//					merubinfuka++;
+//				}
+//			}
 		}
 		// 有一个宅急便包邮就整体包邮
 		if (takyubinmuryou > 0)

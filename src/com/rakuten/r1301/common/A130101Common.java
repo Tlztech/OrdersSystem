@@ -446,16 +446,16 @@ public class A130101Common {
 					Order.setOtodokeshiteibi(otodoke);
 
 					boolean fukaariflg = false;
-					sql = "select KOMOKUSENTAKUSHI from common_order_detail_tbl where juchubango = ?";
-					ps = conn.prepareStatement(sql);
-					ps.setString(1, Order.getChumonbango());
-					rs5 = ps.executeQuery();
-					while (rs5.next()) {
-						if (rs5.getString("KOMOKUSENTAKUSHI").contains("メール便対応不可")) {
-							fukaariflg = true;
-							break;
-						}
-					}
+//					sql = "select KOMOKUSENTAKUSHI from common_order_detail_tbl where juchubango = ?";
+//					ps = conn.prepareStatement(sql);
+//					ps.setString(1, Order.getChumonbango());
+//					rs5 = ps.executeQuery();
+//					while (rs5.next()) {
+//						if (rs5.getString("KOMOKUSENTAKUSHI").contains("メール便対応不可")) {
+//							fukaariflg = true;
+//							break;
+//						}
+//					}
 
 					if ("代金引換".equals(rs.getString("OSHIHARAISTS")) || fukaariflg) {
 						Order.setUnsokaisha("1002");
