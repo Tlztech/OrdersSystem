@@ -48,6 +48,7 @@ public class AddCommodityAp {
 
 			} else {
 				sql = "INSERT INTO `rakuten`.`company_commodity_tbl` (`company_id`,`commodity_id`,`permission`) VALUES (?,?,?);";
+				ps = conn.prepareStatement(sql);
 				ps.setInt(1, companyId);
 				ps.setString(2, input.getCommodityId());
 				ps.setInt(3, 3);

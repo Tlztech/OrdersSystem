@@ -303,6 +303,7 @@ public class A03020105Action extends BaseAction {
 				ps.execute();
 				
 				sql = "INSERT INTO `rakuten`.`company_commodity_tbl` (`company_id`,`commodity_id`,`permission`) VALUES (?,?,?);";
+				ps = conn.prepareStatement(sql);
 				ps.setInt(1, companyId == 0 ? 1 : companyId);
 				ps.setString(2, shohinInfoBean.getShouhinkanribango());
 				ps.setInt(3, 3);

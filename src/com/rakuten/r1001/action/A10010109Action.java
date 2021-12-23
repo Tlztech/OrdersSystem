@@ -205,6 +205,7 @@ public class A10010109Action extends BaseAction {
 					ps.executeUpdate();
 					
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
+					ps = conn.prepareStatement(sql);
 					j = 0;
 					ps.setInt(++j, companyId == 0 ? 1 : companyId);
 					ps.setString(++j, Utility.strTrim(orderNo));

@@ -1310,6 +1310,7 @@ public class A1001Common {
 				ps.close();
 				
 				sql = "INSERT INTO `rakuten`.`company_commodity_tbl` (`company_id`,`commodity_id`,`permission`) VALUES (?,?,?);";
+				ps = conn.prepareStatement(sql);
 				ps.setInt(1, companyId == 0 ? 1 : companyId);
 				ps.setString(2, entry.getValue().get("commodityId"));
 				ps.setInt(3, 3);
@@ -1573,6 +1574,7 @@ public class A1001Common {
 					ps.executeUpdate();
 					
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
+					ps = conn.prepareStatement(sql);
 					j = 0;
 					ps.setInt(++j, companyId == 0 ? 1 : companyId);
 					ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));
@@ -2054,6 +2056,7 @@ public class A1001Common {
 					ps.executeUpdate();
 					
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
+					ps = conn.prepareStatement(sql);
 					j = 0;
 					ps.setInt(++j, companyId == 0 ? 1 : companyId);
 					ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));
@@ -2482,6 +2485,7 @@ public class A1001Common {
 					ps.executeUpdate();
 					
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
+					ps = conn.prepareStatement(sql);
 					j = 0;
 					ps.setInt(++j, companyId == 0 ? 1 : companyId);
 					ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));
@@ -2775,6 +2779,7 @@ public class A1001Common {
 					ps.executeUpdate();
 					
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
+					ps = conn.prepareStatement(sql);
 					j = 0;
 					ps.setInt(++j, companyId == 0 ? 1 : companyId);
 					ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));
@@ -3051,6 +3056,7 @@ public class A1001Common {
 					ps.executeUpdate();
 
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
+					ps = conn.prepareStatement(sql);
 					j = 0;
 					ps.setInt(++j, companyId == 0 ? 1 : companyId);
 					ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));
@@ -3320,6 +3326,7 @@ public class A1001Common {
 					ps.executeUpdate();
 
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
+					ps = conn.prepareStatement(sql);
 					j = 0;
 					ps.setInt(++j, companyId == 0 ? 1 : companyId);
 					ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));
@@ -3572,7 +3579,9 @@ public class A1001Common {
 						ps.executeUpdate();
 						
 						sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
+						ps = conn.prepareStatement(sql);
 						j = 0;
+						ps = conn.prepareStatement(sql);
 						ps.setInt(++j, companyId == 0 ? 1 : companyId);
 						ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));
 						ps.setInt(++j, 3);
@@ -3671,6 +3680,7 @@ public class A1001Common {
 								ps.execute();
 								
 								sql = "INSERT INTO `rakuten`.`company_commodity_tbl` (`company_id`,`commodity_id`,`permission`) VALUES (?,?,?);";
+								ps = conn.prepareStatement(sql);
 								ps.setInt(1, companyId == 0 ? 1 : companyId);
 								ps.setString(2, shouhinbango);
 								ps.setInt(3, 3);
@@ -3956,6 +3966,7 @@ public class A1001Common {
 					ps.executeUpdate();
 					
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
+					ps = conn.prepareStatement(sql);
 					j = 0;
 					ps.setInt(++j, companyId == 0 ? 1 : companyId);
 					ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));

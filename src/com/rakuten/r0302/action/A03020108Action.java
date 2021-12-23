@@ -123,6 +123,7 @@ public class A03020108Action extends BaseAction {
 								ps.execute();
 
 								sql = "INSERT INTO `rakuten`.`company_commodity_tbl` (`company_id`,`commodity_id`,`permission`) VALUES (?,?,?);";
+								ps = conn.prepareStatement(sql);
 								ps.setInt(1, companyId == 0 ? 1 : companyId);
 								ps.setString(2, commodityId);
 								ps.setInt(3, 3);
