@@ -45,10 +45,12 @@ public class A13020109Action extends BaseAction {
 				}
 			}
 
-			sql = "select * from common_order_detail_tbl left join tbl00016 on SHOUHINBANGO = commodity_id where juchubango in (select order_id from company_order_tbl where order_id = ? AND (COMPANY_ID = ?))";
+			sql = "select * from common_order_detail_tbl left join tbl00016 on SHOUHINBANGO = commodity_id where juchubango in (select order_id from company_order_tbl where order_id = ? AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, orderNo);
 			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
+			ps.setInt(4, companyId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				result = result + "&&";
