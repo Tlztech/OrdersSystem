@@ -4253,7 +4253,7 @@ public class A1001Common {
 				}
 			}
 			if (!Utility.isEmptyString(chumonbango)) {
-				sql += " AND T1.CHUMONBANGO IN (select order_id from company_order_tbl where order_id = "+ chumonbango + " AND (COMPANY_ID = " + companyId + " OR " + companyId + " = 0 OR " + companyId + " = 1))";
+				sql += " AND T1.CHUMONBANGO IN (select order_id from company_order_tbl where order_id = '"+ chumonbango + "' AND (COMPANY_ID = " + companyId + " OR " + companyId + " = 0 OR " + companyId + " = 1))";
 			} else {
 				sql += " AND T1.CHUMONBANGO IN (select order_id from company_order_tbl where (COMPANY_ID = " + companyId + " OR " + companyId + " = 0 OR " + companyId + " = 1))";
 			}
