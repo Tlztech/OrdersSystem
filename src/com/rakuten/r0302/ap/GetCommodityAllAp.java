@@ -33,7 +33,7 @@ public class GetCommodityAllAp {
 					" SUM(T3.STOCK_JP) STOCK_JP , SUM(T3.STOCK_HANDUP) STOCK_HANDUP " + 
 					" FROM TBL00011 T1 LEFT JOIN TBL00010 T2 ON T1.CATEGORY_ID = " + 
 					" T2.CATEGORY_ID LEFT JOIN TBL00012 T3 ON T1.COMMODITY_ID = " + 
-					" T3.COMMODITY_ID WHERE T1.DEL_FLG = '0' AND T1.COMMODITY_ID in (select commodity_id from company_commodity_tbl where (COMPANY_ID = ? OR ? = 0 OR = 1))" +
+					" T3.COMMODITY_ID WHERE T1.DEL_FLG = '0' AND T1.COMMODITY_ID in (select commodity_id from company_commodity_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))" +
 					" GROUP BY T1.COMMODITY_ID";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, companyId);
