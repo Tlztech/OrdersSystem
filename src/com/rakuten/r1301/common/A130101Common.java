@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.OrderCommon;
 import com.rakuten.common.bean.CommonOrderBean;
@@ -481,8 +483,8 @@ public class A130101Common {
 						ps.setString(1, rs.getString("CHUMONBANGO"));
 						rs2 = ps.executeQuery();
 						if (rs2.next()) {
-							Boolean bResult = rs2.getString("thissize").matches("^[-\\+]?[.\\d]*$");
-							if(!rs2.getString("thissize").isEmpty() && bResult) {
+							Boolean bResult = rs2.getString("thissize") == null ? false : (rs2.getString("thissize").matches("^[-\\+]?[.\\d]*$"));
+							if(StringUtils.isNotBlank(rs2.getString("thissize")) && bResult) {
 								Order.setSize(rs2.getString("thissize"));
 								Order.setUnsokaisha(rs2.getString("kaisha"));
 								sql = "update common_order_tbl set haisouhoho = ?, UPDATE_TIME = ? where chumonbango = ?";
