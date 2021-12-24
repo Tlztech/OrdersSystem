@@ -381,7 +381,9 @@ public class A14010107Action extends BaseAction {
 				nokiId = 0;
 				if (stockbean.getStock_jp_kano() > 0) {
 					stock = stockbean.getStock_jp_kano();
-					nokiId = Utility.getNokiId(shop, 1);
+//					nokiId = Utility.getNokiId(shop, 1);
+					// １～２営業日以内に発送
+					nokiId = 1;
 //				} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
 				} else if (stockbean.getStock_unsochu_kano() > 0) {
 					if (stockbean.getStock_unsochu_kano() > 0) {
@@ -390,10 +392,14 @@ public class A14010107Action extends BaseAction {
 //					if (stockbean.getStock_sh_kano() > 0) {
 //						stock = stock + stockbean.getStock_sh_kano();
 //					}
-					nokiId = Utility.getNokiId(shop, 3);
+//					nokiId = Utility.getNokiId(shop, 3);
+					// ７～１０営業日以内に発送
+					nokiId = 2;
 				} else {
 					stock = 0;
-					nokiId = Utility.getJinhuoshangNoki(stockbean.getJinhuoshang());
+//					nokiId = Utility.getJinhuoshangNoki(stockbean.getJinhuoshang());
+					// 売り切れ
+					nokiId = 3;
 
 				}
 				item.setInventory(stock);
