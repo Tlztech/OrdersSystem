@@ -175,7 +175,9 @@ function openWin1() {
                 <td class="td_bg">
                     <s:textfield size="20" id="categoryName" name="f030202.categoryName" cssErrorStyle="background:red;" readOnly="true" cssClass="readonly" maxlength="20"/>
                     <s:hidden id="categoryId" name="f030202.categoryId" />
+                    <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
                     <input type="button" onclick="openWin1()" value="修改">
+                    </s:if>
                 </td>
             </tr>
             <tr class="bg_tr">
@@ -208,7 +210,9 @@ function openWin1() {
                 <td class="td_bg">尺寸：</td>
                 <td class="td_bg">
                     <s:textfield size="5" name="f030202.source"/>
+                    <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
                     <input type="button" value="修改" onclick="setSource();">
+                    </s:if>
                 </td>
             </tr>
             <tr class="bg_tr">
@@ -225,7 +229,10 @@ function openWin1() {
         <b>明细信息</b>
         <hr width="500px" align="left">
         <table>
-            <tr><td colspan="9"><input type="button" value="添加明细" onclick="form1.mode.value='1';openWin()" /></td></tr>
+            <tr><td colspan="9">
+            <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
+            <input type="button" value="添加明细" onclick="form1.mode.value='1';openWin()" />
+            </s:if></td></tr>
         </table>
         <table width="1100px" class="table" cellspacing="1" cellpadding="1" align="left" border="0">
             <tr class="bg_tr">
@@ -256,8 +263,10 @@ function openWin1() {
                 <td class="td_bg" align="center">
 <%--                     <input type="button" onclick="document.form1.rowIndex.value=${status.index};document.form1.mode.value='2';actionSubmit('A03020201')" disabled value="修改"/>&nbsp;&nbsp;&nbsp; --%>
 <%--                     <input type="button" onclick="document.form1.rowIndex.value=${status.index};document.form1.mode.value='3';actionConfirm()" disabled value="删除"/>&nbsp;&nbsp;&nbsp; --%>
+					<s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
                     <input type="button" onclick="getShohinStsInfo('<s:property value='f030202.commodityId'/><s:property value='detailNo'/>')" value="详细"/><br/>
                     <s:checkbox name="f030202.commodityDetailList[%{#status.index}].delFlg" onclick="updateDelFlg('%{f030202.commodityId}%{detailNo}',this.checked)"/>入荷不可
+                    </s:if>
                 </td>
             </tr>
             </s:iterator>
@@ -267,7 +276,10 @@ function openWin1() {
         <table>
             <tr>
                 <td class="td_bg" align="left"><input type="button" value="返回" onclick="actionSubmit('A03020101')">&nbsp;&nbsp;&nbsp;</td>
-                <td class="td_bg" align="right"><input type="button" value="确定" onclick="if(check()){actionSubmit('A03020203')}">
+                <td class="td_bg" align="right">
+                <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
+                <input type="button" value="确定" onclick="if(check()){actionSubmit('A03020203')}">
+                </s:if></td>
             </tr>
         </table>
         </div>

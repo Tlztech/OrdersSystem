@@ -273,6 +273,9 @@ function hideDiv3() {
 				 
 				    <input type="button" onclick="actionSubmit('A03020401?commodityId=<s:property value='commodityId'/>&shop=coverforefront')" value="cover详情页"/>&nbsp;&nbsp;&nbsp;
 				</s:if>
+				<s:if test="#session.comp!=null && (#session.comp!=1 && #session.comp!=0)">
+					<input type="button" onclick="document.form1.rowIndex.value=${status.index};document.form1.shoriMode.value='2';actionSubmit('A03020201')" value="查看"/>&nbsp;&nbsp;&nbsp;
+				</s:if>
 				</td>
 			</tr>
 		    </s:iterator>
