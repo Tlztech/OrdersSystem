@@ -23,8 +23,10 @@ public class A10010113Action extends BaseAction {
 
 		OrderCommon common = new OrderCommon();
 
-		a1001Common.insertIntoOtherOrderTbl(a1001Common
-				.getOrderListFromCsvOther(csvFile8));
+		if (!a1001Common.insertIntoOtherOrderTbl(a1001Common
+				.getOrderListFromCsvOther(csvFile8))) {
+			this.addError(null, "导入失败");
+		}
 
 	}
 

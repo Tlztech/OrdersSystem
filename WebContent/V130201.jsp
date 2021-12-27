@@ -370,6 +370,7 @@ a {
                     <input type="button" style="height:30px" onclick="if(confirm('反映済みに設定しますか')){actionSubmit('A13020106')};" value="反映済みに設定"/>
                     <input type="button" style="height:30px" onclick="actionSubmit('A13020112');" value="下载雅虎未反应csv"/>
                     <input type="button" style="height:30px" onclick="actionSubmit('A13020113');" value="下载乐天未反应csv"/>
+                    <input type="button" style="height:30px" onclick="actionSubmit('A13020116');" value="下载ポンパレモール未反应csv"/>
                     <input type="button" style="height:30px" onclick="actionSubmit('A13020114');" value="设置反应完毕"/>
                     <input type="button" style="height:30px" onclick="actionSubmit('A13020115');" value="下载其他平台csv"/>
                 </td>

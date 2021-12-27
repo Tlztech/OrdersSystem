@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.axis.utils.StringUtils;
 
@@ -1237,13 +1238,13 @@ public class A1001Common {
 		ResultSet rs = null;
 		String sql = null;
 		int count = 0;
-		
-		Map<String,Object> map =  ActionContext.getContext().getSession();
+
+		Map<String, Object> map = ActionContext.getContext().getSession();
 		int companyId;
 		if (null == map.get("comp")) {
 			companyId = -1;
 		} else {
-			companyId = (int)map.get("comp");
+			companyId = (int) map.get("comp");
 		}
 
 		for (Map.Entry<String, Map<String, String>> entry : tbl12Map.entrySet()) {
@@ -1308,7 +1309,7 @@ public class A1001Common {
 				ps.setString(15, "00");
 				ps.execute();
 				ps.close();
-				
+
 				sql = "INSERT INTO `rakuten`.`company_commodity_tbl` (`company_id`,`commodity_id`,`permission`) VALUES (?,?,?);";
 				ps = conn.prepareStatement(sql);
 				ps.setInt(1, companyId == 0 ? 1 : companyId);
@@ -1354,12 +1355,12 @@ public class A1001Common {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = format.format(new Date());
 		try {
-			Map<String,Object> map =  ActionContext.getContext().getSession();
+			Map<String, Object> map = ActionContext.getContext().getSession();
 			int companyId;
 			if (null == map.get("comp")) {
 				companyId = -1;
 			} else {
-				companyId = (int)map.get("comp");
+				companyId = (int) map.get("comp");
 			}
 			conn = JdbcConnection.getConnection();
 			sql = "SELECT SHOP_ID, SHOP_NO FROM rakuten.shop";
@@ -1572,7 +1573,7 @@ public class A1001Common {
 					ps.setString(++j, orderList.get(i).getKuponriyougaku());
 
 					ps.executeUpdate();
-					
+
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
 					ps = conn.prepareStatement(sql);
 					j = 0;
@@ -1580,7 +1581,7 @@ public class A1001Common {
 					ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));
 					ps.setInt(++j, 3);
 					ps.executeUpdate();
-					
+
 					ps.close();
 
 				} catch (MySQLIntegrityConstraintViolationException e) {
@@ -1713,8 +1714,8 @@ public class A1001Common {
 						dataMap.put("tanka", shousai.getTanka());
 						dataMap.put("site", "楽天");
 						dataMap.put("shop", shop);
-						tbl12Map.put(commodityId+detailNo, dataMap);
-						
+						tbl12Map.put(commodityId + detailNo, dataMap);
+
 						dataMap = new HashMap<String, String>();
 						dataMap.put("commodityId", commodityId);
 						dataMap.put("productName", shousai.getShouhinmei());
@@ -1722,13 +1723,13 @@ public class A1001Common {
 						dataMap.put("pirurl", pirurl);
 						dataMap.put("date", date);
 						tbl11Map.put(commodityId, dataMap);
-						
+
 						dataMap = new HashMap<String, String>();
 						dataMap.put("bango", bango);
 						tbl16Map.put(bango, dataMap);
-						
+
 						updateTBLForStock(conn, tbl12Map, tbl11Map, tbl16Map);
-						
+
 					}
 				} else if (donkonFlg && donkonOyaFlg) {
 					List<RakutenDetailCsvBean> shousaiDonkonList = new ArrayList<RakutenDetailCsvBean>();
@@ -1791,15 +1792,15 @@ public class A1001Common {
 							commodityId = bango.substring(0, bango.indexOf("-"));
 							detailNo = bango.substring(bango.indexOf("-"));
 						}
-						
+
 						dataMap = new HashMap<String, String>();
 						dataMap.put("commodityId", commodityId);
 						dataMap.put("detailNo", detailNo);
 						dataMap.put("tanka", shousai.getTanka());
 						dataMap.put("site", "楽天");
 						dataMap.put("shop", shop);
-						tbl12Map.put(commodityId+detailNo, dataMap);
-						
+						tbl12Map.put(commodityId + detailNo, dataMap);
+
 						dataMap = new HashMap<String, String>();
 						dataMap.put("commodityId", commodityId);
 						dataMap.put("productName", shousai.getShouhinmei());
@@ -1807,11 +1808,11 @@ public class A1001Common {
 						dataMap.put("pirurl", pirurl);
 						dataMap.put("date", date);
 						tbl11Map.put(commodityId, dataMap);
-						
+
 						dataMap = new HashMap<String, String>();
 						dataMap.put("bango", bango);
 						tbl16Map.put(bango, dataMap);
-						
+
 						updateTBLForStock(conn, tbl12Map, tbl11Map, tbl16Map);
 					}
 				}
@@ -1857,12 +1858,12 @@ public class A1001Common {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = format.format(new Date());
 		try {
-			Map<String,Object> map =  ActionContext.getContext().getSession();
+			Map<String, Object> map = ActionContext.getContext().getSession();
 			int companyId;
 			if (null == map.get("comp")) {
 				companyId = -1;
 			} else {
-				companyId = (int)map.get("comp");
+				companyId = (int) map.get("comp");
 			}
 			conn = JdbcConnection.getConnection();
 			for (int i = 0; i < orderList.size(); i++) {
@@ -2054,7 +2055,7 @@ public class A1001Common {
 					ps.setString(++j, orderList.get(i).getKuponriyougaku());
 
 					ps.executeUpdate();
-					
+
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
 					ps = conn.prepareStatement(sql);
 					j = 0;
@@ -2188,8 +2189,8 @@ public class A1001Common {
 						dataMap.put("tanka", shousai.getTanka());
 						dataMap.put("site", "Yahoo");
 						dataMap.put("shop", shop);
-						tbl12Map.put(commodityId+detailNo, dataMap);
-						
+						tbl12Map.put(commodityId + detailNo, dataMap);
+
 						dataMap = new HashMap<String, String>();
 						dataMap.put("commodityId", commodityId);
 						dataMap.put("productName", shousai.getShouhinmei());
@@ -2197,13 +2198,13 @@ public class A1001Common {
 						dataMap.put("pirurl", pirurl);
 						dataMap.put("date", date);
 						tbl11Map.put(commodityId, dataMap);
-						
+
 						dataMap = new HashMap<String, String>();
 						dataMap.put("bango", bango);
 						tbl16Map.put(bango, dataMap);
-						
+
 						updateTBLForStock(conn, tbl12Map, tbl11Map, tbl16Map);
-						
+
 					}
 				} else if (donkonFlg && donkonOyaFlg) {
 					List<RakutenDetailCsvBean> shousaiDonkonList = new ArrayList<RakutenDetailCsvBean>();
@@ -2272,8 +2273,8 @@ public class A1001Common {
 						dataMap.put("tanka", shousai.getTanka());
 						dataMap.put("site", "Yahoo");
 						dataMap.put("shop", shop);
-						tbl12Map.put(commodityId+detailNo, dataMap);
-						
+						tbl12Map.put(commodityId + detailNo, dataMap);
+
 						dataMap = new HashMap<String, String>();
 						dataMap.put("commodityId", commodityId);
 						dataMap.put("productName", shousai.getShouhinmei());
@@ -2281,11 +2282,11 @@ public class A1001Common {
 						dataMap.put("pirurl", pirurl);
 						dataMap.put("date", date);
 						tbl11Map.put(commodityId, dataMap);
-						
+
 						dataMap = new HashMap<String, String>();
 						dataMap.put("bango", bango);
 						tbl16Map.put(bango, dataMap);
-						
+
 						updateTBLForStock(conn, tbl12Map, tbl11Map, tbl16Map);
 					}
 				}
@@ -2322,7 +2323,7 @@ public class A1001Common {
 			conn.close();
 		}
 	}
-	
+
 	public void insertIntoAUOrderTbl(List<RakutenCsvBean> orderList, String shop) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -2331,12 +2332,12 @@ public class A1001Common {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = format.format(new Date());
 		try {
-			Map<String,Object> map =  ActionContext.getContext().getSession();
+			Map<String, Object> map = ActionContext.getContext().getSession();
 			int companyId;
 			if (null == map.get("comp")) {
 				companyId = -1;
 			} else {
-				companyId = (int)map.get("comp");
+				companyId = (int) map.get("comp");
 			}
 			conn = JdbcConnection.getConnection();
 			for (int i = 0; i < orderList.size(); i++) {
@@ -2445,7 +2446,7 @@ public class A1001Common {
 					ps.setString(++j, orderList.get(i).getSoufusakijushotoshiku());
 					// 送付先住所：町以降
 					ps.setString(++j, orderList.get(i).getSoufusakijushochoijou());
-					
+
 					String gokeishouhin = "0";
 					String gokeizei = "0";
 					String gokeisouryou = "0";
@@ -2465,7 +2466,7 @@ public class A1001Common {
 					ps.setString(++j, gokeisouryou);
 					ps.setString(++j, gokeidaibikiryou);
 					ps.setString(++j, seikyukingaku);
-					
+
 					// 同梱ID
 					ps.setString(++j, orderList.get(i).getDokonId());
 					// 同梱親FLG
@@ -2483,7 +2484,7 @@ public class A1001Common {
 					ps.setString(++j, orderList.get(i).getKuponriyougaku());
 
 					ps.executeUpdate();
-					
+
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
 					ps = conn.prepareStatement(sql);
 					j = 0;
@@ -2491,13 +2492,13 @@ public class A1001Common {
 					ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));
 					ps.setInt(++j, 3);
 					ps.executeUpdate();
-					
-					System.out.println(orderList.get(i).getJuchubango()+"添加");
+
+					System.out.println(orderList.get(i).getJuchubango() + "添加");
 				} catch (MySQLIntegrityConstraintViolationException e) {
 					System.out.println(orderList.get(i).getJuchubango() + "已存在，不再添加");
 					continue;
 				}
-				
+
 				int noukiday = 2;
 				Map<String, Map<String, String>> tbl11Map = new HashMap<String, Map<String, String>>();
 				Map<String, Map<String, String>> tbl12Map = new HashMap<String, Map<String, String>>();
@@ -2568,8 +2569,8 @@ public class A1001Common {
 					dataMap.put("tanka", shousai.getTanka());
 					dataMap.put("site", "AU");
 					dataMap.put("shop", shop);
-					tbl12Map.put(commodityId+detailNo, dataMap);
-					
+					tbl12Map.put(commodityId + detailNo, dataMap);
+
 					dataMap = new HashMap<String, String>();
 					dataMap.put("commodityId", commodityId);
 					dataMap.put("productName", shousai.getShouhinmei());
@@ -2577,13 +2578,13 @@ public class A1001Common {
 					dataMap.put("pirurl", pirurl);
 					dataMap.put("date", date);
 					tbl11Map.put(commodityId, dataMap);
-					
+
 					dataMap = new HashMap<String, String>();
 					dataMap.put("bango", bango);
 					tbl16Map.put(bango, dataMap);
-					
+
 					updateTBLForStock(conn, tbl12Map, tbl11Map, tbl16Map);
-					
+
 				}
 				String dateStr = "";
 				if (noukiday != 20) {
@@ -2613,7 +2614,7 @@ public class A1001Common {
 		} finally {
 			conn.close();
 		}
-		
+
 	}
 
 	public void insertIntoPonpareOrderTbl(List<PonpareCsvBean> orderList) throws Exception {
@@ -2623,12 +2624,12 @@ public class A1001Common {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = format.format(new Date());
 		try {
-			Map<String,Object> map =  ActionContext.getContext().getSession();
+			Map<String, Object> map = ActionContext.getContext().getSession();
 			int companyId;
 			if (null == map.get("comp")) {
 				companyId = -1;
 			} else {
-				companyId = (int)map.get("comp");
+				companyId = (int) map.get("comp");
 			}
 			conn = JdbcConnection.getConnection();
 			for (int i = 0; i < orderList.size(); i++) {
@@ -2777,7 +2778,7 @@ public class A1001Common {
 					ps.setString(++j, "");
 					ps.setString(++j, "0");
 					ps.executeUpdate();
-					
+
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
 					ps = conn.prepareStatement(sql);
 					j = 0;
@@ -2862,12 +2863,12 @@ public class A1001Common {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = format.format(new Date());
 		try {
-			Map<String,Object> map =  ActionContext.getContext().getSession();
+			Map<String, Object> map = ActionContext.getContext().getSession();
 			int companyId;
 			if (null == map.get("comp")) {
 				companyId = -1;
 			} else {
-				companyId = (int)map.get("comp");
+				companyId = (int) map.get("comp");
 			}
 			conn = JdbcConnection.getConnection();
 			for (int i = 0; i < orderList.size(); i++) {
@@ -3062,7 +3063,7 @@ public class A1001Common {
 					ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));
 					ps.setInt(++j, 3);
 					ps.executeUpdate();
-					
+
 				} catch (MySQLIntegrityConstraintViolationException e) {
 					System.out.println(orderList.get(i).getJuchubango() + "已存在，不再添加");
 					continue;
@@ -3183,12 +3184,12 @@ public class A1001Common {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = format.format(new Date());
 		try {
-			Map<String,Object> map =  ActionContext.getContext().getSession();
+			Map<String, Object> map = ActionContext.getContext().getSession();
 			int companyId;
 			if (null == map.get("comp")) {
 				companyId = -1;
 			} else {
-				companyId = (int)map.get("comp");
+				companyId = (int) map.get("comp");
 			}
 			conn = JdbcConnection.getConnection();
 			for (int i = 0; i < orderList.size(); i++) {
@@ -3410,7 +3411,7 @@ public class A1001Common {
 		}
 	}
 
-	public void insertIntoOtherOrderTbl(List<OtherCsvBean> orderList) throws Exception {
+	public boolean insertIntoOtherOrderTbl(List<OtherCsvBean> orderList) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -3418,14 +3419,29 @@ public class A1001Common {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = format.format(new Date());
 		try {
-			Map<String,Object> map =  ActionContext.getContext().getSession();
+			Map<String, Object> map = ActionContext.getContext().getSession();
 			int companyId;
 			if (null == map.get("comp")) {
 				companyId = -1;
 			} else {
-				companyId = (int)map.get("comp");
+				companyId = (int) map.get("comp");
 			}
 			conn = JdbcConnection.getConnection();
+			if (!orderList.isEmpty()) {
+				int count = 0;
+				sql = "SELECT COUNT(*) COUNT FROM shop WHERE COMPANY_ID = ? AND SITE = ?";
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, companyId == 0 ? 1 : companyId);
+				ps.setString(2, orderList.get(0).getPlatform());
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					count = rs.getInt("COUNT");
+				}
+				if (count == 0) {
+					System.out.println("导入文件平台"+orderList.get(0).getPlatform() + "与登陆用户不匹配。");
+					return false;
+				}
+			}
 			for (int i = 0; i < orderList.size(); i++) {
 				int j = 0;
 				try {
@@ -3434,7 +3450,7 @@ public class A1001Common {
 					sql = "SELECT COUNT(*) COUNT FROM common_order_tbl WHERE CHUMONBANGO in (select order_id from company_order_tbl where order_id = ? AND (COMPANY_ID = ?))";
 					ps = conn.prepareStatement(sql);
 					ps.setString(1, orderList.get(i).getJuchubango());
-					ps.setInt(2, companyId == 0?1:companyId);
+					ps.setInt(2, companyId == 0 ? 1 : companyId);
 					rs = ps.executeQuery();
 					while (rs.next()) {
 						count = rs.getInt("COUNT");
@@ -3447,6 +3463,7 @@ public class A1001Common {
 						ps.setString(3, "updater");
 						ps.setString(4, orderList.get(i).getJuchubango());
 						ps.executeUpdate();
+
 					} else {
 						j = 0;
 						sql = "INSERT INTO common_order_tbl VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -3577,7 +3594,7 @@ public class A1001Common {
 						ps.setString(++j, "");
 						ps.setString(++j, "0");
 						ps.executeUpdate();
-						
+
 						sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
 						ps = conn.prepareStatement(sql);
 						j = 0;
@@ -3642,7 +3659,7 @@ public class A1001Common {
 							sql = "SELECT COUNT(*) COUNT FROM TBL00011 WHERE COMMODITY_ID in (select commodity_id from company_commodity_tbl where commodity_id = ? AND (COMPANY_ID = ?)) AND CATEGORY_ID = ?";
 							ps = conn.prepareStatement(sql);
 							ps.setString(1, shouhinbango);
-							ps.setInt(2, companyId == 0?1:companyId);
+							ps.setInt(2, companyId == 0 ? 1 : companyId);
 							ps.setString(3, "100001");
 							rs = ps.executeQuery();
 							while (rs.next()) {
@@ -3677,7 +3694,7 @@ public class A1001Common {
 								ps.setString(14, "kyo");
 								ps.setString(15, "00");
 								ps.execute();
-								
+
 								sql = "INSERT INTO `rakuten`.`company_commodity_tbl` (`company_id`,`commodity_id`,`permission`) VALUES (?,?,?);";
 								ps = conn.prepareStatement(sql);
 								ps.setInt(1, companyId == 0 ? 1 : companyId);
@@ -3738,7 +3755,7 @@ public class A1001Common {
 							String maxBarcode = null;
 							sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
 							ps = conn.prepareStatement(sql);
-							ps.setString(1, shouhinbango + ("-0-0".equals(detailNo)?"":detailNo));
+							ps.setString(1, shouhinbango + ("-0-0".equals(detailNo) ? "" : detailNo));
 							rs = ps.executeQuery();
 
 							count = 0;
@@ -3757,7 +3774,7 @@ public class A1001Common {
 								ps = conn.prepareStatement(sql);
 								if ("-0-0".equals(detailNo)) {
 									ps.setString(1, shouhinbango);
-								}else {
+								} else {
 									ps.setString(1, shouhinbango + detailNo);
 								}
 								ps.setString(2, maxBarcode);
@@ -3802,7 +3819,7 @@ public class A1001Common {
 
 			// commit
 			conn.commit();
-
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			conn.rollback();
@@ -3820,12 +3837,12 @@ public class A1001Common {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = format.format(new Date());
 		try {
-			Map<String,Object> map =  ActionContext.getContext().getSession();
+			Map<String, Object> map = ActionContext.getContext().getSession();
 			int companyId;
 			if (null == map.get("comp")) {
 				companyId = -1;
 			} else {
-				companyId = (int)map.get("comp");
+				companyId = (int) map.get("comp");
 			}
 			conn = JdbcConnection.getConnection();
 			for (int i = 0; i < orderList.size(); i++) {
@@ -3866,7 +3883,7 @@ public class A1001Common {
 					ps.setString(++j, "");
 					ps.setString(++j, Utility.isEmptyString(orderList.get(i).getPointoriyogaku()) ? "0"
 							: orderList.get(i).getPointoriyogaku());
-					
+
 					// あす楽希望
 					ps.setString(++j, orderList.get(i).getAsurakukibou());
 					// 注文者名字
@@ -3901,7 +3918,7 @@ public class A1001Common {
 					ps.setString(++j, orderList.get(i).getKomento());
 					// メール差込文(お客様へのメッセージ)
 					ps.setString(++j, orderList.get(i).getMerusashikomibun());
-					
+
 					// 送付先名字
 					ps.setString(++j, orderList.get(i).getSofusakimeiji());
 					// 送付先名前
@@ -3925,7 +3942,7 @@ public class A1001Common {
 					ps.setString(++j, orderList.get(i).getSoufusakijushotoshiku());
 					// 送付先住所：町以降
 					ps.setString(++j, orderList.get(i).getSoufusakijushochoijou());
-					
+
 					String gokeishouhin = "0";
 					String gokeizei = "0";
 					String gokeisouryou = "0";
@@ -3945,25 +3962,25 @@ public class A1001Common {
 					ps.setString(++j, gokeisouryou);
 					ps.setString(++j, gokeidaibikiryou);
 					ps.setString(++j, seikyukingaku);
-					
+
 					// 同梱ID
 					ps.setString(++j, orderList.get(i).getDokonId());
 					// 同梱親FLG
 					ps.setString(++j, donkonOyaFlg ? "1" : "0");
-					
+
 					ps.setString(++j, "0");
 					ps.setString(++j, date);
 					ps.setString(++j, "kyo");
 					ps.setString(++j, date);
 					ps.setString(++j, "kyo");
-					
+
 					// 発送者へのコメント
 					ps.setString(++j, "");
 					// その他利用額
 					ps.setString(++j, orderList.get(i).getKuponriyougaku());
 
 					ps.executeUpdate();
-					
+
 					sql = "INSERT INTO `rakuten`.`company_order_tbl` (`company_id`,`order_id`,`permission`) VALUES (?,?,?);";
 					ps = conn.prepareStatement(sql);
 					j = 0;
@@ -3971,7 +3988,7 @@ public class A1001Common {
 					ps.setString(++j, Utility.strTrim(orderList.get(i).getJuchubango()));
 					ps.setInt(++j, 3);
 					ps.executeUpdate();
-					
+
 					ps.close();
 				} catch (MySQLIntegrityConstraintViolationException e) {
 					System.out.println(orderList.get(i).getJuchubango() + "已存在，不再添加");
@@ -3981,7 +3998,7 @@ public class A1001Common {
 						ps.close();
 					}
 				}
-				
+
 				int noukiday = 2;
 				Map<String, Map<String, String>> tbl11Map = new HashMap<String, Map<String, String>>();
 				Map<String, Map<String, String>> tbl12Map = new HashMap<String, Map<String, String>>();
@@ -4053,8 +4070,8 @@ public class A1001Common {
 					dataMap.put("tanka", shousai.getTanka());
 					dataMap.put("site", "Amazon");
 					dataMap.put("shop", shop);
-					tbl12Map.put(commodityId+detailNo, dataMap);
-					
+					tbl12Map.put(commodityId + detailNo, dataMap);
+
 					dataMap = new HashMap<String, String>();
 					dataMap.put("commodityId", commodityId);
 					dataMap.put("productName", shousai.getShouhinmei());
@@ -4062,15 +4079,15 @@ public class A1001Common {
 					dataMap.put("pirurl", pirurl);
 					dataMap.put("date", date);
 					tbl11Map.put(commodityId, dataMap);
-					
+
 					dataMap = new HashMap<String, String>();
 					dataMap.put("bango", bango);
 					tbl16Map.put(bango, dataMap);
-					
+
 					updateTBLForStock(conn, tbl12Map, tbl11Map, tbl16Map);
-					
+
 				}
-				
+
 				String dateStr = "";
 				if (noukiday != 20) {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -4089,9 +4106,9 @@ public class A1001Common {
 				ps.setString(5, Utility.getDateTime());
 				ps.setString(6, Utility.getUser());
 				ps.execute();
-				
+
 			}
-			
+
 			// commit
 			conn.commit();
 		} catch (Exception e) {
@@ -4219,14 +4236,14 @@ public class A1001Common {
 			searchKeywordCondition = f100101.isSearchKeywordCondition();
 		}
 
-		Map<String,Object> map =  ActionContext.getContext().getSession();
+		Map<String, Object> map = ActionContext.getContext().getSession();
 		int companyId;
 		if (null == map.get("comp")) {
 			companyId = -1;
 		} else {
-			companyId = (int)map.get("comp");
+			companyId = (int) map.get("comp");
 		}
-		
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
@@ -4263,9 +4280,11 @@ public class A1001Common {
 				}
 			}
 			if (!Utility.isEmptyString(chumonbango)) {
-				sql += " AND T1.CHUMONBANGO IN (select order_id from company_order_tbl where order_id = '"+ chumonbango + "' AND (COMPANY_ID = " + companyId + " OR " + companyId + " = 0 OR " + companyId + " = 1))";
+				sql += " AND T1.CHUMONBANGO IN (select order_id from company_order_tbl where order_id = '" + chumonbango
+						+ "' AND (COMPANY_ID = " + companyId + " OR " + companyId + " = 0 OR " + companyId + " = 1))";
 			} else {
-				sql += " AND T1.CHUMONBANGO IN (select order_id from company_order_tbl where (COMPANY_ID = " + companyId + " OR " + companyId + " = 0 OR " + companyId + " = 1))";
+				sql += " AND T1.CHUMONBANGO IN (select order_id from company_order_tbl where (COMPANY_ID = " + companyId
+						+ " OR " + companyId + " = 0 OR " + companyId + " = 1))";
 			}
 			if (!Utility.isEmptyString(chumonEmail)) {
 				sql += " AND T1.MERUADORESU = '" + chumonEmail + "'";
@@ -4378,14 +4397,17 @@ public class A1001Common {
 				Order.setChumonsts4(chumonsts4);
 				Order.setChumonsts5(chumonsts5);
 				Order.setChumonsts6(chumonsts6);
-				
+
 				Order.setShohinbango(rs.getString("T2.SHOUHINBANGO"));
 				Order.setKosu(rs.getString("T2.KOSU"));
-				Order.setSofusakisha(rs.getString("T1.SOFUSAKIMEIJI")+rs.getString("T1.SOUFUSAKINAMAE"));
-				Order.setSofusakiyubinbango(rs.getString("T1.SOUFUSAKIYUBINBANGO1")+"-"+rs.getString("T1.SOUFUSAKIYUBINBANGO2"));
+				Order.setSofusakisha(rs.getString("T1.SOFUSAKIMEIJI") + rs.getString("T1.SOUFUSAKINAMAE"));
+				Order.setSofusakiyubinbango(
+						rs.getString("T1.SOUFUSAKIYUBINBANGO1") + "-" + rs.getString("T1.SOUFUSAKIYUBINBANGO2"));
 				Order.setSofusakijushotodofuke(rs.getString("T1.SOUFUSAKIJUSHOTODOFUKEN"));
-				Order.setSofusakijushotoshikuchoijou(rs.getString("T1.SOUFUSAKIJUSHOTOSHIKU")+rs.getString("T1.SOUFUSAKIJUSHOCHOIJOU"));
-				Order.setSofusakidenwabango(rs.getString("T1.SOFUSAKIDENWABANGO1") + "-" + rs.getString("T1.SOFUSAKIDENWABANGO2") + "-"+ rs.getString("T1.SOFUSAKIDENWABANGO3"));
+				Order.setSofusakijushotoshikuchoijou(
+						rs.getString("T1.SOUFUSAKIJUSHOTOSHIKU") + rs.getString("T1.SOUFUSAKIJUSHOCHOIJOU"));
+				Order.setSofusakidenwabango(rs.getString("T1.SOFUSAKIDENWABANGO1") + "-"
+						+ rs.getString("T1.SOFUSAKIDENWABANGO2") + "-" + rs.getString("T1.SOFUSAKIDENWABANGO3"));
 
 				orderList.add(Order);
 			}
@@ -4550,12 +4572,12 @@ public class A1001Common {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
-			Map<String,Object> map =  ActionContext.getContext().getSession();
+			Map<String, Object> map = ActionContext.getContext().getSession();
 			int companyId;
 			if (null == map.get("comp")) {
 				companyId = -1;
 			} else {
-				companyId = (int)map.get("comp");
+				companyId = (int) map.get("comp");
 			}
 			ShohinList shohin = null;
 			conn = JdbcConnection.getConnection();
@@ -4913,8 +4935,8 @@ public class A1001Common {
 			if (csvDataNext != null) {
 				chumonbangoNext = csvDataNext[3];
 			}
-			if(StringUtils.isEmpty(csvData[6]) || "0".equals(csvData[6])) {
-				
+			if (StringUtils.isEmpty(csvData[6]) || "0".equals(csvData[6])) {
+
 			} else {
 				orderInfo.add(csvData);
 			}
