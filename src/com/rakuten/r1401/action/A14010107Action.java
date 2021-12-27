@@ -44,6 +44,7 @@ public class A14010107Action extends BaseAction {
 
 	private static final long serialVersionUID = 1L;
 	private String logKey = null;
+	private int type = 0;
 	private Map<String, String> itemNoMapForUpdateStock = new HashMap<String, String>();
 	
 	@Override
@@ -63,7 +64,7 @@ public class A14010107Action extends BaseAction {
 	
 		String site = "Yahoo";
 		List<String> shopList = getShopsBySite(site);
-		List<StockBean> stockBeanList = getStockFromDB();
+		List<StockBean> stockBeanList = getStockFromDB(type);
 		stockBeanList.stream().forEach(n->{
 			itemNoMapForUpdateStock.put(n.getCommodity_id(), n.getCommodity_id());
 		});
@@ -123,7 +124,7 @@ public class A14010107Action extends BaseAction {
 	}
 	
 //	private List<StockBean> getStockFromDB(String site, String shop) throws Exception {
-	private List<StockBean> getStockFromDB() throws Exception {
+	private List<StockBean> getStockFromDB(int type) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -141,6 +142,11 @@ public class A14010107Action extends BaseAction {
 			conn = JdbcConnection.getConnection();
 //			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ?";
 			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE IN ('Yahoo','楽天','AU')";
+			if(type == 2) {
+				sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.SITE IN ('Yahoo','楽天','AU')";
+			} else {
+				sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE IN ('Yahoo','楽天','AU')";
+			}
 
 			ps = conn.prepareStatement(sql);
 //			ps.setString(1, site);
@@ -684,6 +690,20 @@ public class A14010107Action extends BaseAction {
 	 */
 	public void setLogKey(String logKey) {
 		this.logKey = logKey;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public int getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(int type) {
+		this.type = type;
 	}
 
 }
