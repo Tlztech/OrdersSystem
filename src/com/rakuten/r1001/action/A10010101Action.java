@@ -51,20 +51,20 @@ public class A10010101Action extends BaseAction {
 		f100101.setTuikahasomachiCount(String.valueOf(tuikaHasomachiList.size()));
 		// 分納発送待ち
 		System.out.println("orderCommon.getBunnoHasomachiList>>>"+ Utility.getDateTime());
-		List<String> bunnoHasomachiList = orderCommon.getBunnoHasomachiList(commonOrderBeanList);
-		f100101.setBunnohasomachiCount(String.valueOf(bunnoHasomachiList.size()));
+//		List<String> bunnoHasomachiList = orderCommon.getBunnoHasomachiList(commonOrderBeanList);
+//		f100101.setBunnohasomachiCount(String.valueOf(bunnoHasomachiList.size()));
 		// 発送待ち-至急
 		System.out.println("orderCommon.getHasomachishikyuList>>>"+ Utility.getDateTime());
-		List<String> hasomachiShikyuList = orderCommon.getHasomachishikyuList(commonOrderBeanList);
-		f100101.setHasomachishikyuCount(String.valueOf(hasomachiShikyuList.size()));
+//		List<String> hasomachiShikyuList = orderCommon.getHasomachishikyuList(commonOrderBeanList);
+//		f100101.setHasomachishikyuCount(String.valueOf(hasomachiShikyuList.size()));
 		// 追加発送待ち-至急
 		System.out.println("orderCommon.getTuikaHasomachishikyuList>>>"+ Utility.getDateTime());
-		List<String> tuikaHasomachiShikyuList = orderCommon.getTuikaHasomachishikyuList(commonOrderBeanList);
-		f100101.setTuikahasomachishikyuCount(String.valueOf(tuikaHasomachiShikyuList.size()));
+//		List<String> tuikaHasomachiShikyuList = orderCommon.getTuikaHasomachishikyuList(commonOrderBeanList);
+//		f100101.setTuikahasomachishikyuCount(String.valueOf(tuikaHasomachiShikyuList.size()));
 		// 分納発送待ち-至急
 		System.out.println("orderCommon.getBunnoHasomachishikyuList>>>"+ Utility.getDateTime());
-		List<String> bunnoHasomachiShikyuList = orderCommon.getBunnoHasomachishikyuList(commonOrderBeanList);
-		f100101.setBunnohasomachishikyuCount(String.valueOf(bunnoHasomachiShikyuList.size()));
+//		List<String> bunnoHasomachiShikyuList = orderCommon.getBunnoHasomachishikyuList(commonOrderBeanList);
+//		f100101.setBunnohasomachishikyuCount(String.valueOf(bunnoHasomachiShikyuList.size()));
 		// 発送待ち-発送可
 		System.out.println("orderCommon.getHasomachiHasokaList>>>"+ Utility.getDateTime());
 		List<String> hasomachihasokaList = orderCommon.getHasomachiHasokaList(commonOrderBeanList, shouhinStsBeanList);
@@ -76,36 +76,36 @@ public class A10010101Action extends BaseAction {
 		f100101.setTuikahasomachihasokaCount(String.valueOf(tuikahasomachihasokaList.size()));
 		// 分納発送待ち-発送可
 		System.out.println("orderCommon.getBunnohasomachiHasokaList>>>"+ Utility.getDateTime());
-		List<String> bunnohasomachihasokaList = orderCommon.getBunnohasomachiHasokaList(commonOrderBeanList,
-				shouhinStsBeanList);
-		f100101.setBunnohasomachihasokaCount(String.valueOf(bunnohasomachihasokaList.size()));
+//		List<String> bunnohasomachihasokaList = orderCommon.getBunnohasomachiHasokaList(commonOrderBeanList,
+//				shouhinStsBeanList);
+//		f100101.setBunnohasomachihasokaCount(String.valueOf(bunnohasomachihasokaList.size()));
 		// 発送待ち-至急-発送可
 		System.out.println("orderCommon.getHasomachiHasokashikyuList>>>"+ Utility.getDateTime());
-		List<String> hasomachishikyuhasokaList = orderCommon.getHasomachiHasokashikyuList(commonOrderBeanList,
-				shouhinStsBeanList);
-		f100101.setHasomachishikyuhasokaCount(String.valueOf(hasomachishikyuhasokaList.size()));
+//		List<String> hasomachishikyuhasokaList = orderCommon.getHasomachiHasokashikyuList(commonOrderBeanList,
+//				shouhinStsBeanList);
+//		f100101.setHasomachishikyuhasokaCount(String.valueOf(hasomachishikyuhasokaList.size()));
 		// 追加発送待ち-至急-発送可
 		System.out.println("orderCommon.getTuikahasomachiHasokashikyuList>>>"+ Utility.getDateTime());
-		List<String> tuikahasomachishikyuhasokaList = orderCommon.getTuikahasomachiHasokashikyuList(commonOrderBeanList,
-				shouhinStsBeanList);
-		f100101.setTuikahasomachishikyuhasokaCount(String.valueOf(tuikahasomachishikyuhasokaList.size()));
+//		List<String> tuikahasomachishikyuhasokaList = orderCommon.getTuikahasomachiHasokashikyuList(commonOrderBeanList,
+//				shouhinStsBeanList);
+//		f100101.setTuikahasomachishikyuhasokaCount(String.valueOf(tuikahasomachishikyuhasokaList.size()));
 		// 分納発送待ち-至急-発送可
 		System.out.println("orderCommon.getBunnohasomachishikyuHasokaList>>>"+ Utility.getDateTime());
-		List<String> bunnohasomachishikyuhasokaList = orderCommon.getBunnohasomachishikyuHasokaList(commonOrderBeanList,
-				shouhinStsBeanList);
-		f100101.setBunnohasomachishikyuhasokaCount(String.valueOf(bunnohasomachishikyuhasokaList.size()));
+//		List<String> bunnohasomachishikyuhasokaList = orderCommon.getBunnohasomachishikyuHasokaList(commonOrderBeanList,
+//				shouhinStsBeanList);
+//		f100101.setBunnohasomachishikyuhasokaCount(String.valueOf(bunnohasomachishikyuhasokaList.size()));
 		// 返品待ち
 		System.out.println("getHenpinmachiList>>>"+ Utility.getDateTime());
-		List<String> henpinmachiList = orderCommon.getHenpinmachiList();
-		f100101.setHenpinmachiCount(String.valueOf(henpinmachiList.size()));
+//		List<String> henpinmachiList = orderCommon.getHenpinmachiList();
+//		f100101.setHenpinmachiCount(String.valueOf(henpinmachiList.size()));
 		// 返品中
 		System.out.println("getHenpinchuList>>>"+ Utility.getDateTime());
-		List<String> henpinchuList = orderCommon.getHenpinchuList();
-		f100101.setHenpinchuCount(String.valueOf(henpinchuList.size()));
+//		List<String> henpinchuList = orderCommon.getHenpinchuList();
+//		f100101.setHenpinchuCount(String.valueOf(henpinchuList.size()));
 		// 返金待ち
 		System.out.println("getHenkinmachiList>>>"+ Utility.getDateTime());
-		List<String> henkinmachiList = orderCommon.getHenkinmachiList();
-		f100101.setHenkinmachiCount(String.valueOf(henkinmachiList.size()));
+//		List<String> henkinmachiList = orderCommon.getHenkinmachiList();
+//		f100101.setHenkinmachiCount(String.valueOf(henkinmachiList.size()));
 		// 送信待ち
 		System.out.println("getSoshinmachiList>>>"+ Utility.getDateTime());
 		 List<String> soshinmachiList = orderCommon.getSoshinmachiList();
@@ -134,6 +134,7 @@ public class A10010101Action extends BaseAction {
 			for (String ordernono : shoriList) {
 				if (orderno.equals(ordernono)) {
 					ariFlg = true;
+					break;
 				}
 			}
 			if (!ariFlg) {
@@ -161,8 +162,8 @@ public class A10010101Action extends BaseAction {
 		List<String> bangoList = orderCommon.getHasomachiYoteibiariList();
 		// 入荷待ち
 		System.out.println("getNyukamachiList>>>"+ Utility.getDateTime());
-//		List<String> nyukamachi = orderCommon.getNyukamachiList(orderInfoBean, bangoList);
-//		f100101.setNyukamachiCount(String.valueOf(nyukamachi.size()));
+		List<String> nyukamachi = orderCommon.getNyukamachiList(orderInfoBean, bangoList);
+		f100101.setNyukamachiCount(String.valueOf(nyukamachi.size()));
 
 		// 入荷中
 		System.out.println("getNyukachuList>>>"+ Utility.getDateTime());

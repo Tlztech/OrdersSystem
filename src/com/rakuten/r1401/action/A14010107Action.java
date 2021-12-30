@@ -141,7 +141,7 @@ public class A14010107Action extends BaseAction {
 //			}
 			conn = JdbcConnection.getConnection();
 //			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ?";
-			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE IN ('Yahoo','楽天','AU')";
+			String sql;
 			if(type == 2) {
 				sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.SITE IN ('Yahoo','楽天','AU')";
 			} else {

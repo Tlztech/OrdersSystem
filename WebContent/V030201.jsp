@@ -3,6 +3,7 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.HashMap"%>
+<%@ page import="com.opensymphony.xwork2.ActionContext"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -161,7 +162,8 @@ function hideDiv3() {
 		Connection conn = null;
 	try {
 		conn = com.rakuten.util.JdbcConnection.getConnection();
-		String sql = "SELECT distinct SITE FROM rakuten.shop where DELETE_FLG is null";
+		int companyId = (Integer)session.getAttribute("comp");
+		String sql = "SELECT distinct SITE FROM rakuten.shop where DELETE_FLG is null and COMPANY_ID = " + (companyId == 0 ? 1 : companyId);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		Map<String, String> siteMap = new HashMap<String, String>();
@@ -171,7 +173,7 @@ function hideDiv3() {
 		}
 		request.setAttribute("sitemap", siteMap);
 		
-		sql = "SELECT distinct SHOP_ID FROM rakuten.shop where DELETE_FLG is null";
+		sql = "SELECT distinct SHOP_ID FROM rakuten.shop where DELETE_FLG is null and COMPANY_ID = " + (companyId == 0 ? 1 : companyId);
 		ps = conn.prepareStatement(sql);
 		rs = ps.executeQuery();
 		Map<String, String> shopMap = new HashMap<String, String>();
@@ -356,15 +358,15 @@ function hideDiv3() {
         
         <div id='pop-div3' style="left:400px;top:250px;width:400px;height:250px;position:absolute;display:none" class="pop-box">   
             <div class="pop-box-body" >
-            <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
             <table>
                 <tr height="50px">
                     <td>平台：<s:select list="#request.sitemap" name="f030201.siteForGoods"/></td>
+                    <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
                     <td>店舗：<s:select list="#request.shopmap" name="f030201.shopForGoods"/></td>
+                    </s:if>
                 </tr>
             </table>
-            </s:if>
-            <table>
+           <table>
                 <tr height="50px">
                     <td>商品列表CSV文件：<s:file name="itemCsv"/></td>
                 </tr>

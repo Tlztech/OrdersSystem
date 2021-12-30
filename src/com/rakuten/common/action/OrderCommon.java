@@ -13,8 +13,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.xml.datatype.DatatypeFactory;
 
@@ -4137,6 +4139,30 @@ public class OrderCommon {
 		}
 		return result;
 	}
+	
+	public Map<String, Boolean> isNyukakano(List<String> shouhinbangoList) throws Exception {
+		Connection conn = null;
+		Map<String, Boolean> result = new HashMap<>();
+		try {
+			PreparedStatement ps = null;
+			String sql = null;
+			ResultSet rs = null;
+			conn = JdbcConnection.getConnection();
+			sql = "SELECT DEL_FLG juchubango, concat(commodity_id,detail_no) shouhinbango FROM tbl00012 WHERE concat(commodity_id,detail_no) in (?)";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, String.join(",", shouhinbangoList));
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				result.put(rs.getString("shouhinbango"), "1".equals(rs.getString("juchubango"))?false:true);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+		} finally {
+			conn.close();
+		}
+		return result;
+	}
 
 	private boolean isRenrakuzumi(String chumonbango, String shouhinbango, Connection conn) throws Exception {
 		boolean result = false;
@@ -4675,21 +4701,71 @@ public class OrderCommon {
 		}
 		return shoriList1;
 	}
-
+	
 	public List<String> getNyukamachiList(OrderInfoBean orderInfoBean, List<String> bangoList) throws Exception {
-
-		System.out.println("getNyukamachiList>>>new OrderCommon()>>>"+ Utility.getDateTime());
 		OrderCommon orderCommon = new OrderCommon();
 		List<ShouhinStsBean> shouhinStsBeanList = orderInfoBean.getShouhinStsBeanList();
 		List<CommonOrderBean> commonOrderBeanList = orderInfoBean.getCommonOrderBeanList();
 		List<String> shoriList = new ArrayList<String>();
-		System.out.println("getNyukamachiList>>>for (String orderNo : bangoList)>>>"+ Utility.getDateTime());
+		
+		List<CommonOrderBean> orderList = commonOrderBeanList.stream().filter(data->bangoList.contains(data.getJuchubango())).collect(Collectors.toList());
+		Map<CommonOrderBean, List<String[]>> hasomachiShouhinMap = new HashMap<>();
+		for(CommonOrderBean o : orderList) {
+			List<ShouhinStsBean> shouhinStsBeanByOrderList = shouhinStsBeanList.stream().filter(data->o.getCommonOrderDetailBeanList().stream().map(v->v.getShohinbango()).collect(Collectors.toList()).contains(data.getShouhinbango())).collect(Collectors.toList());
+			hasomachiShouhinMap.put(o, orderCommon.getMachiListAll(o, shouhinStsBeanByOrderList, "2", "7"));
+		}
+		Map<String, Boolean> nyukakano = orderCommon.isNyukakano(hasomachiShouhinMap.values().stream().flatMap(List::stream).collect(Collectors.toList()).stream().map(data->Utility.getCommodityId(data[0])+Utility.getDetailN0(data[0])).collect(Collectors.toList()));
+		List<String[]> hasomachiArr;
+		for(CommonOrderBean o : orderList) {
+			hasomachiArr = hasomachiShouhinMap.getOrDefault(o, new ArrayList<>());
+			List<Integer> nowStsList = new ArrayList<Integer>();
+			for (String[] hasomachi : hasomachiArr) {
+				if ("入荷待ち".equals(hasomachi[2]) && !nyukakano.getOrDefault(Utility.getCommodityId(hasomachi[0])+Utility.getDetailN0(hasomachi[0]), true)) {
+					nowStsList.add(-10);
+				} else if ("入荷待ち".equals(hasomachi[2])) {
+					nowStsList.add(-7);
+				} else if ("入荷中".equals(hasomachi[2])) {
+					nowStsList.add(-5);
+				} else if ("上海在庫".equals(hasomachi[2])) {
+					nowStsList.add(-3);
+				} else if ("運送中".equals(hasomachi[2])) {
+					nowStsList.add(-1);
+				} else if ("発送待ち".equals(hasomachi[2])) {
+					nowStsList.add(1);
+				}
+			}
+			
+			int nowSts = 2;
+			for (Integer sts : nowStsList) {
+				if (sts < nowSts) {
+					nowSts = sts;
+				}
+			}
+			if (-10 == nowSts) {
+				shoriList.add(o.getJuchubango());
+			} else if (-7 == nowSts) {
+				shoriList.add(o.getJuchubango());
+			}
+		}
+		return shoriList.parallelStream().distinct().collect(Collectors.toList());
+	}
+
+	public List<String> getNyukamachiList_SourceVersion(OrderInfoBean orderInfoBean, List<String> bangoList) throws Exception {
+
+//		System.out.println("getNyukamachiList>>>new OrderCommon()>>>"+ Utility.getDateTime());
+		OrderCommon orderCommon = new OrderCommon();
+		List<ShouhinStsBean> shouhinStsBeanList = orderInfoBean.getShouhinStsBeanList();
+		List<CommonOrderBean> commonOrderBeanList = orderInfoBean.getCommonOrderBeanList();
+		List<String> shoriList = new ArrayList<String>();
+		
+//		System.out.println("getNyukamachiList>>>for (String orderNo : bangoList)>>>"+ Utility.getDateTime());
 		for (String orderNo : bangoList) {
 			CommonOrderBean thisOrder = null;
 //			System.out.println("  getNyukamachiList>>>for (CommonOrderBean order : commonOrderBeanList)>>>"+ Utility.getDateTime());
 			for (CommonOrderBean order : commonOrderBeanList) {
 				if (order.getJuchubango().equals(orderNo)) {
 					thisOrder = order;
+					break;
 				}
 			}
 //			System.out.println("  getNyukamachiList>>>for (CommonOrderBean order : commonOrderBeanList)>>>"+ Utility.getDateTime());
@@ -4705,8 +4781,10 @@ public class OrderCommon {
 			List<String[]> hasomachiArr = orderCommon.getMachiListAll(thisOrder, shouhinStsBeanList, "2", "7");
 			
 //			System.out.println("  getNyukamachiList>>>for (String[] hasomachi : hasomachiArr)>>>"+ Utility.getDateTime());
+//			Map<String, Boolean> nyukakano = orderCommon.isNyukakano(hasomachiArr.stream().map(data->Utility.getCommodityId(data[0])+Utility.getDetailN0(data[0])).collect(Collectors.toList()));
 			for (String[] hasomachi : hasomachiArr) {
-				if ("入荷待ち".equals(hasomachi[2]) && !orderCommon.isNyukakano(hasomachi[0])) {
+				if ("入荷待ち".equals(hasomachi[2]) && !orderCommon.isNyukakano(Utility.getCommodityId(hasomachi[0])+Utility.getDetailN0(hasomachi[0]))) {
+//				if ("入荷待ち".equals(hasomachi[2]) && !nyukakano.getOrDefault(Utility.getCommodityId(hasomachi[0])+Utility.getDetailN0(hasomachi[0]), true)) {
 					nowStsList.add(-10);
 				} else if ("入荷待ち".equals(hasomachi[2])) {
 					nowStsList.add(-7);
@@ -4755,6 +4833,7 @@ public class OrderCommon {
 			for (String shoribango : shoriList1) {
 				if (shoribango.equals(orderNo)) {
 					ariFlg = true;
+					break;
 				}
 			}
 //			System.out.println("  getNyukamachiList>>>for (String shoribango : shoriList1)>>>"+ Utility.getDateTime());
@@ -4762,7 +4841,7 @@ public class OrderCommon {
 				shoriList1.add(orderNo);
 			}
 		}
-		System.out.println("getNyukamachiList>>>for (String orderNo : shoriList)>>>"+ Utility.getDateTime());
+//		System.out.println("getNyukamachiList>>>for (String orderNo : shoriList)>>>"+ Utility.getDateTime());
 		return shoriList1;
 	}
 

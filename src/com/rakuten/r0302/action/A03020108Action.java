@@ -79,20 +79,30 @@ public class A03020108Action extends BaseAction {
 					shop = f030201.getShopForGoods();
 				}
 			} else {
-				site = "ken";
-				shop = "";
+				if (StringUtils.isBlank(f030201.getSiteForGoods())) {
+					addError(null, "请选择平台");
+					return;
+				} else {
+					site = f030201.getSiteForGoods();
+					shop = "";
+				}
+			}
+
+			if (csvList.get(0) == null || csvList.get(0).length < 1 || csvList.get(0)[0].equals(site)) {
+				addError(null, "选择平台与文件不一致");
+				return;
 			}
 
 			try {
 				conn = JdbcConnection.getConnection();
 				for (String[] csvData : csvList) {
 					try {
-						if (csvData == null || csvData.length < 1 || StringUtils.isBlank(csvData[0])) {
+						if (csvData == null || csvData.length < 2 || StringUtils.isBlank(csvData[1])) {
 							continue;
 						} else {
-							csvData[0] = csvData[0].replace(" ", "");
-							commodityId = Utility.getCommodityId(csvData[0]);
-							detailNo = Utility.getDetailN0(csvData[0]);
+							csvData[1] = csvData[1].replace(" ", "");
+							commodityId = Utility.getCommodityId(csvData[1]);
+							detailNo = Utility.getDetailN0(csvData[1]);
 							count = 0;
 							sql = "SELECT COUNT(*) COUNT FROM TBL00011 WHERE COMMODITY_ID = ? AND CATEGORY_ID = ?";
 							ps = conn.prepareStatement(sql);
@@ -107,8 +117,8 @@ public class A03020108Action extends BaseAction {
 								ps = conn.prepareStatement(sql);
 								ps.setString(1, commodityId);
 								ps.setString(2, "100001");
-								ps.setString(3, StringUtils.isBlank(csvData[1]) ? "" : csvData[1]);
-								ps.setString(4, StringUtils.isBlank(csvData[2]) ? "" : csvData[2]);
+								ps.setString(3, StringUtils.isBlank(csvData[2]) ? "" : csvData[2]);
+								ps.setString(4, StringUtils.isBlank(csvData[3]) ? "" : csvData[3]);
 								ps.setString(5, "");
 								ps.setString(6, "");
 								ps.setString(7, "");
@@ -161,7 +171,7 @@ public class A03020108Action extends BaseAction {
 
 						}
 					} catch (MySQLIntegrityConstraintViolationException e) {
-						System.out.println(csvData[0] + "已存在，不再添加");
+						System.out.println(csvData[1] + "已存在，不再添加");
 						continue;
 					}
 				}
