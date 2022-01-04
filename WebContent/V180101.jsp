@@ -216,7 +216,6 @@ function hideDiv2() {
                         </c:forEach>  
                     </select>
                 </td>
-                <td height="30" colspan="2"><s:fielderror fieldName="error"/></td>
 			</tr>
             <tr class="bg_tr">
                 <td class="td_bg" width="80px">平台：</td>

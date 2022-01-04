@@ -61,9 +61,9 @@ public class A18010104Action extends BaseAction {
 				ps.setString(17, f180101.getAwsClientSecret());
 				ps.setString(18, f180101.getAwsRefreshToken());
 				ps.setString(19, f180101.getAuApiKey());
-				ps.setString(20, f180101.getPlatform());
-				ps.setString(21, f180101.getShopId());
-				ps.setInt(22, f180101.getCompanyId());
+				ps.setInt(20, f180101.getCompanyId());
+				ps.setString(21, f180101.getPlatform());
+				ps.setString(22, f180101.getShopId());
 				
 				ps.execute();
 				
@@ -97,7 +97,7 @@ public class A18010104Action extends BaseAction {
 				
 			} else {
 				
-				this.addFieldError("error", "更新的平台和店铺不存在，请确认！");
+				addError(null, "更新的平台和店铺不存在，请确认！");
 			}
 			
 		} catch (Exception e) {
