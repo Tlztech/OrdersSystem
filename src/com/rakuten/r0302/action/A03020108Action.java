@@ -88,7 +88,7 @@ public class A03020108Action extends BaseAction {
 				}
 			}
 
-			if (csvList.get(0) == null || csvList.get(0).length < 1 || csvList.get(0)[0].equals(site)) {
+			if (csvList.get(0) == null || csvList.get(0).length < 1 || !csvList.get(0)[0].equals(site)) {
 				addError(null, "选择平台与文件不一致");
 				return;
 			}
