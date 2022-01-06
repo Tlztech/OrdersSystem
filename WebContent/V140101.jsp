@@ -57,7 +57,7 @@
 		div_obj.show("slow");
 		var logKey = "";
 		logKey = _getRandomString(10);
-		actionSubmit('A14010107' + '?logKey=' + logKey + '?type=' + type);
+		actionSubmit('A14010107' + '?logKey=' + logKey + '&type=' + type);
 		setInterval(function() {
 			getLog(logKey);
 		}, 2000);
