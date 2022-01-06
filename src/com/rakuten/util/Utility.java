@@ -68,9 +68,11 @@ public class Utility {
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(file);
-			while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
-				detector.handleData(buf, 0, nread);
-			}
+//			while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
+//				detector.handleData(buf, 0, nread);
+//			}
+			nread = fis.read(buf);
+			detector.handleData(buf, 0, nread);
 			detector.dataEnd();
 			charset = detector.getDetectedCharset();
 			if (charset != null) {
