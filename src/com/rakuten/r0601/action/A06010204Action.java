@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -24,6 +25,7 @@ public class A06010204Action extends BaseAction {
 	private static final long serialVersionUID = 1L;
 
 	private F060102 f060102 = null;
+	private String type = null;
 
 	// file
 	private File filepath = null;
@@ -142,7 +144,12 @@ public class A06010204Action extends BaseAction {
 	
 	protected void isValidated() throws Exception {
 		
-		List<String[]> csvList = Utility.readCsvFileJpn(filepath,false);
+		List<String[]> csvList;
+		if (!StringUtils.isBlank(type)&&"0".equals(type)) {
+			csvList = Utility.readCsvFileChn(filepath,false);
+		} else {
+			csvList = Utility.readCsvFileJpn(filepath,false);
+		}
 		Map<String,Object> map =  ActionContext.getContext().getSession();
 		int companyId;
 		if (null == map.get("comp")) {
@@ -219,6 +226,20 @@ public class A06010204Action extends BaseAction {
 	 */
 	public void setF060102(F060102 f060102) {
 		this.f060102 = f060102;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

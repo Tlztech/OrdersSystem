@@ -281,7 +281,8 @@ function hideDiv() {
             <tr>
                 <td align="left">
                     <s:file name="filepath"/>
-                    <input type="button" value="批量添加" onclick="popupDiv();actionSubmit('A06010204')" style="width:80px;height:25px">
+                    <input type="button" value="中文批量添加" onclick="popupDiv();actionSubmit('A06010204?type=0')" style="width:100px;height:25px">
+                    <input type="button" value="日文批量添加" onclick="popupDiv();actionSubmit('A06010204?type=1')" style="width:100px;height:25px">
                 </td>
             </tr>
         </table>
