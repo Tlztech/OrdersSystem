@@ -37,7 +37,6 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.mozilla.universalchardet.UniversalDetector;
 import org.supercsv.io.CsvListWriter;
 import org.supercsv.io.ICsvListWriter;
 import org.supercsv.prefs.CsvPreference;
@@ -60,42 +59,6 @@ import com.rakuten.r1503.form.Type;
 
 public class Utility {
 	
-	private static String getCharset(File file) {
-		String charset;
-		byte[] buf = new byte[4096];
-		UniversalDetector detector = new UniversalDetector(null);
-		int nread;
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(file);
-//			while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
-//				detector.handleData(buf, 0, nread);
-//			}
-			nread = fis.read(buf);
-			detector.handleData(buf, 0, nread);
-			detector.dataEnd();
-			charset = detector.getDetectedCharset();
-			if (charset != null) {
-				
-			} else {
-				charset = "Shift-JIS";
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			charset = "Shift-JIS";
-		} finally {
-			try {
-				if (fis != null) {
-					fis.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			detector.reset();
-		}
-		return charset;
-	}
-	
 	public static List<String[]> readCsvFile(File file, boolean jumpFlg, String splitCode, String encoding) throws Exception {
 		ArrayList<String[]> csvList = new ArrayList<String[]>(); // 用来保存数据
 		CsvReader reader = new CsvReader(new FileInputStream(file), splitCode.charAt(0), Charset.forName(encoding)); // 一般用这编码读就可以了
@@ -110,9 +73,9 @@ public class Utility {
 		return csvList;
 	}
 	
-	public static List<String[]> readCsvFile(File file, boolean jumpFlg) throws Exception {
+	public static List<String[]> readCsvFileJpn(File file, boolean jumpFlg) throws Exception {
 		
-		return readCsvFile(file, jumpFlg, ",", getCharset(file));
+		return readCsvFile(file, jumpFlg, ",", "Shift-JIS");
 	}
 
 	public static String getJpstr(Connection conn, String cnstr) throws Exception {
@@ -165,18 +128,8 @@ public class Utility {
 		return csvList;
 	}
 
-	public static List<String[]> readCsvFile2(File file, boolean jumpFlg) throws Exception {
-		ArrayList<String[]> csvList = new ArrayList<String[]>(); // 用来保存数据
-		CsvReader reader = new CsvReader(new FileInputStream(file), ',', Charset.forName("GBK")); // 一般用这编码读就可以了
-		if (jumpFlg) {
-			reader.readHeaders(); // 跳过表头 如果需要表头的话，不要写这句。
-		}
-		while (reader.readRecord()) { // 逐行读入除表头的数据
-			csvList.add(reader.getValues());
-		}
-		reader.close();
-
-		return csvList;
+	public static List<String[]> readCsvFileChn(File file, boolean jumpFlg) throws Exception {
+		return readCsvFile(file, jumpFlg, ",", "GBK");
 	}
 
 	public static List<String[]> readCsvFileUncode(File file, boolean jumpFlg, String code) throws Exception {
@@ -1123,15 +1076,15 @@ public class Utility {
 	}
 
 	public static List<ShohinBean> getShohinFromCsv(File itemCsv, File itemCatCsv, File selectCsv) throws Exception {
-		List<String[]> itemList = readCsvFile(itemCsv, true);
+		List<String[]> itemList = readCsvFileJpn(itemCsv, true);
 		List<String[]> itemCatList = null;
 		if (itemCatCsv != null) {
-			itemCatList = readCsvFile(itemCatCsv, true);
+			itemCatList = readCsvFileJpn(itemCatCsv, true);
 		}
 //		List<String[]> selectList = readCsvFile(selectCsv, true);
 		List<String[]> selectList = null;
 		if (selectCsv != null) {
-			selectList = readCsvFile(selectCsv, true);
+			selectList = readCsvFileJpn(selectCsv, true);
 		}
 
 		// 结果
@@ -1398,15 +1351,15 @@ public class Utility {
 
 	public static List<ShohinBean> getShohinFromYahooCsv(File itemCsv, File itemCatCsv, File selectCsv)
 			throws Exception {
-		List<String[]> itemList = readCsvFile(itemCsv, true);
+		List<String[]> itemList = readCsvFileJpn(itemCsv, true);
 		List<String[]> itemCatList = null;
 		if (itemCatCsv != null) {
-			itemCatList = readCsvFile(itemCatCsv, true);
+			itemCatList = readCsvFileJpn(itemCatCsv, true);
 		}
 //		List<String[]> selectList = readCsvFile(selectCsv, true);
 		List<String[]> selectList = null;
 		if (selectCsv != null) {
-			selectList = readCsvFile(selectCsv, true);
+			selectList = readCsvFileJpn(selectCsv, true);
 		}
 
 		// 结果

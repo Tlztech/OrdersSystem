@@ -142,7 +142,7 @@ public class A06010204Action extends BaseAction {
 	
 	protected void isValidated() throws Exception {
 		
-		List<String[]> csvList = Utility.readCsvFile(filepath,false);
+		List<String[]> csvList = Utility.readCsvFileJpn(filepath,false);
 		Map<String,Object> map =  ActionContext.getContext().getSession();
 		int companyId;
 		if (null == map.get("comp")) {

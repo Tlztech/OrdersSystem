@@ -68,6 +68,8 @@ public class F100101 implements Serializable {
 	private String nyukafukarenrakuzumiCount = "0";
 
 	private String ijoCount = "0";
+	
+	private String charset = null;
 
 	public String getNyukafukarenrakumachiCount() {
 		return nyukafukarenrakumachiCount;
@@ -854,6 +856,20 @@ public class F100101 implements Serializable {
 
 	public void setMondaiariCount(String mondaiariCount) {
 		this.mondaiariCount = mondaiariCount;
+	}
+
+	/**
+	 * @return the charset
+	 */
+	public String getCharset() {
+		return charset;
+	}
+
+	/**
+	 * @param charset the charset to set
+	 */
+	public void setCharset(String charset) {
+		this.charset = charset;
 	}
 
 }

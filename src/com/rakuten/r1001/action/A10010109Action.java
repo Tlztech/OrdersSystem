@@ -26,8 +26,8 @@ public class A10010109Action extends BaseAction {
 	private File csvFile4 = null;
 
 	protected void exec() throws Exception {
-		List<String[]> orderkeiDataList = Utility.readCsvFile(csvFile3, true);
-		List<String[]> shohinkeiDataList = Utility.readCsvFile(csvFile4, true);
+		List<String[]> orderkeiDataList = Utility.readCsvFileJpn(csvFile3, true);
+		List<String[]> shohinkeiDataList = Utility.readCsvFileJpn(csvFile4, true);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date = format.format(new Date());
 		Connection conn = null;

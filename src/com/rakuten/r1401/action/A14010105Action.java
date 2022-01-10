@@ -78,7 +78,7 @@ public class A14010105Action extends BaseAction {
 	@Override
 	protected void exec() throws Exception {
 //		shop = Utility.getShopNameById(shop);
-		List<String[]> dataList = Utility.readCsvFile(file, false);
+		List<String[]> dataList = Utility.readCsvFileJpn(file, false);
 		List<StockBean> stockListDB = new ArrayList<StockBean>();
 		for (String[] data : dataList) {
 			StockBean stock = new StockBean();

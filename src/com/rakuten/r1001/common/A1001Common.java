@@ -43,7 +43,7 @@ public class A1001Common {
 
 	public List<RakutenCsvBean> getOrderListFromCsv(File csvFile) throws Exception {
 		// 从CSV文件获取订单信息
-		List<String[]> csvList = Utility.readCsvFile(csvFile, true);
+		List<String[]> csvList = Utility.readCsvFileJpn(csvFile, true);
 		// 返回的订单列表
 		List<RakutenCsvBean> orderList = new ArrayList<RakutenCsvBean>();
 
@@ -4835,7 +4835,7 @@ public class A1001Common {
 
 	public List<DenaCsvBean> getOrderListFromCsvDena(File csvFile) throws Exception {
 		// 从CSV文件获取订单信息
-		List<String[]> csvList = Utility.readCsvFile(csvFile, true);
+		List<String[]> csvList = Utility.readCsvFileJpn(csvFile, true);
 		// 返回的订单列表
 		List<DenaCsvBean> orderList = new ArrayList<DenaCsvBean>();
 
@@ -4863,7 +4863,7 @@ public class A1001Common {
 
 	public List<Qoo10CsvBean> getOrderListFromCsvQoo10(File csvFile) throws Exception {
 		// 从CSV文件获取订单信息
-		List<String[]> csvList = Utility.readCsvFile(csvFile, true);
+		List<String[]> csvList = Utility.readCsvFileJpn(csvFile, true);
 		// 返回的订单列表
 		List<Qoo10CsvBean> orderList = new ArrayList<Qoo10CsvBean>();
 
@@ -4891,7 +4891,7 @@ public class A1001Common {
 
 	public List<PonpareCsvBean> getOrderListFromCsvPonpare(File csvFile) throws Exception {
 		// 从CSV文件获取订单信息
-		List<String[]> csvList = Utility.readCsvFile(csvFile, true);
+		List<String[]> csvList = Utility.readCsvFileJpn(csvFile, true);
 		// 返回的订单列表
 		List<PonpareCsvBean> orderList = new ArrayList<PonpareCsvBean>();
 
@@ -4917,9 +4917,16 @@ public class A1001Common {
 		return orderList;
 	}
 
-	public List<OtherCsvBean> getOrderListFromCsvOther(File csvFile) throws Exception {
+	public List<OtherCsvBean> getOrderListFromCsvOther(File csvFile, String charset) throws Exception {
 		// 从CSV文件获取订单信息
-		List<String[]> csvList = Utility.readCsvFile(csvFile, true);
+		List<String[]> csvList = null;
+		if ("0".equals(charset)) {
+			csvList = Utility.readCsvFileChn(csvFile, true);
+		} else if ("1".equals(charset)) {
+			csvList = Utility.readCsvFileJpn(csvFile, true);
+		} else {
+			csvList = new ArrayList<>();
+		}
 		// 返回的订单列表
 		List<OtherCsvBean> orderList = new ArrayList<OtherCsvBean>();
 

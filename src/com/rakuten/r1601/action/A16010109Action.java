@@ -34,7 +34,7 @@ public class A16010109Action extends BaseAction {
 	private String fileName = null;
 
 	protected void exec() throws Exception {
-		List<String[]> shoriList = Utility.readCsvFile(inputPath, false);
+		List<String[]> shoriList = Utility.readCsvFileJpn(inputPath, false);
 		Connection conn = null;
 		PreparedStatement ps = null;
 		String sql = "";

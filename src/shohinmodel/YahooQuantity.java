@@ -13,7 +13,7 @@ import com.rakuten.util.Utility;
 public class YahooQuantity {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> dataList = Utility.readCsvFile(new File("D:\\option_20160721170605.csv"), true);
+		List<String[]> dataList = Utility.readCsvFileJpn(new File("D:\\option_20160721170605.csv"), true);
 		List<String[]> shoriList = new ArrayList<String[]>();
 		shoriList.add(new String[] { "コントロールカラム", "商品管理ID（商品URL）", "選択肢タイプ", "購入オプション名", "オプション項目名", "SKU横軸項目ID",
 				"SKU横軸項目名", "SKU縦軸項目ID", "SKU縦軸項目名", "SKU在庫数" });

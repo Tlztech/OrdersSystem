@@ -23,7 +23,7 @@ public class Compare {
 		List<String[]> csvList_3eshop_sel = new ArrayList<String[]>();
 		CsvTool csvTool = new CsvTool();
 
-		csvList_3eshop = Utility.readCsvFile(new File("C:\\dl-item202005171134-1.csv"), false);
+		csvList_3eshop = Utility.readCsvFileJpn(new File("C:\\dl-item202005171134-1.csv"), false);
 //		csvList_3eshop_sel = Utility.readCsvFile(new File("d:\\qfaf.csv"),
 //				false);
 		// csvList_3eshop.addAll(Utility.readCsvFile(new File(

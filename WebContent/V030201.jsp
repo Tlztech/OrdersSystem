@@ -365,6 +365,11 @@ function hideDiv3() {
                     <td>店舗：<s:select list="#request.shopmap" name="f030201.shopForGoods"/></td>
                     </s:if>
                 </tr>
+                <tr height="50px">
+                	<td>文件语言：
+                	<s:select list="#{'':'','0':'中文','1':'日文'}" name="f030201.charset"/>
+                	</td>
+                </tr>
             </table>
            <table>
                 <tr height="50px">

@@ -16,7 +16,7 @@ import com.rakuten.util.Utility;
 public class MainClass {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> dataList = Utility.readCsvFile(new File(
+		List<String[]> dataList = Utility.readCsvFileJpn(new File(
 				"D:\\data201601131512.csv"), true);
 		List<String[]> shorilist = new ArrayList<String[]>();
 		Connection conn = null;

@@ -33,15 +33,21 @@ public class A03020108Action extends BaseAction {
 
 	@Override
 	protected void isValidated() throws Exception {
-		// TODO Auto-generated method stub
-
+		if(StringUtils.isBlank(f030201.getCharset())) {
+			addError(null, "文件语言没选择");
+		}
 	}
 
 	@Override
 	protected void exec() throws Exception {
 		if (itemCsv != null) {
 			// 从CSV文件获取订单信息
-			List<String[]> csvList = Utility.readCsvFile(itemCsv, true);
+			List<String[]> csvList = null;
+			if("0".equals(f030201.getCharset())) {
+				csvList = Utility.readCsvFileChn(itemCsv, true);
+			} else if ("1".equals(f030201.getCharset())) {
+				csvList = Utility.readCsvFileJpn(itemCsv, true);
+			}
 
 			Map<String, Object> map = ActionContext.getContext().getSession();
 			int companyId;

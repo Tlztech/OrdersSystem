@@ -35,7 +35,7 @@ public class RakutenToYahooNew {
 
 	private static void getpic(String itemCsvPath) throws Exception {
 
-		List<String[]> csvList = Utility.readCsvFile(new File(itemCsvPath), true);
+		List<String[]> csvList = Utility.readCsvFileJpn(new File(itemCsvPath), true);
 		List<String[]> picList = getPicUrl(csvList);
 		List<PicBean> picbeanList = new ArrayList<PicBean>();
 		PicBean picbean = null;
@@ -266,7 +266,7 @@ public class RakutenToYahooNew {
 
 	private static void shusei(String path) throws Exception {
 		File file = new File(path);
-		List<String[]> dataList = Utility.readCsvFile(file, true);
+		List<String[]> dataList = Utility.readCsvFileJpn(file, true);
 		List<String[]> shoriList = new ArrayList<String[]>();
 		String[] title = new String[] { "path", "name", "code", "sub-code", "original-price", "price", "sale-price",
 				"options", "headline", "caption", "abstract", "explanation", "additional1", "additional2",
@@ -588,7 +588,7 @@ public class RakutenToYahooNew {
 			yahooBean.setSp_additional(replaceAdditional1(info.getPcyouhanbaisetumeibun()));
 			String product_code = "";
 			String rakutendirectid = info.getZenshohindirekutoriId();
-			List<String[]> directidList = Utility.readCsvFile(new File("D:\\directid.csv"), false);
+			List<String[]> directidList = Utility.readCsvFileJpn(new File("D:\\directid.csv"), false);
 			for (String[] directid : directidList) {
 				if (directid[0].equals(rakutendirectid)) {
 					product_code = directid[1];

@@ -23,7 +23,7 @@ public class Copy_2_of_Compare {
 		List<String[]> csvList_3eshop_sel = new ArrayList<String[]>();
 		CsvTool csvTool = new CsvTool();
 
-		csvList_3eshop = Utility.readCsvFile(new File("D:\\11.csv"), false);
+		csvList_3eshop = Utility.readCsvFileJpn(new File("D:\\11.csv"), false);
 		// csvList_3eshop.addAll(Utility.readCsvFile(new File(
 		// "D:\\jinyan\\ddk\\item.csv"), true));
 		// csvList_3eshop.addAll(Utility.readCsvFile(new File(
@@ -39,7 +39,7 @@ public class Copy_2_of_Compare {
 		// csvList_3eshop.addAll(Utility.readCsvFile(new File(
 		// "D:\\jinyan\\ydz\\item.csv"), true));
 
-		csvList_3eshop_cat = Utility.readCsvFile(new File("D:\\ccghe.csv"),
+		csvList_3eshop_cat = Utility.readCsvFileJpn(new File("D:\\ccghe.csv"),
 				false);
 		// csvList_3eshop_cat.addAll(Utility.readCsvFile(new File(
 		// "D:\\jinyan\\ddk\\cat.csv"), true));
@@ -56,7 +56,7 @@ public class Copy_2_of_Compare {
 		// csvList_3eshop_cat.addAll(Utility.readCsvFile(new File(
 		// "D:\\jinyan\\ydz\\cat.csv"), true));
 
-		csvList_3eshop_sel = Utility.readCsvFile(new File("D:\\22.csv"), false);
+		csvList_3eshop_sel = Utility.readCsvFileJpn(new File("D:\\22.csv"), false);
 		// csvList_3eshop_sel.addAll(Utility.readCsvFile(new File(
 		// "D:\\jinyan\\ddk\\sel.csv"), true));
 		// csvList_3eshop_sel.addAll(Utility.readCsvFile(new File(

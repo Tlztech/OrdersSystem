@@ -13,7 +13,7 @@ import com.rakuten.util.Utility;
 public class kiquality {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> dataList = Utility.readCsvFile(new File("d:\\select20160220193343.csv"), true);
+		List<String[]> dataList = Utility.readCsvFileJpn(new File("d:\\select20160220193343.csv"), true);
 		List<String[]> resultList = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement ps = null;

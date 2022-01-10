@@ -27,7 +27,7 @@ public class RakutenToYahoo {
 			throws Exception {
 		List<YahooShohinCsvBean> yahooShohinCsvBeanList = new ArrayList<YahooShohinCsvBean>();
 		File yahooShohinCsvFile = new File(path);
-		List<String[]> csvList = Utility.readCsvFile(yahooShohinCsvFile, true);
+		List<String[]> csvList = Utility.readCsvFileJpn(yahooShohinCsvFile, true);
 		for (String[] shohin : csvList) {
 			YahooShohinCsvBean yahooShohinCsvBean = new YahooShohinCsvBean();
 			yahooShohinCsvBeanList.add(yahooShohinCsvBean);

@@ -9,8 +9,8 @@ import com.rakuten.util.Utility;
 public class gsdfdsfdsf {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> dataList = Utility.readCsvFile(new File("d:\\item20160325143808 - 副本.csv"), true);
-		List<String[]> dataListAll = Utility.readCsvFile(new File("d:\\dl-item201603252150-1.csv"), false);
+		List<String[]> dataList = Utility.readCsvFileJpn(new File("d:\\item20160325143808 - 副本.csv"), true);
+		List<String[]> dataListAll = Utility.readCsvFileJpn(new File("d:\\dl-item201603252150-1.csv"), false);
 		List<String[]> shoriList = new ArrayList<String[]>();
 		shoriList.add(dataListAll.get(0));
 		for (String[] data : dataList) {

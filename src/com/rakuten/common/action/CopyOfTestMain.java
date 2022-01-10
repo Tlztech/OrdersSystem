@@ -36,7 +36,7 @@ public class CopyOfTestMain {
 				"402444650823", "402444650812", "402444650775", "402444650650",
 				"402444650646" };
 
-		List<String[]> csvList = Utility.readCsvFile(new File("D:/1111.csv"),
+		List<String[]> csvList = Utility.readCsvFileJpn(new File("D:/1111.csv"),
 				false);
 		for (String[] record : csvList) {
 			for (int i = 0; i < juchubangoArr.length; i++) {

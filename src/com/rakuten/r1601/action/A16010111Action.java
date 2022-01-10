@@ -21,7 +21,7 @@ public class A16010111Action extends BaseAction {
 	private File inputCommodityFilePath = null;
 
 	protected void exec() throws Exception {
-		List<String[]> itemNoList = Utility.readCsvFile(inputCommodityFilePath, false);
+		List<String[]> itemNoList = Utility.readCsvFileJpn(inputCommodityFilePath, false);
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;

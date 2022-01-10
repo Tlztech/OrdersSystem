@@ -21,8 +21,8 @@ public class ZaikoMain {
 		// // 新商品列表
 
 		List<String> bangoList = ZaikoTool.getNewShohin(
-				Utility.readCsvFile(new File("D:\\3e.csv"), false),
-				Utility.readCsvFile(new File("D:\\cy.csv"), false));
+				Utility.readCsvFileJpn(new File("D:\\3e.csv"), false),
+				Utility.readCsvFileJpn(new File("D:\\cy.csv"), false));
 		for (String bango : bangoList) {
 			System.out.println(bango);
 		}

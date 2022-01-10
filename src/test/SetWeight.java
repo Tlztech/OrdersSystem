@@ -656,7 +656,7 @@ public class SetWeight {
 		datalist.add("zfqydz717");
 		datalist.add("zfqydz755");
 
-		List<String[]> shoriList = Utility.readCsvFile(new File("d:\\item20160416195607.csv"), false);
+		List<String[]> shoriList = Utility.readCsvFileJpn(new File("d:\\item20160416195607.csv"), false);
 		for (String[] shori : shoriList) {
 			for (String data : datalist) {
 				if (data.equals(shori[1])) {

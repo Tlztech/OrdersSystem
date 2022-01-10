@@ -975,6 +975,9 @@ select {
 					<tr height="80px">
 						<td align="center" colspan="2">代理発送CSV<br />csvファイル選択：<s:file
 								name="csvFile8" /></td>
+						<td>文件<br />语言：
+	                		<s:select list="#{'':'','0':'中文','1':'日文'}" name="f100101.charset"/>
+	                	</td>
 					</tr>
 				</table>
 				<table align="center" width="200px">

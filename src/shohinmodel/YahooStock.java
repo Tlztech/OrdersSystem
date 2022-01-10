@@ -21,7 +21,7 @@ public class YahooStock {
 		List<StockBean> stockBeanList = getStockFromDB();
 		List<YahooStockInputBean> yahooStockInputBeanList = new ArrayList<YahooStockInputBean>();
 		List<String[]> outCsvDataList = new ArrayList<String[]>();
-		List<String[]> csvDataList = Utility.readCsvFile(new File("D:\\data201607071451.csv"), false);
+		List<String[]> csvDataList = Utility.readCsvFileJpn(new File("D:\\data201607071451.csv"), false);
 		String[] title = new String[] { "path", "name", "code", "sub-code", "price", "sale-price", "options",
 				"additional1", "product-category", "spec1", "spec2", "spec3", "spec4", "spec5", "sp-additional" };
 		outCsvDataList.add(title);

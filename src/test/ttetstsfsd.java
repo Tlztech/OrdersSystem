@@ -13,7 +13,7 @@ import com.rakuten.util.Utility;
 public class ttetstsfsd {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> dateArr = Utility.readCsvFile(new File("D:\\item20160325213537.csv"), true);
+		List<String[]> dateArr = Utility.readCsvFileJpn(new File("D:\\item20160325213537.csv"), true);
 		String picUrl = "";
 		boolean ariFlg = false;
 		List<String[]> picList = new ArrayList<String[]>();

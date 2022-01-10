@@ -9,7 +9,7 @@ import com.rakuten.util.Utility;
 public class bvbfg {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> dateList = Utility.readCsvFile(new File("D:\\item.csv"), false);
+		List<String[]> dateList = Utility.readCsvFileJpn(new File("D:\\item.csv"), false);
 
 		File file1 = new File("D:\\hebin2\\");
 		// File file2 = new File("D:\\cover\\");

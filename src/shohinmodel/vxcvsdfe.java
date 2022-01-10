@@ -30,7 +30,7 @@ public class vxcvsdfe {
 	}
 
 	public static void getpic() throws Exception {
-		List<String[]> dateList = Utility.readCsvFile(new File("D:\\item.csv"), false);
+		List<String[]> dateList = Utility.readCsvFileJpn(new File("D:\\item.csv"), false);
 		List<String[]> picList = getPicUrl(dateList);
 		String shohinbango1 = "";
 		List<List<String[]>> shoriListList = new ArrayList<List<String[]>>();
@@ -65,7 +65,7 @@ public class vxcvsdfe {
 	}
 
 	public static void getpic2() throws Exception {
-		List<String[]> dateList = Utility.readCsvFile(new File("D:\\item20160325213537.csv"), false);
+		List<String[]> dateList = Utility.readCsvFileJpn(new File("D:\\item20160325213537.csv"), false);
 		List<String[]> picList = getPicUrl(dateList);
 
 		List<String[]> shoriList = new ArrayList<String[]>();

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.opensymphony.xwork2.ActionContext;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r1301.form.F130101;
@@ -234,6 +236,10 @@ public class A13010104Action extends BaseAction {
 
 				if (!"2".equals(sts)) {
 					addError(null, juchubango + "は普通発送可の注文ではありません");
+				}
+				
+				if (StringUtils.isBlank(Utility.getUnsokaisha(juchubango))) {
+					addError(null, juchubango + "の運送会社が設定されません");
 				}
 
 			} catch (Exception e) {

@@ -9,7 +9,7 @@ import com.rakuten.util.Utility;
 public class Ponpareshusei {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> dataList = Utility.readCsvFile(new File("d:\\format_item - 副本.csv"), false);
+		List<String[]> dataList = Utility.readCsvFileJpn(new File("d:\\format_item - 副本.csv"), false);
 		List<String[]> shoriList = new ArrayList<String[]>();
 		for (String[] data : dataList) {
 			String spdata = data[2];

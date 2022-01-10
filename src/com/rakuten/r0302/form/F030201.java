@@ -32,6 +32,7 @@ public class F030201 implements Serializable {
 	private String shop = null;
 	private String siteForGoods = null;
 	private String shopForGoods = null;
+	private String charset = null;
 
 	public String getCateName() {
 		return cateName;
@@ -362,6 +363,20 @@ public class F030201 implements Serializable {
 	 */
 	public void setShopForGoods(String shopForGoods) {
 		this.shopForGoods = shopForGoods;
+	}
+
+	/**
+	 * @return the charset
+	 */
+	public String getCharset() {
+		return charset;
+	}
+
+	/**
+	 * @param charset the charset to set
+	 */
+	public void setCharset(String charset) {
+		this.charset = charset;
 	}
 
 }

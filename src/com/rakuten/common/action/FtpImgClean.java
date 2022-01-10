@@ -8,7 +8,7 @@ import com.rakuten.util.Utility;
 public class FtpImgClean {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> shohinbangoList = Utility.readCsvFile(new File("d:\\dl-item201909032118-1.csv"), true);
+		List<String[]> shohinbangoList = Utility.readCsvFileJpn(new File("d:\\dl-item201909032118-1.csv"), true);
 		File file = new File("d:\\cover\\");
 		String[] filenameList = file.list();
 		for (String[] shohinbango : shohinbangoList) {

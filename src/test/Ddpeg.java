@@ -13,7 +13,7 @@ import com.rakuten.util.Utility;
 public class Ddpeg {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> dateArr = Utility.readCsvFile2(new File("D:\\5201511262221.csv"), true);
+		List<String[]> dateArr = Utility.readCsvFileChn(new File("D:\\5201511262221.csv"), true);
 		String picUrl = "";
 		boolean ariFlg = false;
 		List<String[]> picList = new ArrayList<String[]>();

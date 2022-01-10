@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.junit.platform.commons.util.StringUtils;
+
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.common.action.OrderCommon;
 import com.rakuten.common.bean.OrderApiBean;
@@ -24,7 +26,7 @@ public class A10010113Action extends BaseAction {
 		OrderCommon common = new OrderCommon();
 
 		if (!a1001Common.insertIntoOtherOrderTbl(a1001Common
-				.getOrderListFromCsvOther(csvFile8))) {
+				.getOrderListFromCsvOther(csvFile8, f100101.getCharset()))) {
 			this.addError(null, "导入失败");
 		}
 
@@ -41,7 +43,9 @@ public class A10010113Action extends BaseAction {
 	}
 
 	protected void isValidated() throws Exception {
-
+		if(StringUtils.isBlank(f100101.getCharset())) {
+			addError(null, "文件语言没选择");
+		}
 	}
 
 	@Override

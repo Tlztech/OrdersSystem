@@ -9,8 +9,8 @@ import com.rakuten.util.Utility;
 public class GetDirectId {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> rakutenList = Utility.readCsvFile(new File("D:\\item20160413184117.csv"), true);
-		List<String[]> yahooList = Utility.readCsvFile(new File("D:\\data201604132124.csv"), true);
+		List<String[]> rakutenList = Utility.readCsvFileJpn(new File("D:\\item20160413184117.csv"), true);
+		List<String[]> yahooList = Utility.readCsvFileJpn(new File("D:\\data201604132124.csv"), true);
 		List<String[]> shoriList = new ArrayList<String[]>();
 		for (String[] rakuten : rakutenList) {
 			for (String[] yahoo : yahooList) {

@@ -10,7 +10,7 @@ import com.rakuten.util.Utility;
 public class firstimagetest2 {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> dataList = Utility.readCsvFile2(new File("d:\\cying.csv"), true);
+		List<String[]> dataList = Utility.readCsvFileChn(new File("d:\\cying.csv"), true);
 
 		File nzlf = new File("D:\\fuck\\nzlf");
 		File nzlyqsp = new File("D:\\fuck\\nzlyqsp");

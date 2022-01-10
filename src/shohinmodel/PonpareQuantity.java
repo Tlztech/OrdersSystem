@@ -13,7 +13,7 @@ import com.rakuten.util.Utility;
 public class PonpareQuantity {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> dataList = Utility.readCsvFile(new File(
+		List<String[]> dataList = Utility.readCsvFileJpn(new File(
 				"D:\\quantity201704270937.csv"), true);
 		List<String[]> shoriList = new ArrayList<String[]>();
 		shoriList.add(new String[] { "code", "sub-code", "quantity",

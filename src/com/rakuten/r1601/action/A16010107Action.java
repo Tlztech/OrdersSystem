@@ -32,7 +32,7 @@ public class A16010107Action extends BaseAction {
 	private String fileName = null;
 
 	protected void exec() throws Exception {
-		List<String[]> dataList = Utility.readCsvFile(inputPath, false);
+		List<String[]> dataList = Utility.readCsvFileJpn(inputPath, false);
 		List<String[]> shoriList = new ArrayList<String[]>();
 		shoriList.add(dataList.get(0));
 		List<String> delList = new ArrayList<String>();

@@ -10,9 +10,9 @@ public class test2 {
 
 	public static void main(String[] args) throws Exception {
 		File file = new File("C:\\Users\\32213\\Desktop\\整理商品.csv");
-		List<String[]> shohinbangoArray = Utility.readCsvFile(file, false);
+		List<String[]> shohinbangoArray = Utility.readCsvFileJpn(file, false);
 		File file2 = new File("C:\\Users\\32213\\Desktop\\dl-item-cat201907192351-1.csv");
-		List<String[]> cateArray = Utility.readCsvFile(file2, true);
+		List<String[]> cateArray = Utility.readCsvFileJpn(file2, true);
 		List<shohincatebean> shohincateList = new ArrayList<shohincatebean>();
 		shohincatebean shohincate = null;
 		for (String[] shohinbangos : shohinbangoArray) {

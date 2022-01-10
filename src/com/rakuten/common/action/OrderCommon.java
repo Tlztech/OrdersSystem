@@ -5075,7 +5075,7 @@ public class OrderCommon {
 	public OrderApiBean getOrderListByCSV(File file,String shop) throws Exception {
 		List<RakutenCsvBean> rakutenBeanList = new ArrayList<RakutenCsvBean>();
 		List<String> messageList = new ArrayList<String>();
-		List<String[]> orderList = Utility.readCsvFile(file, true);
+		List<String[]> orderList = Utility.readCsvFileJpn(file, true);
 
 		rakutenBeanList = setOrderByCsv(file,orderList);
 

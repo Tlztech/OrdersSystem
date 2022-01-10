@@ -9,8 +9,8 @@ public class ZaikoShobun2 {
 
 	public static void main(String[] args) throws Exception {
 
-		List<String[]> dataList = Utility.readCsvFile(new File("d:\\select.csv"), false);
-		List<String[]> stockList = Utility.readCsvFile(new File("d:\\fuck.csv"), true);
+		List<String[]> dataList = Utility.readCsvFileJpn(new File("d:\\select.csv"), false);
+		List<String[]> stockList = Utility.readCsvFileJpn(new File("d:\\fuck.csv"), true);
 
 		for (int i = 1; i < dataList.size(); i++) {
 			String[] data = dataList.get(i);

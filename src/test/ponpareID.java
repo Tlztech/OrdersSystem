@@ -9,7 +9,7 @@ import com.rakuten.util.Utility;
 public class ponpareID {
 
 	public static void main(String[] args) throws Exception {
-		List<String[]> motoList = Utility.readCsvFile(new File("d://format_item.csv"), false);
+		List<String[]> motoList = Utility.readCsvFileJpn(new File("d://format_item.csv"), false);
 		List<String[]> shoriList = new ArrayList<String[]>();
 		List<String[]> switchList = new ArrayList<String[]>();
 		switchList.add(new String[] { "101814", "0205039900" });

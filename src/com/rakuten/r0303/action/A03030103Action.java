@@ -35,7 +35,7 @@ public class A03030103Action extends BaseAction {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		String sql = "";
-		List<String[]> stockList = Utility.readCsvFile(csvFile,false);
+		List<String[]> stockList = Utility.readCsvFileJpn(csvFile,false);
 		try {
 			conn = JdbcConnection.getConnection();
 			sql = "UPDATE TBL00012 SET STOCK_JP = STOCK_JP + ? , UPDATE_TIME = ? , UPDATE_USER = ? , UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
