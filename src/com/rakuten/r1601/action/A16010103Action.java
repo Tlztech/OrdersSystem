@@ -49,6 +49,13 @@ public class A16010103Action extends BaseAction {
 			ps.setInt(3, companyId);
 			ps.setInt(4, companyId);
 			ps.executeUpdate();
+			sql = "delete from hassou_tbl where juchubango in (select order_id from company_order_tbl where order_id = ? AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, chumonbango);
+			ps.setInt(2, companyId);
+			ps.setInt(3, companyId);
+			ps.setInt(4, companyId);
+			ps.executeUpdate();
 			sql = "delete from company_order_tbl where order_id = ? AND (COMPANY_ID = ? OR ? = 0 OR ? = 1) ";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, chumonbango);
