@@ -1416,7 +1416,7 @@ public class OrderCommon {
 				ShouhinStsBean thisShohin = null;
 				for (int j = 0; j < shouhinStsBeanList.size(); j++) {
 					ShouhinStsBean shohinsts = shouhinStsBeanList.get(j);
-					if (shohinsts.getShouhinbango().equals(shohinbango)) {
+					if (shohinsts.getShouhinbango().equalsIgnoreCase(shohinbango)) {
 						thisShohin = shohinsts;
 						break;
 					}
