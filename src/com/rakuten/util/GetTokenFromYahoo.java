@@ -1,6 +1,6 @@
 package com.rakuten.util;
 
-import jp.co.yahoo.yconnect.YConnectExplicit;
+import jp.co.yahoo.yconnect.YConnectClient;
 import jp.co.yahoo.yconnect.core.oauth2.TokenException;
 
 public class GetTokenFromYahoo {
@@ -10,7 +10,7 @@ public class GetTokenFromYahoo {
 	//private final static String clientSecret = "kirakiraichiba";
 	//private final static String refreshToken = "AKb8F1.zGpoIvVVw2mbFUAmlFQI_d10_7AF8EI0ekxN09sWZT88dzoU-";
 	//private final static String refreshToken = "APd5Gl.NTnH_fq1OvnLiu7le6jwNlliDM9UXjdYNFRCopw95WmVqP88-";
-	private final static YConnectExplicit yconnect = new YConnectExplicit();
+	private final static YConnectClient yconnect = new YConnectClient();
 	
 	private GetTokenFromYahoo() {
 		

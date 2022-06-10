@@ -124,6 +124,7 @@ function init(){
 		        订单编号CSV：<input type="file" style="width:170px;height:22px" name="inputPath" />
 		        <input type="button" style="width:100px;height:30px" value="订单一括删除" onclick="actionSubmit('A16010109')">
 		        <input type="button" style="width:130px;height:30px" value="订单SIZE一括删除" onclick="actionSubmit('A16010113')">
+		        <input type="button" style="width:170px;height:30px" value="订单状態一括設定(その他)" onclick="actionSubmit('A16010114')">
 		        </td>
 		    </tr>
 		    <tr>

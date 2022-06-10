@@ -115,18 +115,20 @@ public class YahooShop {
 					messageFromYahooList_GetOrder.add(messageFromYahoo);
 				}
 			} else {
-				List<Object> orderInfoList;
-				if (searchMap.get("OrderInfo") instanceof List) {
-					orderInfoList = (List<Object>) searchMap.get("OrderInfo");
-				} else {
-					orderInfoList = new ArrayList<>();
-					orderInfoList.add(searchMap.get("OrderInfo"));
-				}
-				if (null == orderInfoList || 0 == orderInfoList.size()) {
+				if (Integer.parseInt((String)searchMap.get("TotalCount")) != 0) {
+					List<Object> orderInfoList;
+					if (searchMap.get("OrderInfo") instanceof List) {
+						orderInfoList = (List<Object>) searchMap.get("OrderInfo");
+					} else {
+						orderInfoList = new ArrayList<>();
+						orderInfoList.add(searchMap.get("OrderInfo"));
+					}
+					if (null == orderInfoList || 0 == orderInfoList.size()) {
 
-				} else {
-					for (Object orderInfo : orderInfoList) {
-						orderNoList.add((String) ((Map<String, Object>) orderInfo).get("OrderId"));
+					} else {
+						for (Object orderInfo : orderInfoList) {
+							orderNoList.add((String) ((Map<String, Object>) orderInfo).get("OrderId"));
+						}
 					}
 				}
 			}
@@ -245,7 +247,8 @@ public class YahooShop {
 								item.setItemTaxRatio(Integer.parseInt((String) itemMap.get("ItemTaxRatio")));
 								item.setTitle((String) itemMap.get("Title"));
 								subCode = (String) itemMap.get("SubCode");
-								item.setItemId((subCode == null || "".equals(subCode) ? (String) itemMap.get("ItemId") : subCode));
+								item.setItemId((subCode == null || "".equals(subCode) ? (String) itemMap.get("ItemId")
+										: subCode));
 								item.setUnitPrice(Integer.parseInt((String) itemMap.get("UnitPrice")));
 								item.setQuantity(Integer.parseInt((String) itemMap.get("Quantity")));
 								itemList.add(item);
@@ -420,7 +423,9 @@ public class YahooShop {
 		System.out.println(shopName);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestProperty("Authorization",
-				"Bearer " + (tokenIsValid(TOKEN_VALIDTIMEINTERVAL_ONEHOUR)?getAccessToken():GetTokenFromYahoo.getToken(getClientId(), getSellerId(), getRefreshToken())));
+				"Bearer " + (tokenIsValid(TOKEN_VALIDTIMEINTERVAL_ONEHOUR) ? getAccessToken()
+						: GetTokenFromYahoo.getToken(getClientId(), "P4WSqo0lSZ6klF4FbRqLzNvzxh3Hwgvp3C0J1CHg",
+								getRefreshToken())));
 		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);// 打开写入属性
@@ -428,7 +433,7 @@ public class YahooShop {
 		conn.connect();// 得到请求的输出流对象
 		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
 		out.write(new String(getXml.getBytes("UTF-8")));
-		
+
 		System.out.println(new String(getXml.getBytes("UTF-8")));
 		out.flush();
 		out.close();
@@ -505,7 +510,7 @@ public class YahooShop {
 		date.add(Calendar.HOUR, interval);
 		Calendar dateDB = Calendar.getInstance();
 		getUpdateTime();
-		if(null == loginTime) {
+		if (null == loginTime) {
 			return false;
 		} else {
 			dateDB.setTime(getUpdateTime());
@@ -519,5 +524,5 @@ public class YahooShop {
 		}
 		return accessToken;
 	}
-	
+
 }
