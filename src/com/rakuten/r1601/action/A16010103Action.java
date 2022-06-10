@@ -34,14 +34,14 @@ public class A16010103Action extends BaseAction {
 			ps.setInt(2, companyId);
 			ps.setInt(3, companyId);
 			ps.setInt(4, companyId);
-			int count1 = ps.executeUpdate();
+			ps.executeUpdate();
 			sql = "delete from common_order_tbl where chumonbango in (select order_id from company_order_tbl where order_id = ? AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, chumonbango);
 			ps.setInt(2, companyId);
 			ps.setInt(3, companyId);
 			ps.setInt(4, companyId);
-			int count2 = ps.executeUpdate();
+			int count1 = ps.executeUpdate();
 			sql = "delete from common_order_detail_tbl where juchubango in (select order_id from company_order_tbl where order_id = ? AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, chumonbango);
@@ -64,7 +64,7 @@ public class A16010103Action extends BaseAction {
 			ps.setInt(4, companyId);
 			ps.executeUpdate();
 			
-			if (count1 == 1 && count2 == 1) {
+			if (count1 == 1) {
 				addError(null, "操作成功");
 				conn.commit();
 			} else {
