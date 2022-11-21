@@ -68,8 +68,9 @@ public class F100101 implements Serializable {
 	private String nyukafukarenrakuzumiCount = "0";
 
 	private String ijoCount = "0";
-	
+
 	private String charset = null;
+	private String toiawasebango = null;
 
 	public String getNyukafukarenrakumachiCount() {
 		return nyukafukarenrakumachiCount;
@@ -870,6 +871,15 @@ public class F100101 implements Serializable {
 	 */
 	public void setCharset(String charset) {
 		this.charset = charset;
+	}
+	
+
+	public String getToiawasebango() {
+		return toiawasebango;
+	}
+
+	public void setToiawasebango(String toiawasebango) {
+		this.toiawasebango = toiawasebango;
 	}
 
 }

@@ -4208,6 +4208,7 @@ public class A1001Common {
 		boolean chumonStsSearch8 = false;
 		boolean chumonStsSearch9 = false;
 		boolean searchKeywordCondition = false;
+		String toiawasebango = null;
 
 		if (f100101 != null) {
 			kikanStart = Utility.strTrim(f100101.getKikanStart());
@@ -4221,6 +4222,7 @@ public class A1001Common {
 			tenpobetsu = Utility.strTrim(f100101.getTenpobetsu());
 			denwabango = Utility.strTrim(f100101.getDenwabango());
 			denwabangoType = Utility.strTrim(f100101.getDenwabangoType());
+			toiawasebango = Utility.strTrim(f100101.getToiawasebango());
 			chumonStsSearch0 = f100101.isChumonStsSearch0();
 			chumonStsSearch1 = f100101.isChumonStsSearch1();
 			chumonStsSearch2 = f100101.isChumonStsSearch2();
@@ -4250,7 +4252,7 @@ public class A1001Common {
 			List<OrderList> orderList = new ArrayList<OrderList>();
 			OrderList Order = null;
 			conn = JdbcConnection.getConnection();
-			String sql = "SELECT * FROM common_order_tbl T1 LEFT JOIN common_order_detail_tbl T2 ON T1.CHUMONBANGO = T2.JUCHUBANGO LEFT JOIN HENPIN_TBL T3 ON T1.CHUMONBANGO = T3.JUCHUBANGO LEFT JOIN TUIKA_HASOU_TBL T4 ON T1.CHUMONBANGO = T4.JUCHUBANGO WHERE 1=1 ";
+			String sql = "SELECT * FROM common_order_tbl T1 LEFT JOIN common_order_detail_tbl T2 ON T1.CHUMONBANGO = T2.JUCHUBANGO LEFT JOIN HENPIN_TBL T3 ON T1.CHUMONBANGO = T3.JUCHUBANGO LEFT JOIN TUIKA_HASOU_TBL T4 ON T1.CHUMONBANGO = T4.JUCHUBANGO LEFT JOIN HASSOU_TBL T5 ON T1.CHUMONBANGO = T5.JUCHUBANGO WHERE 1=1 ";
 
 			if (Utility.isEmptyString(kikanStart)) {
 				kikanStart = "0";
@@ -4304,6 +4306,10 @@ public class A1001Common {
 							+ denwabango.replace("-", "") + "'";
 				}
 			}
+			if (!Utility.isEmptyString(toiawasebango)) {
+				sql += " AND T5.TOIAWASEBANGO = '" + toiawasebango + "'";
+			}
+			
 			if (!Utility.isEmptyString(oshiharaihoho)) {
 				sql += " AND T1.OSHIHARAISTS = '" + oshiharaihoho + "'";
 			}
