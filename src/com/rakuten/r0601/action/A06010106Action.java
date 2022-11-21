@@ -10,6 +10,7 @@ import java.util.List;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.r0601.form.CommodityList;
 import com.rakuten.util.JdbcConnection;
+import com.rakuten.util.Utility;
 
 public class A06010106Action extends BaseAction {
 	private static final long serialVersionUID = 1L;
@@ -71,11 +72,13 @@ public class A06010106Action extends BaseAction {
 					detailNo1 = "-0-0";
 				}
 
-				sql = "UPDATE TBL00012 SET STOCK_JP = STOCK_JP + ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+				sql = "UPDATE TBL00012 SET STOCK_JP = STOCK_JP + ?, UPDATE_TIME = ? , UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, getSu);
-				ps.setString(2, commodityId1);
-				ps.setString(3, detailNo1);
+				ps.setString(2, Utility.getDateTime());
+				ps.setString(3, Utility.getUser());
+				ps.setString(4, commodityId1);
+				ps.setString(5, detailNo1);
 				ps.executeUpdate();
 
 				sql = "INSERT INTO TBL00017 VALUES(?,?,?)";

@@ -117,16 +117,18 @@ public class A10010106Action extends BaseAction {
 						continue;
 					}
 
-					sql = "UPDATE TBL00012 SET STOCK_JP = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+					sql = "UPDATE TBL00012 SET STOCK_JP = ?, UPDATE_TIME = ? , UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 					ps = conn.prepareStatement(sql);
 
 					ps.setString(
 							1,
 							String.valueOf(Integer.valueOf(stockjp)
 									- Integer.valueOf(kosu)));
+					ps.setString(2, Utility.getDateTime());
+					ps.setString(3, Utility.getUser());
 
-					ps.setString(2, Utility.getCommodityId(shouhinbango));
-					ps.setString(3, Utility.getDetailN0(shouhinbango));
+					ps.setString(4, Utility.getCommodityId(shouhinbango));
+					ps.setString(5, Utility.getDetailN0(shouhinbango));
 
 					ps.execute();
 

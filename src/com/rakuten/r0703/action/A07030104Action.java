@@ -102,11 +102,13 @@ public class A07030104Action extends BaseAction {
 				ps.setString(2, commodity_idArr[i]);
 				ps.execute();
 
-				sql = "UPDATE TBL00012 SET STOCK_JP = STOCK_JP + ?, UPDATEQUANTITY_FLG =TRUE  WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+				sql = "UPDATE TBL00012 SET STOCK_JP = STOCK_JP + ?, UPDATE_TIME = ? , UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE  WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, kosuArr[i]);
-				ps.setString(2, Utility.getCommodityId(commodity_idArr[i]));
-				ps.setString(3, Utility.getDetailN0(commodity_idArr[i]));
+				ps.setString(2, Utility.getDateTime());
+				ps.setString(3, Utility.getUser());
+				ps.setString(4, Utility.getCommodityId(commodity_idArr[i]));
+				ps.setString(5, Utility.getDetailN0(commodity_idArr[i]));
 				ps.executeUpdate();
 			}
 			conn.commit();
