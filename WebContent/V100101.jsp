@@ -396,7 +396,7 @@ select {
 					<td class="td_bg"><s:textfield size="35" maxlength="50"
 							name="f100101.chumonbango" /></td>
 					<td class="td_bg">注文メールアドレス：</td>
-					<td class="td_bg"><s:textfield size="25" maxlength="250"
+					<td class="td_bg"><s:textfield size="25" maxlength="50"
 							name="f100101.chumonEmail" /></td>
 				</tr>
 				<tr>
@@ -425,6 +425,10 @@ select {
 					<td class="td_bg"><s:select
 							list="#{'':'--','クレジットカード':'クレジットカード','代金引換':'代金引換','銀行振込 ':'銀行振込 ','楽天バンク決済':'楽天バンク決済','Edy決済':'楽天Edy決済'}"
 							name="f100101.oshiharaihoho" /></td>
+				<tr>					
+				    <td class="td_bg">問い合わせ番号：</td>
+					<td class="td_bg"><s:textfield size="15" maxlength="250"
+							name="f100101.toiawasebango" />
 				<tr>
 					<td class="td_bg">注文ステータス：</td>
 					<td class="td_bg" colspan="2">
