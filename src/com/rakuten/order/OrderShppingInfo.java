@@ -36,7 +36,9 @@ public class OrderShppingInfo {
 					
 				} else {
 					orderShppingInfo.orderNoList.add(info[0]);
-					orderShppingInfo.orderShppingInfoMap.put(info[0], Arrays.copyOfRange(info, 1, 3));
+					String[] valueArr = Arrays.copyOfRange(info, 1, 4);
+					valueArr[2] = info[4];
+					orderShppingInfo.orderShppingInfoMap.put(info[0], valueArr);
 				}
 			}
 		}

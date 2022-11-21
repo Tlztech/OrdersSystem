@@ -374,12 +374,17 @@ public class A130201Common {
 			for (String data[] : dataList) {
 				result = result + data[2] + "&";
 			}
+			result = result.substring(0, result.length() - 1) + "%%";
+			for (String data[] : dataList) {
+				result = result + data[3] + "&";
+			}
 			result = result.substring(0, result.length() - 1).replace("&&", "&");
 
 			String[] orderNoList = result.split("%%")[0].split("&");
 			String[] expNoList = result.split("%%")[1].split("&");
 			String[] kaisha = result.split("%%")[2].split("&");
 			String[] shop = result.split("%%")[3].split("&");
+			String[] postWay = result.split("%%")[4].split("&");
 
 			if (orderNoList == null || orderNoList.length == 0) {
 				messageList.add("没有单号需要反映");
@@ -406,7 +411,7 @@ public class A130201Common {
 				for (int j = 0; j < shop.length; j++) {
 					if (shopname.equals(shop[j])) {
 						shopbetsuOrderInfoList.get(i)
-								.add(new String[] { orderNoList[j], expNoList[j], kaisha[j], shop[j] });
+								.add(new String[] { orderNoList[j], expNoList[j], kaisha[j], shop[j], postWay[j] });
 					}
 				}
 
@@ -687,13 +692,13 @@ public class A130201Common {
 
 		PreparedStatement ps = null;
 
-		String sql = "SELECT Distinct TOIAWASEBANGO , UNSOKAISHA  FROM hassou_tbl WHERE JUCHUBANGO = ?";
+		String sql = "SELECT Distinct TOIAWASEBANGO , UNSOKAISHA, HAISOHOHO  FROM hassou_tbl WHERE JUCHUBANGO = ?";
 		for (String juchubango[] : juchubangoList) {
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, juchubango[0]);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				dataList.add(new String[] { rs.getString("TOIAWASEBANGO"), rs.getString("UNSOKAISHA"), juchubango[1] });
+				dataList.add(new String[] { rs.getString("TOIAWASEBANGO"), rs.getString("UNSOKAISHA"), juchubango[1], rs.getString("HAISOHOHO") });
 			}
 		}
 		return dataList;

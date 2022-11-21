@@ -80,7 +80,7 @@ public class Shop {
 				for(Order order : orders) {
 					strArr = orderShppingInfoMap.get(order.getOrderNumber());
 					try {
-						String json_UpdateOrderResult = updateOrderShipping(order.getOrderNumber(), order.getPackageModelList().get(0).getBasketId(), strArr[0], strArr[1], shippingDate);
+						String json_UpdateOrderResult = updateOrderShipping(order.getOrderNumber(), order.getPackageModelList().get(0).getBasketId(), strArr[0], strArr[1], shippingDate, strArr[2]);
 						map_UpdateOrderResult = objectMapper_UpdateOrderResult.readValue(json_UpdateOrderResult, Map.class);
 						messageModelSubList = (ArrayList<Map<String,String>>) map_UpdateOrderResult.get("MessageModelList");
 						for(Map<String,String> messageModelMap : messageModelSubList) {
@@ -98,7 +98,7 @@ public class Shop {
 		return updatedOrderList;
 	}
 	
-	private String updateOrderShipping(String orderNumber, int basketId, String shippingNumber, String deliveryCompany, String shippingDate) throws Exception {
+	private String updateOrderShipping(String orderNumber, int basketId, String shippingNumber, String deliveryCompany, String shippingDate, String postWay) throws Exception {
 		ObjectMapper objectMapper_UpdateOrderResult = new ObjectMapper();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		String updatexml;
@@ -110,7 +110,11 @@ public class Shop {
 		List<Map<String, ?>> shippingModelList = new ArrayList<Map<String, ?>>();
 		Map<String, Object> shippingModelMap = new HashMap<String, Object>();
 		shippingModelMap.put("deliveryCompany", deliveryCompany);
-		shippingModelMap.put("shippingNumber", shippingNumber);
+		if ("DM便".equals(postWay)) {
+			
+		} else {
+			shippingModelMap.put("shippingNumber", shippingNumber);
+		}
 		shippingModelMap.put("shippingDate", shippingDate);
 		shippingModelList.add(shippingModelMap);
 		basketidModelMap.put("ShippingModelList", shippingModelList);
