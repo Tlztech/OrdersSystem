@@ -20,6 +20,35 @@ public class F060101 implements Serializable {
 	List<WayBillInfo> wayBillList = null;
 	private static List<Company> companyList = null;
 	private int companyId;
+	private String commodityId;
+	private String createTime = null;
+	private String updateTime = null;
+	private int queryResult;
+
+
+	public int getQueryResult() {
+		return queryResult;
+	}
+
+	public void setQueryResult(int queryResult) {
+		this.queryResult = queryResult;
+	}
+
+	public String getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
 
 	/**
 	 * @return the deliverDay
@@ -205,5 +234,13 @@ public class F060101 implements Serializable {
 			this.companyName = companyName;
 		}
 		
+	}
+
+	public String getCommodityId() {
+		return commodityId;
+	}
+
+	public void setCommodityId(String commodityId) {
+		this.commodityId = commodityId;
 	}
 }

@@ -294,6 +294,11 @@
 			<result name="success">V060104.jsp</result>
 			<result name="input">V060104.jsp</result>
 		</action>
+	    <action name="A06010114" class="com.rakuten.r0601.action.A06010114Action">
+			<result name="login">V000101.jsp</result>
+			<result name="input">V060101.jsp</result>
+			<result name="success">V060101.jsp</result>
+		</action>
 		<action name="A06010106" class="com.rakuten.r0601.action.A06010106Action">
 			<result name="login">V000101.jsp</result>
 			<result name="success">Close.jsp</result>

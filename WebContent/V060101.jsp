@@ -20,66 +20,90 @@ function openWin1() {
     //}
 }
 function openBaoguanWin() {
-	var waybillno = document.getElementsByName("f060101.wayBillList["+document.form1.rowIndex.value+"].waybillNo")[0].value
+        var waybillno = document.getElementsByName("f060101.wayBillList["+document.form1.rowIndex.value+"].waybillNo")[0].value
     window.open("A06010501?waybillNo="+waybillno);
    // if (returnVal) {
-    //	actionSubmit("A06010501");
+    //        actionSubmit("A06010501");
     //}
 }
+function popupDiv() { 
+    var deliverDay = $("input[name='f060101.deliverDay']").val();
+    if(deliverDay.length <= 0){
+    	alert("请选择发货日");
+    	return false;
+    }
+    $("#confirmText").val("请确认 " + deliverDay +"之前的运单是否全部删除");
+    var div_obj = $("#pop-div");    
+        div_obj.css("top",($(window).height()-220)/2);
+        div_obj.css("left",($(window).width()-400)/2);
+    //添加并显示遮罩层   
+    $("#mask").show();  
+    div_obj.show();  
+}   
+function hideDiv() {   
+	  $("#mask").hide();   
+	  $("#pop-div").hide(); 
+	} 
 function init(){
-	var companyId = "<%=session.getAttribute("comp")%>";
+        var companyId = "<%=session.getAttribute("comp")%>";
     var imgs = document.getElementsByName("button1");
     listLength = imgs.length;
     for(var i=0;i<listLength;i++){
-    	if(document.getElementsByName("f060101.wayBillList["+i+"].status")[0].value == "已签收"){
-    		document.getElementsByName("button1")[i].value="查看";
-    		document.getElementsByName("button1")[i].disabled = false;
-    	}
-    	
-   		if(document.getElementsByName("f060101.wayBillList["+i+"].status")[0].value == "未签收"){
-   			if(companyId == 0 || companyId == 1) {
-   			document.getElementsByName("button1")[i].disabled = false;
-   			}
+            if(document.getElementsByName("f060101.wayBillList["+i+"].status")[0].value == "已签收"){
+                    document.getElementsByName("button1")[i].value="查看";
+                    document.getElementsByName("button1")[i].disabled = false;
+            }
+            
+                   if(document.getElementsByName("f060101.wayBillList["+i+"].status")[0].value == "未签收"){
+                           if(companyId == 0 || companyId == 1) {
+                           document.getElementsByName("button1")[i].disabled = false;
+                           }
             document.getElementsByName("button5")[i].disabled = false;
         }
-    	if(document.getElementsByName("f060101.wayBillList["+i+"].status")[0].value == "一时保存"){
+            if(document.getElementsByName("f060101.wayBillList["+i+"].status")[0].value == "一时保存"){
             document.getElementsByName("button2")[i].disabled = false;
             document.getElementsByName("button6")[i].disabled = false;
         }
     }
     if(document.getElementsByName("f060101.passFlg")[0].value == "1"){
-    	document.getElementsByName("f060101.passFlg")[0].value = "0";
-    	alert("删除成功！");
-    	document.getElementById("kensaku").click();
+            document.getElementsByName("f060101.passFlg")[0].value = "0";
+            alert("删除成功！");
+            document.getElementById("kensaku").click();
     }
     if(document.getElementsByName("f060101.passFlg")[0].value == "2"){
         document.getElementsByName("f060101.passFlg")[0].value = "0";
         alert("取消成功！");
         document.getElementById("kensaku").click();
     }
-	
+    
+    if($("#queryResult").val() != 0){
+    	$("#queryResult").val(0);
+    	window.location.href="A06010101";
+    	alert("删除成功！");
+    }
+
 }
 
 function updateCustoms(value) {
-	var index = document.form1.rowIndex.value;
-	var bango = document.getElementsByName("f060101.wayBillList[" + index
-			+ "].waybillNo")[0].value;
-	var motoCustoms = document.getElementsByName("f060101.wayBillList[" + index
-			+ "].customs")[0].value;
-	
-	if(motoCustoms!=value){	
-	$.post("A06010112", {
-		waybillNo : bango,
-		customs : value,
-	}, function(result) {
-		if (result != "true") {
-			alert("アップデート失敗！");
-		}else{
-			document.getElementsByName("f060101.wayBillList[" + index
-					+ "].customs")[0].value = value;
-		}
-	}, "json");
-	}
+        var index = document.form1.rowIndex.value;
+        var bango = document.getElementsByName("f060101.wayBillList[" + index
+                        + "].waybillNo")[0].value;
+        var motoCustoms = document.getElementsByName("f060101.wayBillList[" + index
+                        + "].customs")[0].value;
+        
+        if(motoCustoms!=value){        
+        $.post("A06010112", {
+                waybillNo : bango,
+                customs : value,
+        }, function(result) {
+                if (result != "true") {
+                        alert("アップデート失敗！");
+                }else{
+                        document.getElementsByName("f060101.wayBillList[" + index
+                                        + "].customs")[0].value = value;
+                }
+        }, "json");
+        }
 }
 </script>
 <style type="text/css">
@@ -107,10 +131,50 @@ function updateCustoms(value) {
     top: 39px;
     left: 20px;
 }
+.pop-box {   
+            z-index: 9999; /*这个数值要足够大，才能够显示在最上层*/  
+            margin-bottom: 3px;   
+            position: absolute;   
+            background: #FFF;   
+            border:solid 1px #6e8bde;   
+        }   
+          
+.pop-box h4 {   
+            color: #FFF;   
+            cursor:default;   
+            height: 18px;   
+            font-size: 14px;   
+            font-weight:bold;   
+            text-align: left;   
+            padding-left: 8px;   
+            padding-top: 4px;   
+            padding-bottom: 2px;   
+            background: url("../images/header_bg.gif") repeat-x 0 0;   
+        }   
+          
+.pop-box-body {   
+            clear: both;   
+            margin: 4px;   
+            padding: 2px;   
+        } 
+        
+        
+.mask {   
+            color:#C7EDCC;
+            background-color:#C7EDCC;
+            position:absolute;
+            top:0px;
+            left:0px;
+            filter: Alpha(Opacity=60);
+            -moz-opacity:.6;    
+            opacity:0.6;
+            z-index:1000;   
+        } 
 -->
 </style>
 </head>
 <body onload="init()">
+    <div id='mask' class="mask" style="width:100%;height:100%;display:none"></div>
     <s:form name="form1" theme="simple" enctype="multipart/form-data">
         <div style="width:900px;margin-top: 5px;margin-left: 10px">
         <b><s:label name="title"/></b>
@@ -136,25 +200,25 @@ function updateCustoms(value) {
                 </td>
                 <td class="td_bg" width="80px">关税：</td>
                 <td class="td_bg">
-                    <s:select list="#{ '':'--','1':'未缴纳关税', '2':'缴纳关税'}"   name="f060101.customs"/>
+                    <s:select list="#{ '':'--','1':'未缴纳关税', '2':'缴纳关税'}"  id="customs" name="f060101.customs"/>
                 </td>
             </tr>
             <tr class="bg_tr">
                 <td class="td_bg" width="80px">物流公司：</td>
                 <td class="td_bg" width="280px">
-                    <s:select list="#{ '01':'ZCE', '02':'EMS', '03':'其他','04':'全部'}"   name="f060101.logistics"/>
+                    <s:select list="#{ '01':'ZCE', '02':'EMS', '03':'其他','04':'全部'}" name="f060101.logistics"/>
                 </td>
                 <s:if test="#session.comp!=null && (#session.comp==1 || #session.comp==0)">
                 <td class="td_bg" width="80px">发货公司：</td>
                 <td class="td_bg">
                     <select id="f060101.companyId" name="f060101.companyId">
-                    	<option value="0">请选择</option>
+                            <option value="0">请选择</option>
                         <c:forEach items="${f060101.companyList}" var="company" >
-                        	<c:if test="${company.companyId==f060101.companyId}">
+                                <c:if test="${company.companyId==f060101.companyId}">
                               <option value="${company.companyId}" selected="selected"> ${company.companyName} </option>
                             </c:if>
                             <c:if test="${company.companyId!=f060101.companyId}">
-                            	<option value="${company.companyId}"> ${company.companyName} </option>
+                                    <option value="${company.companyId}"> ${company.companyName} </option>
                             </c:if>
                         </c:forEach>  
                     </select>
@@ -165,6 +229,12 @@ function updateCustoms(value) {
                    &nbsp;
                 </td>
             </tr>
+            <tr>
+                <td class="td_bg" width="80px">商品编号：</td>
+                <td class="td_bg" width="280px">
+                    <s:textfield size="20" maxlength="20" name="f060101.commodityId"/>
+                </td>
+            </tr>
             <tr class="bg_tr">
                 <td class="td_bg" colspan="4">&nbsp;</td>
             </tr>
@@ -173,6 +243,7 @@ function updateCustoms(value) {
                     <s:radio name="f060101.status" list="#{ '1':'全部', '2':'已签收', '3':'未签收'}" />&nbsp;&nbsp;&nbsp;
                 </td>
                 <td align="right"><input type="button" onclick="actionSubmit('A06010103')" value="检索" id="kensaku" style="width:50px;height:25px"/></td>
+                <td align="right"><input type="button" onclick="popupDiv();" value="删除" id="sakujyo" style="width:50px;height:25px"/></td>
             </tr>
         </table>
         </div>
@@ -195,6 +266,8 @@ function updateCustoms(value) {
                 <td width="60px" align="center">重量(KG)</td>
                 <td width="60px" align="center">运费(CNY)</td>
                 <td width="60px" align="center">关税(JPY)</td>
+                <td width="60px" align="center">创建时间</td>
+                <td width="60px" align="center">更新时间</td>
                 <td align="center">操作</td>
             </tr>
         </table>
@@ -212,6 +285,8 @@ function updateCustoms(value) {
                 <td width="60px" class="td_bg" align="center"><s:property value='weight'/><s:hidden name="f060101.wayBillList[%{#status1.index}].weight" value="%{weight}"/></td>
                 <td width="60px" class="td_bg" align="right"><s:property value='freight'/><s:hidden name="f060101.wayBillList[%{#status1.index}].freight" value="%{freight}"/></td>
                 <td width="60px" class="td_bg" align="right"><s:hidden name="f060101.wayBillList[%{#status1.index}].customs"/><s:textfield size="5" style="text-align:right" name="f060101.wayBillList[%{#status1.index}].customs"  onblur="document.form1.rowIndex.value=%{#status1.index};updateCustoms(this.value)"/></td>
+                <td width="60px" class="td_bg" align="right"><s:property value='createTime'/><s:hidden name="f060101.wayBillList[%{#status1.index}].createTime" value="%{createTime}"/></td>
+                <td width="60px" class="td_bg" align="right"><s:property value='updateTime'/><s:hidden name="f060101.wayBillList[%{#status1.index}].updateTime" value="%{updateTime}"/></td>
                 <td class="td_bg" align="center">
                             <input type="button" name="button1" value="签收" disabled onclick="document.form1.rowIndex.value=${status1.index};openWin1();"/>
                             <input type="button" name="button2" value="修改" disabled onclick="document.form1.rowIndex.value=${status1.index};actionSubmit('A06010105');"/>
@@ -223,8 +298,27 @@ function updateCustoms(value) {
             </tr>
             </s:iterator>
         </table>
+		<div id='pop-div' style="width:400px;height:220px;display:none;position: fixed;" class="pop-box">   
+            <div class="pop-box-body" style="height:220px">
+            <table align="center" width="395px" height="170px">
+                <tr>
+                    <td width="60px"></td>
+                    <td ><input id="confirmText" style="width:254px;border:0 solid;color:red" disabled/></td>
+                </tr>
+            </table>
+            <table align="center" width="95%">
+                <tr>
+                    <td width="25%" align="right"><input type="button" onclick="actionSubmit('A06010114')"  value="確定" /></td>
+                    <td width="25%"></td>
+                    <td width="25%"></td>
+                    <td width="25%"><input type="button" onclick="hideDiv();" value="返回" /></td>
+                </tr>
+            </table>
+            </div>
+            
         </div>
         <s:hidden name="viewId" value="V060101"/>
+        <s:hidden id="queryResult" name="f060101.queryResult"/>
         <s:hidden name="searchMode"/>
         <s:hidden name="mode"/>
         <s:hidden name="shoriMode"/>

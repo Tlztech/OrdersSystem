@@ -1,5 +1,6 @@
 package com.rakuten.r0601.action;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class A06010103Action extends BaseAction {
 		input.setLogistics(f060101.getLogistics());
 		input.setStatus(f060101.getStatus());
 		input.setCompanyId(f060101.getCompanyId());
+		input.setCommodityId(f060101.getCommodityId());
 		GetWayBillAp getWayBillAp = new GetWayBillAp();
 		List<GetWayBillApOutput> outputList = getWayBillAp.execute(input);
 
@@ -51,7 +53,12 @@ public class A06010103Action extends BaseAction {
 			wayBillInfo.setWeight(outputList.get(i).getWeight());
 			wayBillInfo.setFreight(outputList.get(i).getFreight());
 			wayBillInfo.setCustoms(outputList.get(i).getCustoms());
+			wayBillInfo.setCreateTime(outputList.get(i).getCreateTime());
+			wayBillInfo.setUpdateTime(outputList.get(i).getUpdateTime());
 
+		}
+		if(input.getWaybillNo() != null && !"".equals(input.getWaybillNo())) {
+			f060101.setCommodityId(null);
 		}
 		f060101.setWayBillList(wayBillList);
 		f060101.setResultCount(String.valueOf(outputList.size()));

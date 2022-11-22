@@ -3,6 +3,7 @@ package com.rakuten.r0601.ap;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +40,24 @@ public class GetWayBillAp {
 			String deliverDay = input.getDelieverDay();
 			String receiveDay = input.getReceiveDay();
 			String customs = input.getCustoms();
-
+			String commodityId = input.getCommodityId();
+			boolean flag = false;
+			if(!Utility.isEmptyString(commodityId)) {
+				if(commodityId.contains("-")) {
+				} else {
+					commodityId = commodityId + "-0-0";
+				}
+			}
+            
 			if (!Utility.isEmptyString(waybillNo)) {
-				sql += " AND WAYBILL_NO in (select waybill_no from company_waybill_tbl where waybill_no = '"+waybillNo+"' AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
+				sql += " AND WAYBILL_NO in (select waybill_no from company_waybill_tbl where waybill_no = '"+waybillNo+"' AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";	
 			} else {
-				sql += " AND WAYBILL_NO in (select waybill_no from company_waybill_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
+				if(!Utility.isEmptyString(commodityId)) {
+					flag = true;
+					sql += " AND WAYBILL_NO in (select waybill_no from tbl00017 where COMMODITY_ID = '"+commodityId+"') ";
+				} else {
+					sql += " AND WAYBILL_NO in (select waybill_no from company_waybill_tbl where (COMPANY_ID = ? OR ? = 0 OR ? = 1))";	
+				}
 			}
 			if (!Utility.isEmptyString(logistics) && !"04".equals(logistics)) {
 				sql += " AND LOGISTICS = '" + logistics + "'";
@@ -67,11 +81,14 @@ public class GetWayBillAp {
 			sql += " ORDER BY DELIVER_DAY DESC";
 
 			ps = conn.prepareStatement(sql);
-			ps.setInt(1, (companyId==0||companyId==1)&&(input.getCompanyId()>0)?input.getCompanyId():companyId);
-			ps.setInt(2, (companyId==0||companyId==1)&&(input.getCompanyId()>0)?input.getCompanyId():companyId);
-			ps.setInt(3, (companyId==0||companyId==1)&&(input.getCompanyId()>0)?input.getCompanyId():companyId);
+			if(!flag) {
+				ps.setInt(1, (companyId==0||companyId==1)&&(input.getCompanyId()>0)?input.getCompanyId():companyId);
+				ps.setInt(2, (companyId==0||companyId==1)&&(input.getCompanyId()>0)?input.getCompanyId():companyId);
+				ps.setInt(3, (companyId==0||companyId==1)&&(input.getCompanyId()>0)?input.getCompanyId():companyId);				
+			}
 			ResultSet rs = ps.executeQuery();
-
+			
+			flag = false;
 			List<GetWayBillApOutput> outputList = new ArrayList<GetWayBillApOutput>();
 			GetWayBillApOutput output = null;
 			while (rs.next()) {
@@ -85,6 +102,9 @@ public class GetWayBillAp {
 				output.setWeight(rs.getString("WEIGHT"));
 				output.setFreight(rs.getString("FREIGHT"));
 				output.setCustoms(rs.getString("CUSTOMS"));
+				SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+				output.setCreateTime(ft.format(rs.getDate("CREATE_TIME")));
+				output.setUpdateTime(ft.format(rs.getDate("UPDATE_TIME")));
 			}
 
 			// commit

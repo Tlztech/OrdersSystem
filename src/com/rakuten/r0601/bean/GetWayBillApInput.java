@@ -13,6 +13,7 @@ public class GetWayBillApInput implements Serializable {
 	private String receiveDay;
 	private String customs;
 	private int companyId;
+	private String commodityId;
 
 	/**
 	 * @return the waybillNo
@@ -116,6 +117,14 @@ public class GetWayBillApInput implements Serializable {
 	 */
 	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
+	}
+
+	public String getCommodityId() {
+		return commodityId;
+	}
+
+	public void setCommodityId(String commodityId) {
+		this.commodityId = commodityId;
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.rakuten.r0601.form;
 
 import java.io.Serializable;
+import java.util.Date;
+
 
 public class WayBillInfo implements Serializable {
 
@@ -13,6 +15,24 @@ public class WayBillInfo implements Serializable {
 	private String weight = null;
 	private String freight = null;
 	private String customs = null;
+	private String createTime = null;
+	private String updateTime = null;
+
+	public String getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
 
 	/**
 	 * @return the waybillNo
