@@ -76,10 +76,16 @@ function init(){
         document.getElementById("kensaku").click();
     }
     
-    if($("#queryResult").val() != 0){
-    	$("#queryResult").val(0);
-    	window.location.href="A06010101";
-    	alert("删除成功！");
+    if($("#queryResult").val() !=null && $("#queryResult").val().length>0){
+        if($("#queryResult").val() != "0"){
+        	$("#queryResult").val(null);
+        	window.location.href="A06010101";
+        	alert("删除成功！");        	
+        } else {
+      	  $("#mask").hide();   
+    	  $("#pop-div").hide(); 
+          alert("无删除数据！"); 
+        }
     }
 
 }

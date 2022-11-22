@@ -22,7 +22,7 @@ public class A06010114Action extends BaseAction{
 		String deliverDay = f060101.getDeliverDay();
 		DeleteWayVBillAp deleteWayVBillAp = new DeleteWayVBillAp();
 		int result = deleteWayVBillAp.execute(deliverDay.replace("-", ""));
-		f060101.setQueryResult(result);
+		f060101.setQueryResult(String.valueOf(result));
 	}
 
 	@Override

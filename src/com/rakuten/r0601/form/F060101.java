@@ -23,14 +23,13 @@ public class F060101 implements Serializable {
 	private String commodityId;
 	private String createTime = null;
 	private String updateTime = null;
-	private int queryResult;
+	private String queryResult = null;
 
-
-	public int getQueryResult() {
+	public String getQueryResult() {
 		return queryResult;
 	}
 
-	public void setQueryResult(int queryResult) {
+	public void setQueryResult(String queryResult) {
 		this.queryResult = queryResult;
 	}
 
