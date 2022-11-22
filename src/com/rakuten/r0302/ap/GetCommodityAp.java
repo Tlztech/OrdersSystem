@@ -46,6 +46,8 @@ public class GetCommodityAp {
 			String stockJpStart = input.getStockJpStart();
 			String stockShEnd = input.getStockShEnd();
 			String stockJpEnd = input.getStockJpEnd();
+			String updateTimeStart = input.getUpdateTimeStart();
+			String updateTimeEnd = input.getUpdateTimeEnd();
 			if (Utility.isEmptyString(stockShStart)) {
 				stockShStart = "0";
 			}
@@ -72,6 +74,12 @@ public class GetCommodityAp {
 			}
 			if (!Utility.isEmptyString(japaneseName)) {
 				sql += " AND T1.JAPANESE_NAME LIKE  '%" + japaneseName + "%'";
+			}
+			if (!Utility.isEmptyString(updateTimeStart)) {
+				sql += " AND T3.UPDATE_TIME >= '" + updateTimeStart + "'";
+			}
+			if (!Utility.isEmptyString(updateTimeEnd)) {
+				sql += " AND T3.UPDATE_TIME <= '" + updateTimeEnd + "'";
 			}
 
 //			sql += " AND STOCK_SH >= " + stockShStart;

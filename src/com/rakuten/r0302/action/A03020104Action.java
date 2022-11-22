@@ -192,6 +192,8 @@ public class A03020104Action extends BaseAction {
 			String stockJpStart = f030201.getHid_stockJpStart();
 			String stockShEnd = f030201.getHid_stockShEnd();
 			String stockJpEnd = f030201.getHid_stockJpEnd();
+			String updateTimeStart = f030201.getUpdateTimeStart();
+			String updateTimeEnd = f030201.getUpdateTimeEnd();
 
 			if (Utility.isEmptyString(stockShStart)) {
 				stockShStart = "0";
@@ -219,6 +221,12 @@ public class A03020104Action extends BaseAction {
 			}
 			if (!Utility.isEmptyString(japaneseName)) {
 				sql += " AND T1.JAPANESE_NAME LIKE  '%" + japaneseName + "%'";
+			}
+			if (!Utility.isEmptyString(updateTimeStart)) {
+				sql += " AND T3.UPDATE_TIME >= '" + updateTimeStart + "'";
+			}
+			if (!Utility.isEmptyString(updateTimeEnd)) {
+				sql += " AND T3.UPDATE_TIME <= '" + updateTimeEnd + "'";
 			}
 
 //			sql += " AND STOCK_SH >= " + stockShStart;

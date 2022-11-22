@@ -12,6 +12,7 @@
 <title>Insert title here</title>
 <link href="Images/css1/css.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="js/commonjs.js"></script>
+<script type="text/javascript" src="js/My97DatePicker/WdatePicker.js"></script>
 <script src="js/jquery.js"></script>
 <script type="text/javascript">
 function openWin1() {
@@ -232,8 +233,14 @@ function hideDiv3() {
                     <s:textfield size="10" maxlength="10" name="f030201.stockJpEnd"/>
                 </td>
             </tr>
-            <tr>
-                <td colspan="4" align="right"><input type="button" onclick="actionSubmit('A03020102')" value="检索" style="width:50px;height:25px"/></td>
+            <tr class="bg_tr">
+            	<td class="td_bg" width="80px">更新時間：</td>
+            	<td class="td_bg" width="300px"><s:textfield size="10"
+							cssClass="Wdate" onClick="WdatePicker()" maxlength="10"
+							name="f030201.updateTimeStart" />&nbsp;&nbsp;～&nbsp;<s:textfield
+							size="10" cssClass="Wdate" onClick="WdatePicker()" maxlength="10"
+							name="f030201.updateTimeEnd" /></td>
+                <td class="td_bg" colspan="4" align="right"><input type="button" onclick="actionSubmit('A03020102')" value="检索" style="width:50px;height:25px"/></td>
             </tr>
 		</table>
 		</div>

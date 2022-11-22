@@ -19,6 +19,8 @@ public class CommodityDetail implements Serializable {
 	private boolean delFlg;
 	private String yokoname = "";
 	private String shitaganame = "";
+	private String createTime;
+	private String updateTime;
 
 	/**
 	 * @return the detailNo
@@ -192,6 +194,34 @@ public class CommodityDetail implements Serializable {
 
 	public void setShitaganame(String shitaganame) {
 		this.shitaganame = shitaganame;
+	}
+
+	/**
+	 * @return the createTime
+	 */
+	public String getCreateTime() {
+		return createTime;
+	}
+
+	/**
+	 * @param createTime the createTime to set
+	 */
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+
+	/**
+	 * @return the updateTime
+	 */
+	public String getUpdateTime() {
+		return updateTime;
+	}
+
+	/**
+	 * @param updateTime the updateTime to set
+	 */
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
 	}
 
 }

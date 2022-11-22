@@ -13,6 +13,8 @@ public class GetCommodityApInput implements Serializable {
 	private String stockJpStart = null;
 	private String stockShEnd = null;
 	private String stockJpEnd = null;
+	private String updateTimeStart = null;
+	private String updateTimeEnd = null;
 
 	/**
 	 * @return the stockShStart
@@ -132,6 +134,34 @@ public class GetCommodityApInput implements Serializable {
 	 */
 	public void setJapaneseName(String japaneseName) {
 		this.japaneseName = japaneseName;
+	}
+
+	/**
+	 * @return the updateTimeStart
+	 */
+	public String getUpdateTimeStart() {
+		return updateTimeStart;
+	}
+
+	/**
+	 * @param updateTimeStart the updateTimeStart to set
+	 */
+	public void setUpdateTimeStart(String updateTimeStart) {
+		this.updateTimeStart = updateTimeStart;
+	}
+
+	/**
+	 * @return the updateTimeEnd
+	 */
+	public String getUpdateTimeEnd() {
+		return updateTimeEnd;
+	}
+
+	/**
+	 * @param updateTimeEnd the updateTimeEnd to set
+	 */
+	public void setUpdateTimeEnd(String updateTimeEnd) {
+		this.updateTimeEnd = updateTimeEnd;
 	}
 
 }

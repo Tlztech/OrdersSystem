@@ -68,6 +68,8 @@ public class A03020102Action extends BaseAction {
 		input.setStockShEnd(f030201.getStockShEnd());
 		input.setStockJpStart(f030201.getStockJpStart());
 		input.setStockShStart(f030201.getStockShStart());
+		input.setUpdateTimeStart(f030201.getUpdateTimeStart());
+		input.setUpdateTimeEnd(f030201.getUpdateTimeEnd());
 
 		f030201.setHid_categoryId(f030201.getCategoryId());
 		f030201.setHid_chineseName(f030201.getChineseName());
@@ -77,6 +79,8 @@ public class A03020102Action extends BaseAction {
 		f030201.setHid_stockShEnd(f030201.getStockShEnd());
 		f030201.setHid_stockJpStart(f030201.getStockJpStart());
 		f030201.setHid_stockShStart(f030201.getStockShStart());
+		f030201.setHid_updateTimeStart(f030201.getUpdateTimeStart());
+		f030201.setHid_updateTimeEnd(f030201.getUpdateTimeEnd());
 
 		List<GetCommodityApOutput> outputList = getCommodityAp.execute(input);
 		Integer count = outputList.size();

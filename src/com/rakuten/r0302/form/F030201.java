@@ -18,6 +18,8 @@ public class F030201 implements Serializable {
 	private String stockJpStart = null;
 	private String stockShEnd = null;
 	private String stockJpEnd = null;
+	private String updateTimeStart = null;
+	private String updateTimeEnd = null;
 	private String hid_categoryId = null;
 	private String hid_chineseName = null;
 	private String hid_commodityId = null;
@@ -26,6 +28,8 @@ public class F030201 implements Serializable {
 	private String hid_stockShEnd = null;
 	private String hid_stockJpStart = null;
 	private String hid_stockShStart = null;
+	private String hid_updateTimeStart = null;
+	private String hid_updateTimeEnd = null;
 	private String cateName = null;
 	private String ptype = null;
 	private String site = null;
@@ -377,6 +381,62 @@ public class F030201 implements Serializable {
 	 */
 	public void setCharset(String charset) {
 		this.charset = charset;
+	}
+
+	/**
+	 * @return the updateTimeStart
+	 */
+	public String getUpdateTimeStart() {
+		return updateTimeStart;
+	}
+
+	/**
+	 * @param updateTimeStart the updateTimeStart to set
+	 */
+	public void setUpdateTimeStart(String updateTimeStart) {
+		this.updateTimeStart = updateTimeStart;
+	}
+
+	/**
+	 * @return the updateTimeEnd
+	 */
+	public String getUpdateTimeEnd() {
+		return updateTimeEnd;
+	}
+
+	/**
+	 * @param updateTimeEnd the updateTimeEnd to set
+	 */
+	public void setUpdateTimeEnd(String updateTimeEnd) {
+		this.updateTimeEnd = updateTimeEnd;
+	}
+
+	/**
+	 * @return the hid_updateTimeStart
+	 */
+	public String getHid_updateTimeStart() {
+		return hid_updateTimeStart;
+	}
+
+	/**
+	 * @param hid_updateTimeStart the hid_updateTimeStart to set
+	 */
+	public void setHid_updateTimeStart(String hid_updateTimeStart) {
+		this.hid_updateTimeStart = hid_updateTimeStart;
+	}
+
+	/**
+	 * @return the hid_updateTimeEnd
+	 */
+	public String getHid_updateTimeEnd() {
+		return hid_updateTimeEnd;
+	}
+
+	/**
+	 * @param hid_updateTimeEnd the hid_updateTimeEnd to set
+	 */
+	public void setHid_updateTimeEnd(String hid_updateTimeEnd) {
+		this.hid_updateTimeEnd = hid_updateTimeEnd;
 	}
 
 }

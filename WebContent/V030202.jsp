@@ -241,7 +241,8 @@ function openWin1() {
                 <td width="140px" align="center">图片</td>
                 <td width="100px" align="center" style="display:none">条形码</td>
                 <td width="320px" align="center">库存信息</td>
-        
+                <td width="140px" align="center">作成時間</td>
+                <td width="140px" align="center">更新時間</td>
                 <td align="center">操作</td>
             </tr>
         </table>
@@ -259,7 +260,8 @@ function openWin1() {
                     日本库存：<s:property value='stockJp'/><s:hidden name="f030202.commodityDetailList[%{#status.index}].stockJp" value="%{stockJp}"/>&nbsp;&nbsp;
                    运输途中：<s:property value='stockHandup'/><s:hidden name="f030202.commodityDetailList[%{#status.index}].stockHandup" value="%{stockHandup}"/>&nbsp;&nbsp;
                    进货途中：<s:property value='nyuka'/><s:hidden name="f030202.commodityDetailList[%{#status.index}].nyuka" value="%{nyuka}"/></td>
-                
+                <td width="140px" class="td_bg" align="center"><s:property value='createTime'/></td>
+                <td width="140px" class="td_bg" align="center"><s:property value='updateTime'/></td>
                 <td class="td_bg" align="center">
 <%--                     <input type="button" onclick="document.form1.rowIndex.value=${status.index};document.form1.mode.value='2';actionSubmit('A03020201')" disabled value="修改"/>&nbsp;&nbsp;&nbsp; --%>
 <%--                     <input type="button" onclick="document.form1.rowIndex.value=${status.index};document.form1.mode.value='3';actionConfirm()" disabled value="删除"/>&nbsp;&nbsp;&nbsp; --%>

@@ -56,6 +56,8 @@ public class GetCommodityByIdAp {
 					detail.setRemarks(rs.getString("REMARKS"));
 					detail.setDelFlg("0".equals(rs.getString("T3.DEL_FLG")) ? false
 							: true);
+					detail.setCreateTime(rs.getString("CREATE_TIME_T3"));
+					detail.setUpdateTime(rs.getString("UPDATE_TIME_T3"));
 				}
 			}
 			// commit

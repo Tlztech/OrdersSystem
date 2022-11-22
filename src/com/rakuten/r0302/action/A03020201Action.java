@@ -167,6 +167,8 @@ public class A03020201Action extends BaseAction {
 					commodityDetail.setStockJp(detail.getStockJp());
 					commodityDetail.setRemarks(detail.getRemarks());
 					commodityDetail.setDelFlg(detail.isDelFlg());
+					commodityDetail.setCreateTime(detail.getCreateTime());
+					commodityDetail.setUpdateTime(detail.getUpdateTime());
 
 					String tochu = "0";
 					String nyuka = "0";
