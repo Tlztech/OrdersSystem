@@ -159,6 +159,21 @@ function henko(bango,kaisha,denpyo){
 		}
     }, "json");
 }
+
+function downLoadList(){
+	var allcheck = "";
+	for (var i = 0; typeof (document.getElementsByName("f130201.midownloadList[" + i + "].shopNumber")[0]) != "undefined"; i++) {
+		$("input[name='f130201.midownloadList["+i+"].shopNumber']:checked").each(function(){
+			allcheck = allcheck + $("input[name='f130201.midownloadList["+i+"].shopNumber']").next().next().val() + ",";
+		})
+	}
+	if(allcheck.length == 0){
+		alert("请选择下载乐天未反应店舗");
+		return false;
+	}
+	$("input[name='f130201.rukutendown']").val(allcheck.substring(0,allcheck.length - 1));
+	actionSubmit('A13020113');
+}
 </script>
 <style type="text/css">
 <!--
@@ -359,6 +374,18 @@ a {
 				<td class="td_bg"></td>
 				<td class="td_bg" align="right"><input type="button" onclick="actionSubmit('A13020102')" value="検索" style="width:50px;height:25px"/></td>
             </tr>
+            <s:if test="f130201.midownloadList != null">
+            <tr class="bg_tr">
+				<td class="td_bg">下载乐天未反应店舗:</td>
+                <td class="td_bg" align="left" colspan="3">
+                    <s:iterator value="f130201.midownloadList" status="status">
+                        <s:checkbox name="f130201.midownloadList[%{#status.index}].shopNumber" value="%{shopNumber}"/>
+                        <s:hidden name="f130201.midownloadList[%{#status.index}].shopNumber" value="%{shopNumber}" />
+                        <s:property value='shopName'/> <s:hidden name="f130201.midownloadList[%{#status.index}].shopName" value="%{shopName}" />
+                    </s:iterator>
+                </td>
+            </tr>
+            </s:if>
         </table>
 		</div>
         <div id="div2">
@@ -366,13 +393,14 @@ a {
             <tr>
                 <td align="left">
                     <s:select list="#{'0':'選択した注文','1':'すべての注文'}" name="f130201.outtype"/>
-                   
                     <input type="button" style="height:30px" onclick="if(confirm('反映済みに設定しますか')){actionSubmit('A13020106')};" value="反映済みに設定"/>
                     <input type="button" style="height:30px" onclick="actionSubmit('A13020112');" value="下载雅虎未反应csv"/>
-                    <input type="button" style="height:30px" onclick="actionSubmit('A13020113');" value="下载乐天未反应csv"/>
+                    <!--  <input type="button" style="height:30px" onclick="actionSubmit('A13020113');" value="下载乐天未反应csv"/>-->
+                    <input type="button" style="height:30px" onclick="downLoadList();" value="下载乐天未反应csv"/>
                     <input type="button" style="height:30px" onclick="actionSubmit('A13020116');" value="下载ポンパレモール未反应csv"/>
                     <input type="button" style="height:30px" onclick="actionSubmit('A13020114');" value="设置反应完毕"/>
                     <input type="button" style="height:30px" onclick="actionSubmit('A13020115');" value="下载其他平台csv"/>
+                    <s:hidden name="f130201.rukutendown"/>
                 </td>
             </tr>
         </table>

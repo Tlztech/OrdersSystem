@@ -62,7 +62,6 @@ public class A130201Common {
 		if (f130201 == null) {
 			f130201 = new F130201();
 		}
-
 		List<String> juchubangoList = getHaneimachiList(f130201.getHaneists());
 		List<OrderList> heneimachiList = getOrderListByBango(juchubangoList);
 		List<OrderList> orderList = searchOrder(heneimachiList, f130201);
@@ -80,6 +79,7 @@ public class A130201Common {
 		int auCount = 0;
 		int otherCount = 0;
 		String tenposhubetsu = f130201.getTenposhubetsu();
+		String rukutendown = f130201.getRukutendown();
 
 		List<OrderList> shoriList = new ArrayList<OrderList>();
 		for (OrderList order : orderList) {
@@ -155,6 +155,7 @@ public class A130201Common {
 		f130201.setAuCount(String.valueOf(auCount));
 		f130201.setOtherCount(String.valueOf(otherCount));
 		f130201.setOrderList(shoriList);
+		f130201.setRukutendown(rukutendown);
 		return f130201;
 	}
 

@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import com.rakuten.common.DeliveryCompany;
 import com.rakuten.common.action.BaseAction;
+import com.rakuten.r1301.form.F130101;
 import com.rakuten.r1302.common.A130201Common;
 import com.rakuten.r1302.form.F130201;
 import com.rakuten.r1302.form.OrderList;
@@ -35,42 +36,43 @@ public class A13020113Action extends BaseAction {
 		init();
 		A130201Common a130201Common = new A130201Common();
 		List<OrderList> orderList = (List<OrderList>) getSessionAttribute("heneimachiList");
-		
 		List<String> downloadList = a130201Common.getHaneimachiList("0");
 		downloadList.addAll(a130201Common.getHaneimachiList("1"));
-		
 		orderList = orderList.stream().filter(n->downloadList.contains(n.getChumonbango())).collect(Collectors.toList());
 
 		List<String[]> shoriList2 = new ArrayList<String[]>();
 		List<String> shoriList = new ArrayList<String>();
 //		shoriList2.add(new String[] { "注文番号", "送付先ID", "発送明細ID", "お荷物伝票番号", "配送会社", "発送日" });
 		shoriList2.add(new String[] { "注文番号", "住所（県）", "配送会社", "配送方法", "追跡番号", "サイズ" });
+		String rakutenDown = f130201.getRukutendown();
 		for (OrderList order : orderList) {
 			if ("楽天".equals(order.getSite())) {
-//				String shipUrl = "";
-//				if ("1001".equals(order.getHaisokaisha())) {
-//					shipUrl = "https://toi.kuronekoyamato.co.jp/cgi-bin/tneko";
-//				} else if ("1002".equals(order.getHaisokaisha())) {
-//					shipUrl = "http://k2k.sagawa-exp.co.jp/p/sagawa/web/okurijoinput.jsp";
-//				}
-//				shoriList2.add(new String[] { order.getChumonbango(), "", "", order.getDenpyobango(),
-//						// ba heimao de 1001 huan cheng you ju de 1003 linshi chuli fang fa
-//						"1001".equals(order.getHaisokaisha()) ? "1003" : order.getHaisokaisha(),
-//						new SimpleDateFormat("yyyyMMdd").format(new Date()) });
-				String haisokaishaName = "";
-				if (DeliveryCompany.YAMATO.getTag().equals(order.getHaisokaisha())) {
-					haisokaishaName = DeliveryCompany.YAMATO.getName();
-				} else if (DeliveryCompany.SAGAWA.getTag().equals(order.getHaisokaisha())) {
-					haisokaishaName = DeliveryCompany.SAGAWA.getName();
-				}else if (DeliveryCompany.POST.getTag().equals(order.getHaisokaisha())) {
-					haisokaishaName = DeliveryCompany.POST.getName();
-				}else {
-					haisokaishaName = DeliveryCompany.YAMATO.getName();
+				if(rakutenDown.contains(order.getChumonbango().substring(0, 6))) {
+//					String shipUrl = "";
+//					if ("1001".equals(order.getHaisokaisha())) {
+//						shipUrl = "https://toi.kuronekoyamato.co.jp/cgi-bin/tneko";
+//					} else if ("1002".equals(order.getHaisokaisha())) {
+//						shipUrl = "http://k2k.sagawa-exp.co.jp/p/sagawa/web/okurijoinput.jsp";
+//					}
+//					shoriList2.add(new String[] { order.getChumonbango(), "", "", order.getDenpyobango(),
+//							// ba heimao de 1001 huan cheng you ju de 1003 linshi chuli fang fa
+//							"1001".equals(order.getHaisokaisha()) ? "1003" : order.getHaisokaisha(),
+//							new SimpleDateFormat("yyyyMMdd").format(new Date()) });
+					String haisokaishaName = "";
+					if (DeliveryCompany.YAMATO.getTag().equals(order.getHaisokaisha())) {
+						haisokaishaName = DeliveryCompany.YAMATO.getName();
+					} else if (DeliveryCompany.SAGAWA.getTag().equals(order.getHaisokaisha())) {
+						haisokaishaName = DeliveryCompany.SAGAWA.getName();
+					}else if (DeliveryCompany.POST.getTag().equals(order.getHaisokaisha())) {
+						haisokaishaName = DeliveryCompany.POST.getName();
+					}else {
+						haisokaishaName = DeliveryCompany.YAMATO.getName();
+					}
+					shoriList2.add(new String[] { order.getChumonbango(), order.getTodohuken(), haisokaishaName, order.getHaisohoho(), 
+							order.getDenpyobango(), order.getSize()	}
+					);
+					shoriList.add(order.getChumonbango());
 				}
-				shoriList2.add(new String[] { order.getChumonbango(), order.getTodohuken(), haisokaishaName, order.getHaisohoho(), 
-						order.getDenpyobango(), order.getSize()	}
-				);
-				shoriList.add(order.getChumonbango());
 			}
 		}
 

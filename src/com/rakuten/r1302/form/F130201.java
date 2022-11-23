@@ -42,7 +42,26 @@ public class F130201 implements Serializable {
 	private String otherCount = null;
 	
 	private String haneists = "0";
-	
+	private List<MidownloadrakutenList> midownloadList = null;
+	private String rukutendown = null;
+
+
+	public String getRukutendown() {
+		return rukutendown;
+	}
+
+	public void setRukutendown(String rukutendown) {
+		this.rukutendown = rukutendown;
+	}
+
+	public List<MidownloadrakutenList> getMidownloadList() {
+		return midownloadList;
+	}
+
+	public void setMidownloadList(List<MidownloadrakutenList> midownloadList) {
+		this.midownloadList = midownloadList;
+	}
+
 	/**
 	 * @return the inputJuchubango
 	 */
