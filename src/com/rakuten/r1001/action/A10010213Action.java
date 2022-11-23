@@ -38,10 +38,11 @@ public class A10010213Action extends BaseAction {
 				.getTuikariyusonota_tuikashusei();
 		String tuikasoryofutan_tuikashusei = f100102.getTuikasoryofutan();
 		String tuikabiko_tuikashusei = f100102.getTuikabiko();
+		String tuikatantosya_tuikashusei = f100102.getTuikatantosya();
 
 		List<String> messageList = orderCommon.updateTuika(tuikashohinArry,
 				shoribango, tuikariyu_tuikashusei, tuikariyuSonota_tuikashusei,
-				tuikasoryofutan_tuikashusei, tuikabiko_tuikashusei, orderNo);
+				tuikasoryofutan_tuikashusei, tuikabiko_tuikashusei,tuikatantosya_tuikashusei, orderNo);
 
 		if (!Utility.isEmptyList(messageList)) {
 			for (String msg : messageList) {

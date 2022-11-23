@@ -2316,7 +2316,7 @@ public class OrderCommon {
 	}
 
 	public List<String> addTuika(List<String[]> tuikaList, String[] tuikariyu, String tuikasoryofutan,
-			String tuikariyuSonota, String tuikabiko, String orderNo) throws SQLException {
+			String tuikariyuSonota, String tuikabiko, String tuikatantosya,String orderNo) throws SQLException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		String sql = null;
@@ -2331,7 +2331,7 @@ public class OrderCommon {
 				String shouhinbango = shohin[0];
 				String kosu = shohin[1];
 
-				sql = "INSERT INTO tuika_hasou_tbl(SHORIBANGO,JUCHUBANGO,SHOHINBANGO,KOSU,STATUS,HASORIYU,HASORIYUSONOTA,SOURYOUFUTAN,BIKO,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				sql = "INSERT INTO tuika_hasou_tbl(SHORIBANGO,JUCHUBANGO,SHOHINBANGO,KOSU,STATUS,HASORIYU,HASORIYUSONOTA,SOURYOUFUTAN,BIKO,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,TUIKATANTOSYA)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				ps = conn.prepareStatement(sql);
 				int j = 1;
 				ps.setString(j++, shoribango);
@@ -2357,6 +2357,7 @@ public class OrderCommon {
 				ps.setString(j++, Utility.getUser());
 				ps.setString(j++, Utility.getDateTime());
 				ps.setString(j++, Utility.getUser());
+				ps.setString(j++, tuikatantosya);
 
 				count += ps.executeUpdate();
 			}
@@ -2413,7 +2414,9 @@ public class OrderCommon {
 					tuika.setTuikahaisokaisha(Utility.getHaisokaishaName(rs.getString("T2.UNSOKAISHA")));
 					tuika.setTuikahaisouhoho(Utility.getHaisohohoName(rs.getString("T2.HAISOHOHO")));
 					tuika.setToiawasebango(rs.getString("T2.TOIAWASEBANGO"));
-
+                    tuika.setTuikatantosya(rs.getString("T1.TUIKATANTOSYA"));
+                    SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    tuika.setSeteihitsuke(sdf.format(rs.getTimestamp("T1.UPDATE_TIME")));
 					tuika.setTuikabiko(rs.getString("T1.BIKO"));
 
 				}
@@ -2434,7 +2437,7 @@ public class OrderCommon {
 
 	public List<String> updateTuika(List<String[]> tuikashohinArry, String shoribango_tuikashusei,
 			String[] tuikariyu_tuikashusei, String tuikariyuSonota_tuikashusei, String tuikasoryofutan_tuikashusei,
-			String tuikabiko_tuikashusei, String orderNo) throws Exception {
+			String tuikabiko_tuikashusei, String tuikatantosya_tuikashusei,String orderNo) throws Exception {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		String sql = null;
@@ -2474,7 +2477,7 @@ public class OrderCommon {
 				String shouhinbango = shohin[0];
 				String kosu = shohin[1];
 
-				sql = "INSERT INTO tuika_hasou_tbl(SHORIBANGO,JUCHUBANGO,SHOHINBANGO,KOSU,STATUS,HASORIYU,HASORIYUSONOTA,SOURYOUFUTAN,BIKO,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				sql = "INSERT INTO tuika_hasou_tbl(SHORIBANGO,JUCHUBANGO,SHOHINBANGO,KOSU,STATUS,HASORIYU,HASORIYUSONOTA,SOURYOUFUTAN,BIKO,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,TUIKATANTOSYA)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				ps = conn.prepareStatement(sql);
 				int j = 1;
 				ps.setString(j++, shoribango);
@@ -2500,6 +2503,7 @@ public class OrderCommon {
 				ps.setString(j++, createUser);
 				ps.setString(j++, Utility.getDateTime());
 				ps.setString(j++, Utility.getUser());
+				ps.setString(j++, tuikatantosya_tuikashusei);
 
 				count += ps.executeUpdate();
 			}
@@ -2638,6 +2642,7 @@ public class OrderCommon {
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, "1");
 				ps.setString(2, shoribango);
+			
 				ps.execute();
 
 				conn.commit();
@@ -2672,12 +2677,13 @@ public class OrderCommon {
 			JSONObject shohin = null;
 			while (rs.next()) {
 				if (count == 0) {
-					hasomachi = new String[6];
+					hasomachi = new String[7];
 					hasomachi[0] = rs.getString("SHORIBANGO");
 					hasomachi[1] = rs.getString("HASORIYU");
 					hasomachi[2] = rs.getString("HASORIYUSONOTA");
 					hasomachi[3] = rs.getString("SOURYOUFUTAN");
 					hasomachi[4] = rs.getString("BIKO");
+					hasomachi[5] = rs.getString("TUIKATANTOSYA");
 
 					count++;
 				}
@@ -2689,7 +2695,7 @@ public class OrderCommon {
 			}
 			jsonObj.accumulate("shohin", shohinArray);
 			if (jsonObj != null && hasomachi != null) {
-				hasomachi[5] = jsonObj.toString();
+				hasomachi[6] = jsonObj.toString();
 			}
 
 		} catch (Exception e) {
