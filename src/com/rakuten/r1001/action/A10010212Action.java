@@ -25,6 +25,7 @@ public class A10010212Action extends BaseAction {
 		String tuikasoryofutan = f100102.getTuikasoryofutan();
 		String tuikariyuSonota = f100102.getTuikariyuSonota();
 		String tuikabiko = f100102.getTuikabiko();
+		String tuikatantosya = f100102.getTuikatantosya();
 
 		String jsonArr = f100102.getJsonArr();
 
@@ -39,7 +40,7 @@ public class A10010212Action extends BaseAction {
 		}
 
 		List<String> messageList = orderCommon.addTuika(tuikaList, tuikariyu,
-				tuikasoryofutan, tuikariyuSonota, tuikabiko, orderNo);
+				tuikasoryofutan, tuikariyuSonota, tuikabiko, tuikatantosya,orderNo);
 		if (!Utility.isEmptyList(messageList)) {
 			for (String msg : messageList) {
 				addActionError(msg);

@@ -151,6 +151,25 @@ public class F100102 implements Serializable {
 
 	private String hasoyakusokubi = null;
 	private String hasoshahe = null;
+	
+	private String tuikatantosya = null;
+	private String tantosya_tuikashusei = null;
+
+	public String getTantosya_tuikashusei() {
+		return tantosya_tuikashusei;
+	}
+
+	public void setTantosya_tuikashusei(String tantosya_tuikashusei) {
+		this.tantosya_tuikashusei = tantosya_tuikashusei;
+	}
+
+	public String getTuikatantosya() {
+		return tuikatantosya;
+	}
+
+	public void setTuikatantosya(String tuikatantosya) {
+		this.tuikatantosya = tuikatantosya;
+	}
 
 	/**
 	 * @return the sonotatesuryo

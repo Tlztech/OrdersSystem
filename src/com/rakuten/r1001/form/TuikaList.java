@@ -14,9 +14,37 @@ public class TuikaList implements Serializable {
 	private String tuikahaisokaisha = null;
 	private String tuikahaisouhoho = null;
 	private String toiawasebango = null;
+	private String tuikatantosya = null;
+	private String seteihitsuke = null;
 	private String tuikabiko = null;
 	List<TuikaDetail> detailList = null;
 
+	/**
+	 * @return the seteihitsuke
+	 */
+	public String getSeteihitsuke() {
+		return seteihitsuke;
+	}
+	/**
+	 * @param seteihitsuke
+	 *            the seteihitsuke to set
+	 */
+	public void setSeteihitsuke(String seteihitsuke) {
+		this.seteihitsuke = seteihitsuke;
+	}
+	/**
+	 * @return the tuikatantosya
+	 */
+	public String getTuikatantosya() {
+		return tuikatantosya;
+	}
+	/**
+	 * @param tuikatantosya
+	 *            the tuikatantosya to set
+	 */
+	public void setTuikatantosya(String tuikatantosya) {
+		this.tuikatantosya = tuikatantosya;
+	}
 	/**
 	 * @return the tuikashoribango
 	 */

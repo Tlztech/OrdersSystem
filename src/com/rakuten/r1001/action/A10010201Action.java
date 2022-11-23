@@ -336,8 +336,9 @@ public class A10010201Action extends BaseAction {
 			f100102.setTuikariyusonota_tuikashusei(tuikashuseika[2]);
 			f100102.setHasosoryofutan_tuikashusei(tuikashuseika[3]);
 			f100102.setBiko_tuikashusei(tuikashuseika[4]);
-			f100102.setJsonArr(tuikashuseika[5]);
-			f100102.setJsonArr_moto(tuikashuseika[5]);
+			f100102.setTantosya_tuikashusei(tuikashuseika[5]);
+			f100102.setJsonArr(tuikashuseika[6]);
+			f100102.setJsonArr_moto(tuikashuseika[6]);
 		}
 
 		// 设置返金列表

@@ -167,6 +167,7 @@ function setTuikaValue(){
 	}
 	$('input[name="f100102.tuikariyuSonota"]').val($('input[name="f100102.tuikariyusonota_tuikashusei"]').val());
 	$('input[name="f100102.tuikasoryofutan"]')[$('input[name="f100102.hasosoryofutan_tuikashusei"]').val()].checked = true;
+	$('input[name="f100102.tuikatantosya"]').val($('input[name="f100102.tantosya_tuikashusei"]').val());
 	$('textarea[name="f100102.tuikabiko"]').val($('input[name="f100102.biko_tuikashusei"]').val());
 }
 
@@ -175,6 +176,7 @@ function setTuikaShuseiFuka(){
     $('input[name="f100102.tuikariyu"]').attr("disabled",true);
 	$('input[name="f100102.tuikariyuSonota"]').attr("disabled",true);
 	$('input[name="f100102.tuikasoryofutan"]').attr("disabled",true);
+	$('input[name="f100102.tuikatantosya"]').attr("disabled",true);
 	$('textarea[name="f100102.tuikabiko"]').attr("disabled",true);
 	document.getElementById("tuikaTbl").style.display = "none";
 	for (var i = 0; typeof (document.getElementsByName("tuikaListSakujoBtn")[i]) != "undefined"; i++) {
@@ -184,7 +186,6 @@ function setTuikaShuseiFuka(){
 }
 
 function setTuikaShuseika(){
-	
     $('input[name="f100102.tuikariyu"]').attr("disabled",false);
 	$('input[name="f100102.tuikariyuSonota"]').attr("disabled",false);
 	$('input[name="f100102.tuikasoryofutan"]').attr("disabled",false);
@@ -892,6 +893,7 @@ function cleartuika(){
 	$('input[name="f100102.tuikariyu"]')[2].checked = false;
 	$('input[name="f100102.tuikariyuSonota"]').val("");
 	$('input[name="f100102.tuikasoryofutan"]')[0].checked = true;
+	$('input[name="f100102.tuikatantosya"]').val("");
 	$('textarea[name="f100102.tuikabiko"]').val("");
 	$('#jsonArr').val("");
 	$('#tuikaShohin').val("");
@@ -1819,6 +1821,16 @@ select {
 														</s:if>
 														</s:if>
 													</td>
+												</tr>
+												<tr class="bg_tr">
+													<td align="left">担当者:</td>
+													<td class="td_bg" align="left"><s:property
+															value='tuikatantosya' /> <s:hidden
+															name="f100102.tuikaList[%{#status.index}].tuikatantosya" /></td>
+													<td align="left">设定日時:</td>
+                                                    <td class="td_bg" align="left" colspan="7"><s:property
+															value='seteihitsuke' /> <s:hidden
+															name="f100102.tuikaList[%{#status.index}].seteihitsuke" /></td>
 												</tr>
 												<tr class="bg_tr">
 													<td align="left">備考:</td>
@@ -2783,7 +2795,7 @@ select {
 			</div>
 		</div>
 		<div id='pop-div-tuika'
-			style="width: 850px; height: 500px; position: fixed; display: none"
+			style="width: 850px; height: 520px; position: fixed; display: none"
 			class="pop-box">
 			<div class="pop-box-body">
 				<table align="center" width="100%">
@@ -2814,6 +2826,11 @@ select {
 						<td class="td_bg" colspan="3"><s:radio
 								list="#{ '0':'店舗&nbsp;&nbsp;&nbsp;','1':'お客様&nbsp;&nbsp;&nbsp;'}"
 								value="0" name="f100102.tuikasoryofutan" /></td>
+					</tr>
+					<tr class="bg_tr">
+						<td>担当者:</td>
+						<td class="td_bg" colspan="3"><s:textfield
+								style="width:300px;height:20px" name="f100102.tuikatantosya"/></td>
 					</tr>
 					<tr class="bg_tr">
 						<td>備考:</td>
@@ -3002,6 +3019,7 @@ select {
 		<s:hidden name="f100102.tuikariyusonota_tuikashusei" />
 		<s:hidden name="f100102.hasosoryofutan_tuikashusei" />>
         <s:hidden name="f100102.biko_tuikashusei" />
+        <s:hidden name="f100102.tantosya_tuikashusei" />
 		<input type="hidden" id="hid_result">
 		<s:hidden name="scrollx" />
 		<s:hidden name="scrolly" />
