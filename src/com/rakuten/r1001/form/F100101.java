@@ -71,6 +71,7 @@ public class F100101 implements Serializable {
 
 	private String charset = null;
 	private String toiawasebango = null;
+	private String unsentDays = null;
 
 	public String getNyukafukarenrakumachiCount() {
 		return nyukafukarenrakumachiCount;
@@ -880,6 +881,20 @@ public class F100101 implements Serializable {
 
 	public void setToiawasebango(String toiawasebango) {
 		this.toiawasebango = toiawasebango;
+	}
+
+	/**
+	 * @return the unsentDays
+	 */
+	public String getUnsentDays() {
+		return unsentDays;
+	}
+
+	/**
+	 * @param unsentDays the unsentDays to set
+	 */
+	public void setUnsentDays(String unsentDays) {
+		this.unsentDays = unsentDays;
 	}
 
 }

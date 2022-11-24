@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.axis.utils.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.opensymphony.xwork2.ActionContext;
@@ -1016,8 +1018,21 @@ public class A1001Common {
 		otherCsvBean.setKomento(orderInfo.get(0)[15]);
 
 		// 注文日時
-		SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		otherCsvBean.setChumonnichiji(sdft.format(now));
+		if ("楽天".equals(otherCsvBean.getPlatform())) {
+			try {
+				SimpleDateFormat sdfChumonnichiji = new SimpleDateFormat("yyyyMMdd");
+				otherCsvBean.setChumonnichiji(DateFormatUtils.format(sdfChumonnichiji.parse(otherCsvBean.getJuchubango().substring(7, 15)),"yyyy-MM-dd HH:mm:ss"));
+			} catch (ParseException pe) {
+				SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				otherCsvBean.setChumonnichiji(sdft.format(now));
+			} catch (IndexOutOfBoundsException iobe) {
+				SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				otherCsvBean.setChumonnichiji(sdft.format(now));
+			}
+		} else {
+			SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			otherCsvBean.setChumonnichiji(sdft.format(now));
+		}
 
 		otherCsvBean.setGokei(String.valueOf(gokei));
 		// 消費税(-99999=無効値)
@@ -3438,7 +3453,7 @@ public class A1001Common {
 					count = rs.getInt("COUNT");
 				}
 				if (count == 0) {
-					System.out.println("导入文件平台"+orderList.get(0).getPlatform() + "与登陆用户不匹配。");
+					System.out.println("导入文件平台" + orderList.get(0).getPlatform() + "与登陆用户不匹配。");
 					return false;
 				}
 			}
@@ -4209,6 +4224,7 @@ public class A1001Common {
 		boolean chumonStsSearch9 = false;
 		boolean searchKeywordCondition = false;
 		String toiawasebango = null;
+		String unsentDays = null;
 
 		if (f100101 != null) {
 			kikanStart = Utility.strTrim(f100101.getKikanStart());
@@ -4236,6 +4252,7 @@ public class A1001Common {
 			oshiharaihoho = f100101.getOshiharaihoho();
 			site = f100101.getSite();
 			searchKeywordCondition = f100101.isSearchKeywordCondition();
+			unsentDays = f100101.getUnsentDays();
 		}
 
 		Map<String, Object> map = ActionContext.getContext().getSession();
@@ -4309,7 +4326,7 @@ public class A1001Common {
 			if (!Utility.isEmptyString(toiawasebango)) {
 				sql += " AND T5.TOIAWASEBANGO = '" + toiawasebango + "'";
 			}
-			
+
 			if (!Utility.isEmptyString(oshiharaihoho)) {
 				sql += " AND T1.OSHIHARAISTS = '" + oshiharaihoho + "'";
 			}
@@ -4351,6 +4368,19 @@ public class A1001Common {
 
 			sql += " AND left(REPLACE(CHUMONNICHIJI,'-',''),8) >= " + kikanStart.replace("-", "");
 			sql += " AND left(REPLACE(CHUMONNICHIJI,'-',''),8)<= " + kikanEnd.replace("-", "");
+
+			if (!Utility.isEmptyString(unsentDays)) {
+				try {
+					Calendar date = Calendar.getInstance();
+					int interval = Integer.parseInt(unsentDays);
+					date.add(Calendar.DAY_OF_MONTH, (~(interval - 1)));
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					sql += " AND T1.CHUMONSTS1 = '" + "2" + "' AND T1.CHUMONNICHIJI >= '" + sdf.format(date.getTime())
+							+ "'";
+				} catch (NumberFormatException nfe) {
+					nfe.printStackTrace();
+				}
+			}
 
 			sql += " ORDER BY str_to_date(T1.CHUMONNICHIJI,'%Y-%m-%d %H:%i:%s')";
 

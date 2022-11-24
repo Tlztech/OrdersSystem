@@ -429,6 +429,9 @@ select {
 				    <td class="td_bg">問い合わせ番号：</td>
 					<td class="td_bg"><s:textfield size="15" maxlength="250"
 							name="f100101.toiawasebango" />
+					<td class="td_bg">検索超过X天未发送</td>
+					<td class="td_bg"><s:textfield size="25" maxlength="5"
+							name="f100101.unsentDays" /></td>
 				<tr>
 					<td class="td_bg">注文ステータス：</td>
 					<td class="td_bg" colspan="2">
