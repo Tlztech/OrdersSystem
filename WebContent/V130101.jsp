@@ -711,8 +711,8 @@ a {
 				        <s:textfield cssStyle="background-color:red" size="2" name="f130101.orderList[%{#status.index}].size" value="%{size}"/><br/>
 				    </s:if>
 				    <s:else>
-				    </s:else>
 				        <s:textfield size="2" name="f130101.orderList[%{#status.index}].size" value="%{size}"/><br/>
+				    </s:else>
 				    <input type="button" value="設定" name="" onclick="updateSize('<s:property value='chumonbango'/>',document.getElementsByName('f130101.orderList[${status.index}].size')[0].value,'${status.index}')"/>
 				</td>
 				<td width="9%" class="td_bg" align="center" valign="middle">
