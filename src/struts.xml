@@ -1610,6 +1610,16 @@
 			<result name="input">V160101.jsp</result>
 			<result name="success">V160101.jsp</result>
 		</action>
+		<action name="A16010115" class="com.rakuten.r1601.action.A16010115Action">
+			<result name="login">V000101.jsp</result>
+			<result name="input">V160101.jsp</result>
+			<result type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
 		<action name="A17010101" class="com.rakuten.r1701.action.A17010101Action">
 			<result name="login">V000101.jsp</result>
 			<result name="input">V170101.jsp</result>

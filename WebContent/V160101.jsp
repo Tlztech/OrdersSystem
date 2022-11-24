@@ -139,6 +139,12 @@ function init(){
 		        <input type="button" style="width:100px;height:30px" value="商品一括删除" onclick="actionSubmit('A16010111')">
 		        </td>
 		    </tr>
+		    <tr>
+		        <td>
+		        楽天発送待ち注文比較：
+		        <input type="button" style="width:130px;height:30px" value="比較結果ダウンロード" onclick="actionSubmit('A16010115')">
+		        </td>
+		    </tr>
 		</table>
 		<br/>
         <s:select list="#request.rakutenshopmap" style="width:120px;height:30px" name="shop2"/>
