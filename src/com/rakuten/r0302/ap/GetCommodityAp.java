@@ -31,7 +31,7 @@ public class GetCommodityAp {
 			List<GetCommodityApOutput> outputList = new ArrayList<GetCommodityApOutput>();
 			GetCommodityApOutput output = null;
 			conn = JdbcConnection.getConnection();
-			String sql = "SELECT T2.CATEGORY_NAME, T1.CHINESE_NAME,T1.COMMODITY_ID, " + 
+			String sql = "SELECT T2.CATEGORY_NAME, T1.CHINESE_NAME,T1.COMMODITY_ID,T1.CREATE_TIME, " + 
 					"              T1.JAPANESE_NAME, T1.PIC_URL, SUM(T3.STOCK_SH) STOCK_SH, " + 
 					"              SUM(T3.STOCK_JP) STOCK_JP , SUM(T3.STOCK_HANDUP) STOCK_HANDUP " + 
 					"              FROM TBL00011 T1 LEFT JOIN TBL00010 T2 ON T1.CATEGORY_ID = " + 
@@ -102,6 +102,7 @@ public class GetCommodityAp {
 				output.setStockSh(rs.getString("STOCK_SH"));
 				output.setStockJp(rs.getString("STOCK_JP"));
 				output.setStockHandup(rs.getString("STOCK_HANDUP"));
+				output.setCreateTime(rs.getString("CREATE_TIME"));
 				outputList.add(output);
 			}
 			// commit

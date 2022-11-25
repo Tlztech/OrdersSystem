@@ -104,6 +104,7 @@ public class A03020102Action extends BaseAction {
 						.getCommodityId(commodity.getCommodityId())));
 				commodity.setStockSh(output.getStockSh());
 				commodity.setStockJp(output.getStockJp());
+				commodity.setCreateTime(output.getCreateTime());
 
 				String tochu = "0";
 				String nyuka = "0";

@@ -16,6 +16,7 @@ public class CommodityList implements Serializable {
 	private String stockHandup = null;
 	private String nyuka = null;
 	private String shop = null;
+	private String createTime;
 
 	/**
 	 * @return the commodityId
@@ -151,6 +152,20 @@ public class CommodityList implements Serializable {
 
 	public void setShop(String shop) {
 		this.shop = shop;
+	}
+
+	/**
+	 * @return the createTime
+	 */
+	public String getCreateTime() {
+		return createTime;
+	}
+
+	/**
+	 * @param createTime the createTime to set
+	 */
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
 
 }

@@ -257,7 +257,7 @@ function hideDiv3() {
 			    <td width="60px" align="center">分类</td>
 				<td width="180px" align="center">中文名</td>
 				<td width="180px" align="center">日文名</td>
-				<td width="100px" align="center">图片</td>
+				<td width="100px" align="center">导入日期</td>
 				<td width="360px" align="center">库存信息</td>
 				<td align="center">操作</td>
 			</tr>
@@ -271,7 +271,7 @@ function hideDiv3() {
 			    <td width="60px" class="td_bg" align="center"><s:property value='categoryName'/><s:hidden name="f030201.commodityList[%{#status.index}].categoryName" value="%{categoryName}"/></td>
 				<td width="180px" class="td_bg" align="left"><s:property value='chineseName'/><s:hidden name="f030201.commodityList[%{#status.index}].chineseName" value="%{chineseName}"/></td>
 				<td width="180px" class="td_bg" align="left"><s:property value='japaneseName'/><s:hidden name="f030201.commodityList[%{#status.index}].japaneseName" value="%{japaneseName}"/></td>
-				<td width="100px" class="td_bg" align="center"><img width="70px" height="70px"  src="${picUrl}"><s:hidden name="f030201.commodityList[%{#status.index}].picUrl" value="%{picUrl}"/></td>
+				<td width="100px" class="td_bg" align="center"><s:property value='createTime'/></td>
 				<td width="87px" class="td_bg" align="left">上海库存：<s:property value='stockSh'/><s:hidden name="f030201.commodityList[%{#status.index}].stockSh" value="%{stockSh}"/></td>
 				<td width="88px" class="td_bg" align="left">日本库存：<s:property value='stockJp'/><s:hidden name="f030201.commodityList[%{#status.index}].stockJp" value="%{stockJp}"/></td>
 				<td width="88px" class="td_bg" align="left">运输途中：<s:property value='stockHandup'/><s:hidden name="f030201.commodityList[%{#status.index}].stockHandup" value="%{stockHandup}"/></td>

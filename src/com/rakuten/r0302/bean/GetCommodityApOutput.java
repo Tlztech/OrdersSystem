@@ -13,6 +13,7 @@ public class GetCommodityApOutput implements Serializable {
 	private String stockSh;
 	private String stockJp;
 	private String stockHandup;
+	private String createTime;
 
 	/**
 	 * @return the commodityId
@@ -132,6 +133,20 @@ public class GetCommodityApOutput implements Serializable {
 	 */
 	public void setStockHandup(String stockHandup) {
 		this.stockHandup = stockHandup;
+	}
+
+	/**
+	 * @return the createTime
+	 */
+	public String getCreateTime() {
+		return createTime;
+	}
+
+	/**
+	 * @param createTime the createTime to set
+	 */
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
 
 }
