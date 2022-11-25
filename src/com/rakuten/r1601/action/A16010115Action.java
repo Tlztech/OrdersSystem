@@ -48,6 +48,7 @@ public class A16010115Action extends BaseAction {
 		List<String> shopList = new ArrayList<>();
 		Connection conn = null;
 		try {
+			System.out.println("ダウンロードstart");
 			OrderCommon common = new OrderCommon();
 			conn = JdbcConnection.getConnection();
 			String sql = "SELECT SHOP_ID FROM rakuten.shop where DELETE_FLG is null and SITE = '楽天'";
@@ -74,7 +75,9 @@ public class A16010115Action extends BaseAction {
 				addError(null, "楽天店舗なし、比較ファイル生成失敗");
 			} else {
 				for (String shop : shopList) {
+					System.out.println("比較店舗："+shop+" start");
 					try {
+						System.out.println();
 						OrderApiBean orderapibean = common.getOrderListByApi(shop);
 
 						if (!Utility.isEmptyList(orderapibean.getMessageList())) {
@@ -90,6 +93,8 @@ public class A16010115Action extends BaseAction {
 						});
 					} catch (Exception e) {
 						outList.add(new String[] { shop+" error: "+e.getMessage() });
+					}finally {
+						System.out.println("比較店舗："+shop+" end");
 					}
 				}
 				if (outList.isEmpty()) {
@@ -99,6 +104,7 @@ public class A16010115Action extends BaseAction {
 					Utility.writeCsvFile(outList, "c:\\temp\\" + fileName);
 				}
 			}
+			System.out.println("ダウンロードend");
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
