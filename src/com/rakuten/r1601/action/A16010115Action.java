@@ -77,7 +77,6 @@ public class A16010115Action extends BaseAction {
 				for (String shop : shopList) {
 					System.out.println("比較店舗："+shop+" start");
 					try {
-						System.out.println();
 						OrderApiBean orderapibean = common.getOrderListByApi(shop);
 
 						if (!Utility.isEmptyList(orderapibean.getMessageList())) {
@@ -93,7 +92,7 @@ public class A16010115Action extends BaseAction {
 						});
 					} catch (Exception e) {
 						outList.add(new String[] { shop+" error: "+e.getMessage() });
-					}finally {
+					} finally {
 						System.out.println("比較店舗："+shop+" end");
 					}
 				}

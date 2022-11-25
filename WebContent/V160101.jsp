@@ -62,6 +62,44 @@ function init(){
 	top: 39px;
 	left: 50px;
 }
+.pop-box {
+	z-index: 9999; /*这个数值要足够大，才能够显示在最上层*/
+	margin-bottom: 3px;
+	position: absolute;
+	background: #FFF;
+	border: solid 1px #6e8bde;
+}
+
+.pop-box h4 {
+	color: #FFF;
+	cursor: default;
+	height: 18px;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: left;
+	padding-left: 8px;
+	padding-top: 4px;
+	padding-bottom: 2px;
+	background: url("../images/header_bg.gif") repeat-x 0 0;
+}
+
+.pop-box-body {
+	clear: both;
+	margin: 4px;
+	padding: 2px;
+}
+
+.mask {
+	color: #C7EDCC;
+	background-color: #C7EDCC;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	filter: Alpha(Opacity = 60);
+	-moz-opacity: .6;
+	opacity: 0.6;
+	z-index: 1000;
+}
 -->
 </style>
 </head>
@@ -142,7 +180,7 @@ function init(){
 		    <tr>
 		        <td>
 		        楽天発送待ち注文比較：
-		        <input type="button" style="width:130px;height:30px" value="比較結果ダウンロード" onclick="actionSubmit('A16010115')">
+		        <input type="button" style="width:130px;height:30px" value="比較結果ダウンロード" onclick="doAction('A16010115')">
 		        </td>
 		    </tr>
 		</table>
