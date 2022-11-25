@@ -239,8 +239,24 @@ a {
 		<input type="button" onclick="actionSubmit('A14010103')"
 			value="上传最新预警列表">
 		<!--<input type="button" onclick="doAction()" value="同步库存">-->
-		<input type="button" onclick="doAction4(1)" value="同步全部楽天、Yahoo、AU库存">
-		<input type="button" onclick="doAction4(2)" value="同步全部楽天、Yahoo、AU库存（每周一次）">
+		<br />
+		<br />
+		<br />
+		<br />
+		<table>
+			<tr>
+				<td class="td_bg" align="left"><input type="button" onclick="doAction4(1)" value="同步全部楽天、Yahoo、AU库存"><input type="button" onclick="doAction4(2)" value="同步全部楽天、Yahoo、AU库存（每周一次）"></td>
+			</tr>
+			<tr>
+				<td class="td_bg">商品ID：
+				<s:textfield size="35" name="commodityId" maxlength="50"/>
+				<input type="button" onclick="doAction4(3)" value="同步指定商品楽天、Yahoo、AU库存"></td>
+			</tr>
+			<tr>
+				<td class="td_bg"><s:file theme="simple" name="commodityIdFile" />
+				<input type="button" onclick="doAction4(4)" value="同步指定ファイル商品楽天、Yahoo、AU库存"></td>
+			</tr>
+		</table>
 		<br />
 		<br />
 		<br />

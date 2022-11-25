@@ -1,5 +1,6 @@
 package com.rakuten.r1401.action;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,14 +10,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import javax.xml.rpc.ServiceException;
 
 import org.apache.axis.encoding.Base64;
 
-import com.opensymphony.xwork2.ActionContext;
+import com.amazonaws.util.StringUtils;
 import com.rakuten.common.MessageFromAU;
 import com.rakuten.common.MessageFromYahoo;
 import com.rakuten.common.action.BaseAction;
@@ -45,6 +46,8 @@ public class A14010107Action extends BaseAction {
 	private static final long serialVersionUID = 1L;
 	private String logKey = null;
 	private int type = 0;
+	private String commodityId = null;
+	private File commodityIdFile = null;
 	private Map<String, String> itemNoMapForUpdateStock = new HashMap<String, String>();
 	
 	@Override
@@ -55,8 +58,12 @@ public class A14010107Action extends BaseAction {
 
 	@Override
 	protected void isValidated() throws Exception {
-		// TODO Auto-generated method stub
-
+		if (3 == type && !StringUtils.hasValue(commodityId)) {
+			addError(null, "未指定同步商品ID");
+		}
+		if (4 == type && Objects.isNull(commodityIdFile)) {
+			addError(null, "未指定同步商品IDファイル");
+		}
 	}
 
 	@Override
@@ -65,6 +72,10 @@ public class A14010107Action extends BaseAction {
 		String site = "Yahoo";
 		List<String> shopList = getShopsBySite(site);
 		List<StockBean> stockBeanList = getStockFromDB(type);
+		if (Objects.isNull(stockBeanList) || stockBeanList.isEmpty()) {
+			addError(null, "同步商品がない");
+			return;
+		}
 		stockBeanList.stream().forEach(n->{
 			itemNoMapForUpdateStock.put(n.getCommodity_id(), n.getCommodity_id());
 		});
@@ -144,8 +155,18 @@ public class A14010107Action extends BaseAction {
 			String sql;
 			if(type == 2) {
 				sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.SITE IN ('Yahoo','楽天','AU')";
-			} else {
+			} else if (type == 1){
 				sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE IN ('Yahoo','楽天','AU')";
+			} else if (type == 3) {
+				sql = String.format("select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where concat(COMMODITY_ID, DETAIL_NO) IN ('%s') t1.SITE IN ('Yahoo','楽天','AU')", commodityId);
+			} else {
+				List<String[]> commodityIdList = null;
+				commodityIdList = Utility.readCsvFileJpn(commodityIdFile, true);
+				String commodityIds = "";
+				if (!commodityIdList.isEmpty()) {
+					commodityIds = commodityIdList.stream().map(d->d[0]).reduce((a,b)->a+","+b).get();
+				}
+				sql = String.format("select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where concat(COMMODITY_ID, DETAIL_NO) IN ('%s') t1.SITE IN ('Yahoo','楽天','AU')", commodityIds);
 			}
 
 			ps = conn.prepareStatement(sql);
@@ -704,6 +725,34 @@ public class A14010107Action extends BaseAction {
 	 */
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	/**
+	 * @return the commodityId
+	 */
+	public String getCommodityId() {
+		return commodityId;
+	}
+
+	/**
+	 * @param commodityId the commodityId to set
+	 */
+	public void setCommodityId(String commodityId) {
+		this.commodityId = commodityId;
+	}
+
+	/**
+	 * @return the commodityIdFile
+	 */
+	public File getCommodityIdFile() {
+		return commodityIdFile;
+	}
+
+	/**
+	 * @param commodityIdFile the commodityIdFile to set
+	 */
+	public void setCommodityIdFile(File commodityIdFile) {
+		this.commodityIdFile = commodityIdFile;
 	}
 
 }
