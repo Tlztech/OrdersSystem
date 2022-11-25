@@ -46,7 +46,7 @@ public class A03020104Action extends BaseAction {
 					dataMap.get("COMM_DESCRIBE"), dataMap.get("CATEGORY_NAME"),
 					dataMap.get("JAPANESE_NAME"), dataMap.get("PRICE_IN"),
 					dataMap.get("RE_PRICE"), dataMap.get("STOCK_SH"),
-					dataMap.get("STOCK_JP"), dataMap.get("REMARKS") };
+					dataMap.get("STOCK_JP"), dataMap.get("REMARKS"), dataMap.get("CREATE_TIME"), dataMap.get("UPDATE_TIME")  };
 			outputArr.add(arr);
 		}
 
@@ -182,7 +182,7 @@ public class A03020104Action extends BaseAction {
 			List<Map<String, String>> ouputList = new ArrayList<Map<String, String>>();
 			Map<String, String> output = null;
 			conn = JdbcConnection.getConnection();
-			String sql = "SELECT T2.CATEGORY_NAME, T1.CHINESE_NAME,T1.COMMODITY_ID, T1.JAPANESE_NAME,T3.DETAIL_NO,T3.COMM_DESCRIBE,T3.PRICE_IN,T3.RE_PRICE,T3.STOCK_SH,T3.STOCK_JP,T3.REMARKS FROM TBL00011 T1 LEFT JOIN TBL00010 T2 ON T1.CATEGORY_ID = T2.CATEGORY_ID LEFT JOIN TBL00012 T3 ON T1.COMMODITY_ID = T3.COMMODITY_ID WHERE T1.DEL_FLG = '0'";
+			String sql = "SELECT T2.CATEGORY_NAME, T1.CHINESE_NAME,T1.COMMODITY_ID, T1.JAPANESE_NAME,T3.DETAIL_NO,T3.COMM_DESCRIBE,T3.PRICE_IN,T3.RE_PRICE,T3.STOCK_SH,T3.STOCK_JP,T3.REMARKS, T3.CREATE_TIME, T3.UPDATE_TIME FROM TBL00011 T1 LEFT JOIN TBL00010 T2 ON T1.CATEGORY_ID = T2.CATEGORY_ID LEFT JOIN TBL00012 T3 ON T1.COMMODITY_ID = T3.COMMODITY_ID WHERE T1.DEL_FLG = '0'";
 
 			String commodityId = f030201.getHid_commodityId();
 			String categoryId = f030201.getHid_categoryId();
@@ -192,8 +192,8 @@ public class A03020104Action extends BaseAction {
 			String stockJpStart = f030201.getHid_stockJpStart();
 			String stockShEnd = f030201.getHid_stockShEnd();
 			String stockJpEnd = f030201.getHid_stockJpEnd();
-			String updateTimeStart = f030201.getUpdateTimeStart();
-			String updateTimeEnd = f030201.getUpdateTimeEnd();
+			String updateTimeStart = f030201.getHid_updateTimeStart();
+			String updateTimeEnd = f030201.getHid_updateTimeEnd();
 
 			if (Utility.isEmptyString(stockShStart)) {
 				stockShStart = "0";
@@ -253,6 +253,8 @@ public class A03020104Action extends BaseAction {
 				output.put("STOCK_SH", rs.getString("STOCK_SH"));
 				output.put("STOCK_JP", rs.getString("STOCK_JP"));
 				output.put("RE_PRICE", rs.getString("RE_PRICE"));
+				output.put("CREATE_TIME", rs.getString("CREATE_TIME"));
+				output.put("UPDATE_TIME", rs.getString("UPDATE_TIME"));
 
 				ouputList.add(output);
 			}
