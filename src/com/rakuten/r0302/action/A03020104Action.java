@@ -70,6 +70,8 @@ public class A03020104Action extends BaseAction {
 			sheet1.setColumnWidth(6, 3000);
 			sheet1.setColumnWidth(7, 3000);
 			sheet1.setColumnWidth(8, 7000);
+			sheet1.setColumnWidth(9, 4000);
+			sheet1.setColumnWidth(10, 4000);
 
 			HSSFCellStyle style = wb.createCellStyle();
 			style.setBorderRight(HSSFCellStyle.BORDER_THIN);
@@ -80,7 +82,7 @@ public class A03020104Action extends BaseAction {
 //			style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);// 前景填充色
 
 			String[] record = { "商品番号", "商品詳細", "カテゴリ", "商品名", "仕入れ金額", "販売価格",
-					"上海在庫数", "日本在庫数", "備考" };
+					"上海在庫数", "日本在庫数", "備考", "作成時間", "更新時間" };
 			HSSFRow row = null;
 			HSSFCell cell = null;
 			row = sheet1.createRow(0);
