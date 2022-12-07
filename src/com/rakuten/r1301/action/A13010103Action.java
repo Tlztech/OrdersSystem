@@ -51,6 +51,7 @@ public class A13010103Action extends BaseAction {
 	String fileNameMerubin = null;
 	String fileNameYamatoTakubin = null;
 	String fileNameSagawaTakubin = null;
+	String fileNameShohin = null;
 	List<OrderBean> orderList1 = null;
 	private boolean okurijonomi = false;
 
@@ -442,7 +443,8 @@ public class A13010103Action extends BaseAction {
 //		fileNameSagawaTakubin = "Takkyubin_Sagawa" + df.format(new Date()) + ".csv";
 //		fileNameYamatoTakubin = "Takkyubin_Yamato" + df.format(new Date()) + ".csv";
 		fileName = "Post_" + df.format(new Date()) + ".csv";
-
+		fileNameShohin = "Shohin_" + df.format(new Date()) + ".csv";
+		
 //		File file1 = new File("c://temp/" + dirName + "/" + fileNameMerubin);
 //		file1.createNewFile();
 //		File file2 = new File("c://temp/" + dirName + "/" + fileNameSagawaTakubin);
@@ -451,10 +453,13 @@ public class A13010103Action extends BaseAction {
 //		file2.createNewFile();
 		File file = new File("c://temp/" + dirName + "/" + fileName);
 		file.createNewFile();
+		File fileShohin = new File("c://temp/" + dirName + "/" + fileNameShohin);
+		fileShohin.createNewFile();
 //		BufferedWriter bufferedWriterYamato = null;
 //		BufferedWriter bufferedWriterYamatoMerubin = null;
 //		BufferedWriter bufferedWriterSagawa = null;
 		BufferedWriter bufferedWriter = null;
+		BufferedWriter bufferedWriterShohin = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
 
@@ -476,6 +481,11 @@ public class A13010103Action extends BaseAction {
 		bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "shift-jis"));
 		bufferedWriter.write("出荷予定日,お届け予定（指定）日,配達時間帯,お届け先電話番号,お届け先電話番号枝番,お届け先郵便番号,お届け先住所,お届け先住所（アパートマンション名）,お届け先会社・部門名１,お届け先会社・部門名２,お届け先名,お届け先名略称カナ,敬称,ご依頼主電話番号,ご依頼主電話番号枝番,ご依頼主郵便番号,ご依頼主住所,ご依頼主住所（アパートマンション名）,ご依頼主名,ご依頼主略称カナ,品名１");
 
+		bufferedWriterShohin = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileShohin), "shift-jis"));
+		bufferedWriterShohin.write("商品番号,数量");
+
+		String conditionorder = "";
+		
 		try {
 			conn = JdbcConnection.getConnection();
 			String sql = "SELECT * FROM common_order_tbl T1 WHERE T1.CHUMONBANGO = ? ";
@@ -486,6 +496,8 @@ public class A13010103Action extends BaseAction {
 				if ("coverforefront".equals(shop)) {
 					shop = "whiteSweet";
 				}
+				
+				conditionorder = conditionorder +"'"+ orderBean.getJuchubango()+"'" + ",";
 				String site = orderBean.getSite();
 				String tenpodenwabango = "";
 				if (!"楽天".equals(site) && !"Yahoo".equals(site) 
@@ -493,7 +505,6 @@ public class A13010103Action extends BaseAction {
 						&& !"ポンパレモール".equals(site) && !"qoo10".equals(site)
 						&& !"AU".equals(site)) {
 					
-	
 					ps = conn.prepareStatement(sql);
 					ps.setString(1, orderBean.getJuchubango());
 					ResultSet rs = ps.executeQuery();
@@ -642,6 +653,21 @@ public class A13010103Action extends BaseAction {
 	
 				}
 			}
+			
+			String juchubangos = conditionorder.substring(0, conditionorder.length()-1);
+			String sqlShohin = "select SHOUHINBANGO, sum(kosu) as counts from common_order_detail_tbl where juchubango in (" + juchubangos + ")  group by SHOUHINBANGO";
+
+			ps = conn.prepareStatement(sqlShohin);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String shohinbango = rs.getString("SHOUHINBANGO");
+				String count = rs.getString("counts");
+				
+				bufferedWriterShohin.newLine();
+				bufferedWriterShohin.write(shohinbango+","+count);
+			}
+			
 	//		if (bufferedWriterYamato != null) {
 	//			bufferedWriterYamato.flush();
 	//			bufferedWriterYamato.close();
@@ -654,9 +680,11 @@ public class A13010103Action extends BaseAction {
 	//			bufferedWriterSagawa.flush();
 	//			bufferedWriterSagawa.close();
 	//		}
-			if (bufferedWriter != null) {
+			if ((bufferedWriter != null) || (bufferedWriterShohin != null)) {
 				bufferedWriter.flush();
 				bufferedWriter.close();
+				bufferedWriterShohin.flush();
+				bufferedWriterShohin.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
