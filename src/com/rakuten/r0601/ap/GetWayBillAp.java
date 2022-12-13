@@ -42,12 +42,6 @@ public class GetWayBillAp {
 			String customs = input.getCustoms();
 			String commodityId = input.getCommodityId();
 			boolean flag = false;
-			if(!Utility.isEmptyString(commodityId)) {
-				if(commodityId.contains("-")) {
-				} else {
-					commodityId = commodityId + "-0-0";
-				}
-			}
             
 			if (!Utility.isEmptyString(waybillNo)) {
 				sql += " AND WAYBILL_NO in (select waybill_no from company_waybill_tbl where waybill_no = '"+waybillNo+"' AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";	
