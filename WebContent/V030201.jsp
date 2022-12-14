@@ -315,6 +315,8 @@ function hideDiv3() {
 		<s:hidden name="f030201.hid_stockShEnd"/>
 		<s:hidden name="f030201.hid_stockJpStart"/>
 		<s:hidden name="f030201.hid_stockShStart"/>
+		<s:hidden name="f030201.hid_updateTimeStart"/>
+		<s:hidden name="f030201.hid_updateTimeEnd"/>
 		
 		<div id='pop-div' style="left:400px;top:250px;width:400px;height:250px;position:absolute;display:none" class="pop-box">   
             <div class="pop-box-body" >
