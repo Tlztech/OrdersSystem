@@ -7,16 +7,11 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections.ListUtils;
 
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.common.action.OrderCommon;
