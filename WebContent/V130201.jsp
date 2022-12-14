@@ -379,7 +379,7 @@ a {
 				<td class="td_bg">下载乐天未反应店舗:</td>
                 <td class="td_bg" align="left" colspan="3">
                     <s:iterator value="f130201.midownloadList" status="status">
-                        <s:checkbox name="f130201.midownloadList[%{#status.index}].shopNumber" value="%{shopNumber}"/>
+                        <s:checkbox name="f130201.midownloadList[%{#status.index}].shopNumber" value="%{shopNumber}" checked = "checked"/>
                         <s:hidden name="f130201.midownloadList[%{#status.index}].shopNumber" value="%{shopNumber}" />
                         <s:property value='shopName'/> <s:hidden name="f130201.midownloadList[%{#status.index}].shopName" value="%{shopName}" />
                     </s:iterator>
