@@ -84,32 +84,14 @@ public class A16010115Action extends BaseAction {
 						orderNoListMap.get(shop).forEach(d -> {
 							if (orderapibean.getRakutenBeanList().stream().filter(v -> v.getJuchubango().equals(d))
 									.count() == 0) {
-								outListL.add(d);
+								outList.add(new String[] {d,"システム有楽天なし"});
 							}
 						});
 						orderapibean.getRakutenBeanList().forEach(d->{
 							if (orderNoListMap.get(shop).stream().filter(v->v.equals(d.getJuchubango())).count() == 0) {
-								outListR.add(d.getJuchubango());
+								outList.add(new String[] {d.getJuchubango(),"楽天有システムなし"});
 							}
 						});
-						outList.add(new String[] {"系统比乐天多的订单","乐天比系统多的订单"});
-						if (outListL.size() >= outListR.size()) {
-							for (int i = 0; i < outListL.size(); i++) {
-								if (i < outListR.size()) {
-									outList.add(new String[] {outListL.get(i),outListR.get(i)});
-								} else {
-									outList.add(new String[] {outListL.get(i),""});
-								}
-							}
-						} else {
-							for (int i = 0; i < outListR.size(); i++) {
-								if (i < outListL.size()) {
-									outList.add(new String[] {outListL.get(i),outListR.get(i)});
-								} else {
-									outList.add(new String[] {"",outListR.get(i)});
-								}
-							}
-						}
 					} catch (Exception e) {
 						outList.add(new String[] { shop+" error: "+e.getMessage() });
 					} finally {
