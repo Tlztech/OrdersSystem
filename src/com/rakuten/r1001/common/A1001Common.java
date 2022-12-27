@@ -4973,10 +4973,10 @@ public class A1001Common {
 			if (i + 1 < csvList.size()) {
 				csvDataNext = csvList.get(i + 1);
 			}
-			String chumonbango = csvData[3];
+			String chumonbango = csvData[3].replaceAll("\\s*", "");
 			String chumonbangoNext = "";
 			if (csvDataNext != null) {
-				chumonbangoNext = csvDataNext[3];
+				chumonbangoNext = csvDataNext[3].replaceAll("\\s*", "");
 			}
 			if (StringUtils.isEmpty(csvData[6]) || "0".equals(csvData[6])) {
 
