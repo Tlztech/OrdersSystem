@@ -467,7 +467,7 @@ public class A14010107Action extends BaseAction {
 		while (true) {
 			if (shoriList.size() > 400) {
 				System.out.println("残り" + updateList.size());
-				Utility.addLog("残り" + updateList.size(), logKey);
+//				Utility.addLog("残り" + updateList.size(), logKey);
 				shoriList = updateList.subList(400, updateList.size());
 				updateList = updateList.subList(0, 400);
 				UpdateRequestExternalItem[] updateArr = new UpdateRequestExternalItem[updateList.size()];
@@ -598,6 +598,9 @@ public class A14010107Action extends BaseAction {
 			YahooShop yahooShop = new YahooShop(shop);
 			yahooShop.updateOrderStock(item_code.toString(), quantity.toString(), allow_overdraft.toString());
 			messageList.addAll(yahooShop.getMessageFromYahooList_UpdateOrder());
+			item_code.setLength(0);
+			quantity.setLength(0);
+			allow_overdraft.setLength(0);
 //			if (Utility.isEmptyList(messageList)) {
 //				
 //			} else {
@@ -631,7 +634,7 @@ public class A14010107Action extends BaseAction {
 	
 	private void updateAUOrderStockByShop(List<StockBean> stockListDB, String shop) throws Exception {
 		
-		List<StockBean> stockList = stockListDB.size() > 2000 ? stockListDB.subList(0, 200) : stockListDB;
+		List<StockBean> stockList = stockListDB.size() > 200 ? stockListDB.subList(0, 200) : stockListDB;
 		List<String> errMsgList = new ArrayList<String>();
 		List<MessageFromAU> messageList = new ArrayList<>();
 		List<String> commodityIdList = new ArrayList<>();
@@ -676,6 +679,9 @@ public class A14010107Action extends BaseAction {
 			AUShop auShop = new AUShop(shop);
 			auShop.updateOrderStock(commodityIdList, detailNoList, quantityList);
 			messageList.addAll(auShop.getMessageFromAUList());
+			commodityIdList.clear();
+			detailNoList.clear();
+			quantityList.clear();
 			
 			if (stockListDB.size() > 200) {
 				stockListDB = stockListDB.subList(200, stockListDB.size());
