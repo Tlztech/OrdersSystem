@@ -12,8 +12,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.axis.encoding.Base64;
+import org.apache.commons.lang.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rakuten.common.MessageFromRMS;
@@ -170,7 +172,7 @@ public class Shop {
 		while (endPos > startPos) {
 			orderNoSubList = orderNoList.subList(startPos, endPos);
 			requestMap.put("orderNumberList", orderNoSubList);
-			requestMap.put("version", 5);
+			requestMap.put("version", 7);
 			getxml = objectMapper_GetOrderResult.writeValueAsString(requestMap);
 			URL url = new URL(URL_GETORDER);
 			String json_GetOrderResult = getJson(shopName, url, getxml);
@@ -312,6 +314,13 @@ public class Shop {
 					itemModel.setSelectedChoice((String)itemModelMap.get("selectedChoice"));
 					itemModel.setPointRate((int)itemModelMap.get("pointRate"));
 					itemModel.setDelvdateInfo((String)itemModelMap.get("delvdateInfo"));
+					List<Map<String, ?>> skuModelMapList = (List<Map<String, ?>>) itemModelMap.get("SkuModelList");
+					if (skuModelMapList != null && skuModelMapList.size() != 0) {
+						String merchantDefinedSkuId = (String)skuModelMapList.get(0).get("merchantDefinedSkuId");
+						if (StringUtils.isNotEmpty(merchantDefinedSkuId))
+							itemModel.setItemNumber((String)skuModelMapList.get(0).get("merchantDefinedSkuId"));
+					}
+					
 					itemModelList.add(itemModel);
 				}
 				packageModel.setItemModelList(itemModelList);
