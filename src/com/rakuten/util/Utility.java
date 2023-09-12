@@ -1095,256 +1095,373 @@ public class Utility {
 		ShohinInfoBean shohinInfoBean = null;
 		List<ShohinkategoriBean> shohinkategoriBeanList = null;
 		List<ShohinsentakushiBean> shohinsentakushiBeanList = null;
-
+		
+		// 商品情报文件格式变更对应20230912
+		String bango = "-1";
 		for (int i = 0; i < itemList.size(); i++) {
 			// 从itemCsv获取商品基本信息
 			String[] itemInfo = itemList.get(i);
-			int j = 0;
-			shohinInfoBean = new ShohinInfoBean();
-			// 商品管理番号（商品URL）
-			shohinInfoBean.setShouhinkanribango(itemInfo[++j]);
-			// 商品番号
-			shohinInfoBean.setShouhinbango(itemInfo[++j]);
-			// 全商品ディレクトリID
-			shohinInfoBean.setZenshohindirekutoriId(itemInfo[++j]);
-			// タグID
-			shohinInfoBean.setTaguId(itemInfo[++j]);
-			// PC用キャッチコピー
-			shohinInfoBean.setPcyokyachikopi(itemInfo[++j]);
-			// モバイル用キャッチコピー
-			shohinInfoBean.setMobairuyokyachikopi(itemInfo[++j]);
-			// 商品名
-			shohinInfoBean.setShouhinmei(itemInfo[++j]);
-			// 販売価格
-			shohinInfoBean.setHanbaikakaku(itemInfo[++j]);
-			// 表示価格
-			shohinInfoBean.setHyojikakaku(itemInfo[++j]);
-			// 消費税
-			shohinInfoBean.setShouhizei(itemInfo[++j]);
-			// 送料
-			shohinInfoBean.setSouryou(itemInfo[++j]);
-			// 個別送料
-			shohinInfoBean.setKobetusouryou(itemInfo[++j]);
-			// 送料区分1
-			shohinInfoBean.setSouryoukubun1(itemInfo[++j]);
-			// 送料区分2
-			shohinInfoBean.setSouryoukubun2(itemInfo[++j]);
-			// 代引料
-			shohinInfoBean.setDaibikiryou(itemInfo[++j]);
-			// 倉庫指定
-			shohinInfoBean.setSokoshitei(itemInfo[++j]);
-			// 商品情報レイアウト
-			shohinInfoBean.setShouhinjouhoureiaouto(itemInfo[++j]);
-			// 注文ボタン
-			shohinInfoBean.setChumonbotan(itemInfo[++j]);
-			// 資料請求ボタン
-			shohinInfoBean.setShiryosekyubotan(itemInfo[++j]);
-			// 商品問い合わせボタン
-			shohinInfoBean.setShouhintoiawasebotan(itemInfo[++j]);
-			// 再入荷お知らせボタン
-			shohinInfoBean.setSainyukaoshirasebotan(itemInfo[++j]);
-			// モバイル表示
-			// shohinInfoBean.setMobairuhyoji(itemInfo[++j]);
-			// のし対応
-			shohinInfoBean.setNoshitaiou(itemInfo[++j]);
-			// PC用商品説明文
-			shohinInfoBean.setPcyoushouhinsetumeibun(itemInfo[++j]);
-			// モバイル用商品説明文
-			shohinInfoBean.setMobairuyoushouhinsetumeibun(itemInfo[++j]);
-			// スマートフォン用商品説明文
-			shohinInfoBean.setSumatofonyoushouhinsetumeibun(itemInfo[++j]);
-			// PC用販売説明文
-			shohinInfoBean.setPcyouhanbaisetumeibun(itemInfo[++j]);
-			// 商品画像URL
-			shohinInfoBean.setShouhingazoUrl(itemInfo[++j]);
-			// 商品画像名（ALT）
-			shohinInfoBean.setShouhingazomeiAlt(itemInfo[++j]);
-			// 動画
-			shohinInfoBean.setDouga(itemInfo[++j]);
-			// 販売期間指定
-			shohinInfoBean.setHanbaikikanshitei(itemInfo[++j]);
-			// 注文受付数
-			shohinInfoBean.setChumonnuketukesu(itemInfo[++j]);
-			// 在庫タイプ
-			shohinInfoBean.setZaikotaipu(itemInfo[++j]);
-			// 在庫数
-			shohinInfoBean.setZaikusu(itemInfo[++j]);
-			// 在庫数表示
-			shohinInfoBean.setZaikosuhyouji(itemInfo[++j]);
-			// 項目選択肢別在庫用横軸項目名
-			shohinInfoBean.setKomokusentakushibetuzaikoyouyokojikukoumokumei(itemInfo[++j]);
-			// 項目選択肢別在庫用縦軸項目名
-			shohinInfoBean.setKomokusentakushibetuzaikoyoutatejikukomokumei(itemInfo[++j]);
-			// 項目選択肢別在庫用残り表示閾値
-			shohinInfoBean.setKoumokusentakushibetuzaikoyounokorihyoujiikichi(itemInfo[++j]);
-			// RAC番号
-			shohinInfoBean.setRacbango(itemInfo[++j]);
-			// サーチ非表示
-			shohinInfoBean.setSachihihyoji(itemInfo[++j]);
-			// 闇市パスワード
-			shohinInfoBean.setYamiichipasuwado(itemInfo[++j]);
-			// カタログID
-			shohinInfoBean.setKataroguId(itemInfo[++j]);
-			// 在庫戻しフラグ
-			shohinInfoBean.setZaikonodoshifuragu(itemInfo[++j]);
-			// 在庫切れ時の注文受付
-			shohinInfoBean.setZaikokiretokinochumonnuketuke(itemInfo[++j]);
-			// 在庫あり時納期管理番号
-			shohinInfoBean.setZaikoaritokinoukikanribango(itemInfo[++j]);
-			// 在庫切れ時納期管理番号
-			shohinInfoBean.setZaikokiretokinoukikanribango(itemInfo[++j]);
-			// 予約商品発売日
-			shohinInfoBean.setYoyakushouhinhanbaibi(itemInfo[++j]);
-			// ポイント変倍率
-			shohinInfoBean.setPointohenbairitu(itemInfo[++j]);
-			// ポイント変倍率適用期間
-			shohinInfoBean.setPointohenbaitekiyoukikan(itemInfo[++j]);
-			// ヘッダー・フッター・レフトナビ
-			shohinInfoBean.setHeddafuttarefutonabi(itemInfo[++j]);
-			// 表示項目の並び順
-			shohinInfoBean.setHyoujikomokunonarabijun(itemInfo[++j]);
-			// 共通説明文（小）
-			shohinInfoBean.setKyotusetumeibunsho(itemInfo[++j]);
-			// 目玉商品
-			shohinInfoBean.setMedamashouhin(itemInfo[++j]);
-			// 共通説明文（大）
-			shohinInfoBean.setKyoutusetumeibundai(itemInfo[++j]);
-			// レビュー本文表示
-			shohinInfoBean.setRebyuhonbunhyouji(itemInfo[++j]);
-			// あす楽配送管理番号
-			shohinInfoBean.setArurakuhaisoukanribango(itemInfo[++j]);
-			// 海外配送管理番号
-			shohinInfoBean.setKaigaihaisoukanribango(itemInfo[++j]);
-			// サイズ表リンク
-			shohinInfoBean.setSaizuhyourinku(itemInfo[++j]);
-
-			// 从selectCsv获取商品基本信息
-			shohinsentakushiBeanList = new ArrayList<ShohinsentakushiBean>();
-			ShohinsentakushiBean shohinsentakushiBean = null;
-
-			if (selectCsv != null) {
-				for (int k = 0; k < selectList.size(); k++) {
-					j = 0;
-					String shouhinkanribango = shohinInfoBean.getShouhinkanribango();
-					if (shouhinkanribango.equals(selectList.get(k)[1])) {
-						shohinsentakushiBean = new ShohinsentakushiBean();
-						shohinsentakushiBeanList.add(shohinsentakushiBean);
-						// 商品管理番号（商品URL）
-						shohinsentakushiBean.setShohinkanribango(selectList.get(k)[++j]);
-						// 選択肢タイプ
-						shohinsentakushiBean.setSentakutaipu(selectList.get(k)[++j]);
-						// Select/Checkbox用項目名
-						shohinsentakushiBean.setSelectcheckboxyoukomokumei(selectList.get(k)[++j]);
-						// Select/Checkbox用選択肢
-						shohinsentakushiBean.setSelectcheckboxyousentakushi(selectList.get(k)[++j]);
-						// 項目選択肢別在庫用横軸選択肢
-						shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi(selectList.get(k)[++j]);
-						// 項目選択肢別在庫用横軸選択肢子番号
-						String strXAxisNo = selectList.get(k)[++j];
-						if (strXAxisNo.length() > 0 && (strXAxisNo.replace("－", "-").indexOf("-") == -1)) {
-							strXAxisNo = "-" + strXAxisNo;
-						}
-
-						// 項目選択肢別在庫用縦軸選択肢
-						shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi(selectList.get(k)[++j]);
-						// 項目選択肢別在庫用縦軸選択肢子番号
-						String strYAxisNo = selectList.get(k)[++j];
-						if (strYAxisNo.length() > 0 && (strYAxisNo.replace("－", "-").indexOf("-") == -1)) {
-							strYAxisNo = "-" + strYAxisNo;
-						}
-
-						if (strXAxisNo.length() == 0 && strYAxisNo.length() == 0) {
-							strXAxisNo = "-0";
-							strYAxisNo = "-0";
-						}
-
-						shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango(strXAxisNo);
-						shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango(strYAxisNo);
-
-						// 項目選択肢別在庫用取り寄せ可能表示
-						shohinsentakushiBean.setKomokusentakushibetuzaikototoriyosekanohyouji(selectList.get(k)[++j]);
-						// 項目選択肢別在庫用在庫数
-						shohinsentakushiBean.setKomokusentakushibetuzaikoyozaikosu(selectList.get(k)[++j]);
-						// 在庫戻しフラグ
-						shohinsentakushiBean.setZaikonodoshifuragu(selectList.get(k)[++j]);
-						// 在庫切れ時の注文受付
-						shohinsentakushiBean.setZaikokiretokinochumonuketuke(selectList.get(k)[++j]);
-						// 在庫あり時納期管理番号
-						shohinsentakushiBean.setZaikoaritokinoukikanribango(selectList.get(k)[++j]);
-						// 在庫切れ時納期管理番号
-						shohinsentakushiBean.setZaikokiretokinoukikanribango(selectList.get(k)[++j]);
-					}
-				}
-			} else {
-				String shouhinkanribango = shohinInfoBean.getShouhinkanribango();
-
-				shohinsentakushiBean = new ShohinsentakushiBean();
-				shohinsentakushiBeanList.add(shohinsentakushiBean);
+			
+			if (!bango.equals(itemInfo[0])) {
+				shohinInfoBean = new ShohinInfoBean();
 				// 商品管理番号（商品URL）
-				shohinsentakushiBean.setShohinkanribango(shouhinkanribango);
-				// 選択肢タイプ
-				shohinsentakushiBean.setSentakutaipu("i");
-				// Select/Checkbox用項目名
-				shohinsentakushiBean.setSelectcheckboxyoukomokumei("");
-				// Select/Checkbox用選択肢
-				shohinsentakushiBean.setSelectcheckboxyousentakushi("");
-				// 項目選択肢別在庫用横軸選択肢
-				shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi("");
-				// 項目選択肢別在庫用横軸選択肢子番号
-				shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango("-0");
-				// 項目選択肢別在庫用縦軸選択肢
-				shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi("");
-				// 項目選択肢別在庫用縦軸選択肢子番号
-				shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango("-0");
-				// 項目選択肢別在庫用取り寄せ可能表示
-				shohinsentakushiBean.setKomokusentakushibetuzaikototoriyosekanohyouji("");
-				// 項目選択肢別在庫用在庫数
-				shohinsentakushiBean.setKomokusentakushibetuzaikoyozaikosu("0");
+				shohinInfoBean.setShouhinkanribango(itemInfo[0]);
+				// 商品番号
+				shohinInfoBean.setShouhinbango(itemInfo[1]);
+				// 全商品ディレクトリID
+				shohinInfoBean.setZenshohindirekutoriId(itemInfo[18]);
+				// タグID
+				shohinInfoBean.setTaguId(null);
+				// PC用キャッチコピー
+				shohinInfoBean.setPcyokyachikopi(itemInfo[20]);
+				// モバイル用キャッチコピー
+				shohinInfoBean.setMobairuyokyachikopi(itemInfo[20]);
+				// 商品名
+				shohinInfoBean.setShouhinmei(itemInfo[2]);
+				// 販売価格
+				shohinInfoBean.setHanbaikakaku(itemInfo[220]);
+				// 表示価格
+				shohinInfoBean.setHyojikakaku(itemInfo[221]);
+				// 消費税
+				shohinInfoBean.setShouhizei(itemInfo[5]);
+				// 送料
+				shohinInfoBean.setSouryou(itemInfo[236]);
+				// 個別送料
+				shohinInfoBean.setKobetusouryou(itemInfo[239]);
+				// 送料区分1
+				shohinInfoBean.setSouryoukubun1(itemInfo[237]);
+				// 送料区分2
+				shohinInfoBean.setSouryoukubun2(itemInfo[238]);
+				// 代引料
+				shohinInfoBean.setDaibikiryou(itemInfo[17]);
+				// 倉庫指定
+				shohinInfoBean.setSokoshitei(itemInfo[3]);
+				// 商品情報レイアウト
+				shohinInfoBean.setShouhinjouhoureiaouto(itemInfo[87]);
+				// 注文ボタン
+				shohinInfoBean.setChumonbotan(itemInfo[12]);
+				// 資料請求ボタン
+				shohinInfoBean.setShiryosekyubotan("0");
+				// 商品問い合わせボタン
+				shohinInfoBean.setShouhintoiawasebotan(itemInfo[14]);
+				// 再入荷お知らせボタン
+				shohinInfoBean.setSainyukaoshirasebotan(itemInfo[224]);
+				// のし対応
+				shohinInfoBean.setNoshitaiou(itemInfo[225]);
+				// PC用商品説明文
+				shohinInfoBean.setPcyoushouhinsetumeibun(itemInfo[21]);
+				// モバイル用商品説明文
+				shohinInfoBean.setMobairuyoushouhinsetumeibun(itemInfo[22]);
+				// スマートフォン用商品説明文
+				shohinInfoBean.setSumatofonyoushouhinsetumeibun(itemInfo[22]);
+				// PC用販売説明文
+				shohinInfoBean.setPcyouhanbaisetumeibun(itemInfo[23]);
+				// 商品画像URL
+				shohinInfoBean.setShouhingazoUrl(null);
+				// 商品画像名（ALT）
+				shohinInfoBean.setShouhingazomeiAlt(null);
+				// 動画
+				shohinInfoBean.setDouga(itemInfo[84]);
+				// 販売期間指定
+				shohinInfoBean.setHanbaikikanshitei(itemInfo[7] + " " + itemInfo[8]);
+				// 注文受付数
+				shohinInfoBean.setChumonnuketukesu(itemInfo[223]);
+				// 在庫タイプ
+				shohinInfoBean.setZaikotaipu("0");
+				// 在庫数
+				shohinInfoBean.setZaikusu(itemInfo[226]);
+				// 在庫数表示
+				shohinInfoBean.setZaikosuhyouji(itemInfo[16]);
+				String selectChoiceArray[] = null;
+				if (itemInfo[96].indexOf("|") != -1) {
+					selectChoiceArray = itemInfo[96].split("|");
+				}
+				// 項目選択肢別在庫用横軸項目名
+				shohinInfoBean.setKomokusentakushibetuzaikoyouyokojikukoumokumei(null == selectChoiceArray?itemInfo[96]:selectChoiceArray[0]);
+				// 項目選択肢別在庫用縦軸項目名
+				shohinInfoBean.setKomokusentakushibetuzaikoyoutatejikukomokumei(null == selectChoiceArray?null:selectChoiceArray.length>1?selectChoiceArray[1]:null);
+				// 項目選択肢別在庫用残り表示閾値
+				shohinInfoBean.setKoumokusentakushibetuzaikoyounokorihyoujiikichi("0");
+				// RAC番号
+				shohinInfoBean.setRacbango(null);
+				// サーチ非表示
+				shohinInfoBean.setSachihihyoji("0");
+				// 闇市パスワード
+				shohinInfoBean.setYamiichipasuwado(itemInfo[15]);
+				// カタログID
+				shohinInfoBean.setKataroguId(itemInfo[242]);
 				// 在庫戻しフラグ
-				shohinsentakushiBean.setZaikonodoshifuragu("0");
+				shohinInfoBean.setZaikonodoshifuragu(itemInfo[227]);
 				// 在庫切れ時の注文受付
-				shohinsentakushiBean.setZaikokiretokinochumonuketuke("1");
+				shohinInfoBean.setZaikokiretokinochumonnuketuke(itemInfo[228]);
 				// 在庫あり時納期管理番号
-				shohinsentakushiBean.setZaikoaritokinoukikanribango("1");
+				shohinInfoBean.setZaikoaritokinoukikanribango(itemInfo[229]);
 				// 在庫切れ時納期管理番号
-				shohinsentakushiBean.setZaikokiretokinoukikanribango("1");
-			}
-
-			if (itemCatCsv != null) {
-				// 从selectCsv获取商品基本信息
-				shohinkategoriBeanList = new ArrayList<ShohinkategoriBean>();
-				ShohinkategoriBean shohinkategoriBean = null;
-				for (int k = 0; k < itemCatList.size(); k++) {
-					j = 0;
-					String shouhinkanribango = shohinInfoBean.getShouhinkanribango();
-					if (shouhinkanribango.equals(itemCatList.get(k)[1])) {
-						shohinkategoriBean = new ShohinkategoriBean();
-						shohinkategoriBeanList.add(shohinkategoriBean);
-
-						// 商品管理番号（商品URL）
-						shohinkategoriBean.setShohinkanribango(itemCatList.get(k)[++j]);
-						// 商品名
-						shohinkategoriBean.setShohinmei(itemCatList.get(k)[++j]);
-						// 表示先カテゴリ
-						shohinkategoriBean.setHuojisakikategori(itemCatList.get(k)[++j]);
-						// 優先度
-						shohinkategoriBean.setYusendo(itemCatList.get(k)[++j]);
-						// URL
-						shohinkategoriBean.setUrl(itemCatList.get(k)[++j]);
-						// 1ページ複数形式
-						shohinkategoriBean.setIchipejifukusukeishiki(itemCatList.get(k)[++j]);
-
+				shohinInfoBean.setZaikokiretokinoukikanribango(itemInfo[230]);
+				// 予約商品発売日
+				shohinInfoBean.setYoyakushouhinhanbaibi(itemInfo[13]);
+				// ポイント変倍率
+				shohinInfoBean.setPointohenbairitu(itemInfo[9]);
+				// ポイント変倍率適用期間
+				shohinInfoBean.setPointohenbaitekiyoukikan(itemInfo[10]+" "+itemInfo[11]);
+				// ヘッダー・フッター・レフトナビ
+				shohinInfoBean.setHeddafuttarefutonabi(itemInfo[88]);
+				// 表示項目の並び順
+				shohinInfoBean.setHyoujikomokunonarabijun(itemInfo[89]);
+				// 共通説明文（小）
+				shohinInfoBean.setKyotusetumeibunsho(itemInfo[90]);
+				// 目玉商品
+				shohinInfoBean.setMedamashouhin(itemInfo[91]);
+				// 共通説明文（大）
+				shohinInfoBean.setKyoutusetumeibundai(itemInfo[92]);
+				// レビュー本文表示
+				shohinInfoBean.setRebyuhonbunhyouji(itemInfo[93]);
+				// あす楽配送管理番号
+				shohinInfoBean.setArurakuhaisoukanribango(null);
+				// サイズ表リンク
+				shohinInfoBean.setSaizuhyourinku(null);
+				// 二重価格文言管理番号
+				shohinInfoBean.setNichokakakubungankanribango(itemInfo[222]);
+				// カタログIDなしの理由
+				// 配送方法セット管理番号
+				// 白背景画像URL
+				// メーカー提供情報表示
+				// 地域別個別送料管理番号
+				// 消費税率
+				// 単品配送設定
+				// 単品配送設定使用理由
+				
+				shohinBean = new ShohinBean();
+				shohinBean.setShohinInfoBean(shohinInfoBean);
+				shohinBean.setShohinsentakushiBeanList(new ArrayList<ShohinsentakushiBean>());
+				shohinList.add(shohinBean);
+			} else {
+				// 获取商品基本信息
+				if ("0".equals(itemInfo[205]) || "1".equals(itemInfo[205])) {
+					
+				} else {
+					shohinsentakushiBeanList = shohinBean.getShohinsentakushiBeanList();
+					ShohinsentakushiBean shohinsentakushiBean = new ShohinsentakushiBean();
+					// 商品管理番号（商品URL）
+					shohinsentakushiBean.setShohinkanribango(itemInfo[0]);
+					String selectChoiceX = null;
+					String selectChoiceY = null;
+					if (StringUtils.isNotBlank(itemInfo[206]) && StringUtils.isBlank(itemInfo[207])) {
+						selectChoiceX = "-0";
+						selectChoiceY = "-0";
+					} else if (StringUtils.isNotBlank(itemInfo[207])) {
+						String[] selectChoiceArray = itemInfo[207].split("-");
+						if (selectChoiceArray.length > 2) {
+							selectChoiceX = "-"+selectChoiceArray[1];
+							selectChoiceY = "-"+selectChoiceArray[2];
+						} else if (2 == selectChoiceArray.length) {
+							selectChoiceX = "-"+selectChoiceArray[1];
+						} else {
+							selectChoiceX = "-0";
+							selectChoiceY = "-0";
+						}
 					}
-
+					// 選択肢タイプ
+					if (StringUtils.isNotBlank(selectChoiceX) && !"-0".equals(selectChoiceX)) {
+						shohinsentakushiBean.setSentakutaipu("i");
+					} else {
+						shohinsentakushiBean.setSentakutaipu("s");
+					}
+					// Select/Checkbox用項目名
+					shohinsentakushiBean.setSelectcheckboxyoukomokumei(itemInfo[104]);
+					// Select/Checkbox用選択肢
+					shohinsentakushiBean.setSelectcheckboxyousentakushi(itemInfo[105]);
+					// 項目選択肢別在庫用横軸選択肢
+					shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi(itemInfo[209]);
+					// 項目選択肢別在庫用横軸選択肢子番号
+					shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango(selectChoiceX);
+					// 項目選択肢別在庫用縦軸選択肢
+					shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi(itemInfo[211]);
+					// 項目選択肢別在庫用縦軸選択肢子番号
+					shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango(selectChoiceY);
+					// 項目選択肢別在庫用取り寄せ可能表示
+					shohinsentakushiBean.setKomokusentakushibetuzaikototoriyosekanohyouji("0");
+					// 項目選択肢別在庫用在庫数
+					shohinsentakushiBean.setKomokusentakushibetuzaikoyozaikosu(itemInfo[226]);
+					// 在庫戻しフラグ
+					shohinsentakushiBean.setZaikonodoshifuragu(itemInfo[227]);
+					// 在庫切れ時の注文受付
+					shohinsentakushiBean.setZaikokiretokinochumonuketuke(itemInfo[228]);
+					// 在庫あり時納期管理番号
+					shohinsentakushiBean.setZaikoaritokinoukikanribango(itemInfo[229]);
+					// 在庫切れ時納期管理番号
+					shohinsentakushiBean.setZaikokiretokinoukikanribango(itemInfo[230]);
+					
+					shohinsentakushiBeanList.add(shohinsentakushiBean);
 				}
 			}
-			shohinBean = new ShohinBean();
-			shohinBean.setShohinInfoBean(shohinInfoBean);
-			shohinBean.setShohinkategoriBeanList(shohinkategoriBeanList);
-			shohinBean.setShohinsentakushiBeanList(shohinsentakushiBeanList);
-			shohinList.add(shohinBean);
-
+			
+			bango = itemInfo[0];
 		}
+
+		/* 商品情报文件格式变更对应20230912
+		 * for (int i = 0; i < itemList.size(); i++) { // 从itemCsv获取商品基本信息 String[]
+		 * itemInfo = itemList.get(i); int j = 0; shohinInfoBean = new ShohinInfoBean();
+		 * // 商品管理番号（商品URL） shohinInfoBean.setShouhinkanribango(itemInfo[++j]); // 商品番号
+		 * shohinInfoBean.setShouhinbango(itemInfo[++j]); // 全商品ディレクトリID
+		 * shohinInfoBean.setZenshohindirekutoriId(itemInfo[++j]); // タグID
+		 * shohinInfoBean.setTaguId(itemInfo[++j]); // PC用キャッチコピー
+		 * shohinInfoBean.setPcyokyachikopi(itemInfo[++j]); // モバイル用キャッチコピー
+		 * shohinInfoBean.setMobairuyokyachikopi(itemInfo[++j]); // 商品名
+		 * shohinInfoBean.setShouhinmei(itemInfo[++j]); // 販売価格
+		 * shohinInfoBean.setHanbaikakaku(itemInfo[++j]); // 表示価格
+		 * shohinInfoBean.setHyojikakaku(itemInfo[++j]); // 消費税
+		 * shohinInfoBean.setShouhizei(itemInfo[++j]); // 送料
+		 * shohinInfoBean.setSouryou(itemInfo[++j]); // 個別送料
+		 * shohinInfoBean.setKobetusouryou(itemInfo[++j]); // 送料区分1
+		 * shohinInfoBean.setSouryoukubun1(itemInfo[++j]); // 送料区分2
+		 * shohinInfoBean.setSouryoukubun2(itemInfo[++j]); // 代引料
+		 * shohinInfoBean.setDaibikiryou(itemInfo[++j]); // 倉庫指定
+		 * shohinInfoBean.setSokoshitei(itemInfo[++j]); // 商品情報レイアウト
+		 * shohinInfoBean.setShouhinjouhoureiaouto(itemInfo[++j]); // 注文ボタン
+		 * shohinInfoBean.setChumonbotan(itemInfo[++j]); // 資料請求ボタン
+		 * shohinInfoBean.setShiryosekyubotan(itemInfo[++j]); // 商品問い合わせボタン
+		 * shohinInfoBean.setShouhintoiawasebotan(itemInfo[++j]); // 再入荷お知らせボタン
+		 * shohinInfoBean.setSainyukaoshirasebotan(itemInfo[++j]); // モバイル表示 //
+		 * shohinInfoBean.setMobairuhyoji(itemInfo[++j]); // のし対応
+		 * shohinInfoBean.setNoshitaiou(itemInfo[++j]); // PC用商品説明文
+		 * shohinInfoBean.setPcyoushouhinsetumeibun(itemInfo[++j]); // モバイル用商品説明文
+		 * shohinInfoBean.setMobairuyoushouhinsetumeibun(itemInfo[++j]); //
+		 * スマートフォン用商品説明文 shohinInfoBean.setSumatofonyoushouhinsetumeibun(itemInfo[++j]);
+		 * // PC用販売説明文 shohinInfoBean.setPcyouhanbaisetumeibun(itemInfo[++j]); //
+		 * 商品画像URL shohinInfoBean.setShouhingazoUrl(itemInfo[++j]); // 商品画像名（ALT）
+		 * shohinInfoBean.setShouhingazomeiAlt(itemInfo[++j]); // 動画
+		 * shohinInfoBean.setDouga(itemInfo[++j]); // 販売期間指定
+		 * shohinInfoBean.setHanbaikikanshitei(itemInfo[++j]); // 注文受付数
+		 * shohinInfoBean.setChumonnuketukesu(itemInfo[++j]); // 在庫タイプ
+		 * shohinInfoBean.setZaikotaipu(itemInfo[++j]); // 在庫数
+		 * shohinInfoBean.setZaikusu(itemInfo[++j]); // 在庫数表示
+		 * shohinInfoBean.setZaikosuhyouji(itemInfo[++j]); // 項目選択肢別在庫用横軸項目名
+		 * shohinInfoBean.setKomokusentakushibetuzaikoyouyokojikukoumokumei(itemInfo[++j
+		 * ]); // 項目選択肢別在庫用縦軸項目名
+		 * shohinInfoBean.setKomokusentakushibetuzaikoyoutatejikukomokumei(itemInfo[++j]
+		 * ); // 項目選択肢別在庫用残り表示閾値
+		 * shohinInfoBean.setKoumokusentakushibetuzaikoyounokorihyoujiikichi(itemInfo[++
+		 * j]); // RAC番号 shohinInfoBean.setRacbango(itemInfo[++j]); // サーチ非表示
+		 * shohinInfoBean.setSachihihyoji(itemInfo[++j]); // 闇市パスワード
+		 * shohinInfoBean.setYamiichipasuwado(itemInfo[++j]); // カタログID
+		 * shohinInfoBean.setKataroguId(itemInfo[++j]); // 在庫戻しフラグ
+		 * shohinInfoBean.setZaikonodoshifuragu(itemInfo[++j]); // 在庫切れ時の注文受付
+		 * shohinInfoBean.setZaikokiretokinochumonnuketuke(itemInfo[++j]); //
+		 * 在庫あり時納期管理番号 shohinInfoBean.setZaikoaritokinoukikanribango(itemInfo[++j]); //
+		 * 在庫切れ時納期管理番号 shohinInfoBean.setZaikokiretokinoukikanribango(itemInfo[++j]); //
+		 * 予約商品発売日 shohinInfoBean.setYoyakushouhinhanbaibi(itemInfo[++j]); // ポイント変倍率
+		 * shohinInfoBean.setPointohenbairitu(itemInfo[++j]); // ポイント変倍率適用期間
+		 * shohinInfoBean.setPointohenbaitekiyoukikan(itemInfo[++j]); // ヘッダー・フッター・レフトナビ
+		 * shohinInfoBean.setHeddafuttarefutonabi(itemInfo[++j]); // 表示項目の並び順
+		 * shohinInfoBean.setHyoujikomokunonarabijun(itemInfo[++j]); // 共通説明文（小）
+		 * shohinInfoBean.setKyotusetumeibunsho(itemInfo[++j]); // 目玉商品
+		 * shohinInfoBean.setMedamashouhin(itemInfo[++j]); // 共通説明文（大）
+		 * shohinInfoBean.setKyoutusetumeibundai(itemInfo[++j]); // レビュー本文表示
+		 * shohinInfoBean.setRebyuhonbunhyouji(itemInfo[++j]); // あす楽配送管理番号
+		 * shohinInfoBean.setArurakuhaisoukanribango(itemInfo[++j]); // 海外配送管理番号
+		 * shohinInfoBean.setKaigaihaisoukanribango(itemInfo[++j]); // サイズ表リンク
+		 * shohinInfoBean.setSaizuhyourinku(itemInfo[++j]);
+		 * 
+		 * // 从selectCsv获取商品基本信息 shohinsentakushiBeanList = new
+		 * ArrayList<ShohinsentakushiBean>(); ShohinsentakushiBean shohinsentakushiBean
+		 * = null;
+		 * 
+		 * if (selectCsv != null) { for (int k = 0; k < selectList.size(); k++) { j = 0;
+		 * String shouhinkanribango = shohinInfoBean.getShouhinkanribango(); if
+		 * (shouhinkanribango.equals(selectList.get(k)[1])) { shohinsentakushiBean = new
+		 * ShohinsentakushiBean(); shohinsentakushiBeanList.add(shohinsentakushiBean);
+		 * // 商品管理番号（商品URL）
+		 * shohinsentakushiBean.setShohinkanribango(selectList.get(k)[++j]); // 選択肢タイプ
+		 * shohinsentakushiBean.setSentakutaipu(selectList.get(k)[++j]); //
+		 * Select/Checkbox用項目名
+		 * shohinsentakushiBean.setSelectcheckboxyoukomokumei(selectList.get(k)[++j]);
+		 * // Select/Checkbox用選択肢
+		 * shohinsentakushiBean.setSelectcheckboxyousentakushi(selectList.get(k)[++j]);
+		 * // 項目選択肢別在庫用横軸選択肢
+		 * shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi(
+		 * selectList.get(k)[++j]); // 項目選択肢別在庫用横軸選択肢子番号 String strXAxisNo =
+		 * selectList.get(k)[++j]; if (strXAxisNo.length() > 0 &&
+		 * (strXAxisNo.replace("－", "-").indexOf("-") == -1)) { strXAxisNo = "-" +
+		 * strXAxisNo; }
+		 * 
+		 * // 項目選択肢別在庫用縦軸選択肢
+		 * shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi(selectList
+		 * .get(k)[++j]); // 項目選択肢別在庫用縦軸選択肢子番号 String strYAxisNo =
+		 * selectList.get(k)[++j]; if (strYAxisNo.length() > 0 &&
+		 * (strYAxisNo.replace("－", "-").indexOf("-") == -1)) { strYAxisNo = "-" +
+		 * strYAxisNo; }
+		 * 
+		 * if (strXAxisNo.length() == 0 && strYAxisNo.length() == 0) { strXAxisNo =
+		 * "-0"; strYAxisNo = "-0"; }
+		 * 
+		 * shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango
+		 * (strXAxisNo);
+		 * shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango
+		 * (strYAxisNo);
+		 * 
+		 * // 項目選択肢別在庫用取り寄せ可能表示
+		 * shohinsentakushiBean.setKomokusentakushibetuzaikototoriyosekanohyouji(
+		 * selectList.get(k)[++j]); // 項目選択肢別在庫用在庫数
+		 * shohinsentakushiBean.setKomokusentakushibetuzaikoyozaikosu(selectList.get(k)[
+		 * ++j]); // 在庫戻しフラグ
+		 * shohinsentakushiBean.setZaikonodoshifuragu(selectList.get(k)[++j]); //
+		 * 在庫切れ時の注文受付
+		 * shohinsentakushiBean.setZaikokiretokinochumonuketuke(selectList.get(k)[++j]);
+		 * // 在庫あり時納期管理番号
+		 * shohinsentakushiBean.setZaikoaritokinoukikanribango(selectList.get(k)[++j]);
+		 * // 在庫切れ時納期管理番号
+		 * shohinsentakushiBean.setZaikokiretokinoukikanribango(selectList.get(k)[++j]);
+		 * } } } else { String shouhinkanribango =
+		 * shohinInfoBean.getShouhinkanribango();
+		 * 
+		 * shohinsentakushiBean = new ShohinsentakushiBean();
+		 * shohinsentakushiBeanList.add(shohinsentakushiBean); // 商品管理番号（商品URL）
+		 * shohinsentakushiBean.setShohinkanribango(shouhinkanribango); // 選択肢タイプ
+		 * shohinsentakushiBean.setSentakutaipu("i"); // Select/Checkbox用項目名
+		 * shohinsentakushiBean.setSelectcheckboxyoukomokumei(""); //
+		 * Select/Checkbox用選択肢 shohinsentakushiBean.setSelectcheckboxyousentakushi("");
+		 * // 項目選択肢別在庫用横軸選択肢
+		 * shohinsentakushiBean.setKomokusentakushibetuzaikoyouyokojikusentakushi("");
+		 * // 項目選択肢別在庫用横軸選択肢子番号
+		 * shohinsentakushiBean.setKomokusentakushibetuzaikoyoyokojikusentakushishibango
+		 * ("-0"); // 項目選択肢別在庫用縦軸選択肢
+		 * shohinsentakushiBean.setKomokusentakushizaikoyoutatejikusentakushi(""); //
+		 * 項目選択肢別在庫用縦軸選択肢子番号
+		 * shohinsentakushiBean.setKomokusentakushibetuzaikoyotatejikusentakushishibango
+		 * ("-0"); // 項目選択肢別在庫用取り寄せ可能表示
+		 * shohinsentakushiBean.setKomokusentakushibetuzaikototoriyosekanohyouji(""); //
+		 * 項目選択肢別在庫用在庫数 shohinsentakushiBean.setKomokusentakushibetuzaikoyozaikosu("0");
+		 * // 在庫戻しフラグ shohinsentakushiBean.setZaikonodoshifuragu("0"); // 在庫切れ時の注文受付
+		 * shohinsentakushiBean.setZaikokiretokinochumonuketuke("1"); // 在庫あり時納期管理番号
+		 * shohinsentakushiBean.setZaikoaritokinoukikanribango("1"); // 在庫切れ時納期管理番号
+		 * shohinsentakushiBean.setZaikokiretokinoukikanribango("1"); }
+		 * 
+		 * if (itemCatCsv != null) { // 从selectCsv获取商品基本信息 shohinkategoriBeanList = new
+		 * ArrayList<ShohinkategoriBean>(); ShohinkategoriBean shohinkategoriBean =
+		 * null; for (int k = 0; k < itemCatList.size(); k++) { j = 0; String
+		 * shouhinkanribango = shohinInfoBean.getShouhinkanribango(); if
+		 * (shouhinkanribango.equals(itemCatList.get(k)[1])) { shohinkategoriBean = new
+		 * ShohinkategoriBean(); shohinkategoriBeanList.add(shohinkategoriBean);
+		 * 
+		 * // 商品管理番号（商品URL）
+		 * shohinkategoriBean.setShohinkanribango(itemCatList.get(k)[++j]); // 商品名
+		 * shohinkategoriBean.setShohinmei(itemCatList.get(k)[++j]); // 表示先カテゴリ
+		 * shohinkategoriBean.setHuojisakikategori(itemCatList.get(k)[++j]); // 優先度
+		 * shohinkategoriBean.setYusendo(itemCatList.get(k)[++j]); // URL
+		 * shohinkategoriBean.setUrl(itemCatList.get(k)[++j]); // 1ページ複数形式
+		 * shohinkategoriBean.setIchipejifukusukeishiki(itemCatList.get(k)[++j]);
+		 * 
+		 * }
+		 * 
+		 * } } shohinBean = new ShohinBean();
+		 * shohinBean.setShohinInfoBean(shohinInfoBean);
+		 * shohinBean.setShohinkategoriBeanList(shohinkategoriBeanList);
+		 * shohinBean.setShohinsentakushiBeanList(shohinsentakushiBeanList);
+		 * shohinList.add(shohinBean);
+		 * 
+		 * }
+		 */
 		return shohinList;
 
 	}
