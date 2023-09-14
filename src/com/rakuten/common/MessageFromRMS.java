@@ -1,5 +1,7 @@
 package com.rakuten.common;
 
+import java.util.Map;
+
 public class MessageFromRMS {
 
 	private String messageType;
@@ -8,6 +10,8 @@ public class MessageFromRMS {
 	private String orderNumber;
 	private int dataNumber;
 	private int shippingDetailId;
+	private String code;
+	private Map metadata;
 	
 	public String getMessageType() {
 		return messageType;
@@ -44,6 +48,30 @@ public class MessageFromRMS {
 	}
 	public void setShippingDetailId(int shippingDetailId) {
 		this.shippingDetailId = shippingDetailId;
+	}
+	/**
+	 * @return the code
+	 */
+	public String getCode() {
+		return code;
+	}
+	/**
+	 * @param code the code to set
+	 */
+	public void setCode(String code) {
+		this.code = code;
+	}
+	/**
+	 * @return the metadata
+	 */
+	public Map getMetadata() {
+		return metadata;
+	}
+	/**
+	 * @param metadata the metadata to set
+	 */
+	public void setMetadata(Map metadata) {
+		this.metadata = metadata;
 	}
 	
 }

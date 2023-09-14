@@ -21,6 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rakuten.common.MessageFromRMS;
 import com.rakuten.order.Order;
 import com.rakuten.order.Order.PackageModel.ItemModel;
+
+import batch.bean.StockBean;
+
 import com.rakuten.order.OrderShppingInfo;
 
 import shohinmodel.common.Shohincommon;
@@ -30,18 +33,63 @@ public class Shop {
 	private final static String URL_SEARCHORDER = "https://api.rms.rakuten.co.jp/es/2.0/order/searchOrder/";
 	private final static String URL_GETORDER = "https://api.rms.rakuten.co.jp/es/2.0/order/getOrder/";
 	private final static String URL_UPDATEORDERSHIPPING = "https://api.rms.rakuten.co.jp/es/2.0/order/updateOrderShipping/";
+	private final static String URL_UPDATESTOCK = "https://api.rms.rakuten.co.jp/es/2.0/inventories/bulk-upsert/";
 	private final static int DATE_INTERVAL = -62;
 	private final static int DATETYPE_NOTEDAY = 1;
 	private final static int MAX_GETORDER = 100;
+	private final static int MAX_UPDATESTOCK = 400;
 
 	private String shopName;
 	private List<Order> orders = new ArrayList<Order>();
 	private List<MessageFromRMS> messageFromRMSList_GetOrder = new ArrayList<MessageFromRMS>();
 	private List<MessageFromRMS> messageFromRMSList_UpdateOrder = new ArrayList<MessageFromRMS>();
+	private List<MessageFromRMS> messageFromRMSList_UpdateStock = new ArrayList<MessageFromRMS>();
 	private List<String> orderNoList;
 	
 	public Shop(String shopName) {
 		this.shopName = shopName;
+	}
+	
+	public void updateStock(List<StockBean> stockListDB) throws Exception{
+		Map<String, Object> requestMap = new HashMap<String, Object>();
+		ObjectMapper objectMapper_UpdateStockResult = new ObjectMapper();
+		String updatexml;
+		int updateAmount = stockListDB.size();
+		List<StockBean> stockSubList;
+		List<Map<String, Object>> inventories = new ArrayList<>();
+		int startPos, endPos;
+		List<Map<String,Object>> messageModelList = new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> messageModelSubList;
+		startPos = 0;
+		endPos = MAX_UPDATESTOCK<updateAmount?MAX_UPDATESTOCK: updateAmount;
+		while (endPos > startPos) {
+			stockSubList = stockListDB.subList(startPos, endPos);
+			inventories = stockSubList.stream().map(stockDb->{
+				Map<String, Object> map = new HashMap<>();
+				map.put("manageNumber", stockDb.getCommodity_id());
+				map.put("variantId", stockDb.getCommodity_id()+stockDb.getDetail_no());
+				map.put("mode", "ABSOLUTE");
+				map.put("quantity", stockDb.getStock_jp());
+				return map;
+			}).collect(Collectors.toList());
+			requestMap.put("inventories", inventories);
+			updatexml = objectMapper_UpdateStockResult.writeValueAsString(requestMap);
+			URL url = new URL(URL_UPDATESTOCK);
+			String json_GetOrderResult = getJson(shopName, url, updatexml);
+			if (!json_GetOrderResult.contentEquals("")) {
+				Map<String,?> map_GetOrderResult = objectMapper_UpdateStockResult.readValue(json_GetOrderResult, Map.class);
+				messageModelSubList = (ArrayList<Map<String,Object>>) map_GetOrderResult.get("errors");
+				if (null == messageModelSubList || messageModelSubList.size() == 0) {
+					
+				} else {
+					messageModelList.addAll(messageModelSubList);
+				}
+			}
+			
+			startPos=endPos;
+			endPos = (endPos+MAX_UPDATESTOCK)<updateAmount?endPos + MAX_UPDATESTOCK: updateAmount;
+		}
+		convertUpdateStockMessageModel(messageModelList);
 	}
 	
 	public List<Order> getOrders(List<Integer> orderProgressList) throws Exception{
@@ -216,7 +264,13 @@ public class Shop {
 		out.close();
 		BufferedReader in = null;
 		try {
-			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			if (conn.getResponseCode() == HttpURLConnection.HTTP_NO_CONTENT) {
+				return "";
+			}else if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			} else {
+				in = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+			}
 		} catch (Exception e) {
 			e.toString();
 		}
@@ -227,6 +281,12 @@ public class Shop {
 		}
 		in.close();
 		return sb1.toString();
+	}
+	
+	private void convertUpdateStockMessageModel(List<Map<String,Object>> messageModelList) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		for(Map<String,Object> messageModel:messageModelList)
+			messageFromRMSList_UpdateStock.add(objectMapper.convertValue(messageModel, MessageFromRMS.class));
 	}
 	
 	private void convertGetOrderMessageModel(List<Map<String,String>> messageModelList) {
@@ -362,5 +422,9 @@ public class Shop {
 	
 	public List<MessageFromRMS> getMessageFromRMS_UpdateOrder() {
 		return messageFromRMSList_UpdateOrder;
+	}
+	
+	public List<MessageFromRMS> getMessageFromRMS_UpdateStock() {
+		return messageFromRMSList_UpdateStock;
 	}
 }

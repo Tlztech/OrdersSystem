@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.xml.rpc.ServiceException;
 
@@ -19,12 +20,14 @@ import org.apache.axis.encoding.Base64;
 
 import com.amazonaws.util.StringUtils;
 import com.rakuten.common.MessageFromAU;
+import com.rakuten.common.MessageFromRMS;
 import com.rakuten.common.MessageFromYahoo;
 import com.rakuten.common.action.BaseAction;
 import com.rakuten.common.action.OrderCommon;
 import com.rakuten.common.bean.OrderInfoBean;
 import com.rakuten.common.bean.ShouhinStsBean;
 import com.rakuten.shop.AUShop;
+import com.rakuten.shop.Shop;
 import com.rakuten.shop.YahooShop;
 import com.rakuten.util.JdbcConnection;
 import com.rakuten.util.Utility;
@@ -87,7 +90,9 @@ public class A14010107Action extends BaseAction {
 		site = "楽天";
 		shopList = getShopsBySite(site);
 		for (String shop : shopList) {
-			updateLottoOrderStockByShop(stockBeanList, shop);
+//			updateLottoOrderStockByShop(stockBeanList, shop);
+			
+			updateLottoOrderStockByShopV2(stockBeanList, shop);
 		}
 		
 		site = "AU";
@@ -282,6 +287,20 @@ public class A14010107Action extends BaseAction {
 		}
 	}
 	
+	// InventoryAPI 2.0对应
+	private void updateLottoOrderStockByShopV2(List<StockBean> stockListDB, String shop) throws Exception {
+		Shop rakutenShop = new Shop(shop);
+		rakutenShop.updateStock(stockListDB);
+		System.out.println("処理完了");
+		List<MessageFromRMS> errMsgList = rakutenShop.getMessageFromRMS_UpdateStock();
+		if (errMsgList.size() != 0)
+			itemNoMapForUpdateStock.clear();
+		for (MessageFromRMS msg : errMsgList) {
+			addActionError("SITE:楽天,SHOP:"+shop+" " +"code:"+msg.getCode()+",message:"+msg.getMessage()+",metadata:"+msg.getMetadata());
+		}
+	}
+	
+	// InventoryAPI 2.0对应
 	private void updateLottoOrderStockByShop(List<StockBean> stockListDB, String shop) throws Exception {
 
 //		Map<String, String> itemNoMapForUpdateStock = new HashMap<String, String>();
