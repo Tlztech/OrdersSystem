@@ -379,6 +379,9 @@ public class Shop {
 						String merchantDefinedSkuId = (String)skuModelMapList.get(0).get("merchantDefinedSkuId");
 						if (StringUtils.isNotEmpty(merchantDefinedSkuId))
 							itemModel.setItemNumber((String)skuModelMapList.get(0).get("merchantDefinedSkuId"));
+						String skuInfo = (String)skuModelMapList.get(0).get("skuInfo");
+						if (StringUtils.isNotEmpty(skuInfo))
+							itemModel.setSelectedChoice(skuInfo);
 					}
 					
 					itemModelList.add(itemModel);
