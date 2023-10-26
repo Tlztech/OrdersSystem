@@ -600,7 +600,7 @@ public class A130101Common {
 									if (rs7.next()) {
 										Order.setHaisohoho(rs7.getString("hasouhoho"));
 										ps2.setString(1, rs7.getString("hasouhoho"));
-										kaisha = rs6.getString("unsoukaisha");
+										kaisha = rs7.getString("unsoukaisha");
 									}
 								}else if(Double.valueOf(size) > 0.6 && Double.valueOf(size) < 1.0) {
 									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '3cm'";
@@ -609,7 +609,7 @@ public class A130101Common {
 									if (rs8.next()) {
 										Order.setHaisohoho(rs8.getString("hasouhoho"));
 										ps2.setString(1, rs8.getString("hasouhoho"));
-										kaisha = rs6.getString("unsoukaisha");
+										kaisha = rs8.getString("unsoukaisha");
 									}
 								}else {
 									Order.setHaisohoho("宅配便");
