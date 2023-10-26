@@ -1620,6 +1620,14 @@
 				<param name="bufferSize">4096</param>
 			</result>
 		</action>
+		<action name="A16010116" class="com.rakuten.r1601.action.A16010116Action">
+			<result name="login">V000101.jsp</result>
+			<result name="input">V160101.jsp</result>
+			<result name="success">V160101.jsp</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
 		<action name="A17010101" class="com.rakuten.r1701.action.A17010101Action">
 			<result name="login">V000101.jsp</result>
 			<result name="input">V170101.jsp</result>

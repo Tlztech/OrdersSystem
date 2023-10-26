@@ -36,6 +36,21 @@ function init(){
 	hideDiv();
 }
 
+function savehu(id,hasouhoho,unsoukaisha){
+	$.post("A16010116", {sizeId:id,hasouHoho:hasouhoho,unsouKaisha:unsoukaisha}, function(result) {
+
+		if("true" == result){
+		    alert("変更しました");
+		}else{
+			alert("失敗しました")
+		}
+    }, "json");
+}
+
+function changed(){
+
+}
+
 </script>
 <style type="text/css">
 <!--
@@ -106,9 +121,10 @@ function init(){
 <body onload="init()">
 	<%
 		Connection conn = null;
-	Map<String, String> shopMap = new HashMap<String, String>();
+	
 	try {
 		conn = com.rakuten.util.JdbcConnection.getConnection();
+		Map<String, String> shopMap = new HashMap<String, String>();
 		String sql = "SELECT distinct SHOP_ID FROM rakuten.shop where SITE IN ('Yahoo', '楽天') and DELETE_FLG is null";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
@@ -128,6 +144,42 @@ function init(){
 		
 		request.setAttribute("rakutenshopmap", rakutenShopMap);
 
+		Map<String, String> unsouKaishaMap = new HashMap<String, String>();
+		sql = "SELECT UNSOUKAISHACODE, UNSOUKAISHANAME FROM rakuten.unsoukaisha_tbl order by UNSOUKAISHACODE DESC";
+		ps = conn.prepareStatement(sql);
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			unsouKaishaMap.put(rs.getString("UNSOUKAISHACODE"), rs.getString("UNSOUKAISHANAME"));
+		}
+		request.setAttribute("unsoukaishamap", unsouKaishaMap);
+
+		sql = "SELECT SIZEID,HASOUHOHO,UNSOUKAISHA FROM rakuten.hassouhoho_unsoukaisha_tbl where SIZEID = '1cm'";
+		ps = conn.prepareStatement(sql);
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			//System.out.println( rs.getString("HASOUHOHO"));
+			request.setAttribute("onecm", rs.getString("SIZEID"));
+			request.setAttribute("onecmhasouhoho", rs.getString("HASOUHOHO"));
+			request.setAttribute("onecmunsoukaisya", rs.getString("UNSOUKAISHA"));
+		}
+		sql = "SELECT SIZEID,HASOUHOHO,UNSOUKAISHA FROM rakuten.hassouhoho_unsoukaisha_tbl where SIZEID = '2cm'";
+		ps = conn.prepareStatement(sql);
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			request.setAttribute("twocm", rs.getString("SIZEID"));
+			request.setAttribute("twocmhasouhoho", rs.getString("HASOUHOHO"));
+			request.setAttribute("twocmunsoukaisya", rs.getString("UNSOUKAISHA"));
+		}
+		
+		sql = "SELECT SIZEID,HASOUHOHO,UNSOUKAISHA FROM rakuten.hassouhoho_unsoukaisha_tbl where SIZEID = '3cm'";
+		ps = conn.prepareStatement(sql);
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			request.setAttribute("threecm", rs.getString("SIZEID"));
+			request.setAttribute("threecmhasouhoho", rs.getString("HASOUHOHO"));
+			request.setAttribute("threecmunsoukaisya", rs.getString("UNSOUKAISHA"));
+		}
+		
 	} catch (Exception e) {
 		out.println(e);
 	} finally {
@@ -192,7 +244,33 @@ function init(){
         <br/>
         <input type="file" name="inputPath" /><input type="button" style="width:130px;height:30px" value="获取最新在库情报" onclick="actionSubmit('A16010107')">
         <input type="button" style="width:130px;height:30px" value="qoo10在库情报" onclick="actionSubmit('A16010108')">
-		</div>
+        <br/>
+		<br/>
+		<br/>
+		<table>
+			<tr>
+				<td>
+				1CM(0.0-0.3)：<s:textfield style="width:170px;height:22px" value="%{#request.onecmhasouhoho}" id="size1cmdeliverymethod"/>
+				<s:select list="#request.unsoukaishamap" style="width:120px;height:30px" value="%{#request.onecmunsoukaisya}" id="size1cmdeliverycompany"/>
+				<input type="button" style="width:100px;height:30px" value="1cm 变更保存" onclick="savehu('1cm',document.getElementById('size1cmdeliverymethod').value,document.getElementById('size1cmdeliverycompany').value)">
+				</td>
+			</tr>
+			<tr>
+				<td>
+				2CM(0.4-0.6)：<s:textfield style="width:170px;height:22px" value="%{#request.twocmhasouhoho}" id="size2cmdeliverymethod"/>
+				<s:select list="#request.unsoukaishamap" style="width:120px;height:30px" value="%{#request.twocmunsoukaisya}" id="size2cmdeliverycompany"/>
+				<input type="button" style="width:100px;height:30px" value="2cm 变更保存" onclick="savehu('2cm',document.getElementById('size2cmdeliverymethod').value,document.getElementById('size2cmdeliverycompany').value)">
+				</td>
+			</tr>
+			<tr>
+				<td>
+				3CM(0.7-1.0)：<s:textfield style="width:170px;height:22px" value="%{#request.threecmhasouhoho}" id="size3cmdeliverymethod"/>
+				<s:select list="#request.unsoukaishamap" style="width:120px;height:30px" value="%{#request.threecmunsoukaisya}" id="size3cmdeliverycompany"/>
+				<input type="button" style="width:100px;height:30px" value="3cm 变更保存" onclick="savehu('3cm',document.getElementById('size3cmdeliverymethod').value,document.getElementById('size3cmdeliverycompany').value)">
+				</td>
+			</tr>
+		</table>
+        </div>
 		<s:hidden name="viewId" value="V160101"/>
 		<s:hidden name="searchMode"/>
 		<s:hidden name="mode"/>

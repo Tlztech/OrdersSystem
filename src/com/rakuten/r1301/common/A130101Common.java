@@ -393,6 +393,9 @@ public class A130101Common {
 			ResultSet rs3 = null;
 			ResultSet rs4 = null;
 			ResultSet rs5 = null;
+			ResultSet rs6 = null;
+			ResultSet rs7 = null;
+			ResultSet rs8 = null;
 			for (String juchubango : juchubangoList) {
 				sql = "SELECT * FROM common_order_tbl WHERE CHUMONBANGO = ? ORDER BY str_to_date(CHUMONNICHIJI,'%Y-%m-%d %H:%i:%s') DESC";
 				ps = conn.prepareStatement(sql);
@@ -489,12 +492,33 @@ public class A130101Common {
 								Order.setUnsokaisha(rs2.getString("kaisha"));
 								sql = "update common_order_tbl set haisouhoho = ?, UPDATE_TIME = ? where chumonbango = ?";
 								ps2 = conn.prepareStatement(sql);
-								if (Double.valueOf(rs2.getString("thissize")) < 0.3) {
-									Order.setHaisohoho("DM便");
-									ps2.setString(1, "DM便");
-								}else if(Double.valueOf(rs2.getString("thissize")) >= 0.3 && Double.valueOf(rs2.getString("thissize")) < 1.0) {
-									Order.setHaisohoho("メール便");
-									ps2.setString(1, "メール便");
+								if (Double.valueOf(rs2.getString("thissize")) <= 0.3) {
+									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '1cm'";
+									ps3 = conn.prepareStatement(sql);
+									rs6 = ps3.executeQuery();
+									if (rs6.next()) {
+										Order.setHaisohoho(rs6.getString("hasouhoho"));
+										ps2.setString(1, rs6.getString("hasouhoho"));
+										Order.setUnsokaisha(rs6.getString("unsoukaisha"));
+									}
+								}else if(Double.valueOf(rs2.getString("thissize")) > 0.3 && Double.valueOf(rs2.getString("thissize")) <= 0.6) {
+									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '2cm'";
+									ps3 = conn.prepareStatement(sql);
+									rs7 = ps3.executeQuery();
+									if (rs7.next()) {
+										Order.setHaisohoho(rs7.getString("hasouhoho"));
+										ps2.setString(1, rs7.getString("hasouhoho"));
+										Order.setUnsokaisha(rs7.getString("unsoukaisha"));
+									}
+								}else if(Double.valueOf(rs2.getString("thissize")) > 0.6 && Double.valueOf(rs2.getString("thissize")) <= 1.0) {
+									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '3cm'";
+									ps3 = conn.prepareStatement(sql);
+									rs8 = ps3.executeQuery();
+									if (rs8.next()) {
+										Order.setHaisohoho(rs8.getString("hasouhoho"));
+										ps2.setString(1, rs8.getString("hasouhoho"));
+										Order.setUnsokaisha(rs8.getString("unsoukaisha"));
+									}
 								}else {
 									Order.setHaisohoho("宅配便");
 									ps2.setString(1, "宅配便");
@@ -560,12 +584,33 @@ public class A130101Common {
 								sql = "update common_order_tbl set haisouhoho = ?, UPDATE_TIME = ? where chumonbango = ?";
 								ps2 = conn.prepareStatement(sql);
 								
-								if (Double.valueOf(size) < 0.3) {
-									Order.setHaisohoho("DM便");
-									ps2.setString(1, "DM便");
-								}else if(Double.valueOf(size) >= 0.3 && Double.valueOf(size) < 1.0) {
-									Order.setHaisohoho("メール便");
-									ps2.setString(1, "メール便");
+								if (Double.valueOf(size) <= 0.3) {
+									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '1cm'";
+									ps3 = conn.prepareStatement(sql);
+									rs6 = ps3.executeQuery();
+									if (rs6.next()) {
+										Order.setHaisohoho(rs6.getString("hasouhoho"));
+										ps2.setString(1, rs6.getString("hasouhoho"));
+										kaisha = rs6.getString("unsoukaisha");
+									}
+								}else if(Double.valueOf(size) > 0.3 && Double.valueOf(size) <= 0.6) {
+									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '2cm'";
+									ps3 = conn.prepareStatement(sql);
+									rs7 = ps3.executeQuery();
+									if (rs7.next()) {
+										Order.setHaisohoho(rs7.getString("hasouhoho"));
+										ps2.setString(1, rs7.getString("hasouhoho"));
+										kaisha = rs6.getString("unsoukaisha");
+									}
+								}else if(Double.valueOf(size) > 0.6 && Double.valueOf(size) <= 1.0) {
+									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '3cm'";
+									ps3 = conn.prepareStatement(sql);
+									rs8 = ps3.executeQuery();
+									if (rs8.next()) {
+										Order.setHaisohoho(rs8.getString("hasouhoho"));
+										ps2.setString(1, rs8.getString("hasouhoho"));
+										kaisha = rs6.getString("unsoukaisha");
+									}
 								}else {
 									Order.setHaisohoho("宅配便");
 									ps2.setString(1, "宅配便");
