@@ -510,7 +510,7 @@ public class A130101Common {
 										ps2.setString(1, rs7.getString("hasouhoho"));
 										Order.setUnsokaisha(rs7.getString("unsoukaisha"));
 									}
-								}else if(Double.valueOf(rs2.getString("thissize")) > 0.6 && Double.valueOf(rs2.getString("thissize")) <= 1.0) {
+								}else if(Double.valueOf(rs2.getString("thissize")) > 0.6 && Double.valueOf(rs2.getString("thissize")) < 1.0) {
 									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '3cm'";
 									ps3 = conn.prepareStatement(sql);
 									rs8 = ps3.executeQuery();
@@ -602,7 +602,7 @@ public class A130101Common {
 										ps2.setString(1, rs7.getString("hasouhoho"));
 										kaisha = rs6.getString("unsoukaisha");
 									}
-								}else if(Double.valueOf(size) > 0.6 && Double.valueOf(size) <= 1.0) {
+								}else if(Double.valueOf(size) > 0.6 && Double.valueOf(size) < 1.0) {
 									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '3cm'";
 									ps3 = conn.prepareStatement(sql);
 									rs8 = ps3.executeQuery();
