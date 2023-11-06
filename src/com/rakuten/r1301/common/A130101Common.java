@@ -492,7 +492,7 @@ public class A130101Common {
 								Order.setUnsokaisha(rs2.getString("kaisha"));
 								sql = "update common_order_tbl set haisouhoho = ?, UPDATE_TIME = ? where chumonbango = ?";
 								ps2 = conn.prepareStatement(sql);
-								if (Double.valueOf(rs2.getString("thissize")) <= 0.3) {
+								if (Double.valueOf(rs2.getString("thissize")) < 0.3) {
 									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '1cm'";
 									ps3 = conn.prepareStatement(sql);
 									rs6 = ps3.executeQuery();
@@ -501,7 +501,7 @@ public class A130101Common {
 										ps2.setString(1, rs6.getString("hasouhoho"));
 										Order.setUnsokaisha(rs6.getString("unsoukaisha"));
 									}
-								}else if(Double.valueOf(rs2.getString("thissize")) > 0.3 && Double.valueOf(rs2.getString("thissize")) <= 0.6) {
+								}else if(Double.valueOf(rs2.getString("thissize")) >= 0.3 && Double.valueOf(rs2.getString("thissize")) < 0.6) {
 									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '2cm'";
 									ps3 = conn.prepareStatement(sql);
 									rs7 = ps3.executeQuery();
@@ -510,7 +510,7 @@ public class A130101Common {
 										ps2.setString(1, rs7.getString("hasouhoho"));
 										Order.setUnsokaisha(rs7.getString("unsoukaisha"));
 									}
-								}else if(Double.valueOf(rs2.getString("thissize")) > 0.6 && Double.valueOf(rs2.getString("thissize")) < 1.0) {
+								}else if(Double.valueOf(rs2.getString("thissize")) >= 0.6 && Double.valueOf(rs2.getString("thissize")) < 1.0) {
 									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '3cm'";
 									ps3 = conn.prepareStatement(sql);
 									rs8 = ps3.executeQuery();
@@ -584,7 +584,7 @@ public class A130101Common {
 								sql = "update common_order_tbl set haisouhoho = ?, UPDATE_TIME = ? where chumonbango = ?";
 								ps2 = conn.prepareStatement(sql);
 								
-								if (Double.valueOf(size) <= 0.3) {
+								if (Double.valueOf(size) < 0.3) {
 									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '1cm'";
 									ps3 = conn.prepareStatement(sql);
 									rs6 = ps3.executeQuery();
@@ -593,7 +593,7 @@ public class A130101Common {
 										ps2.setString(1, rs6.getString("hasouhoho"));
 										kaisha = rs6.getString("unsoukaisha");
 									}
-								}else if(Double.valueOf(size) > 0.3 && Double.valueOf(size) <= 0.6) {
+								}else if(Double.valueOf(size) >= 0.3 && Double.valueOf(size) < 0.6) {
 									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '2cm'";
 									ps3 = conn.prepareStatement(sql);
 									rs7 = ps3.executeQuery();
@@ -602,7 +602,7 @@ public class A130101Common {
 										ps2.setString(1, rs7.getString("hasouhoho"));
 										kaisha = rs7.getString("unsoukaisha");
 									}
-								}else if(Double.valueOf(size) > 0.6 && Double.valueOf(size) < 1.0) {
+								}else if(Double.valueOf(size) >= 0.6 && Double.valueOf(size) < 1.0) {
 									sql = "select * from hassouhoho_unsoukaisha_tbl where SIZEID = '3cm'";
 									ps3 = conn.prepareStatement(sql);
 									rs8 = ps3.executeQuery();

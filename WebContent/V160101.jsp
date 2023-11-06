@@ -250,21 +250,21 @@ function changed(){
 		<table>
 			<tr>
 				<td>
-				1CM(0.0-0.3)：<s:textfield style="width:170px;height:22px" value="%{#request.onecmhasouhoho}" id="size1cmdeliverymethod"/>
+				1CM(0.00-0.29)：<s:textfield style="width:170px;height:22px" value="%{#request.onecmhasouhoho}" id="size1cmdeliverymethod"/>
 				<s:select list="#request.unsoukaishamap" style="width:120px;height:30px" value="%{#request.onecmunsoukaisya}" id="size1cmdeliverycompany"/>
 				<input type="button" style="width:100px;height:30px" value="1cm 变更保存" onclick="savehu('1cm',document.getElementById('size1cmdeliverymethod').value,document.getElementById('size1cmdeliverycompany').value)">
 				</td>
 			</tr>
 			<tr>
 				<td>
-				2CM(0.4-0.6)：<s:textfield style="width:170px;height:22px" value="%{#request.twocmhasouhoho}" id="size2cmdeliverymethod"/>
+				2CM(0.30-0.59)：<s:textfield style="width:170px;height:22px" value="%{#request.twocmhasouhoho}" id="size2cmdeliverymethod"/>
 				<s:select list="#request.unsoukaishamap" style="width:120px;height:30px" value="%{#request.twocmunsoukaisya}" id="size2cmdeliverycompany"/>
 				<input type="button" style="width:100px;height:30px" value="2cm 变更保存" onclick="savehu('2cm',document.getElementById('size2cmdeliverymethod').value,document.getElementById('size2cmdeliverycompany').value)">
 				</td>
 			</tr>
 			<tr>
 				<td>
-				3CM(0.7-1.0)：<s:textfield style="width:170px;height:22px" value="%{#request.threecmhasouhoho}" id="size3cmdeliverymethod"/>
+				3CM(0.60-0.99)：<s:textfield style="width:170px;height:22px" value="%{#request.threecmhasouhoho}" id="size3cmdeliverymethod"/>
 				<s:select list="#request.unsoukaishamap" style="width:120px;height:30px" value="%{#request.threecmunsoukaisya}" id="size3cmdeliverycompany"/>
 				<input type="button" style="width:100px;height:30px" value="3cm 变更保存" onclick="savehu('3cm',document.getElementById('size3cmdeliverymethod').value,document.getElementById('size3cmdeliverycompany').value)">
 				</td>
