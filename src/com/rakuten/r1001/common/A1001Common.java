@@ -3671,11 +3671,13 @@ public class A1001Common {
 							}
 
 							count = 0;
-							sql = "SELECT COUNT(*) COUNT FROM TBL00011 WHERE COMMODITY_ID in (select commodity_id from company_commodity_tbl where commodity_id = ? AND (COMPANY_ID = ?)) AND CATEGORY_ID = ?";
+//							sql = "SELECT COUNT(*) COUNT FROM TBL00011 WHERE COMMODITY_ID in (select commodity_id from company_commodity_tbl where commodity_id = ? AND (COMPANY_ID = ?)) AND CATEGORY_ID = ?";
+							sql = "SELECT COUNT(*) COUNT FROM TBL00011 WHERE COMMODITY_ID = ? AND CATEGORY_ID = ?";
 							ps = conn.prepareStatement(sql);
 							ps.setString(1, shouhinbango);
-							ps.setInt(2, companyId == 0 ? 1 : companyId);
-							ps.setString(3, "100001");
+//							ps.setInt(2, companyId == 0 ? 1 : companyId);
+//							ps.setString(3, "100001");
+							ps.setString(2, "100001");
 							rs = ps.executeQuery();
 							while (rs.next()) {
 								count = rs.getInt("COUNT");
