@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.axis.encoding.Base64;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -148,7 +149,7 @@ public class Shop {
 		return updatedOrderList;
 	}
 	
-	private String updateOrderShipping(String orderNumber, int basketId, String shippingNumber, String deliveryCompany, String shippingDate, String postWay) throws Exception {
+	private String updateOrderShipping(String orderNumber, long basketId, String shippingNumber, String deliveryCompany, String shippingDate, String postWay) throws Exception {
 		ObjectMapper objectMapper_UpdateOrderResult = new ObjectMapper();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		String updatexml;
@@ -343,7 +344,7 @@ public class Shop {
 			List<Order.PackageModel> packageModelList = new ArrayList<Order.PackageModel>();
 			for(Map<String, ?> packageModelMap : packageModelMapList) {
 				Order.PackageModel packageModel = order.new PackageModel();
-				packageModel.setBasketId((int)packageModelMap.get("basketId"));
+				packageModel.setBasketId(MapUtils.getLongValue(packageModelMap, "basketId", 0L));
 				Order.PackageModel.SenderModel senderModel = packageModel.new SenderModel();
 				Map<String, ?> senderModelMap = (Map<String, ?>)packageModelMap.get("SenderModel");
 				senderModel.setZipCode1((String)senderModelMap.get("zipCode1"));

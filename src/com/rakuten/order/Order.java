@@ -324,16 +324,16 @@ public class Order {
 	}
 	
 	public class PackageModel {
-		private int basketId;
+		private long basketId;
 		private SenderModel senderModel;
 		private List<ItemModel> itemModelList = new ArrayList<ItemModel>();
 		private int postagePrice;
 		
-		public int getBasketId() {
+		public long getBasketId() {
 			return basketId;
 		}
 
-		public void setBasketId(int basketId) {
+		public void setBasketId(long basketId) {
 			this.basketId = basketId;
 		}
 
