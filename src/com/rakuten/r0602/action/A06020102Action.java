@@ -930,36 +930,41 @@ public class A06020102Action extends BaseAction {
 						rs = ps.executeQuery();
 
 						int stock = 0;
+						int stockHandup =0;
 						while (rs.next()) {
 							stock = rs.getInt("STOCK_JP");
+							stockHandup = rs.getInt("STOCK_HANDUP");
 						}
 						int kosu = Integer.valueOf(detail.getKosu());
+						stockHandup = stockHandup - kosu >= 0 ? stockHandup - kosu : 0;
 						if (stock - kosu >= 0) {
 							detail.setFusokusu(0);
-							sql = "UPDATE TBL00012 SET STOCK_JP = ?, UPDATE_TIME = ? , UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+							sql = "UPDATE TBL00012 SET STOCK_JP = ?, STOCK_HANDUP = ?, UPDATE_TIME = ? , UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 							ps = conn.prepareStatement(sql);
 							ps.setInt(1, stock - kosu);
-							ps.setString(2, Utility.getDateTime());
-							ps.setString(3, Utility.getUser());
+							ps.setInt(2, stockHandup);
+							ps.setString(3, Utility.getDateTime());
+							ps.setString(4, Utility.getUser());
 							ps.setString(
-									4,
+									5,
 									shouhinbango.substring(0,
 											shouhinbango.indexOf("-")));
-							ps.setString(5, shouhinbango.substring(shouhinbango
+							ps.setString(6, shouhinbango.substring(shouhinbango
 									.indexOf("-")));
 							ps.executeUpdate();
 						} else if (stock > 0) {
 							detail.setFusokusu(kosu - stock);
-							sql = "UPDATE TBL00012 SET STOCK_JP = ?, UPDATE_TIME = ? , UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+							sql = "UPDATE TBL00012 SET STOCK_JP = ?, STOCK_HANDUP = ?, UPDATE_TIME = ? , UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 							ps = conn.prepareStatement(sql);
 							ps.setInt(1, 0);
-							ps.setString(2, Utility.getDateTime());
-							ps.setString(3, Utility.getUser());
+							ps.setInt(2, 0);
+							ps.setString(3, Utility.getDateTime());
+							ps.setString(4, Utility.getUser());
 							ps.setString(
-									4,
+									5,
 									shouhinbango.substring(0,
 											shouhinbango.indexOf("-")));
-							ps.setString(5, shouhinbango.substring(shouhinbango
+							ps.setString(6, shouhinbango.substring(shouhinbango
 									.indexOf("-")));
 							ps.executeUpdate();
 

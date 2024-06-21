@@ -18,6 +18,7 @@ public class StockBean implements Serializable {
 	int stock_sh_kano = 0;
 	int stock_nyukachu = 0;
 	int stock_nyukachu_kano = -1;
+	int stock_handup = 0;
 	String jinhuoshang = null;
 	boolean nyukafukaFlg = false;
 
@@ -125,6 +126,14 @@ public class StockBean implements Serializable {
 		this.stock_nyukachu_kano = stock_nyukachu_kano;
 	}
 
+	public int getStock_handup() {
+		return stock_handup;
+	}
+
+	public void setStock_handup(int stock_handup) {
+		this.stock_handup = stock_handup;
+	}
+	
 	public boolean isNyukafukaFlg() {
 		return nyukafukaFlg;
 	}

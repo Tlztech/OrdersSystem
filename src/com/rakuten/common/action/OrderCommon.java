@@ -1301,15 +1301,17 @@ public class OrderCommon {
 				String[] shohin = hasoList.get(i);
 				String shouhinbango = shohin[0];
 				String kosu = shohin[1];
-				sql = "SELECT STOCK_JP FROM TBL00012 WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+				sql = "SELECT STOCK_JP, STOCK_HANDUP FROM TBL00012 WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, Utility.getCommodityId(shouhinbango));
 				ps.setString(2, Utility.getDetailN0(shouhinbango));
 
 				rs = ps.executeQuery();
 				String stockjp = "0";
+				String stockhandup = "0";
 				while (rs.next()) {
 					stockjp = rs.getString("STOCK_JP");
+					stockhandup = rs.getString("STOCK_HANDUP");
 
 				}
 				if (Integer.valueOf(stockjp) - Integer.valueOf(kosu) < 0) {
@@ -1318,13 +1320,14 @@ public class OrderCommon {
 					continue;
 				}
 
-				sql = "UPDATE TBL00012 SET STOCK_JP = ?,UPDATE_TIME = ? , UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+				sql = "UPDATE TBL00012 SET STOCK_JP = ?, STOCK_HANDUP = ?, UPDATE_TIME = ? , UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 				ps = conn.prepareStatement(sql);
 
 				ps.setString(1, String.valueOf(Integer.valueOf(stockjp) - Integer.valueOf(kosu)));
-				ps.setString(2, Utility.getDateTime());
-				ps.setString(3, Utility.getCommodityId(shouhinbango));
-				ps.setString(4, Utility.getDetailN0(shouhinbango));
+				ps.setString(2, String.valueOf(Integer.valueOf(stockhandup) - Integer.valueOf(kosu)));
+				ps.setString(3, Utility.getDateTime());
+				ps.setString(4, Utility.getCommodityId(shouhinbango));
+				ps.setString(5, Utility.getDetailN0(shouhinbango));
 
 				ps.execute();
 

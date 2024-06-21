@@ -45,7 +45,7 @@ public class A06020103Action extends BaseAction {
 					DetailListBean detail = order.getDetailList().get(j);
 					String shouhinbango = detail.getShouhinbango();
 					String kosu = detail.getKosu();
-					sql = "SELECT STOCK_JP FROM TBL00012 WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+					sql = "SELECT STOCK_JP, STOCK_HANDUP FROM TBL00012 WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 					ps = conn.prepareStatement(sql);
 					if (shouhinbango.contains("-")) {
 						ps.setString(
@@ -60,8 +60,10 @@ public class A06020103Action extends BaseAction {
 					}
 					rs = ps.executeQuery();
 					String stockjp = "0";
+					String stockhandup = "0";
 					while (rs.next()) {
 						stockjp = rs.getString("STOCK_JP");
+						stockhandup = rs.getString("STOCK_HANDUP");
 
 					}
 					if (Integer.valueOf(stockjp) - Integer.valueOf(kosu) < 0) {
@@ -71,25 +73,19 @@ public class A06020103Action extends BaseAction {
 						continue;
 					}
 
-					sql = "UPDATE TBL00012 SET STOCK_JP = ?, UPDATE_TIME = ? , UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+					sql = "UPDATE TBL00012 SET STOCK_JP = ?, STOCK_HANDUP = ?, UPDATE_TIME = ? , UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 					ps = conn.prepareStatement(sql);
 
-					ps.setString(
-							1,
-							String.valueOf(Integer.valueOf(stockjp)
-									- Integer.valueOf(kosu)));
-					ps.setString(2, Utility.getDateTime());
-					ps.setString(3, Utility.getUser());
+					ps.setString(1, String.valueOf(Integer.valueOf(stockjp)	- Integer.valueOf(kosu)));
+					ps.setString(2, String.valueOf(Integer.valueOf(stockhandup)	- Integer.valueOf(kosu)));
+					ps.setString(3, Utility.getDateTime());
+					ps.setString(4, Utility.getUser());
 					if (shouhinbango.contains("-")) {
-						ps.setString(
-								4,
-								shouhinbango.substring(0,
-										shouhinbango.indexOf("-")));
-						ps.setString(5, shouhinbango.substring(shouhinbango
-								.indexOf("-")));
+						ps.setString(5, shouhinbango.substring(0, shouhinbango.indexOf("-")));
+						ps.setString(6, shouhinbango.substring(shouhinbango.indexOf("-")));
 					} else {
-						ps.setString(4, shouhinbango);
-						ps.setString(5, "");
+						ps.setString(5, shouhinbango);
+						ps.setString(6, "");
 					}
 					ps.execute();
 				}

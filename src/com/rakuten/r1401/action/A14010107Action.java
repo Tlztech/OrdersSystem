@@ -159,11 +159,11 @@ public class A14010107Action extends BaseAction {
 //			String sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE = ? AND t1.SHOP = ?";
 			String sql;
 			if(type == 2) {
-				sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.SITE IN ('Yahoo','楽天','AU')";
+				sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.stock_handup,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.SITE IN ('Yahoo','楽天','AU')";
 			} else if (type == 1){
-				sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE IN ('Yahoo','楽天','AU')";
+				sql = "select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.stock_handup,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.UPDATEQUANTITY_FLG = TRUE AND t1.SITE IN ('Yahoo','楽天','AU')";
 			} else if (type == 3) {
-				sql = String.format("select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.COMMODITY_ID = '%s' AND t1.SITE IN ('Yahoo','楽天','AU')", commodityId);
+				sql = String.format("select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.stock_handup,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where t1.COMMODITY_ID = '%s' AND t1.SITE IN ('Yahoo','楽天','AU')", commodityId);
 			} else {
 				List<String[]> commodityIdList = null;
 				commodityIdList = Utility.readCsvFileJpn(commodityIdFile, true);
@@ -171,7 +171,7 @@ public class A14010107Action extends BaseAction {
 				if (!commodityIdList.isEmpty()) {
 					commodityIds = commodityIdList.stream().map(d->d[0]).reduce((a,b)->a+","+b).get();
 				}
-				sql = String.format("select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where concat(t.COMMODITY_ID, t.DETAIL_NO) IN ('%s') AND t1.SITE IN ('Yahoo','楽天','AU')", commodityIds);
+				sql = String.format("select t1.commodity_id,t1.detail_no,t1.comm_describe,t1.stock_jp,t1.stock_sh,t1.stock_handup,t1.del_flg,t2.resp_person from tbl00012 t1 left join tbl00011 t2 on t1.commodity_id = t2.commodity_id where concat(t.COMMODITY_ID, t.DETAIL_NO) IN ('%s') AND t1.SITE IN ('Yahoo','楽天','AU')", commodityIds);
 			}
 
 			ps = conn.prepareStatement(sql);
@@ -185,10 +185,11 @@ public class A14010107Action extends BaseAction {
 				stockList.add(stockbean);
 				stockbean.setCommodity_id(rs.getString("commodity_id"));
 				stockbean.setDetail_no(rs.getString("detail_no").replace("-0-0", ""));
-				stockbean.setStock_jp(rs.getInt("stock_jp"));
+				stockbean.setStock_jp(rs.getInt("stock_jp") - rs.getInt("stock_handup"));
 				stockbean.setStock_jp_kano(rs.getInt("stock_jp"));
 				stockbean.setStock_sh(rs.getInt("stock_sh"));
 				stockbean.setStock_sh_kano(rs.getInt("stock_sh"));
+				stockbean.setStock_handup(rs.getInt("stock_handup"));
 				stockbean.setNyukafukaFlg("0".equals(rs.getString("del_flg")) ? false : true);
 				stockbean.setJinhuoshang(rs.getString("resp_person"));
 				if (!Utility.isEmptyString(rs.getString("comm_describe"))) {
@@ -590,7 +591,7 @@ public class A14010107Action extends BaseAction {
 				}
 				int stock = 0;
 				if (stockbean.getStock_jp_kano() > 0) {
-					stock = stockbean.getStock_jp_kano();
+					stock = stockbean.getStock_jp_kano() - stockbean.getStock_handup();
 	//			} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
 				} else if (stockbean.getStock_unsochu_kano() > 0) {
 					if (stockbean.getStock_unsochu_kano() > 0) {
@@ -683,7 +684,7 @@ public class A14010107Action extends BaseAction {
 				}
 				int stock = 0;
 				if (stockbean.getStock_jp_kano() > 0) {
-					stock = stockbean.getStock_jp_kano();
+					stock = stockbean.getStock_jp_kano() - stockbean.getStock_handup();
 				} else if (stockbean.getStock_unsochu_kano() > 0) {
 					if (stockbean.getStock_unsochu_kano() > 0) {
 						stock = stock + stockbean.getStock_unsochu_kano();

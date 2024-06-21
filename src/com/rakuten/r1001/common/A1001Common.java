@@ -1275,21 +1275,30 @@ public class A1001Common {
 			rs.close();
 			ps.close();
 			if (0 == count) {
-				sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`, RE_PRICE, STOCK_SH, STOCK_JP, STOCK_HANDUP, DEL_FLG, SITE, SHOP) VALUES (?, ?, TRUE, ?, 0, 0, 0, 0, ?, ?);";
+				sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`, RE_PRICE, STOCK_SH, STOCK_JP, STOCK_HANDUP, DEL_FLG, SITE, SHOP) VALUES (?, ?, TRUE, ?, 0, 0, ?, 0, ?, ?);";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, entry.getValue().get("commodityId"));
+				ps.setString(2, entry.getValue().get("detailNo"));
+				ps.setString(3, entry.getValue().get("tanka"));
+				ps.setString(4, entry.getValue().get("stockHandup"));
+				ps.setString(5, entry.getValue().get("site"));
+				ps.setString(6, entry.getValue().get("shop"));
+
+				ps.executeUpdate();
+				ps.close();
 
 			} else {
-				sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+				sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE, STOCK_HANDUP = STOCK_HANDUP + ? WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, Integer.valueOf(entry.getValue().get("stockHandup")));
+				ps.setString(2, entry.getValue().get("commodityId"));
+				ps.setString(3, entry.getValue().get("detailNo"));
+
+				ps.executeUpdate();
+				ps.close();
+
 			}
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, entry.getValue().get("commodityId"));
-			ps.setString(2, entry.getValue().get("detailNo"));
-			if (0 == count) {
-				ps.setString(3, entry.getValue().get("tanka"));
-				ps.setString(4, entry.getValue().get("site"));
-				ps.setString(5, entry.getValue().get("shop"));
-			}
-			ps.executeUpdate();
-			ps.close();
+
 		}
 
 		for (Map.Entry<String, Map<String, String>> entry : tbl11Map.entrySet()) {
@@ -1727,6 +1736,7 @@ public class A1001Common {
 						dataMap.put("commodityId", commodityId);
 						dataMap.put("detailNo", detailNo);
 						dataMap.put("tanka", shousai.getTanka());
+						dataMap.put("stockHandup", shousai.getKosu());
 						dataMap.put("site", "楽天");
 						dataMap.put("shop", shop);
 						tbl12Map.put(commodityId + detailNo, dataMap);
@@ -1812,6 +1822,7 @@ public class A1001Common {
 						dataMap.put("commodityId", commodityId);
 						dataMap.put("detailNo", detailNo);
 						dataMap.put("tanka", shousai.getTanka());
+						dataMap.put("stockHandup", shousai.getKosu());
 						dataMap.put("site", "楽天");
 						dataMap.put("shop", shop);
 						tbl12Map.put(commodityId + detailNo, dataMap);
