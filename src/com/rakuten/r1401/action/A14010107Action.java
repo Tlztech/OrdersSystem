@@ -185,7 +185,7 @@ public class A14010107Action extends BaseAction {
 				stockList.add(stockbean);
 				stockbean.setCommodity_id(rs.getString("commodity_id"));
 				stockbean.setDetail_no(rs.getString("detail_no").replace("-0-0", ""));
-				stockbean.setStock_jp(rs.getInt("stock_jp") - rs.getInt("stock_handup"));
+				stockbean.setStock_jp((rs.getInt("stock_jp") - rs.getInt("stock_handup")) > 0 ? rs.getInt("stock_jp") - rs.getInt("stock_handup") : 0);
 				stockbean.setStock_jp_kano(rs.getInt("stock_jp"));
 				stockbean.setStock_sh(rs.getInt("stock_sh"));
 				stockbean.setStock_sh_kano(rs.getInt("stock_sh"));
@@ -591,7 +591,7 @@ public class A14010107Action extends BaseAction {
 				}
 				int stock = 0;
 				if (stockbean.getStock_jp_kano() > 0) {
-					stock = stockbean.getStock_jp_kano() - stockbean.getStock_handup();
+					stock = (stockbean.getStock_jp_kano() - stockbean.getStock_handup()) > 0 ? stockbean.getStock_jp_kano() - stockbean.getStock_handup() : 0;
 	//			} else if (stockbean.getStock_unsochu_kano() > 0 || stockbean.getStock_sh_kano() > 0) {
 				} else if (stockbean.getStock_unsochu_kano() > 0) {
 					if (stockbean.getStock_unsochu_kano() > 0) {
@@ -684,7 +684,7 @@ public class A14010107Action extends BaseAction {
 				}
 				int stock = 0;
 				if (stockbean.getStock_jp_kano() > 0) {
-					stock = stockbean.getStock_jp_kano() - stockbean.getStock_handup();
+					stock = (stockbean.getStock_jp_kano() - stockbean.getStock_handup()) > 0 ? stockbean.getStock_jp_kano() - stockbean.getStock_handup() : 0;
 				} else if (stockbean.getStock_unsochu_kano() > 0) {
 					if (stockbean.getStock_unsochu_kano() > 0) {
 						stock = stock + stockbean.getStock_unsochu_kano();
