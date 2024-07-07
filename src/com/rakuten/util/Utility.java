@@ -1244,8 +1244,8 @@ public class Utility {
 					ShohinsentakushiBean shohinsentakushiBean = new ShohinsentakushiBean();
 					// 商品管理番号（商品URL）
 					shohinsentakushiBean.setShohinkanribango(itemInfo[0]);
-					String selectChoiceX = null;
-					String selectChoiceY = null;
+					String selectChoiceX = "";
+					String selectChoiceY = "";
 					if (StringUtils.isNotBlank(itemInfo[206]) && StringUtils.isBlank(itemInfo[207])) {
 						selectChoiceX = "-0";
 						selectChoiceY = "-0";
@@ -1262,7 +1262,7 @@ public class Utility {
 						}
 					}
 					// 選択肢タイプ
-					if (StringUtils.isNotBlank(selectChoiceX) && !"-0".equals(selectChoiceX)) {
+					if (StringUtils.isNotBlank(selectChoiceX)) {
 						shohinsentakushiBean.setSentakutaipu("i");
 					} else {
 						shohinsentakushiBean.setSentakutaipu("s");
