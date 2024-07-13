@@ -145,7 +145,7 @@ public class A13010104Action extends BaseAction {
 					ps = conn.prepareStatement(sql);
 
 					ps.setString(1, String.valueOf(Integer.valueOf(stockjp) - Integer.valueOf(kosu)));
-					ps.setString(2, String.valueOf(Integer.valueOf(stockhandup) - Integer.valueOf(kosu)));
+					ps.setString(2, String.valueOf((Integer.valueOf(stockhandup) - Integer.valueOf(kosu)) > 0 ? Integer.valueOf(stockhandup) - Integer.valueOf(kosu) : 0));
 					ps.setString(3, Utility.getDateTime());
 					ps.setString(4, Utility.getUser());
 					ps.setString(5, Utility.getCommodityId(shouhinbango));

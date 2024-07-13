@@ -76,8 +76,8 @@ public class A06020103Action extends BaseAction {
 					sql = "UPDATE TBL00012 SET STOCK_JP = ?, STOCK_HANDUP = ?, UPDATE_TIME = ? , UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 					ps = conn.prepareStatement(sql);
 
-					ps.setString(1, String.valueOf(Integer.valueOf(stockjp)	- Integer.valueOf(kosu)));
-					ps.setString(2, String.valueOf(Integer.valueOf(stockhandup)	- Integer.valueOf(kosu)));
+					ps.setString(1, String.valueOf(Integer.valueOf(stockjp) - Integer.valueOf(kosu)));
+					ps.setString(2, String.valueOf((Integer.valueOf(stockhandup) - Integer.valueOf(kosu)) > 0 ? Integer.valueOf(stockhandup) - Integer.valueOf(kosu) : 0));
 					ps.setString(3, Utility.getDateTime());
 					ps.setString(4, Utility.getUser());
 					if (shouhinbango.contains("-")) {

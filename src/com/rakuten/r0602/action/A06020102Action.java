@@ -936,7 +936,7 @@ public class A06020102Action extends BaseAction {
 							stockHandup = rs.getInt("STOCK_HANDUP");
 						}
 						int kosu = Integer.valueOf(detail.getKosu());
-						stockHandup = stockHandup - kosu >= 0 ? stockHandup - kosu : 0;
+						stockHandup = stockHandup - kosu > 0 ? stockHandup - kosu : 0;
 						if (stock - kosu >= 0) {
 							detail.setFusokusu(0);
 							sql = "UPDATE TBL00012 SET STOCK_JP = ?, STOCK_HANDUP = ?, UPDATE_TIME = ? , UPDATE_USER = ?, UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
