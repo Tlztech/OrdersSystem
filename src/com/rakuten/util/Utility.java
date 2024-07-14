@@ -1291,6 +1291,18 @@ public class Utility {
 					shohinsentakushiBean.setZaikoaritokinoukikanribango(itemInfo[229]);
 					// 在庫切れ時納期管理番号
 					shohinsentakushiBean.setZaikokiretokinoukikanribango(itemInfo[230]);
+					// 販売価格
+					shohinsentakushiBean.setHanbaikakaku(itemInfo[220]);
+					// 表示価格
+					shohinsentakushiBean.setHyojikakaku(itemInfo[221]);
+					// 送料
+					shohinsentakushiBean.setSouryou(itemInfo[236]);
+					// 個別送料
+					shohinsentakushiBean.setKobetusouryou(itemInfo[239]);
+					// 送料区分1
+					shohinsentakushiBean.setSouryoukubun1(itemInfo[237]);
+					// 送料区分2
+					shohinsentakushiBean.setSouryoukubun2(itemInfo[238]);
 					
 					shohinsentakushiBeanList.add(shohinsentakushiBean);
 				}

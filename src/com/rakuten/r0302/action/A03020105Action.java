@@ -132,34 +132,24 @@ public class A03020105Action extends BaseAction {
 							sql = "UPDATE TBL00012 SET COMM_DESCRIBE = ?,RE_PRICE = ?,UPDATE_TIME = ? , YOKONAME = ?, SHITAGANAME = ?, UPDATE_USER = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 							ps = conn.prepareStatement(sql);
 							ps.setString(1, detail.getDescribe());
-							if (shohinInfoBean.getShouhinkanribango().equals(
-									"sjpj138")) {
-								detail.getDescribe();
-							}
-							ps.setString(2, shohinInfoBean.getHanbaikakaku());
+							ps.setString(2, detail.getRePrice());
 							ps.setString(3, date);
 							ps.setString(4, detail.getYokoname());
 							ps.setString(5, detail.getShitaganame());
 							ps.setString(6, "kyo");
-							ps.setString(7,
-									shohinInfoBean.getShouhinkanribango());
+							ps.setString(7, shohinInfoBean.getShouhinkanribango());
 							ps.setString(8, detail.getDetailNo());
 							
 							ps.executeUpdate();
 						} else {
 							sql = SqlUtility.getSql("SQLR0001012");
 							ps = conn.prepareStatement(sql);
-							ps.setString(1,
-									shohinInfoBean.getShouhinkanribango());
+							ps.setString(1,	shohinInfoBean.getShouhinkanribango());
 							ps.setString(2, detail.getDetailNo());
 							ps.setString(3, detail.getDescribe());
 							ps.setString(4, detail.getPicUrl());
-							ps.setString(5, Utility.isEmptyString(detail
-									.getPriceIn()) ? null : detail.getPriceIn());
-							ps.setString(6, Utility
-									.isEmptyString(shohinInfoBean
-											.getHanbaikakaku()) ? null
-									: shohinInfoBean.getHanbaikakaku());
+							ps.setString(5, Utility.isEmptyString(detail.getPriceIn()) ? null : detail.getPriceIn());
+							ps.setString(6, Utility.isEmptyString(detail.getRePrice()) ? null : detail.getRePrice());
 							ps.setString(7, "0");
 							ps.setString(8, "0");
 							ps.setString(9, "0");
@@ -186,8 +176,7 @@ public class A03020105Action extends BaseAction {
 					for (CommodityDetail detail : commodityDetailList) {
 						sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
 						ps = conn.prepareStatement(sql);
-						ps.setString(1, shohinInfoBean.getShouhinkanribango()
-								+ detail.getDetailNo());
+						ps.setString(1, shohinInfoBean.getShouhinkanribango() + detail.getDetailNo());
 						rs = ps.executeQuery();
 						int count = 0;
 						while (rs.next()) {
@@ -203,9 +192,7 @@ public class A03020105Action extends BaseAction {
 
 							sql = "INSERT INTO TBL00016 VALUES(?,?)";
 							ps = conn.prepareStatement(sql);
-							ps.setString(1,
-									shohinInfoBean.getShouhinkanribango()
-											+ detail.getDetailNo());
+							ps.setString(1, shohinInfoBean.getShouhinkanribango() + detail.getDetailNo());
 							ps.setString(2, maxBarcode);
 							ps.execute();
 						}
@@ -317,12 +304,8 @@ public class A03020105Action extends BaseAction {
 						ps.setString(2, detail.getDetailNo());
 						ps.setString(3, detail.getDescribe());
 						ps.setString(4, detail.getPicUrl());
-						ps.setString(5, Utility.isEmptyString(detail
-								.getPriceIn()) ? null : detail.getPriceIn());
-						ps.setString(6,
-								Utility.isEmptyString(shohinInfoBean
-										.getHanbaikakaku()) ? null
-										: shohinInfoBean.getHanbaikakaku());
+						ps.setString(5, Utility.isEmptyString(detail.getPriceIn()) ? null : detail.getPriceIn());
+						ps.setString(6,	Utility.isEmptyString(detail.getRePrice()) ? null : detail.getRePrice());
 						ps.setString(7, "0");
 						ps.setString(8, "0");
 						ps.setString(9, "0");
@@ -348,8 +331,7 @@ public class A03020105Action extends BaseAction {
 					for (CommodityDetail detail : commodityDetailList) {
 						sql = "SELECT COUNT(*) COUNT FROM TBL00016 WHERE COMMODITY_ID = ?";
 						ps = conn.prepareStatement(sql);
-						ps.setString(1, shohinInfoBean.getShouhinkanribango()
-								+ detail.getDetailNo());
+						ps.setString(1, shohinInfoBean.getShouhinkanribango() + detail.getDetailNo());
 						rs = ps.executeQuery();
 						int count = 0;
 						while (rs.next()) {
@@ -365,9 +347,7 @@ public class A03020105Action extends BaseAction {
 
 							sql = "INSERT INTO TBL00016 VALUES(?,?)";
 							ps = conn.prepareStatement(sql);
-							ps.setString(1,
-									shohinInfoBean.getShouhinkanribango()
-											+ detail.getDetailNo());
+							ps.setString(1,	shohinInfoBean.getShouhinkanribango() + detail.getDetailNo());
 							ps.setString(2, maxBarcode);
 							ps.execute();
 						}
@@ -397,19 +377,14 @@ public class A03020105Action extends BaseAction {
 			if ("i".equals(shohinsentakushiBean.getSentakutaipu())) {
 				detail = new CommodityDetail();
 				detailList.add(detail);
-				detail.setDetailNo(shohinsentakushiBean
-						.getKomokusentakushibetuzaikoyoyokojikusentakushishibango()
-						+ shohinsentakushiBean
-								.getKomokusentakushibetuzaikoyotatejikusentakushishibango());
-				detail.setDescribe(shohinsentakushiBean
-						.getKomokusentakushibetuzaikoyouyokojikusentakushi()
+				detail.setDetailNo(shohinsentakushiBean.getKomokusentakushibetuzaikoyoyokojikusentakushishibango()
+						+ shohinsentakushiBean.getKomokusentakushibetuzaikoyotatejikusentakushishibango());
+				detail.setDescribe(shohinsentakushiBean.getKomokusentakushibetuzaikoyouyokojikusentakushi()
 						+ "\r\n"
-						+ shohinsentakushiBean
-								.getKomokusentakushizaikoyoutatejikusentakushi());
-				detail.setYokoname(shohinsentakushiBean
-						.getKomokusentakushibetuzaikoyouyokojikusentakushi());
-				detail.setShitaganame(shohinsentakushiBean
-						.getKomokusentakushizaikoyoutatejikusentakushi());
+						+ shohinsentakushiBean.getKomokusentakushizaikoyoutatejikusentakushi());
+				detail.setYokoname(shohinsentakushiBean.getKomokusentakushibetuzaikoyouyokojikusentakushi());
+				detail.setShitaganame(shohinsentakushiBean.getKomokusentakushizaikoyoutatejikusentakushi());
+				detail.setRePrice(shohinsentakushiBean.getHanbaikakaku());
 			}
 		}
 		return detailList;

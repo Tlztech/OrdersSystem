@@ -35,6 +35,19 @@ public class ShohinsentakushiBean implements Serializable {
 	private String zaikoaritokinoukikanribango = null;
 	// 在庫切れ時納期管理番号
 	private String zaikokiretokinoukikanribango = null;
+	// 販売価格
+	private String hanbaikakaku = null;
+	// 表示価格
+	private String hyojikakaku = null;
+	// 送料
+	private String souryou = null;
+	// 個別送料
+	private String kobetusouryou = null;
+	// 送料区分1
+	private String souryoukubun1 = null;
+	// 送料区分2
+	private String souryoukubun2 = null;
+
 
 	public String getShohinkanribango() {
 		return shohinkanribango;
@@ -165,5 +178,54 @@ public class ShohinsentakushiBean implements Serializable {
 	public void setKontororukaramu(String kontororukaramu) {
 		this.kontororukaramu = kontororukaramu;
 	}
+	
+	public String getHanbaikakaku() {
+		return hanbaikakaku;
+	}
+
+	public void setHanbaikakaku(String hanbaikakaku) {
+		this.hanbaikakaku = hanbaikakaku;
+	}
+
+	public String getHyojikakaku() {
+		return hyojikakaku;
+	}
+
+	public void setHyojikakaku(String hyojikakaku) {
+		this.hyojikakaku = hyojikakaku;
+	}
+	
+	public String getSouryou() {
+		return souryou;
+	}
+
+	public void setSouryou(String souryou) {
+		this.souryou = souryou;
+	}
+
+	public String getKobetusouryou() {
+		return kobetusouryou;
+	}
+
+	public void setKobetusouryou(String kobetusouryou) {
+		this.kobetusouryou = kobetusouryou;
+	}
+
+	public String getSouryoukubun1() {
+		return souryoukubun1;
+	}
+
+	public void setSouryoukubun1(String souryoukubun1) {
+		this.souryoukubun1 = souryoukubun1;
+	}
+
+	public String getSouryoukubun2() {
+		return souryoukubun2;
+	}
+
+	public void setSouryoukubun2(String souryoukubun2) {
+		this.souryoukubun2 = souryoukubun2;
+	}
+
 
 }
