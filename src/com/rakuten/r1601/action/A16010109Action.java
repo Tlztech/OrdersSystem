@@ -39,6 +39,10 @@ public class A16010109Action extends BaseAction {
 		PreparedStatement ps = null;
 		String sql = "";
 		String condition = "";
+		ResultSet rs = null;
+		String shouhinbango = "";
+		String kosu = "0";
+		
 		try {
 			
 			for(int i=0; i<shoriList.size(); i++){
@@ -57,6 +61,47 @@ public class A16010109Action extends BaseAction {
 			}
 			
 			conn = JdbcConnection.getConnection();
+			
+			sql = "select t2.SHOUHINBANGO, t2.KOSU  from common_order_tbl t1 join common_order_detail_tbl t2 on t1.CHUMONBANGO = t2.JUCHUBANGO  where t1.CHUMONBANGO in (" + condition + ")";
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				if (!Utility.isEmptyString(rs.getString("SHOUHINBANGO"))) {
+					shouhinbango = rs.getString("SHOUHINBANGO");
+					kosu = rs.getString("KOSU");
+					
+					if (!shouhinbango.contains("-")) {
+						shouhinbango = shouhinbango + "-0-0";
+					}
+						
+					String sql2 = null;
+					ResultSet rs2 = null;
+					PreparedStatement ps2 = null;
+					sql2 = "select STOCK_HANDUP from TBL00012 where concat(COMMODITY_ID, DETAIL_NO) = ?";
+					ps2 = conn.prepareStatement(sql2);
+					ps2.setString(1, shouhinbango);
+					rs2 = ps2.executeQuery();
+					int handupamount = 0;
+					
+					while (rs2.next()) {
+						if (!Utility.isEmptyString(rs2.getString("STOCK_HANDUP"))) {
+							handupamount = Integer.valueOf(rs2.getString("STOCK_HANDUP"))-Integer.valueOf(kosu)>0 ? Integer.valueOf(rs2.getString("STOCK_HANDUP"))-Integer.valueOf(kosu) : 0;
+						}
+						String sql3 = null;
+						ResultSet rs3 = null;
+						PreparedStatement ps3 = null;
+						
+						sql3 = "update TBL00012 SET STOCK_HANDUP=?, update_time = ?, update_user = ? where concat(COMMODITY_ID, DETAIL_NO) = ?";
+						ps3 = conn.prepareStatement(sql3);
+						ps3.setInt(1, handupamount);
+						ps3.setString(2, Utility.getDateTime());
+						ps3.setString(3, "deleteMany");
+						ps3.setString(4, shouhinbango);
+						ps3.executeUpdate();
+					}
+				}
+			}
+			
 			sql = "delete from tbl00027 where chumonbango in (select order_id from company_order_tbl where order_id in (" + condition + ") AND (COMPANY_ID = ? OR ? = 0 OR ? = 1))";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, companyId);
