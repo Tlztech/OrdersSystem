@@ -45,7 +45,7 @@ public class A03030102Action extends BaseAction {
 			}
 
 			ps.setString(2, Utility.getDateTime());
-			ps.setString(3, Utility.getUser());
+			ps.setString(3, "A03030102");
 			ps.setString(4, Utility.getCommodityId(f030301.getShohinbango()));
 			ps.setString(5, Utility.getDetailN0(f030301.getShohinbango()));
 			int countupdate = ps.executeUpdate();

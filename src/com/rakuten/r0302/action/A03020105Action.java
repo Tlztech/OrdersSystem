@@ -136,7 +136,7 @@ public class A03020105Action extends BaseAction {
 							ps.setString(3, date);
 							ps.setString(4, detail.getYokoname());
 							ps.setString(5, detail.getShitaganame());
-							ps.setString(6, "kyo");
+							ps.setString(6, "A03020105-1");
 							ps.setString(7, shohinInfoBean.getShouhinkanribango());
 							ps.setString(8, detail.getDetailNo());
 							
@@ -158,9 +158,9 @@ public class A03020105Action extends BaseAction {
 							ps.setString(12, "");
 							ps.setString(13, "0");
 							ps.setString(14, date);
-							ps.setString(15, "kyo");
+							ps.setString(15, "A03020105-2");
 							ps.setString(16, date);
-							ps.setString(17, "kyo");
+							ps.setString(17, "A03020105-2");
 							ps.setString(18, detail.getYokoname());
 							ps.setString(19, detail.getShitaganame());
 							ps.setString(20, f030201.getSite());
@@ -314,9 +314,9 @@ public class A03020105Action extends BaseAction {
 						ps.setString(12, "");
 						ps.setString(13, "0");
 						ps.setString(14, date);
-						ps.setString(15, "kyo");
+						ps.setString(15, "A03020105-3");
 						ps.setString(16, date);
-						ps.setString(17, "kyo");
+						ps.setString(17, "A03020105-3");
 						ps.setString(18, detail.getYokoname());
 						ps.setString(19, detail.getShitaganame());
 						ps.setString(20, f030201.getSite());

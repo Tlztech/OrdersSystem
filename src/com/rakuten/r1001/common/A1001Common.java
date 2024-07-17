@@ -1275,24 +1275,30 @@ public class A1001Common {
 			rs.close();
 			ps.close();
 			if (0 == count) {
-				sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`, RE_PRICE, STOCK_SH, STOCK_JP, STOCK_HANDUP, DEL_FLG, SITE, SHOP) VALUES (?, ?, TRUE, ?, 0, 0, ?, 0, ?, ?);";
+				sql = "INSERT INTO `rakuten`.`tbl00012` (`COMMODITY_ID`, `DETAIL_NO`, `UPDATEQUANTITY_FLG`, RE_PRICE, STOCK_SH, STOCK_JP, STOCK_HANDUP, DEL_FLG, CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER, SITE, SHOP) VALUES (?, ?, TRUE, ?, 0, 0, ?, 0, ?, ?, ?, ?, ?, ?);";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, entry.getValue().get("commodityId"));
 				ps.setString(2, entry.getValue().get("detailNo"));
 				ps.setString(3, entry.getValue().get("tanka"));
 				ps.setString(4, entry.getValue().get("stockHandup"));
-				ps.setString(5, entry.getValue().get("site"));
-				ps.setString(6, entry.getValue().get("shop"));
+				ps.setString(5, entry.getValue().get("date"));
+				ps.setString(6, "A1001Com-Insert");
+				ps.setString(7, entry.getValue().get("date"));
+				ps.setString(8, "A1001Com-Insert");
+				ps.setString(9, entry.getValue().get("site"));
+				ps.setString(10, entry.getValue().get("shop"));
 
 				ps.executeUpdate();
 				ps.close();
 
 			} else {
-				sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE, STOCK_HANDUP = STOCK_HANDUP + ? WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
+				sql = "UPDATE `rakuten`.`tbl00012` SET `UPDATEQUANTITY_FLG`=TRUE, STOCK_HANDUP = STOCK_HANDUP + ?, UPDATE_TIME=?, UPDATE_USER=? WHERE `COMMODITY_ID`=? and`DETAIL_NO`=?;";
 				ps = conn.prepareStatement(sql);
 				ps.setInt(1, Integer.valueOf(entry.getValue().get("stockHandup")));
-				ps.setString(2, entry.getValue().get("commodityId"));
-				ps.setString(3, entry.getValue().get("detailNo"));
+				ps.setString(2, entry.getValue().get("date"));
+				ps.setString(3, "A1001Com-Update");
+				ps.setString(4, entry.getValue().get("commodityId"));
+				ps.setString(5, entry.getValue().get("detailNo"));
 
 				ps.executeUpdate();
 				ps.close();
@@ -2213,6 +2219,7 @@ public class A1001Common {
 						dataMap.put("commodityId", commodityId);
 						dataMap.put("detailNo", detailNo);
 						dataMap.put("tanka", shousai.getTanka());
+						dataMap.put("stockHandup", shousai.getKosu());
 						dataMap.put("site", "Yahoo");
 						dataMap.put("shop", shop);
 						tbl12Map.put(commodityId + detailNo, dataMap);
@@ -2593,6 +2600,7 @@ public class A1001Common {
 					dataMap.put("commodityId", commodityId);
 					dataMap.put("detailNo", detailNo);
 					dataMap.put("tanka", shousai.getTanka());
+					dataMap.put("stockHandup", shousai.getKosu());
 					dataMap.put("site", "AU");
 					dataMap.put("shop", shop);
 					tbl12Map.put(commodityId + detailNo, dataMap);
@@ -3748,7 +3756,7 @@ public class A1001Common {
 								sql = "UPDATE TBL00012 SET UPDATE_TIME = ? , UPDATE_USER = ? WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 								ps = conn.prepareStatement(sql);
 								ps.setString(1, date);
-								ps.setString(2, "updater");
+								ps.setString(2, "A1001Com-other");
 								ps.setString(3, shouhinbango);
 								ps.setString(4, detailNo);
 
@@ -3770,7 +3778,7 @@ public class A1001Common {
 								ps.setString(12, "");
 								ps.setString(13, "0");
 								ps.setString(14, date);
-								ps.setString(15, "kyo");
+								ps.setString(15, "A1001Com-other");
 								ps.setString(16, null);
 								ps.setString(17, null);
 								ps.setString(18, "");

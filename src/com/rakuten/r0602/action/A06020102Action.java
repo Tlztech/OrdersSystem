@@ -944,13 +944,9 @@ public class A06020102Action extends BaseAction {
 							ps.setInt(1, stock - kosu);
 							ps.setInt(2, stockHandup);
 							ps.setString(3, Utility.getDateTime());
-							ps.setString(4, Utility.getUser());
-							ps.setString(
-									5,
-									shouhinbango.substring(0,
-											shouhinbango.indexOf("-")));
-							ps.setString(6, shouhinbango.substring(shouhinbango
-									.indexOf("-")));
+							ps.setString(4, "A06020102-1");
+							ps.setString(5, shouhinbango.substring(0, shouhinbango.indexOf("-")));
+							ps.setString(6, shouhinbango.substring(shouhinbango.indexOf("-")));
 							ps.executeUpdate();
 						} else if (stock > 0) {
 							detail.setFusokusu(kosu - stock);
@@ -959,13 +955,9 @@ public class A06020102Action extends BaseAction {
 							ps.setInt(1, 0);
 							ps.setInt(2, 0);
 							ps.setString(3, Utility.getDateTime());
-							ps.setString(4, Utility.getUser());
-							ps.setString(
-									5,
-									shouhinbango.substring(0,
-											shouhinbango.indexOf("-")));
-							ps.setString(6, shouhinbango.substring(shouhinbango
-									.indexOf("-")));
+							ps.setString(4, "A06020102-2");
+							ps.setString(5, shouhinbango.substring(0, shouhinbango.indexOf("-")));
+							ps.setString(6, shouhinbango.substring(shouhinbango.indexOf("-")));
 							ps.executeUpdate();
 
 						} else {

@@ -166,7 +166,7 @@ public class A03020108Action extends BaseAction {
 							ps.setString(12, "");
 							ps.setString(13, "0");
 							ps.setString(14, date);
-							ps.setString(15, "kyo");
+							ps.setString(15, "A03020108");
 							ps.setString(16, null);
 							ps.setString(17, null);
 							ps.setString(18, "");

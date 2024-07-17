@@ -79,7 +79,7 @@ public class A06020103Action extends BaseAction {
 					ps.setString(1, String.valueOf(Integer.valueOf(stockjp) - Integer.valueOf(kosu)));
 					ps.setString(2, String.valueOf((Integer.valueOf(stockhandup) - Integer.valueOf(kosu)) > 0 ? Integer.valueOf(stockhandup) - Integer.valueOf(kosu) : 0));
 					ps.setString(3, Utility.getDateTime());
-					ps.setString(4, Utility.getUser());
+					ps.setString(4, "A06020103");
 					if (shouhinbango.contains("-")) {
 						ps.setString(5, shouhinbango.substring(0, shouhinbango.indexOf("-")));
 						ps.setString(6, shouhinbango.substring(shouhinbango.indexOf("-")));

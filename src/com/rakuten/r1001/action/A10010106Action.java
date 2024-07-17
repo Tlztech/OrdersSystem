@@ -125,7 +125,7 @@ public class A10010106Action extends BaseAction {
 					ps.setString(1, String.valueOf(Integer.valueOf(stockjp) - Integer.valueOf(kosu)));
 					ps.setString(2, String.valueOf((Integer.valueOf(stockhandup) - Integer.valueOf(kosu)) > 0 ? Integer.valueOf(stockhandup) - Integer.valueOf(kosu) : 0));
 					ps.setString(3, Utility.getDateTime());
-					ps.setString(4, Utility.getUser());
+					ps.setString(4, "A10010106");
 					ps.setString(5, Utility.getCommodityId(shouhinbango));
 					ps.setString(6, Utility.getDetailN0(shouhinbango));
 

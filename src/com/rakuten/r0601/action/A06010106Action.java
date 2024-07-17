@@ -76,7 +76,7 @@ public class A06010106Action extends BaseAction {
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, getSu);
 				ps.setString(2, Utility.getDateTime());
-				ps.setString(3, Utility.getUser());
+				ps.setString(3, "A06010106");
 				ps.setString(4, commodityId1);
 				ps.setString(5, detailNo1);
 				ps.executeUpdate();

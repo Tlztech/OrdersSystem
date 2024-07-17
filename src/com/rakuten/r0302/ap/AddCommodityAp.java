@@ -92,9 +92,9 @@ public class AddCommodityAp {
 					ps.setString(12, "");
 					ps.setString(13, detail.isDelFlg() ? "1" : "0");
 					ps.setString(14, date);
-					ps.setString(15, Utility.getUser());
+					ps.setString(15, "AddCommodityAp");
 					ps.setString(16, date);
-					ps.setString(17, Utility.getUser());
+					ps.setString(17, "AddCommodityAp");
 					ps.setString(18, detail.getYokoname());
 					ps.setString(19, detail.getShitaganame());
 					ps.execute();

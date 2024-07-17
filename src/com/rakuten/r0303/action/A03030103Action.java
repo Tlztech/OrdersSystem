@@ -43,7 +43,7 @@ public class A03030103Action extends BaseAction {
 			for(int i = 0;i<stockList.size();i++) {
 				ps.setDouble(1,Double.valueOf(stockList.get(i)[1]));
 				ps.setString(2, Utility.getDateTime());
-				ps.setString(3, Utility.getUser());
+				ps.setString(3, "A03030103");
 				ps.setString(4, Utility.getCommodityId(stockList.get(i)[0]));
 				ps.setString(5, Utility.getDetailN0(stockList.get(i)[0]));
 				ps.addBatch();

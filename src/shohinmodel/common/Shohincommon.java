@@ -380,7 +380,7 @@ public class Shohincommon {
 									optionNameVertical = inventory.getOptionNameVertical();
 								}
 								ps.setString(5, optionNameVertical);
-								ps.setString(6, "kyo");
+								ps.setString(6, "Shohincommon");
 								ps.setString(7, shohinbango);
 								ps.setString(8, detail_no);
 
@@ -409,9 +409,9 @@ public class Shohincommon {
 								ps.setString(12, "");
 								ps.setString(13, "0");
 								ps.setString(14, Utility.getDateTime());
-								ps.setString(15, Utility.getUser());
+								ps.setString(15, "Shohincommon");
 								ps.setString(16, Utility.getDateTime());
-								ps.setString(17, Utility.getUser());
+								ps.setString(17, "Shohincommon");
 								String optionNameHorizontal = "";
 								if (!Utility.isEmptyString(inventory.getOptionNameHorizontal())) {
 									optionNameHorizontal = inventory.getOptionNameHorizontal();

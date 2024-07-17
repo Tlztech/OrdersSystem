@@ -106,7 +106,7 @@ public class A07030104Action extends BaseAction {
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, kosuArr[i]);
 				ps.setString(2, Utility.getDateTime());
-				ps.setString(3, Utility.getUser());
+				ps.setString(3, "A07030104");
 				ps.setString(4, Utility.getCommodityId(commodity_idArr[i]));
 				ps.setString(5, Utility.getDetailN0(commodity_idArr[i]));
 				ps.executeUpdate();

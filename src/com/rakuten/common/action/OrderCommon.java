@@ -1320,14 +1320,15 @@ public class OrderCommon {
 					continue;
 				}
 
-				sql = "UPDATE TBL00012 SET STOCK_JP = ?, STOCK_HANDUP = ?, UPDATE_TIME = ? , UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
+				sql = "UPDATE TBL00012 SET STOCK_JP = ?, STOCK_HANDUP = ?, UPDATE_TIME = ?, UPDATE_USER=? , UPDATEQUANTITY_FLG =TRUE WHERE COMMODITY_ID = ? AND DETAIL_NO = ?";
 				ps = conn.prepareStatement(sql);
 
 				ps.setString(1, String.valueOf(Integer.valueOf(stockjp) - Integer.valueOf(kosu)));
 				ps.setString(2, String.valueOf((Integer.valueOf(stockhandup) - Integer.valueOf(kosu)) > 0 ? Integer.valueOf(stockhandup) - Integer.valueOf(kosu) : 0));
 				ps.setString(3, Utility.getDateTime());
-				ps.setString(4, Utility.getCommodityId(shouhinbango));
-				ps.setString(5, Utility.getDetailN0(shouhinbango));
+				ps.setString(4, "OrderCom-update");
+				ps.setString(5, Utility.getCommodityId(shouhinbango));
+				ps.setString(6, Utility.getDetailN0(shouhinbango));
 
 				ps.execute();
 
@@ -2291,7 +2292,7 @@ public class OrderCommon {
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, detail[1]);
 				ps.setString(2, Utility.getDateTime());
-				ps.setString(3, Utility.getUser());
+				ps.setString(3, "OrderCom");
 				ps.setString(4, Utility.getCommodityId(detail[0]));
 				ps.setString(5, Utility.getDetailN0(detail[0]));
 
